@@ -2,28 +2,22 @@
   height: 100%;
   width: 100%;
 }
-
 mat-sidenav {
   width: 100%;
   background-color: white;
 }
-
-
 .sidenav-toolbar {
   padding: 90px 16px;
 }
-
 .nav-list {
   margin: 15px;
 }
-
 .nav-list-item {
   padding-left: 15px;
   width: 100%;
   display: flex;
   justify-content: space-between;
 }
-
 a.nav-sublist-item {
   padding-left: 35px;
   width: 100%;
