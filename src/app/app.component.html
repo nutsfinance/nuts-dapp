@@ -1,13 +1,13 @@
 <div class="app-container">
 
-  <mat-toolbar color="primary" class="app-toolbar">
-    <button mat-icon-button (click)="sidenav.open()">
-      <mat-icon>menu</mat-icon>
+  <mat-toolbar class="app-toolbar">
+    <button mat-icon-button (click)="sidenav.open()" color="primary">
+      <mat-icon class="app-toolbar-icon">menu</mat-icon>
     </button>
   </mat-toolbar>
 
   <mat-sidenav-container class="app-sidenav-container">
-    <mat-sidenav #sidenav [mode]="over" [fixedInViewport]="true" [opened]="true">
+    <mat-sidenav #sidenav [mode]="over" [fixedInViewport]="true">
 
       <mat-toolbar class="sidenav-toolbar">
           <button mat-icon-button (click)="sidenav.close()" color="primary">
@@ -59,7 +59,6 @@
     </mat-sidenav>
 
     <mat-sidenav-content>
-      This is the body
     </mat-sidenav-content>
 
   </mat-sidenav-container>
