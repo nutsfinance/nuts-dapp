@@ -9,6 +9,7 @@ import { SavingComponent } from './instrument/saving/saving.component';
 import { LendingComponent } from './instrument/lending/lending.component';
 import { BorrowingComponent } from './instrument/borrowing/borrowing.component';
 import { SwapComponent } from './instrument/swap/swap.component';
+import { AccountAddressComponent } from './common/account-address/account-address.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { SwapComponent } from './instrument/swap/swap.component';
     SavingComponent,
     LendingComponent,
     BorrowingComponent,
-    SwapComponent
+    SwapComponent,
+    AccountAddressComponent
   ],
   imports: [
     BrowserModule,
