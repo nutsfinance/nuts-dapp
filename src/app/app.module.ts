@@ -4,11 +4,21 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {MaterialModule} from './material/material-module';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { SavingComponent } from './instrument/saving/saving.component';
+import { LendingComponent } from './instrument/lending/lending.component';
+import { BorrowingComponent } from './instrument/borrowing/borrowing.component';
+import { SwapComponent } from './instrument/swap/swap.component';
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    DashboardComponent,
+    SavingComponent,
+    LendingComponent,
+    BorrowingComponent,
+    SwapComponent
   ],
   imports: [
     BrowserModule,

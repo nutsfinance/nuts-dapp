@@ -17,7 +17,7 @@
 
       <mat-nav-list class="nav-list">
 
-        <a routerLink="." mat-list-item>
+        <a routerLink="dashboard" mat-list-item (click)="sidenav.close()">
           <div class="nav-list-item">
             Dashboard<mat-icon class="app-nav-list-icon">chevron_right</mat-icon>
           </div>
@@ -25,25 +25,25 @@
 
         <mat-divider></mat-divider>
 
-        <a routerLink="." mat-list-item>
+        <mat-list-item>
           <div class="nav-list-item">
             Instruments<mat-icon class="nav-list-icon">chevron_right</mat-icon>
           </div>
-        </a>
+        </mat-list-item>
 
-        <a routerLink="." mat-list-item class="nav-sublist-item">
+        <a routerLink="instrument/saving" mat-list-item class="nav-sublist-item" (click)="sidenav.close()">
           Saving
         </a>
 
-        <a routerLink="." mat-list-item class="nav-sublist-item">
+        <a routerLink="instrument/lending" mat-list-item class="nav-sublist-item" (click)="sidenav.close()">
           Lending
         </a>
 
-        <a routerLink="." mat-list-item class="nav-sublist-item">
+        <a routerLink="instrument/borrowing" mat-list-item class="nav-sublist-item" (click)="sidenav.close()">
           Borrowing
         </a>
 
-        <a routerLink="." mat-list-item class="nav-sublist-item">
+        <a routerLink="instrument/swap" mat-list-item class="nav-sublist-item" (click)="sidenav.close()">
           Swap
         </a>
 
@@ -59,6 +59,7 @@
     </mat-sidenav>
 
     <mat-sidenav-content>
+      <router-outlet></router-outlet>
     </mat-sidenav-content>
 
   </mat-sidenav-container>
