@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+
+import { NutsPlatformService } from '../web3/nuts-platform.service';
 
 @Component({
   selector: 'app-account-address',
@@ -7,9 +10,27 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AccountAddressComponent implements OnInit {
 
-  constructor() { }
+  private currentAccountSubscription_: Subscription;
+  private currentAccount_: string;
+
+  constructor(private _nutsPlatformService: NutsPlatformService) { }
 
   ngOnInit() {
+    this.currentAccountSubscription_ = this._nutsPlatformService.currentAccountSubject
+      .subscribe((currentAccount) => {
+        this.currentAccount_ = currentAccount;
+      });
   }
 
+  ngOnDestroy() {
+    this.currentAccountSubscription_.unsubscribe();
+  }
+
+  public getCurrentAccountAddress() {
+    if (!this.currentAccount_) {
+      return 'N/A';
+    } else {
+      return `${this.currentAccount_.slice(0, 5)}....${this.currentAccount_.slice(this.currentAccount_.length - 5)}`;
+    }
+  }
 }

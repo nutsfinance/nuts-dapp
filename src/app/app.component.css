@@ -8,6 +8,13 @@ mat-sidenav {
 }
 .app-toolbar {
   padding: 20px 16px;
+  display: flex;
+  justify-content: space-between;
+}
+.app-toolbar-left,
+.app-toolbar-right {
+  display: flex;
+  align-items: center;
 }
 .app-toolbar-icon {
   height: 28px;

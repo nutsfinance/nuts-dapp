@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import { Subject } from 'rxjs';
 
 declare let window: any;
 
@@ -6,6 +7,8 @@ declare let window: any;
   providedIn: 'root'
 })
 export class NutsPlatformService {
+  public currentAccount: string;
+  public currentAccountSubject = new Subject<string>();
 
   constructor() {
     console.log('NutsPlatformServcie constructor');
@@ -32,6 +35,10 @@ export class NutsPlatformService {
 
   private handleAccountChanged(accounts) {
     console.log('Account changed', accounts);
+    if (accounts && accounts.length > 0 && accounts[0] != this.currentAccount) {
+      this.currentAccount = accounts[0];
+      this.currentAccountSubject.next(accounts[0]);
+    }
   }
 
   private handleNetworkChanged(network) {
