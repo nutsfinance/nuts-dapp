@@ -10,6 +10,7 @@ import { LendingComponent } from './instrument/lending/lending.component';
 import { BorrowingComponent } from './instrument/borrowing/borrowing.component';
 import { SwapComponent } from './instrument/swap/swap.component';
 import { AccountAddressComponent } from './common/account-address/account-address.component';
+import { WalletComponent } from './instrument/wallet/wallet.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { AccountAddressComponent } from './common/account-address/account-addres
     LendingComponent,
     BorrowingComponent,
     SwapComponent,
-    AccountAddressComponent
+    AccountAddressComponent,
+    WalletComponent
   ],
   imports: [
     BrowserModule,
