@@ -25,6 +25,7 @@ export class NutsPlatformService {
     }
     ethereum.on('accountsChanged', this.handleAccountChanged);
     ethereum.on('networkChanged', this.handleNetworkChanged);
+    this.handleAccountChanged([ethereum.selectedAddress]);
 
     ethereum.send('eth_requestAccounts')
       .then(this.handleNetworkChanged)

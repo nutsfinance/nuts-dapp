@@ -11,6 +11,12 @@ import { BorrowingComponent } from './instrument/borrowing/borrowing.component';
 import { SwapComponent } from './instrument/swap/swap.component';
 import { AccountAddressComponent } from './common/account-address/account-address.component';
 import { WalletComponent } from './instrument/wallet/wallet.component';
+import { WalletDepositComponent } from './instrument/wallet/wallet-deposit/wallet-deposit.component';
+import { WalletWithdrawComponent } from './instrument/wallet/wallet-withdraw/wallet-withdraw.component';
+import { WalletTransactionComponent } from './instrument/wallet/wallet-transaction/wallet-transaction.component';
+import { LendingCreateComponent } from './instrument/lending/lending-create/lending-create.component';
+import { LendingEngageComponent } from './instrument/lending/lending-engage/lending-engage.component';
+import { LendingPositionsComponent } from './instrument/lending/lending-positions/lending-positions.component';
 
 
 @NgModule({
@@ -22,7 +28,13 @@ import { WalletComponent } from './instrument/wallet/wallet.component';
     BorrowingComponent,
     SwapComponent,
     AccountAddressComponent,
-    WalletComponent
+    WalletComponent,
+    WalletDepositComponent,
+    WalletWithdrawComponent,
+    WalletTransactionComponent,
+    LendingCreateComponent,
+    LendingEngageComponent,
+    LendingPositionsComponent
   ],
   imports: [
     BrowserModule,

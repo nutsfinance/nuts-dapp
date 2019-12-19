@@ -13,10 +13,11 @@ export class AccountAddressComponent implements OnInit {
   private currentAccountSubscription_: Subscription;
   private currentAccount_: string;
 
-  constructor(private _nutsPlatformService: NutsPlatformService) { }
+  constructor(private nutsPlatformService_: NutsPlatformService) { }
 
   ngOnInit() {
-    this.currentAccountSubscription_ = this._nutsPlatformService.currentAccountSubject
+    this.currentAccount_ = this.nutsPlatformService_.currentAccount;
+    this.currentAccountSubscription_ = this.nutsPlatformService_.currentAccountSubject
       .subscribe((currentAccount) => {
         this.currentAccount_ = currentAccount;
       });
