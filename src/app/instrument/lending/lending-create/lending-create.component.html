@@ -1,1 +1,66 @@
-<mat-card>lending-create works!</mat-card>
+<mat-card>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <h4>Principal</h4>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-7">
+
+        <mat-form-field appearance="outline">
+          <input matInput placeholder="Amount">
+        </mat-form-field>
+
+      </div>
+      <div class="col-xs-4">
+
+        <mat-form-field appearance="outline" class="lending-token-select">
+          <select matNativeControl required>
+            <option value="ETH">ETH</option>
+            <option value="USDT">USDT</option>
+            <option value="DAI">DAI</option>
+            <option value="NUTS">NUTS</option>
+          </select>
+        </mat-form-field>
+
+      </div>
+      <div class="col-xs-1">
+
+        <button mat-icon-button class="lending-intro-button">
+          <mat-icon>report</mat-icon>
+        </button>
+
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        Account balance: 50.00000 ETH available.
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <h4>Tenor</h4>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-11">
+        <mat-radio-group aria-label="Select an option">
+          <mat-radio-button value="15">15D</mat-radio-button>
+          <mat-radio-button value="30">30D</mat-radio-button>
+          <mat-radio-button value="45">45D</mat-radio-button>
+          <mat-radio-button value="60">60D</mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <div class="col-xs-1">
+        <button mat-icon-button class="lending-intro-button">
+          <mat-icon>report</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</mat-card>
