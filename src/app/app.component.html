@@ -1,76 +1,75 @@
-<div class="app-container">
+<mat-sidenav-container class="app-sidenav-container">
+  <mat-sidenav #sidenav [fixedInViewport]="true">
 
-  <mat-toolbar class="app-toolbar">
-    <div class="app-toolbar-left">
-      <button mat-icon-button (click)="sidenav.open()" color="primary">
-        <mat-icon class="app-toolbar-icon">menu</mat-icon>
-      </button>
-      <img src="../assets/images/logo.png" alt="logo" class="toolbar-logo">
+    <mat-toolbar class="sidenav-toolbar">
+        <button mat-icon-button (click)="sidenav.close()" color="primary">
+          <mat-icon>close</mat-icon>
+        </button>
+        <img src="../assets/images/logo.png" alt="logo" class="toolbar-logo">
+    </mat-toolbar>
+
+    <mat-nav-list class="nav-list">
+
+      <a routerLink="dashboard" mat-list-item (click)="sidenav.close()">
+        <div class="nav-list-item">
+          Dashboard<mat-icon class="app-nav-list-icon">chevron_right</mat-icon>
+        </div>
+      </a>
+
+      <mat-divider></mat-divider>
+
+      <mat-list-item>
+        <div class="nav-list-item">
+          Instruments<mat-icon class="nav-list-icon">chevron_right</mat-icon>
+        </div>
+      </mat-list-item>
+
+      <a routerLink="instrument/saving" mat-list-item class="nav-sublist-item" (click)="sidenav.close()">
+        Saving
+      </a>
+
+      <a routerLink="instrument/lending" mat-list-item class="nav-sublist-item" (click)="sidenav.close()">
+        Lending
+      </a>
+
+      <a routerLink="instrument/borrowing" mat-list-item class="nav-sublist-item" (click)="sidenav.close()">
+        Borrowing
+      </a>
+
+      <a routerLink="instrument/swap" mat-list-item class="nav-sublist-item" (click)="sidenav.close()">
+        Swap
+      </a>
+
+      <mat-divider></mat-divider>
+
+      <a routerLink="." mat-list-item>
+        <div class="nav-list-item">
+          Language<mat-icon class="nav-list-icon">chevron_right</mat-icon>
+        </div>
+      </a>
+
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <app-network-toolbar></app-network-toolbar>
+    <div class="app-toolbar">
+      <div class="app-toolbar-left">
+        <button mat-icon-button (click)="sidenav.open()" color="primary">
+          <mat-icon class="app-toolbar-icon">menu</mat-icon>
+        </button>
+        <img src="../assets/images/logo.png" alt="logo" class="toolbar-logo">
+      </div>
+      <div class="app-toolbar-right">
+        <app-currency-select></app-currency-select>
+        <button mat-icon-button color="primary">
+          <mat-icon class="app-toolbar-icon">notifications_none</mat-icon>
+        </button>
+      </div>
     </div>
-    <div class="app-toolbar-right">
-      <button mat-icon-button color="primary">
-        <mat-icon class="app-toolbar-icon">notifications_none</mat-icon>
-      </button>
-    </div>
-  </mat-toolbar>
-
-  <mat-sidenav-container class="app-sidenav-container">
-    <mat-sidenav #sidenav [fixedInViewport]="true">
-
-      <mat-toolbar class="sidenav-toolbar">
-          <button mat-icon-button (click)="sidenav.close()" color="primary">
-            <mat-icon>close</mat-icon>
-          </button>
-          <img src="../assets/images/logo.png" alt="logo" class="toolbar-logo">
-      </mat-toolbar>
-
-      <mat-nav-list class="nav-list">
-
-        <a routerLink="dashboard" mat-list-item (click)="sidenav.close()">
-          <div class="nav-list-item">
-            Dashboard<mat-icon class="app-nav-list-icon">chevron_right</mat-icon>
-          </div>
-        </a>
-
-        <mat-divider></mat-divider>
-
-        <mat-list-item>
-          <div class="nav-list-item">
-            Instruments<mat-icon class="nav-list-icon">chevron_right</mat-icon>
-          </div>
-        </mat-list-item>
-
-        <a routerLink="instrument/saving" mat-list-item class="nav-sublist-item" (click)="sidenav.close()">
-          Saving
-        </a>
-
-        <a routerLink="instrument/lending" mat-list-item class="nav-sublist-item" (click)="sidenav.close()">
-          Lending
-        </a>
-
-        <a routerLink="instrument/borrowing" mat-list-item class="nav-sublist-item" (click)="sidenav.close()">
-          Borrowing
-        </a>
-
-        <a routerLink="instrument/swap" mat-list-item class="nav-sublist-item" (click)="sidenav.close()">
-          Swap
-        </a>
-
-        <mat-divider></mat-divider>
-
-        <a routerLink="." mat-list-item>
-          <div class="nav-list-item">
-            Language<mat-icon class="nav-list-icon">chevron_right</mat-icon>
-          </div>
-        </a>
-
-      </mat-nav-list>
-    </mat-sidenav>
-
-    <mat-sidenav-content>
+    <div class="app-container">
       <router-outlet></router-outlet>
-    </mat-sidenav-content>
+    </div>
+  </mat-sidenav-content>
 
-  </mat-sidenav-container>
-
-</div>
+</mat-sidenav-container>

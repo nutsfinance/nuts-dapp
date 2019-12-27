@@ -9,6 +9,8 @@ declare let window: any;
 export class NutsPlatformService {
   public currentAccount: string;
   public currentAccountSubject = new Subject<string>();
+  public currentNetwork: number;
+  public currentNetworkSubject = new Subject<number>();
 
   constructor() {
     console.log('NutsPlatformServcie constructor');
@@ -26,12 +28,13 @@ export class NutsPlatformService {
     ethereum.on('accountsChanged', this.handleAccountChanged);
     ethereum.on('networkChanged', this.handleNetworkChanged);
     this.handleAccountChanged([ethereum.selectedAddress]);
+    this.handleNetworkChanged(Number(ethereum.chainId));
 
-    ethereum.send('eth_requestAccounts')
-      .then(this.handleNetworkChanged)
-      .catch(error => {
-        console.error(error);
-      })
+    // ethereum.send('eth_requestAccounts')
+    //   .then(this.handleNetworkChanged)
+    //   .catch(error => {
+    //     console.error(error);
+    //   })
   }
 
   private handleAccountChanged(accounts) {
@@ -44,5 +47,9 @@ export class NutsPlatformService {
 
   private handleNetworkChanged(network) {
     console.log('Network changed', network);
+    if (network && network != this.currentNetwork) {
+      this.currentNetwork = network;
+      this.currentNetworkSubject.next(network);
+    }
   }
 }

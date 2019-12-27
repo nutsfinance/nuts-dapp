@@ -1,0 +1,11 @@
+.network-toolbar {
+  height: 50px;
+  width: 100%;
+  background-color: #fffaea;
+  text-align: center;
+  font-size: 16px;
+}
+.network-content {
+  display: inline-block;
+  margin-top: 15px;
+}

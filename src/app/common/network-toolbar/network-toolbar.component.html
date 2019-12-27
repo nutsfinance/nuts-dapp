@@ -1,0 +1,12 @@
+<div *ngIf="network" class="network-toolbar">
+    <span class="network-content">
+        You are currently connected to the 
+        <span [ngSwitch]="network">
+            <span *ngSwitchCase="1">Main Network.</span>
+            <span *ngSwitchCase="3">Ropsten Network.</span>
+            <span *ngSwitchCase="4">Rinkeby Network.</span>
+            <span *ngSwitchCase="42">Kovan Network.</span>
+            <span *ngSwitchDefault>Uknown Network.</span>
+        </span>
+    </span>
+</div>

@@ -17,6 +17,9 @@ import { WalletTransactionComponent } from './instrument/wallet/wallet-transacti
 import { LendingCreateComponent } from './instrument/lending/lending-create/lending-create.component';
 import { LendingEngageComponent } from './instrument/lending/lending-engage/lending-engage.component';
 import { LendingPositionsComponent } from './instrument/lending/lending-positions/lending-positions.component';
+import { NetworkToolbarComponent } from './common/network-toolbar/network-toolbar.component';
+import { CurrencySelectComponent } from './common/currency-select/currency-select.component';
+import { CurrencySelectSheetComponent } from './common/currency-select/currency-select-sheet.component';
 
 
 @NgModule({
@@ -34,7 +37,13 @@ import { LendingPositionsComponent } from './instrument/lending/lending-position
     WalletTransactionComponent,
     LendingCreateComponent,
     LendingEngageComponent,
-    LendingPositionsComponent
+    LendingPositionsComponent,
+    NetworkToolbarComponent,
+    CurrencySelectComponent,
+    CurrencySelectSheetComponent,
+  ],
+  entryComponents: [
+    CurrencySelectSheetComponent,
   ],
   imports: [
     BrowserModule,
