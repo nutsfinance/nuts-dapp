@@ -2,25 +2,21 @@
   height: 48px;
   margin: 5px 0;
 }
-
 .balance-icon {
   width: 18px;
-    margin-right: 8px;
+  margin-right: 8px;
 }
-
 .balance-content {
   font-family: "GillSans-Light", Helvetica, Arial, serif;
-    font-size: 16px;
-    color: rgba(155, 154, 155, 1.0);
+  font-size: 16px;
+  color: #9b9a9b;
 }
-
 .deposit-button-wrapper {
   width: 100%;
   padding: 20px;
   display: flex;
   justify-content: center;
 }
-
 .deposit-button {
   width: 150px;
   color: white;

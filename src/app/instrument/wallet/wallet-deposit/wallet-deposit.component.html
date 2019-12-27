@@ -1,1 +1,40 @@
-<p>wallet-deposit works!</p>
+<div class="row">
+  <div class="col-xs-8">
+    <mat-form-field appearance="outline">
+      <input matInput placeholder="Enter amount">
+      <span matSuffix>MAX</span>
+    </mat-form-field>
+  </div>
+  <div class="col-xs-4">
+    <button mat-raised-button class="select-token-button">
+      {{selectedToken}}
+      <mat-icon class="currency-selec-icon" color="primary">expand_more</mat-icon>
+    </button>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <img src="../../../../assets/images/wallet-balance.png" class="balance-icon">
+    <span class="balance-content">
+      Wallet Balance: {{selectedToken}}
+    </span>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <img src="../../../../assets/images/account-balance.png" class="balance-icon">
+    <span class="balance-content">
+      Account Balance: {{selectedToken}}
+    </span>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <div class="deposit-button-wrapper">
+      <button mat-raised-button color="primary" class="deposit-button">Approve</button>
+    </div>
+  </div>
+</div>

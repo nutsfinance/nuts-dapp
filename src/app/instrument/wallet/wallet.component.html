@@ -1,30 +1,39 @@
 <mat-accordion>
 
-    <mat-expansion-panel>
-      <mat-expansion-panel-header>
-        Deposit
-      </mat-expansion-panel-header>
+  <mat-expansion-panel expanded="true">
+    <mat-expansion-panel-header>
+      <div class="panel-header-wrapper">
+        <img src="../../../assets/images/vertical-lines.png" class="panel-vertical-line">
+        <span class="wallet-header">Deposit</span>
+      </div>
+    </mat-expansion-panel-header>
 
-      <app-wallet-deposit></app-wallet-deposit>
+    <app-wallet-deposit></app-wallet-deposit>
 
-    </mat-expansion-panel>
+  </mat-expansion-panel>
 
-    <mat-expansion-panel>
-      <mat-expansion-panel-header>
-        Withdraw
-      </mat-expansion-panel-header>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <div class="panel-header-wrapper">
+        <img src="../../../assets/images/vertical-lines.png" class="panel-vertical-line">
+        <span class="wallet-header">Withdraw</span>
+      </div>
+    </mat-expansion-panel-header>
 
-      <app-wallet-withdraw></app-wallet-withdraw>
+    <app-wallet-withdraw></app-wallet-withdraw>
 
-    </mat-expansion-panel>
+  </mat-expansion-panel>
 
-    <mat-expansion-panel>
-      <mat-expansion-panel-header>
-        Transactions
-      </mat-expansion-panel-header>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <div class="panel-header-wrapper">
+        <img src="../../../assets/images/vertical-lines.png" class="panel-vertical-line">
+        <span class="wallet-header">Transaction</span>
+      </div>
+    </mat-expansion-panel-header>
 
-      <app-wallet-transaction></app-wallet-transaction>
+    <app-wallet-transaction></app-wallet-transaction>
 
-    </mat-expansion-panel>
+  </mat-expansion-panel>
 
-  </mat-accordion>
+</mat-accordion>

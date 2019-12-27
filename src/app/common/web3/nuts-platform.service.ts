@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import { Subject } from 'rxjs';
+import {Subject} from 'rxjs';
 
 declare let window: any;
 
@@ -25,8 +25,8 @@ export class NutsPlatformService {
     if (!ethereum || !ethereum.isMetaMask) {
       throw new Error('Please install MetaMask.')
     }
-    ethereum.on('accountsChanged', this.handleAccountChanged);
-    ethereum.on('networkChanged', this.handleNetworkChanged);
+    ethereum.on('accountsChanged', (accounts) => this.handleAccountChanged(accounts));
+    ethereum.on('networkChanged', (network) => this.handleNetworkChanged(network));
     this.handleAccountChanged([ethereum.selectedAddress]);
     this.handleNetworkChanged(Number(ethereum.chainId));
 
@@ -50,6 +50,7 @@ export class NutsPlatformService {
     if (network && network != this.currentNetwork) {
       this.currentNetwork = network;
       this.currentNetworkSubject.next(network);
+      console.log('Updated');
     }
   }
 }

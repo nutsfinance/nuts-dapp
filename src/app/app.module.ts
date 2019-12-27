@@ -20,6 +20,7 @@ import { LendingPositionsComponent } from './instrument/lending/lending-position
 import { NetworkToolbarComponent } from './common/network-toolbar/network-toolbar.component';
 import { CurrencySelectComponent } from './common/currency-select/currency-select.component';
 import { CurrencySelectSheetComponent } from './common/currency-select/currency-select-sheet.component';
+import { TokenSelectComponent } from './common/token-select/token-select.component';
 
 
 @NgModule({
@@ -41,6 +42,7 @@ import { CurrencySelectSheetComponent } from './common/currency-select/currency-
     NetworkToolbarComponent,
     CurrencySelectComponent,
     CurrencySelectSheetComponent,
+    TokenSelectComponent,
   ],
   entryComponents: [
     CurrencySelectSheetComponent,

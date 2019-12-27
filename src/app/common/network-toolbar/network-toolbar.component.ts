@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import {Component, NgZone, OnInit} from '@angular/core';
+import {Subscription} from 'rxjs';
+import {NutsPlatformService} from '../web3/nuts-platform.service';
 
-import { NutsPlatformService } from '../web3/nuts-platform.service';
 
 @Component({
   selector: 'app-network-toolbar',
@@ -12,12 +12,15 @@ export class NetworkToolbarComponent implements OnInit {
   private network: number;
   private networkSubscription: Subscription;
 
-  constructor(private nutsPlatformService_ : NutsPlatformService) { }
+  constructor(private nutsPlatformService_: NutsPlatformService, private ngZone_: NgZone) {}
 
   ngOnInit() {
     this.network = this.nutsPlatformService_.currentNetwork;
     this.networkSubscription = this.nutsPlatformService_.currentNetworkSubject.subscribe(network => {
-      this.network = network;
+      this.ngZone_.run(() => {
+        this.network = network;
+        console.log(this);
+      });
     });
   }
 

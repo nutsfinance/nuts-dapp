@@ -2,12 +2,10 @@
   font-family: "GillSans", Helvetica, Arial, serif;
   font-weight: 600;
 }
-
 .panel-header-wrapper {
   display: flex;
   align-items: center;
 }
-
 .panel-vertical-line {
   height: 20px;
   margin-right: 15px;
