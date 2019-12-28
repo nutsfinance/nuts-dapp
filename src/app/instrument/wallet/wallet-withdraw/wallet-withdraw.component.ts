@@ -13,4 +13,8 @@ export class WalletWithdrawComponent implements OnInit {
   ngOnInit() {
   }
 
+  onTokenSelected(token: string) {
+    console.log(token);
+    this.selectedToken = token;
+  }
 }

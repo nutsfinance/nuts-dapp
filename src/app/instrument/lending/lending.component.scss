@@ -1,5 +1,8 @@
 .tab-group {
-    width: 100%;;
+    width: 100%;
+    white-space: nowrap;
+    display: flex;
+    justify-content: space-around;
 }
 
 .tab-label {
@@ -7,7 +10,7 @@
     font-family: "GillSans-Light", Helvetica, Arial, serif;
     font-size: 14px;
     height: 32px;
-    padding: 0 12px;
+    padding: 0 10px;
 }
 
 .tab-label.selected {

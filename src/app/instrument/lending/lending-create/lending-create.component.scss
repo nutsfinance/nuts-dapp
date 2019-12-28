@@ -1,5 +1,17 @@
-.lending-token-select {
+.input-label {
+  font-family: "GillSans", Helvetica, Arial, serif;
+  font-size: 16.0px;
+  color: rgba(74, 73, 74, 1.0)
+}
+
+.amount-input {
   max-width: 100%;
+}
+
+.balance-content {
+  font-family: "GillSans-Light", Helvetica, Arial, serif;
+    font-size: 16px;
+    color: rgba(155, 154, 155, 1.0);
 }
 
 .lending-intro-button {

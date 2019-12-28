@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {MatBottomSheet} from '@angular/material/bottom-sheet';
 import {TokenSelectSheetComponent} from './token-select-sheet.component';
 
@@ -10,6 +10,7 @@ import {TokenSelectSheetComponent} from './token-select-sheet.component';
 })
 export class TokenSelectComponent implements OnInit {
   private selectedToken = 'ETH';
+  @Output() tokenSelected = new EventEmitter<string>();
 
   constructor(private _bottomSheet: MatBottomSheet) {}
 
@@ -20,6 +21,7 @@ export class TokenSelectComponent implements OnInit {
     const bottomSheetRef = this._bottomSheet.open(TokenSelectSheetComponent);
     bottomSheetRef.afterDismissed().subscribe(token => {
       this.selectedToken = token;
+      this.tokenSelected.emit(token);
     });
   }
 
