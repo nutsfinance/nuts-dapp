@@ -6,10 +6,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./saving.component.scss']
 })
 export class SavingComponent implements OnInit {
+  private selectedTab = 'wallet';
 
   constructor() { }
 
   ngOnInit() {
   }
 
+  selectTab(tab: string) {
+    this.selectedTab = tab;
+  }
 }

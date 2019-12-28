@@ -1,0 +1,79 @@
+<mat-card class="create-card">
+    <div class="row">
+        <div class="col-xs-12">
+            <span class="input-label">Input</span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-8">
+            <mat-form-field appearance="outline" class="amount-input">
+                <input matInput placeholder="Amount">
+            </mat-form-field>
+        </div>
+        <div class="col-xs-4">
+            <app-token-select (tokenSelected)="onInputTokenSelected($event)"></app-token-select>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <span class="balance-content">
+                Swap Account Balance: {{inputToken}}
+            </span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <span class="input-label">Output</span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-8">
+            <mat-form-field appearance="outline" class="amount-input">
+                <input matInput placeholder="Amount">
+            </mat-form-field>
+        </div>
+        <div class="col-xs-4">
+            <app-token-select (tokenSelected)="onOutputTokenSelected($event)"></app-token-select>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <span class="input-label">Tenor</span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-8">
+            <mat-button-toggle-group class="tenor-input" (change)="onTenorChange($event)">
+                <mat-button-toggle value="15">15D</mat-button-toggle>
+                <mat-button-toggle value="30">30D</mat-button-toggle>
+                <mat-button-toggle value="45">45D</mat-button-toggle>
+                <mat-button-toggle value="60">60D</mat-button-toggle>
+            </mat-button-toggle-group>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-8">
+            <span class="alternative-content" *ngIf="!showAlternativeTenor" (click)="showAlternativeTenor = true">
+                Enter a different amount.
+            </span>
+            <mat-form-field appearance="outline" class="amount-input" *ngIf="showAlternativeTenor">
+                <input matInput placeholder="2 ~ 90 Days" [(ngModel)]="tenor">
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="create-button-wrapper">
+                <button mat-raised-button color="primary" class="create-button">Create</button>
+            </div>
+        </div>
+    </div>
+</mat-card>

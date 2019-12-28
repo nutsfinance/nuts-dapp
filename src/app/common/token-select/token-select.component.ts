@@ -20,8 +20,11 @@ export class TokenSelectComponent implements OnInit {
   openBottomSheet() {
     const bottomSheetRef = this._bottomSheet.open(TokenSelectSheetComponent);
     bottomSheetRef.afterDismissed().subscribe(token => {
-      this.selectedToken = token;
-      this.tokenSelected.emit(token);
+      // Ignore if the bottom sheet is closed by clicking empty spaces.
+      if (token) {
+        this.selectedToken = token;
+        this.tokenSelected.emit(token);
+      }
     });
   }
 

@@ -1,0 +1,125 @@
+<mat-card class="create-card">
+    <div class="row">
+      <div class="col-xs-12">
+        <span class="input-label">Principal</span>
+      </div>
+    </div>
+  
+    <div class="row">
+      <div class="col-xs-8">
+        <mat-form-field appearance="outline" class="amount-input">
+          <input matInput placeholder="Amount">
+        </mat-form-field>
+      </div>
+      <div class="col-xs-4">
+        <app-token-select (tokenSelected)="onPrincipalTokenSelected($event)"></app-token-select>
+      </div>
+    </div>
+  
+    <div class="row">
+      <div class="col-xs-12">
+        <span class="balance-content">
+          Borrowing Account Balance: {{principalToken}}
+        </span>
+      </div>
+    </div>
+  
+    <div class="row">
+      <div class="col-xs-12">
+        <span class="input-label">Tenor</span>
+      </div>
+    </div>
+  
+    <div class="row">
+      <div class="col-xs-8">
+        <mat-button-toggle-group class="tenor-input" (change)="onTenorChange($event)">
+          <mat-button-toggle value="15">15D</mat-button-toggle>
+          <mat-button-toggle value="30">30D</mat-button-toggle>
+          <mat-button-toggle value="45">45D</mat-button-toggle>
+          <mat-button-toggle value="60">60D</mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+    </div>
+  
+    <div class="row">
+      <div class="col-xs-8">
+        <span class="alternative-content" *ngIf="!showAlternativeTenor" (click)="showAlternativeTenor = true">
+          Enter a different amount.
+        </span>
+        <mat-form-field appearance="outline" class="amount-input" *ngIf="showAlternativeTenor">
+          <input matInput placeholder="2 ~ 90 Days" [(ngModel)]="tenor">
+        </mat-form-field>
+      </div>
+    </div>
+  
+    <div class="row">
+      <div class="col-xs-12">
+        <span class="input-label">Collateral</span>
+      </div>
+    </div>
+  
+    <div class="row">
+      <div class="col-xs-8">
+        <mat-button-toggle-group class="tenor-input" (change)="onCollateralRatioChange($event)">
+          <mat-button-toggle value="50">50%</mat-button-toggle>
+          <mat-button-toggle value="100">100%</mat-button-toggle>
+          <mat-button-toggle value="150">150%</mat-button-toggle>
+          <mat-button-toggle value="200">200%</mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+      <div class="col-xs-4">
+        <app-token-select (tokenSelected)="onCollateralTokenSelected($event)"></app-token-select>
+      </div>
+    </div>
+  
+    <div class="row">
+      <div class="col-xs-8">
+        <span class="alternative-content" *ngIf="!showAlternativeColleral" (click)="showAlternativeColleral = true">
+          Enter a different amount.
+        </span>
+        <mat-form-field appearance="outline" class="amount-input" *ngIf="showAlternativeColleral">
+          <input matInput placeholder="50 ~ 200" [(ngModel)]="collateralRatio">
+          <span matSuffix>%</span>
+        </mat-form-field>
+      </div>
+    </div>
+  
+    <div class="row">
+      <div class="col-xs-12">
+        <span class="input-label">Interest</span>
+      </div>
+    </div>
+  
+    <div class="row">
+      <div class="col-xs-12">
+        <mat-button-toggle-group class="tenor-input"  (change)="onInterestRateChange($event)">
+          <mat-button-toggle value="0.010">0.010</mat-button-toggle>
+          <mat-button-toggle value="0.020">0.020</mat-button-toggle>
+          <mat-button-toggle value="0.030">0.030</mat-button-toggle>
+          <mat-button-toggle value="0.040">0.040</mat-button-toggle>
+        </mat-button-toggle-group>
+        <span class="hint-content">
+          % per day.
+        </span>
+      </div>
+    </div>
+  
+    <div class="row">
+      <div class="col-xs-8">
+        <span class="alternative-content" *ngIf="!showAlternativeInterest" (click)="showAlternativeInterest = true">
+          Enter a different amount.
+        </span>
+        <mat-form-field appearance="outline" class="amount-input" *ngIf="showAlternativeInterest">
+          <input matInput placeholder="0.010 ~ 5.000" [(ngModel)]="interestRate">
+        </mat-form-field>
+      </div>
+    </div>
+  
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="create-button-wrapper">
+          <button mat-raised-button color="primary" class="create-button">Create</button>
+        </div>
+      </div>
+    </div>
+  </mat-card>

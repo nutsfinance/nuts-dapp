@@ -6,10 +6,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./borrowing.component.scss']
 })
 export class BorrowingComponent implements OnInit {
+  private selectedTab = 'wallet';
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  selectTab(tab: string) {
+    this.selectedTab = tab;
   }
 
 }
