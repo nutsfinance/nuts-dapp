@@ -30,11 +30,13 @@ export class NutsPlatformService {
     this.handleAccountChanged([ethereum.selectedAddress]);
     this.handleNetworkChanged(Number(ethereum.chainId));
 
-    // ethereum.send('eth_requestAccounts')
-    //   .then(this.handleNetworkChanged)
-    //   .catch(error => {
-    //     console.error(error);
-    //   })
+    ethereum.send('eth_requestAccounts')
+      .then((accounts) => {
+        this.handleAccountChanged(accounts.result);
+      })
+      .catch(error => {
+        console.error(error);
+      })
   }
 
   private handleAccountChanged(accounts) {
