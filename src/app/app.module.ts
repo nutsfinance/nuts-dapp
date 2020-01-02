@@ -32,6 +32,7 @@ import { SwapPositionsComponent } from './instrument/swap/swap-positions/swap-po
 import { DashboardAccountBalanceComponent } from './dashboard/dashboard-account-balance/dashboard-account-balance.component';
 import { DashboardMiningBalanceComponent } from './dashboard/dashboard-mining-balance/dashboard-mining-balance.component';
 import { DashboardPositionBalanceComponent } from './dashboard/dashboard-position-balance/dashboard-position-balance.component';
+import { AccountBalanceComponent } from './common/account-balance/account-balance.component';
 
 
 @NgModule({
@@ -64,6 +65,7 @@ import { DashboardPositionBalanceComponent } from './dashboard/dashboard-positio
     DashboardAccountBalanceComponent,
     DashboardMiningBalanceComponent,
     DashboardPositionBalanceComponent,
+    AccountBalanceComponent,
   ],
   entryComponents: [
     CurrencySelectSheetComponent,

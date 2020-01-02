@@ -1,0 +1,146 @@
+[
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "expiration",
+          "type": "uint256"
+        },
+        {
+          "name": "brokerAddress",
+          "type": "address"
+        },
+        {
+          "name": "supportMakerWhitelist",
+          "type": "bool"
+        },
+        {
+          "name": "supportTakerWhitelist",
+          "type": "bool"
+        }
+      ],
+      "name": "getInstrumentParameters",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "collateralTokenAddress",
+          "type": "address"
+        },
+        {
+          "name": "lendingTokenAddress",
+          "type": "address"
+        },
+        {
+          "name": "lendingAmount",
+          "type": "uint256"
+        },
+        {
+          "name": "collateralRatio",
+          "type": "uint32"
+        },
+        {
+          "name": "tenorDays",
+          "type": "uint32"
+        },
+        {
+          "name": "interestRate",
+          "type": "uint32"
+        }
+      ],
+      "name": "getLendingMakerParameters",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "collateralTokenAddress",
+          "type": "address"
+        },
+        {
+          "name": "borrowingTokenAddress",
+          "type": "address"
+        },
+        {
+          "name": "borrowingAmount",
+          "type": "uint256"
+        },
+        {
+          "name": "collateralRatio",
+          "type": "uint32"
+        },
+        {
+          "name": "tenorDays",
+          "type": "uint32"
+        },
+        {
+          "name": "interestRate",
+          "type": "uint32"
+        }
+      ],
+      "name": "getBorrowingMakerParameters",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "inputTokenAddress",
+          "type": "address"
+        },
+        {
+          "name": "outputTokenAddress",
+          "type": "address"
+        },
+        {
+          "name": "inputAmount",
+          "type": "uint256"
+        },
+        {
+          "name": "outputAmount",
+          "type": "uint256"
+        },
+        {
+          "name": "duration",
+          "type": "uint256"
+        }
+      ],
+      "name": "getSpotSwapMakerParameters",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "pure",
+      "type": "function"
+    }
+  ]

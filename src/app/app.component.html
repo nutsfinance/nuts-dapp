@@ -10,7 +10,7 @@
 
     <mat-nav-list class="nav-list">
 
-      <a routerLink="dashboard" mat-list-item (click)="sidenav.close()">
+      <a routerLink="dashboard" routerLinkActive="active" mat-list-item (click)="sidenav.close()">
         <div class="nav-list-item">
           Dashboard<mat-icon class="app-nav-list-icon">chevron_right</mat-icon>
         </div>
@@ -24,19 +24,19 @@
         </div>
       </mat-list-item>
 
-      <a routerLink="instrument/saving" mat-list-item class="nav-sublist-item" (click)="sidenav.close()">
+      <a routerLink="instrument/saving" routerLinkActive="active" mat-list-item class="nav-sublist-item" (click)="sidenav.close()">
         Saving
       </a>
 
-      <a routerLink="instrument/lending" mat-list-item class="nav-sublist-item" (click)="sidenav.close()">
+      <a routerLink="instrument/lending" routerLinkActive="active" mat-list-item class="nav-sublist-item" (click)="sidenav.close()">
         Lending
       </a>
 
-      <a routerLink="instrument/borrowing" mat-list-item class="nav-sublist-item" (click)="sidenav.close()">
+      <a routerLink="instrument/borrowing" routerLinkActive="active" mat-list-item class="nav-sublist-item" (click)="sidenav.close()">
         Borrowing
       </a>
 
-      <a routerLink="instrument/swap" mat-list-item class="nav-sublist-item" (click)="sidenav.close()">
+      <a routerLink="instrument/swap" routerLinkActive="active" mat-list-item class="nav-sublist-item" (click)="sidenav.close()">
         Swap
       </a>
 

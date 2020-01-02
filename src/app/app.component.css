@@ -34,6 +34,9 @@ mat-sidenav {
   font-family: "GillSans", Helvetica, Arial, serif;
   font-size: 18px;
 }
+.active {
+  color: #8bc34a;
+}
 a.nav-sublist-item {
   padding-left: 35px;
   width: 100%;

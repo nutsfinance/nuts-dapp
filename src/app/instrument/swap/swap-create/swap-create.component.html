@@ -1,7 +1,7 @@
 <mat-card class="create-card">
     <div class="row">
         <div class="col-xs-12">
-            <span class="input-label">Input</span>
+            <span class="input-label">From</span>
         </div>
     </div>
 
@@ -26,7 +26,7 @@
 
     <div class="row">
         <div class="col-xs-12">
-            <span class="input-label">Output</span>
+            <span class="input-label">To</span>
         </div>
     </div>
 
@@ -43,7 +43,7 @@
 
     <div class="row">
         <div class="col-xs-12">
-            <span class="input-label">Tenor</span>
+            <span class="input-label">Pending Engagement Valid for</span>
         </div>
     </div>
 
@@ -61,7 +61,7 @@
     <div class="row">
         <div class="col-xs-8">
             <span class="alternative-content" *ngIf="!showAlternativeTenor" (click)="showAlternativeTenor = true">
-                Enter a different amount.
+                Enter a custom value
             </span>
             <mat-form-field appearance="outline" class="amount-input" *ngIf="showAlternativeTenor">
                 <input matInput placeholder="2 ~ 90 Days" [(ngModel)]="tenor">
