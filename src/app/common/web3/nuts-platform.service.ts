@@ -73,30 +73,30 @@ export class NutsPlatformService {
     },
     4: {
       tokens: {
-        USDT: '',
-        USDC: '',
-        DAI: '',
-        NUTS: '',
+        USDT: '0x8e4A3E7ED6F4A529AD803a963333C320900789cE',
+        USDC: '0x7f0fe444702d421421a59A124aCC6AfB220c1683',
+        DAI: '0x89050cd5C37c852125245B5dcDf3DB49775f239a',
+        NUTS: '0x41A0AC24D1f4664Ab623756Cf6B87B6750470cfd'
       },
       platform: {
         lending: {
-          instrumentManager: '',
-          instrumentEscrow: '',
+          instrumentManager: '0x5B0E5c566700dCEF12ae6D2Aa577bc720858Edc5',
+          instrumentEscrow: '0xfF304d9a02d04601c289EB955B09179201B0f972'
         },
         borrowing: {
-          instrumentManager: '',
-          instrumentEscrow: '',
+          instrumentManager: '0xdCf52926CcA5344F776C5d8AE78a73fac87BC723',
+          instrumentEscrow: '0x9478a88Bcb3351bB6A060891288731F4C9CDA027'
         },
         saving: {
-          instrumentManager: '',
-          instrumentEscrow: '',
+          instrumentManager: '0x4Cd3d1d6b3E8cbC2E481502d1d21806C5aAB6f6E',
+          instrumentEscrow: '0x1B4EEBDaB18df7A049D538a1F7180A5Ff8788401'
         },
         swap: {
-          instrumentManager: '',
-          instrumentEscrow: '',
+          instrumentManager: '0x9Dfd2D5d921bd25a5023Fd58bc252485c18DaD94',
+          instrumentEscrow: '0xc517A0937a08E2DfA2b819567Add4f15d1Af0e8D'
         },
-        parametersUtil: '',
-      },
+        parametersUtil: '0xb0501a061cAc17Db1C46Fe83724a9BAc6Ce14d42'
+      }
     },
     42: {
       tokens: {
