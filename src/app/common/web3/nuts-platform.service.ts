@@ -160,17 +160,16 @@ export class NutsPlatformService {
   public currentNetworkSubject = new Subject<number>();
 
   constructor() {
-    console.log('NutsPlatformServcie constructor');
     window.addEventListener('load', () => {
       this.bootstrapWeb3();
     });
   }
 
-  public async getTokenBalance(token: string): Promise<number> {
+  public async getAccountBalance(token: string): Promise<number> {
     if (!this.web3 || !this.currentAccount) {
       return Promise.resolve(0);
     }
-    console.log(token);
+
     if (token === 'ETH') {
       const weiBalance = await this.web3.eth.getBalance(this.currentAccount);
       return +this.web3.utils.fromWei(weiBalance, 'ether');
@@ -179,6 +178,25 @@ export class NutsPlatformService {
       const tokenAddress = this.contractAddresses[this.currentNetwork].tokens[token];
       const tokenContract = new this.web3.eth.Contract(ERC20, tokenAddress);
       return tokenContract.methods.balanceOf(this.currentAccount).call();
+    } else {
+      return Promise.resolve(0);
+    }
+  }
+
+  public async getInstrumentEscrowBalance(instrument: string, token: string): Promise<number> {
+    if (!this.web3 || !this.currentAccount) {
+      return Promise.resolve(0);
+    }
+    if (this.contractAddresses[this.currentNetwork] && this.contractAddresses[this.currentNetwork].platform[instrument]) {
+      const instrumentEscrowAddress = this.contractAddresses[this.currentNetwork].platform[instrument].instrumentEscrow;
+      const instrumentEscrow = new this.web3.eth.Contract(InstrumentEscrow, instrumentEscrowAddress);
+      if (token === 'ETH') {
+        const weiBalance = await instrumentEscrow.methods.getBalance(this.currentAccount).call();
+        return +this.web3.utils.fromWei(weiBalance, 'ether');
+      } else {
+        const tokenAddress = this.contractAddresses[this.currentNetwork].tokens[token];
+        return instrumentEscrow.methods.getTokenBalance(this.currentAccount, tokenAddress).call();
+      }
     } else {
       return Promise.resolve(0);
     }

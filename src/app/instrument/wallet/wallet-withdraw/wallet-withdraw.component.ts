@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-wallet-withdraw',
@@ -6,9 +6,10 @@ import {Component, OnInit} from '@angular/core';
   styleUrls: ['./wallet-withdraw.component.scss']
 })
 export class WalletWithdrawComponent implements OnInit {
+  @Input() private instrument: string;
   private selectedToken = 'ETH';
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit() {
   }

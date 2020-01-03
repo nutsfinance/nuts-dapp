@@ -6,7 +6,7 @@
   <div [ngClass]="{'tab-label': true, 'selected': selectedTab == 'positions'}" (click)="selectTab('positions')">My Positions</div>
 </div>
 
-<app-wallet *ngIf="selectedTab == 'wallet'"></app-wallet>
+<app-wallet [instrument]="saving" *ngIf="selectedTab == 'wallet'"></app-wallet>
 <p *ngIf="selectedTab == 'create'">Saving create works!</p>
 <p *ngIf="selectedTab == 'engage'">Saving engage works!</p>
 <p *ngIf="selectedTab == 'positions'">Saving positions works!</p>

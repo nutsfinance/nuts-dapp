@@ -4,12 +4,13 @@ import { NutsPlatformService } from '../web3/nuts-platform.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-account-balance',
-  templateUrl: './account-balance.component.html',
-  styleUrls: ['./account-balance.component.scss']
+  selector: 'app-instrument-escrow-balance',
+  templateUrl: './instrument-escrow-balance.component.html',
+  styleUrls: ['./instrument-escrow-balance.component.scss']
 })
-export class AccountBalanceComponent implements OnInit, OnDestroy, OnChanges {
+export class InstrumentEscrowBalanceComponent implements OnInit, OnChanges, OnDestroy {
   @Input() private selectedToken: string;
+  @Input() private instrument: string;
   private tokenBalance: number;
   private networkSubscription: Subscription;
   private accountSubscription: Subscription;
@@ -37,10 +38,11 @@ export class AccountBalanceComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private updateTokenBalance() {
-    this.nutsPlatformService_.getAccountBalance(this.selectedToken).then(balance => {
+    this.nutsPlatformService_.getInstrumentEscrowBalance(this.instrument, this.selectedToken).then(balance => {
       this.zone.run(() => {
         this.tokenBalance = balance;
       });
     });
   }
+
 }

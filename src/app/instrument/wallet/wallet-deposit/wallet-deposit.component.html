@@ -25,7 +25,9 @@
   <div class="col-xs-12">
     <img src="../../../../assets/images/account-balance.png" class="balance-icon">
     <span class="balance-content">
-      Account Balance: {{selectedToken}}
+      Account Balance: 
+      <app-instrument-escrow-balance [instrument]="instrument" [selectedToken]="selectedToken"></app-instrument-escrow-balance>
+      {{selectedToken}}
     </span>
   </div>
 </div>

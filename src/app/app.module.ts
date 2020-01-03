@@ -33,6 +33,7 @@ import { DashboardAccountBalanceComponent } from './dashboard/dashboard-account-
 import { DashboardMiningBalanceComponent } from './dashboard/dashboard-mining-balance/dashboard-mining-balance.component';
 import { DashboardPositionBalanceComponent } from './dashboard/dashboard-position-balance/dashboard-position-balance.component';
 import { AccountBalanceComponent } from './common/account-balance/account-balance.component';
+import { InstrumentEscrowBalanceComponent } from './common/instrument-escrow-balance/instrument-escrow-balance.component';
 
 
 @NgModule({
@@ -66,6 +67,7 @@ import { AccountBalanceComponent } from './common/account-balance/account-balanc
     DashboardMiningBalanceComponent,
     DashboardPositionBalanceComponent,
     AccountBalanceComponent,
+    InstrumentEscrowBalanceComponent,
   ],
   entryComponents: [
     CurrencySelectSheetComponent,

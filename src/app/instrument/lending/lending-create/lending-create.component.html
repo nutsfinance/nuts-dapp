@@ -20,7 +20,7 @@
     <div class="col-xs-12">
       <span class="balance-content">
         Lending Account Balance:
-        <app-account-balance [selectedToken]="principalToken"></app-account-balance>
+        <app-instrument-escrow-balance [instrument]="lending" [selectedToken]="principalToken"></app-instrument-escrow-balance>
         {{principalToken}}
       </span>
     </div>

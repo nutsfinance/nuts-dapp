@@ -8,7 +8,7 @@
       </div>
     </mat-expansion-panel-header>
 
-    <app-wallet-deposit></app-wallet-deposit>
+    <app-wallet-deposit [instrument]="instrument"></app-wallet-deposit>
 
   </mat-expansion-panel>
 
@@ -20,7 +20,7 @@
       </div>
     </mat-expansion-panel-header>
 
-    <app-wallet-withdraw></app-wallet-withdraw>
+    <app-wallet-withdraw [instrument]="instrument"></app-wallet-withdraw>
 
   </mat-expansion-panel>
 
@@ -32,7 +32,7 @@
       </div>
     </mat-expansion-panel-header>
 
-    <app-wallet-transaction></app-wallet-transaction>
+    <app-wallet-transaction [instrument]="instrument"></app-wallet-transaction>
 
   </mat-expansion-panel>
 
