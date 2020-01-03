@@ -11,7 +11,6 @@ export class TokenSelectSheetComponent {
   constructor(private _bottomSheetRef: MatBottomSheetRef<TokenSelectComponent>) {}
 
   selectToken(token: string): void {
-    console.log(token);
     this._bottomSheetRef.dismiss(token);
     event.preventDefault();
   }

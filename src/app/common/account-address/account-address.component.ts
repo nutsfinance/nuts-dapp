@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {Subscription} from 'rxjs';
-import {NutsPlatformService} from '../web3/nuts-platform.service';
+import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { NutsPlatformService } from '../web3/nuts-platform.service';
 
 
 @Component({
@@ -13,7 +13,7 @@ export class AccountAddressComponent implements OnInit {
   private currentAccountSubscription_: Subscription;
   private currentAccount_: string;
 
-  constructor(private nutsPlatformService_: NutsPlatformService) {}
+  constructor(private nutsPlatformService_: NutsPlatformService) { }
 
   ngOnInit() {
     this.currentAccount_ = this.nutsPlatformService_.currentAccount;

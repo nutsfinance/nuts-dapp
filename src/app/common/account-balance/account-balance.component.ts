@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, OnChanges, SimpleChanges, NgZone } from '@angular/core';
 import { NutsPlatformService } from '../web3/nuts-platform.service';
 
 import { Subscription } from 'rxjs';
@@ -8,13 +8,13 @@ import { Subscription } from 'rxjs';
   templateUrl: './account-balance.component.html',
   styleUrls: ['./account-balance.component.scss']
 })
-export class AccountBalanceComponent implements OnInit {
+export class AccountBalanceComponent implements OnInit, OnDestroy, OnChanges {
   @Input() private selectedToken: string;
   private tokenBalance: number;
   private networkSubscription: Subscription;
   private accountSubscription: Subscription;
 
-  constructor(private nutsPlatformService_: NutsPlatformService) { }
+  constructor(private nutsPlatformService_: NutsPlatformService, private zone: NgZone) { }
 
   ngOnInit() {
     this.updateTokenBalance();
@@ -31,10 +31,16 @@ export class AccountBalanceComponent implements OnInit {
     this.accountSubscription.unsubscribe();
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    this.selectedToken = changes.selectedToken.currentValue;
+    this.updateTokenBalance();
+  }
+
   private updateTokenBalance() {
-    this.nutsPlatformService_.getEthBalance().then(balance => {
-      console.log(balance);
-      this.tokenBalance = Number(balance);
+    this.nutsPlatformService_.getTokenBalance(this.selectedToken).then(balance => {
+      this.zone.run(() => {
+        this.tokenBalance = balance;
+      });
     });
   }
 }

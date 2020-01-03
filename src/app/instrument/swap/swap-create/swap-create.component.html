@@ -19,7 +19,9 @@
     <div class="row">
         <div class="col-xs-12">
             <span class="balance-content">
-                Swap Account Balance: {{inputToken}}
+                Swap Account Balance:
+                <app-account-balance [selectedToken]="principalToken"></app-account-balance>
+                {{inputToken}}
             </span>
         </div>
     </div>

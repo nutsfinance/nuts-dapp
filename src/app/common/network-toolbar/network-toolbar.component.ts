@@ -18,7 +18,6 @@ export class NetworkToolbarComponent implements OnInit {
     this.network = this.nutsPlatformService_.currentNetwork;
     this.networkSubscription = this.nutsPlatformService_.currentNetworkSubject.subscribe(network => {
       this.ngZone_.run(() => {
-        console.log(network);
         this.network = network;
       });
     });
