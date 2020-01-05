@@ -12,6 +12,7 @@ export class WalletDepositComponent implements OnInit {
   private selectedToken = 'ETH';
   private amount: number;
   private showApprove = false;
+  private showError = false;
 
   constructor(private nutsPlatformService: NutsPlatformService) { }
 
@@ -24,17 +25,30 @@ export class WalletDepositComponent implements OnInit {
   }
 
   async approve() {
+    if (this.amount === undefined || this.amount === 0) {
+      this.showError = true;
+      return;
+    }
     await this.nutsPlatformService.approve(this.instrument, this.selectedToken, this.amount);
     this.showApprove = false;
   }
 
   async deposit() {
+    console.log(this.amount);
+    if (this.amount === undefined || this.amount === 0) {
+      this.showError = true;
+      return;
+    }
     if (this.selectedToken === 'ETH') {
       await this.nutsPlatformService.depositETH(this.instrument, this.amount);
     } else {
       await this.nutsPlatformService.depositToken(this.instrument, this.selectedToken, this.amount);
     }
-    this.amount = 0;
+    this.amount = undefined;
     this.nutsPlatformService.balanceUpdatedSubject.next(this.selectedToken);
+  }
+
+  onAmountChange() {
+    this.showError = false;
   }
 }

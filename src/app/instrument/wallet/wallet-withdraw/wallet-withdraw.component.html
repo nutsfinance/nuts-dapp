@@ -34,8 +34,8 @@
 
 <div class="row">
   <div class="col-xs-12">
-    <div class="deposit-button-wrapper">
-      <button mat-raised-button color="primary" class="deposit-button" (click)="withdraw()">Withdraw</button>
+    <div class="withdraw-button-wrapper">
+      <button mat-raised-button color="primary" [ngClass]="{'withdraw-button': true, 'valid': amount > 0}" (click)="withdraw()">Withdraw</button>
     </div>
   </div>
 </div>

@@ -24,3 +24,7 @@
   width: 150px;
   color: white;
 }
+
+.deposit-button:not(.valid) {
+  background-color: #9B9B9B;
+}

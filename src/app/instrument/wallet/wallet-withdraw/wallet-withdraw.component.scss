@@ -13,14 +13,18 @@
     color: rgba(155, 154, 155, 1.0);
 }
 
-.deposit-button-wrapper {
+.withdraw-button-wrapper {
   width: 100%;
   padding: 20px;
   display: flex;
   justify-content: center;
 }
 
-.deposit-button {
+.withdraw-button {
   width: 150px;
   color: white;
+}
+
+.withdraw-button:not(.valid) {
+  background-color: #9B9B9B;
 }

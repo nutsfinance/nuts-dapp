@@ -1,8 +1,11 @@
 <div class="row">
   <div class="col-xs-8">
     <mat-form-field appearance="outline" class="deposit-amount-input">
-      <input matInput placeholder="Enter amount" [(ngModel)]="amount">
+      <input matInput placeholder="Enter amount" [(ngModel)]="amount" (change)="onAmountChange()">
       <span matSuffix>MAX</span>
+      <mat-error *ngIf="showError">
+        Please enter amount.
+      </mat-error>
     </mat-form-field>
   </div>
   <div class="col-xs-4">
@@ -35,8 +38,8 @@
 <div class="row">
   <div class="col-xs-12">
     <div class="deposit-button-wrapper">
-      <button mat-raised-button color="primary" class="deposit-button" (click)="approve()" *ngIf="showApprove">Approve</button>
-      <button mat-raised-button color="primary" class="deposit-button" (click)="deposit()" *ngIf="!showApprove">Deposit</button>
+      <button mat-raised-button color="primary" [ngClass]="{'deposit-button': true, 'valid': amount > 0}" (click)="approve()" *ngIf="showApprove">Approve</button>
+      <button mat-raised-button color="primary" [ngClass]="{'deposit-button': true, 'valid': amount > 0}" (click)="deposit()" *ngIf="!showApprove">Deposit</button>
     </div>
   </div>
 </div>
