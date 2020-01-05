@@ -14,6 +14,7 @@ export class InstrumentEscrowBalanceComponent implements OnInit, OnChanges, OnDe
   private tokenBalance: number;
   private networkSubscription: Subscription;
   private accountSubscription: Subscription;
+  private balanceSubscription: Subscription;
 
   constructor(private nutsPlatformService_: NutsPlatformService, private zone: NgZone) { }
 
@@ -25,11 +26,17 @@ export class InstrumentEscrowBalanceComponent implements OnInit, OnChanges, OnDe
     this.accountSubscription = this.nutsPlatformService_.currentAccountSubject.subscribe(() => {
       this.updateTokenBalance();
     });
+    this.balanceSubscription = this.nutsPlatformService_.balanceUpdatedSubject.subscribe((token) => {
+      if (token === this.selectedToken) {
+        this.updateTokenBalance();
+      }
+    });
   }
 
   ngOnDestroy() {
     this.networkSubscription.unsubscribe();
     this.accountSubscription.unsubscribe();
+    this.balanceSubscription.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges) {

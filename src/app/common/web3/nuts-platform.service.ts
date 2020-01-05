@@ -159,6 +159,10 @@ export class NutsPlatformService {
   public currentNetwork: number;
   public currentNetworkSubject = new Subject<number>();
 
+  public transactionSentSubject = new Subject<string>();
+  public transactionConfirmedSubject = new Subject<string>();
+  public balanceUpdatedSubject = new Subject<string>();
+
   constructor() {
     window.addEventListener('load', () => {
       this.bootstrapWeb3();
@@ -192,14 +196,134 @@ export class NutsPlatformService {
       const instrumentEscrow = new this.web3.eth.Contract(InstrumentEscrow, instrumentEscrowAddress);
       if (token === 'ETH') {
         const weiBalance = await instrumentEscrow.methods.getBalance(this.currentAccount).call();
+        console.log(weiBalance);
         return +this.web3.utils.fromWei(weiBalance, 'ether');
-      } else {
+      } else if (this.contractAddresses[this.currentNetwork].tokens[token]) {
         const tokenAddress = this.contractAddresses[this.currentNetwork].tokens[token];
         return instrumentEscrow.methods.getTokenBalance(this.currentAccount, tokenAddress).call();
+      } else {
+        return Promise.resolve(0);
       }
     } else {
       return Promise.resolve(0);
     }
+  }
+
+  public async approve(instrument: string, token: string, amount: number) {
+    if (!this.contractAddresses[this.currentNetwork]) {
+      alert(`Network ${this.currentNetwork} is not supported!`);
+    }
+    if (!this.contractAddresses[this.currentNetwork].platform[instrument]) {
+      alert(`Instrument ${instrument} is not supported!`);
+    }
+    if (!this.contractAddresses[this.currentNetwork].tokens[token]) {
+      alert(`Token ${token} is not supported!`);
+    }
+
+    const instrumentEscrowAddress = this.contractAddresses[this.currentNetwork].platform[instrument].instrumentEscrow;
+    const tokenAddress = this.contractAddresses[this.currentNetwork].tokens[token];
+    const tokenContract = new this.web3.eth.Contract(ERC20, tokenAddress);
+    return tokenContract.methods.approve(instrumentEscrowAddress, amount).send({from: this.currentAccount})
+      .on('transactionHash', (transactionHash) => {
+        console.log(transactionHash);
+        this.transactionSentSubject.next(transactionHash);
+      })
+      .on('receipt', (receipt) => {
+        console.log(receipt);
+        this.transactionConfirmedSubject.next(receipt.transactionHash);
+      });
+  }
+
+  public async depositETH(instrument: string, amount: number) {
+    if (!this.contractAddresses[this.currentNetwork]) {
+      alert(`Network ${this.currentNetwork} is not supported!`);
+    }
+    if (!this.contractAddresses[this.currentNetwork].platform[instrument]) {
+      alert(`Instrument ${instrument} is not supported!`);
+    }
+
+    const instrumentEscrowAddress = this.contractAddresses[this.currentNetwork].platform[instrument].instrumentEscrow;
+    const instrumentEscrowContract = new this.web3.eth.Contract(InstrumentEscrow, instrumentEscrowAddress);
+    return instrumentEscrowContract.methods.deposit().send({from: this.currentAccount, value: this.web3.utils.toWei(amount, 'ether')})
+      .on('transactionHash', (transactionHash) => {
+        console.log(transactionHash);
+        this.transactionSentSubject.next(transactionHash);
+      })
+      .on('receipt', (receipt) => {
+        console.log(receipt);
+        this.transactionConfirmedSubject.next(receipt.transactionHash);
+      });
+  }
+
+  public async depositToken(instrument: string, token: string, amount: number) {
+    if (!this.contractAddresses[this.currentNetwork]) {
+      alert(`Network ${this.currentNetwork} is not supported!`);
+    }
+    if (!this.contractAddresses[this.currentNetwork].platform[instrument]) {
+      alert(`Instrument ${instrument} is not supported!`);
+    }
+    if (!this.contractAddresses[this.currentNetwork].tokens[token]) {
+      alert(`Token ${token} is not supported!`);
+    }
+
+    const instrumentEscrowAddress = this.contractAddresses[this.currentNetwork].platform[instrument].instrumentEscrow;
+    const instrumentEscrowContract = new this.web3.eth.Contract(InstrumentEscrow, instrumentEscrowAddress);
+    const tokenAddress = this.contractAddresses[this.currentNetwork].tokens[token];
+    return instrumentEscrowContract.methods.depositToken(tokenAddress, amount).send({from: this.currentAccount})
+      .on('transactionHash', (transactionHash) => {
+        console.log(transactionHash);
+        this.transactionSentSubject.next(transactionHash);
+      })
+      .on('receipt', (receipt) => {
+        console.log(receipt);
+        this.transactionConfirmedSubject.next(receipt.transactionHash);
+      });
+  }
+
+  public async withdrawETH(instrument: string, amount: number) {
+    if (!this.contractAddresses[this.currentNetwork]) {
+      alert(`Network ${this.currentNetwork} is not supported!`);
+    }
+    if (!this.contractAddresses[this.currentNetwork].platform[instrument]) {
+      alert(`Instrument ${instrument} is not supported!`);
+    }
+
+    const instrumentEscrowAddress = this.contractAddresses[this.currentNetwork].platform[instrument].instrumentEscrow;
+    const instrumentEscrowContract = new this.web3.eth.Contract(InstrumentEscrow, instrumentEscrowAddress);
+    return instrumentEscrowContract.methods.withdraw(this.web3.utils.toWei(amount, 'ether')).send({from: this.currentAccount})
+      .on('transactionHash', (transactionHash) => {
+        console.log(transactionHash);
+        this.transactionSentSubject.next(transactionHash);
+      })
+      .on('receipt', (receipt) => {
+        console.log(receipt);
+        this.transactionConfirmedSubject.next(receipt.transactionHash);
+      });
+  }
+
+  public async withdrawToken(instrument: string, token: string, amount: number) {
+    if (!this.contractAddresses[this.currentNetwork]) {
+      alert(`Network ${this.currentNetwork} is not supported!`);
+    }
+    if (!this.contractAddresses[this.currentNetwork].platform[instrument]) {
+      alert(`Instrument ${instrument} is not supported!`);
+    }
+    if (!this.contractAddresses[this.currentNetwork].tokens[token]) {
+      alert(`Token ${token} is not supported!`);
+    }
+
+    const instrumentEscrowAddress = this.contractAddresses[this.currentNetwork].platform[instrument].instrumentEscrow;
+    const instrumentEscrowContract = new this.web3.eth.Contract(InstrumentEscrow, instrumentEscrowAddress);
+    const tokenAddress = this.contractAddresses[this.currentNetwork].tokens[token];
+    return instrumentEscrowContract.methods.withdrawToken(tokenAddress, amount).send({from: this.currentAccount})
+      .on('transactionHash', (transactionHash) => {
+        console.log(transactionHash);
+        this.transactionSentSubject.next(transactionHash);
+      })
+      .on('receipt', (receipt) => {
+        console.log(receipt);
+        this.transactionConfirmedSubject.next(receipt.transactionHash);
+      });
   }
 
   private async bootstrapWeb3() {

@@ -45,8 +45,10 @@
       <a mat-list-item (click)="openLanguageBottomSheet()">
         <div class="nav-list-item">
           Language
-          <span class="nav-sublist-item">{{language}}</span>
-          <mat-icon class="nav-list-icon">chevron_right</mat-icon>
+          <div class="nav-language">
+            {{language}}
+            <mat-icon class="nav-list-icon">chevron_right</mat-icon>
+          </div>
         </div>
       </a>
 

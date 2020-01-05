@@ -51,3 +51,26 @@ a.nav-sublist-item {
   font-family: "GillSans-Light", Helvetica, Arial, serif;
   font-size: 18px;
 }
+
+div.nav-language {
+  display: flex;
+  justify-content: space-between;
+  min-width: 100px;
+  font-family: "GillSans-Light", Helvetica, Arial, serif;
+  font-size: 18px;
+}
+
+.transaction-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.transaction-pending-spnner {
+
+}
+
+.transaction-complete-image {
+  min-width: 100px;
+  margin-bottom: 30px;
+}

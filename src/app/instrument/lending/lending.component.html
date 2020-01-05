@@ -6,7 +6,7 @@
   <div [ngClass]="{'tab-label': true, 'selected': selectedTab == 'positions'}" (click)="selectTab('positions')">My Positions</div>
 </div>
 
-<app-wallet [instrument]="lending" *ngIf="selectedTab == 'wallet'"></app-wallet>
+<app-wallet [instrument]="'lending'" *ngIf="selectedTab == 'wallet'"></app-wallet>
 <app-lending-create *ngIf="selectedTab == 'create'"></app-lending-create>
 <app-lending-engage *ngIf="selectedTab == 'engage'"></app-lending-engage>
 <app-lending-positions *ngIf="selectedTab == 'positions'"></app-lending-positions>

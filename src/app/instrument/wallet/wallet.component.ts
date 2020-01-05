@@ -11,6 +11,7 @@ export class WalletComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log(this.instrument);
   }
 
 }
