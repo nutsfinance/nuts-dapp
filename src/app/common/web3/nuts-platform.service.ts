@@ -11,6 +11,14 @@ const ParametersUtil = require('./abi/ParametersUtil.json');
 declare let require: any;
 declare let window: any;
 
+export interface WalletTransaction {
+  deposit: boolean,
+  token: string,
+  amount: number,
+  transactionHash: string,
+  blockNumber: number,
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -324,6 +332,70 @@ export class NutsPlatformService {
         console.log(receipt);
         this.transactionConfirmedSubject.next(receipt.transactionHash);
       });
+  }
+
+  public async getWalletTransactions(instrument: string): Promise<WalletTransaction[]> {
+    if (!this.contractAddresses[this.currentNetwork]) {
+      return [];
+    }
+    if (!this.contractAddresses[this.currentNetwork].platform[instrument]) {
+      return [];
+    }
+    const instrumentEscrowAddress = this.contractAddresses[this.currentNetwork].platform[instrument].instrumentEscrow;
+    const instrumentEscrowContract = new this.web3.eth.Contract(InstrumentEscrow, instrumentEscrowAddress);
+    const instrumentEscrowEvents = await instrumentEscrowContract.getPastEvents('allEvents', {fromBlock: 0, toBlock: 'latest'});
+    const transactions: WalletTransaction[] = [];
+    instrumentEscrowEvents.forEach((escrowEvent) => {
+      if (escrowEvent.event === 'Deposited' && escrowEvent.returnValues.depositer.toLowerCase() === this.currentAccount.toLowerCase()) {
+        transactions.push({
+          deposit: true,
+          token: 'ETH',
+          amount: this.web3.utils.fromWei(escrowEvent.returnValues.amount, 'ether'),
+          transactionHash: escrowEvent.transactionHash,
+          blockNumber: escrowEvent.blockNumber,
+        });
+      } else if (escrowEvent.event === 'Withdrawn' && escrowEvent.returnValues.withdrawer.toLowerCase() === this.currentAccount.toLowerCase()) {
+        transactions.push({
+          deposit: false,
+          token: 'ETH',
+          amount: this.web3.utils.fromWei(escrowEvent.returnValues.amount, 'ether'),
+          transactionHash: escrowEvent.transactionHash,
+          blockNumber: escrowEvent.blockNumber,
+        });
+      } else if (escrowEvent.event === 'TokenDeposited' && escrowEvent.returnValues.depositer.toLowerCase() === this.currentAccount.toLowerCase()) {
+        transactions.push({
+          deposit: true,
+          token: this.getTokenByAddress(escrowEvent.returnValues.token),
+          amount: escrowEvent.returnValues.amount,
+          transactionHash: escrowEvent.transactionHash,
+          blockNumber: escrowEvent.blockNumber,
+        });
+      } else if (escrowEvent.event === 'TokenWithdrawn' && escrowEvent.returnValues.withdrawer.toLowerCase() === this.currentAccount.toLowerCase()) {
+        transactions.push({
+          deposit: false,
+          token: this.getTokenByAddress(escrowEvent.returnValues.token),
+          amount: this.web3.utils.fromWei(escrowEvent.returnValues.amount, 'ether'),
+          transactionHash: escrowEvent.transactionHash,
+          blockNumber: escrowEvent.blockNumber,
+        });
+      }
+    });
+    return transactions.sort((e1, e2) => e1.blockNumber - e2.blockNumber);;
+  }
+
+  public async getBlockTimestamp(blockNumber: string): Promise<number> {
+    const block = await this.web3.eth.getBlock(blockNumber);
+    return block.timestamp;
+  }
+
+  private getTokenByAddress(tokenAddress: string): string {
+    const tokens = this.contractAddresses[this.currentNetwork].tokens;
+    for (const tokenName in tokens) {
+      if (tokens[tokenName] === tokenAddress) {
+        return tokenName;
+      }
+    }
+    return '';
   }
 
   private async bootstrapWeb3() {

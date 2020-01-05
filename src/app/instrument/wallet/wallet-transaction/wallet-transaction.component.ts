@@ -1,4 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, NgZone } from '@angular/core';
+
+import { NutsPlatformService, WalletTransaction } from '../../../common/web3/nuts-platform.service';
+
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-wallet-transaction',
@@ -7,10 +11,37 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class WalletTransactionComponent implements OnInit {
   @Input() private instrument: string;
+  private columns: string[] = ['date', 'action', 'amount'];
+  private walletTransactions: WalletTransaction[] = [];
+  private networkSubscription: Subscription;
+  private accountSubscription: Subscription;
+  private balanceSubscription: Subscription;
 
-  constructor() { }
+  constructor(private nutsPlatformService: NutsPlatformService, private zone: NgZone) { }
 
   ngOnInit() {
+    this.networkSubscription = this.nutsPlatformService.currentNetworkSubject.subscribe(() => {
+      this.updateWalletTransactions();
+    });
+    this.accountSubscription = this.nutsPlatformService.currentAccountSubject.subscribe(() => {
+      this.updateWalletTransactions();
+    });
+    this.balanceSubscription = this.nutsPlatformService.balanceUpdatedSubject.subscribe((token) => {
+      this.updateWalletTransactions();
+    });
   }
 
+  ngOnDestroy() {
+    this.networkSubscription.unsubscribe();
+    this.accountSubscription.unsubscribe();
+    this.balanceSubscription.unsubscribe();
+  }
+
+  private async updateWalletTransactions() {
+    const transactions = await this.nutsPlatformService.getWalletTransactions(this.instrument);
+    this.zone.run(() => {
+      this.walletTransactions = transactions;
+    });
+    console.log(transactions);
+  }
 }

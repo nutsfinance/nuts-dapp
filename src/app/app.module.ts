@@ -34,6 +34,7 @@ import { WalletTransactionComponent } from './instrument/wallet/wallet-transacti
 import { WalletWithdrawComponent } from './instrument/wallet/wallet-withdraw/wallet-withdraw.component';
 import { WalletComponent } from './instrument/wallet/wallet.component';
 import { MaterialModule } from './material/material-module';
+import { BlockTimestampComponent } from './common/block-timestamp/block-timestamp.component';
 
 
 @NgModule({
@@ -71,6 +72,7 @@ import { MaterialModule } from './material/material-module';
     LanguageSelectSheet,
     TransactionCompleteDialog,
     TransactionPendingDialog,
+    BlockTimestampComponent,
   ],
   entryComponents: [
     CurrencySelectSheetComponent,

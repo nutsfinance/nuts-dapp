@@ -1,0 +1,11 @@
+.transaction-table {
+  width: 100%;
+}
+.transaction-header {
+  font-family: "GillSans", Helvetica, Arial, serif;
+  font-size: 16px;
+}
+.transaction-content {
+  font-family: "GillSans-Light", Helvetica, Arial, serif;
+  font-size: 12px;
+}
