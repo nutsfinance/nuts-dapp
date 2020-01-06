@@ -1,187 +1,288 @@
 [
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "getInstrumentEscrowAddress",
-      "outputs": [
-        {
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [],
-      "name": "deactivate",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "makerAddress",
-          "type": "address"
-        },
-        {
-          "name": "allowed",
-          "type": "bool"
-        }
-      ],
-      "name": "setMakerWhitelist",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "takerAddress",
-          "type": "address"
-        },
-        {
-          "name": "allowed",
-          "type": "bool"
-        }
-      ],
-      "name": "setTakerWhitelist",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "sellerParameters",
-          "type": "bytes"
-        }
-      ],
-      "name": "createIssuance",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "issuanceId",
-          "type": "uint256"
-        },
-        {
-          "name": "buyerParameters",
-          "type": "bytes"
-        }
-      ],
-      "name": "engageIssuance",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "issuanceId",
-          "type": "uint256"
-        },
-        {
-          "name": "tokenAddress",
-          "type": "address"
-        },
-        {
-          "name": "amount",
-          "type": "uint256"
-        }
-      ],
-      "name": "depositToIssuance",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "issuanceId",
-          "type": "uint256"
-        },
-        {
-          "name": "tokenAddress",
-          "type": "address"
-        },
-        {
-          "name": "amount",
-          "type": "uint256"
-        }
-      ],
-      "name": "withdrawFromIssuance",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "issuanceId",
-          "type": "uint256"
-        },
-        {
-          "name": "eventName",
-          "type": "bytes32"
-        },
-        {
-          "name": "eventPayload",
-          "type": "bytes"
-        }
-      ],
-      "name": "notifyCustomEvent",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "issuanceId",
-          "type": "uint256"
-        },
-        {
-          "name": "dataName",
-          "type": "bytes32"
-        }
-      ],
-      "name": "getCustomData",
-      "outputs": [
-        {
-          "name": "",
-          "type": "bytes"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    }
-  ]
+  {
+    "inputs": [
+      {
+        "name": "fspAddress",
+        "type": "address"
+      },
+      {
+        "name": "instrumentAddress",
+        "type": "address"
+      },
+      {
+        "name": "instrumentConfigAddress",
+        "type": "address"
+      },
+      {
+        "name": "instrumentParameters",
+        "type": "bytes"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "issuanceId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "name": "makerAddress",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "issuanceProxyAddress",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "issuanceEscrowAddress",
+        "type": "address"
+      }
+    ],
+    "name": "IssuanceCreated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "issuanceId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "name": "transferType",
+        "type": "uint8"
+      },
+      {
+        "indexed": false,
+        "name": "fromAddress",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "toAddress",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "tokenAddress",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "TokenTransferred",
+    "type": "event"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "getInstrumentEscrowAddress",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "getLastIssuanceId",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [],
+    "name": "deactivate",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "makerAddress",
+        "type": "address"
+      },
+      {
+        "name": "allowed",
+        "type": "bool"
+      }
+    ],
+    "name": "setMakerWhitelist",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "takerAddress",
+        "type": "address"
+      },
+      {
+        "name": "allowed",
+        "type": "bool"
+      }
+    ],
+    "name": "setTakerWhitelist",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "makerParameters",
+        "type": "bytes"
+      }
+    ],
+    "name": "createIssuance",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "issuanceId",
+        "type": "uint256"
+      },
+      {
+        "name": "takerParameters",
+        "type": "bytes"
+      }
+    ],
+    "name": "engageIssuance",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "issuanceId",
+        "type": "uint256"
+      },
+      {
+        "name": "tokenAddress",
+        "type": "address"
+      },
+      {
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "depositToIssuance",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "issuanceId",
+        "type": "uint256"
+      },
+      {
+        "name": "tokenAddress",
+        "type": "address"
+      },
+      {
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "withdrawFromIssuance",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "issuanceId",
+        "type": "uint256"
+      },
+      {
+        "name": "eventName",
+        "type": "bytes32"
+      },
+      {
+        "name": "eventPayload",
+        "type": "bytes"
+      }
+    ],
+    "name": "notifyCustomEvent",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "issuanceId",
+        "type": "uint256"
+      },
+      {
+        "name": "dataName",
+        "type": "bytes32"
+      }
+    ],
+    "name": "getCustomData",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatButtonToggleChange } from '@angular/material';
 
+import { NutsPlatformService } from '../../../common/web3/nuts-platform.service';
+
 @Component({
   selector: 'app-lending-create',
   templateUrl: './lending-create.component.html',
@@ -11,12 +13,13 @@ export class LendingCreateComponent implements OnInit {
   private showAlternativeColleral = false;
   private showAlternativeInterest = false;
   private principalToken = 'ETH';
+  private principalAmount: number;
   private collateralToken = 'ETH';
   private tenor: number;
   private collateralRatio: number;
   private interestRate: number;
 
-  constructor() { }
+  constructor(private nutsPlatformService: NutsPlatformService) { }
 
   ngOnInit() {
   }
@@ -42,4 +45,9 @@ export class LendingCreateComponent implements OnInit {
     this.interestRate = interestRateChange.value;
   }
 
+  async createLendingIssuance() {
+    const result = await this.nutsPlatformService.createLendingIssuance(this.principalToken, this.principalAmount, this.collateralToken,
+      this.collateralRatio, this.tenor, this.interestRate);
+    console.log(result);
+  }
 }

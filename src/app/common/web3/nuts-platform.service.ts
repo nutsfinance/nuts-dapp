@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { SupplementalLineItem, IssuanceData, LendingData } from 'nuts-platform-protobuf-messages';
 
 const Web3 = require('web3');
 const ERC20 = require('./abi/IERC20.json');
@@ -7,6 +8,10 @@ const InstrumentManager = require('./abi/InstrumentManagerInterface.json');
 const InstrumentEscrow = require('./abi/InstrumentEscrowInterface.json');
 const IssuanceEscrow = require('./abi/IssuanceEscrowInterface.json');
 const ParametersUtil = require('./abi/ParametersUtil.json');
+
+const INTEREST_RATE_DECIMALS = 10000;
+const COLLATERAL_RATIO_DECIMALS = 100;
+const ETH_ADDRESS = '0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF';
 
 declare let require: any;
 declare let window: any;
@@ -171,6 +176,9 @@ export class NutsPlatformService {
   public transactionConfirmedSubject = new Subject<string>();
   public balanceUpdatedSubject = new Subject<string>();
 
+  public lendingIssuances: LendingData.LendingCompleteProperties[];
+  public lendingIssuancesUpdatedSubject = new Subject<LendingData.LendingCompleteProperties>();
+
   constructor() {
     window.addEventListener('load', () => {
       this.bootstrapWeb3();
@@ -204,6 +212,7 @@ export class NutsPlatformService {
       const instrumentEscrow = new this.web3.eth.Contract(InstrumentEscrow, instrumentEscrowAddress);
       if (token === 'ETH') {
         const weiBalance = await instrumentEscrow.methods.getBalance(this.currentAccount).call();
+        // const weiBalance = await instrumentEscrow.methods.getTokenBalance(this.currentAccount, ETH_ADDRESS).call();
         console.log(weiBalance);
         return +this.web3.utils.fromWei(weiBalance, 'ether');
       } else if (this.contractAddresses[this.currentNetwork].tokens[token]) {
@@ -388,6 +397,95 @@ export class NutsPlatformService {
     return block.timestamp;
   }
 
+  public async createLendingIssuance(principalToken: string, principalAmount: number, collateralToken: string,
+      collateralRatio: number, tenor: number, interestRate: number) {
+    if (!this.contractAddresses[this.currentNetwork]) {
+      alert(`Network ${this.currentNetwork} is not supported!`);
+      return;
+    }
+    if (!this.contractAddresses[this.currentNetwork].platform.lending) {
+      alert(`Instrument lending is not supported!`);
+      return;
+    }
+    if (principalToken !== 'ETH' && !this.contractAddresses[this.currentNetwork].tokens[principalToken]) {
+      alert(`Token ${principalToken} is not supported!`);
+      return;
+    }
+    if (collateralToken !== 'ETH' && !this.contractAddresses[this.currentNetwork].tokens[collateralToken]) {
+      alert(`Token ${collateralToken} is not supported!`);
+      return;
+    }
+    const parametersUtilAddress = this.contractAddresses[this.currentNetwork].platform.parametersUtil;
+    const parametersUtilContract = new this.web3.eth.Contract(ParametersUtil, parametersUtilAddress);
+
+    const principalTokenAddress = principalToken === 'ETH' ? ETH_ADDRESS : this.contractAddresses[this.currentNetwork].tokens[principalToken];
+    const lendingAmount = principalToken === 'ETH' ? this.web3.utils.toWei(principalAmount, 'ether') : principalAmount;
+    const collateralTokenAddress = collateralToken === 'ETH' ? ETH_ADDRESS : this.contractAddresses[this.currentNetwork].tokens[collateralToken];
+    console.log(collateralTokenAddress, principalTokenAddress, lendingAmount,
+      collateralRatio * COLLATERAL_RATIO_DECIMALS, tenor, interestRate * INTEREST_RATE_DECIMALS);
+    const lendingParameters = await parametersUtilContract.methods.getLendingMakerParameters(collateralTokenAddress, principalTokenAddress, lendingAmount,
+      collateralRatio * COLLATERAL_RATIO_DECIMALS, tenor, interestRate * INTEREST_RATE_DECIMALS).call({from: this.currentAccount});
+
+    const instrumentManagerAddress = this.contractAddresses[this.currentNetwork].platform.lending.instrumentManager;
+    const instrumentManagerContract = new this.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
+    return instrumentManagerContract.methods.createIssuance(lendingParameters).send({from: this.currentAccount})
+      .on('transactionHash', (transactionHash) => {
+        console.log(transactionHash);
+        this.transactionSentSubject.next(transactionHash);
+      })
+      .on('receipt', (receipt) => {
+        console.log(receipt);
+        this.transactionConfirmedSubject.next(receipt.transactionHash);
+      });
+      
+  }
+
+  public async getLendingIssuances() {
+    if (!this.currentAccount || !this.currentNetwork) {
+      console.log('Either account or network is not set.');
+    }
+    if (!this.contractAddresses[this.currentNetwork]) {
+      alert(`Network ${this.currentNetwork} is not supported!`);
+      return;
+    }
+    if (!this.contractAddresses[this.currentNetwork].platform.lending) {
+      alert(`Instrument lending is not supported!`);
+      return;
+    }
+    const instrumentManagerAddress = this.contractAddresses[this.currentNetwork].platform.lending.instrumentManager;
+    const instrumentManagerContract = new this.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
+    const issuanceCount = await instrumentManagerContract.methods.getLastIssuanceId().call({from: this.currentAccount});
+    console.log(issuanceCount);
+    
+    const batchedRequests = [];
+   for (let i = 1; i <= issuanceCount; i++) {
+      batchedRequests.push(instrumentManagerContract.methods.getCustomData(i, this.web3.utils.fromAscii("lending_data")).call);
+    }
+    const lendingData = await this.makeBatchRequest(batchedRequests);
+    this.lendingIssuances = lendingData.map((data: string) => {
+      return LendingData.LendingCompleteProperties.deserializeBinary(Uint8Array.from(Buffer.from(data.substring(2), 'hex')));
+    });
+    this.lendingIssuancesUpdatedSubject.next(this.lendingIssuances);
+    console.log(this.lendingIssuances);
+  }
+
+  private makeBatchRequest(calls) {
+    let batch = new this.web3.BatchRequest();
+
+    let promises = calls.map(call => {
+        return new Promise((res, rej) => {
+            let req = call.request({from: this.currentAccount}, (err, data) => {
+                if(err) rej(err);
+                else res(data)
+            });
+            batch.add(req)
+        })
+    })
+    batch.execute();
+
+    return Promise.all(promises);
+}
+
   private getTokenByAddress(tokenAddress: string): string {
     const tokens = this.contractAddresses[this.currentNetwork].tokens;
     for (const tokenName in tokens) {
@@ -432,6 +530,7 @@ export class NutsPlatformService {
     if (network && network != this.currentNetwork) {
       this.currentNetwork = network;
       this.currentNetworkSubject.next(network);
+      this.getLendingIssuances();
     }
   }
 }
