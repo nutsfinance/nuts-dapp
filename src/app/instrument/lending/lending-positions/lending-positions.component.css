@@ -1,0 +1,28 @@
+.tab-group {
+  width: 100%;
+  white-space: nowrap;
+  display: flex;
+  justify-content: space-around;
+}
+.tab-label {
+  display: inline-block;
+  font-family: "GillSans-Light", Helvetica, Arial, serif;
+  font-size: 14px;
+  height: 32px;
+  padding: 0 10px;
+}
+.tab-label.selected {
+  color: #8bc34a;
+  border-bottom: 2px solid #8bc34a;
+}
+.issuance-table {
+  width: 100%;
+}
+.issuance-header {
+  font-family: "GillSans", Helvetica, Arial, serif;
+  font-size: 16px;
+}
+.issuance-content {
+  font-family: "GillSans-Light", Helvetica, Arial, serif;
+  font-size: 12px;
+}

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { SupplementalLineItem, IssuanceData, LendingData } from 'nuts-platform-protobuf-messages';
+import { LendingData } from 'nuts-platform-protobuf-messages';
+import { LendingIssuanceModel } from '../model/lending-issuance.model';
 
 const Web3 = require('web3');
 const ERC20 = require('./abi/IERC20.json');
@@ -176,8 +177,8 @@ export class NutsPlatformService {
   public transactionConfirmedSubject = new Subject<string>();
   public balanceUpdatedSubject = new Subject<string>();
 
-  public lendingIssuances: LendingData.LendingCompleteProperties[];
-  public lendingIssuancesUpdatedSubject = new Subject<LendingData.LendingCompleteProperties>();
+  public lendingIssuances: LendingIssuanceModel[];
+  public lendingIssuancesUpdatedSubject = new Subject<LendingIssuanceModel[]>();
 
   constructor() {
     window.addEventListener('load', () => {
@@ -463,7 +464,10 @@ export class NutsPlatformService {
     }
     const lendingData = await this.makeBatchRequest(batchedRequests);
     this.lendingIssuances = lendingData.map((data: string) => {
-      return LendingData.LendingCompleteProperties.deserializeBinary(Uint8Array.from(Buffer.from(data.substring(2), 'hex')));
+      const lendingCompleteProperties = LendingData.LendingCompleteProperties.deserializeBinary(Uint8Array.from(Buffer.from(data.substring(2), 'hex')));
+      const lendingIssuance = LendingIssuanceModel.fromMessage(lendingCompleteProperties);
+      console.log(lendingIssuance);
+      return lendingIssuance;
     });
     this.lendingIssuancesUpdatedSubject.next(this.lendingIssuances);
     console.log(this.lendingIssuances);

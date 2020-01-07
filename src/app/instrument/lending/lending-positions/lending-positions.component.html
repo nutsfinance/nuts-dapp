@@ -1,1 +1,48 @@
-<p>lending-positions works!</p>
+<div class="tab-group">
+    <div [ngClass]="{'tab-label': true, 'selected': selectedTab == 'all'}" (click)="selectTab('all')">All</div>
+    <div [ngClass]="{'tab-label': true, 'selected': selectedTab == 'engageable'}" (click)="selectTab('engageable')">
+        Engageable</div>
+    <div [ngClass]="{'tab-label': true, 'selected': selectedTab == 'engaged'}" (click)="selectTab('engaged')">Engaged
+    </div>
+    <div [ngClass]="{'tab-label': true, 'selected': selectedTab == 'inactive'}" (click)="selectTab('inactive')">Inactive
+    </div>
+</div>
+
+<table mat-table [dataSource]="lendingIssuances" class="issuance-table">
+
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+  
+    <!-- Position Column -->
+    <ng-container matColumnDef="position">
+      <th mat-header-cell *matHeaderCellDef class="issuance-header"> Position </th>
+      <td mat-cell *matCellDef="let issuance" class="issuance-content">  </td>
+    </ng-container>
+  
+    <!-- Role Column -->
+    <ng-container matColumnDef="role">
+      <th mat-header-cell *matHeaderCellDef class="issuance-header"> Role </th>
+      <td mat-cell *matCellDef="let issuance" class="issuance-content">  </td>
+    </ng-container>
+  
+    <!-- Status Column -->
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef class="issuance-header"> Status </th>
+      <td mat-cell *matCellDef="let issuance" class="issuance-content"> </td>
+    </ng-container>
+
+    <!-- Amount Column -->
+    <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef class="issuance-header"> Amount </th>
+        <td mat-cell *matCellDef="let issuance" class="issuance-content"> </td>
+      </ng-container>
+
+      <!-- Expiry Column -->
+    <ng-container matColumnDef="expiry">
+        <th mat-header-cell *matHeaderCellDef class="issuance-header"> Expiry </th>
+        <td mat-cell *matCellDef="let issuance" class="issuance-content"> </td>
+      </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+    <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+  </table>

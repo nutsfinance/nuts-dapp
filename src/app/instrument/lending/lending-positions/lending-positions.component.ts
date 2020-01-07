@@ -6,10 +6,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./lending-positions.component.scss']
 })
 export class LendingPositionsComponent implements OnInit {
+  private selectedTab = 'all';
+  private columns: string[] = ['position', 'role', 'status', 'amount', 'expiry'];
+  private lendingIssuances = [];
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  selectTab(tab: string) {
+    this.selectedTab = tab;
   }
 
 }
