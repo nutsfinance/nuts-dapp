@@ -384,7 +384,7 @@ export class NutsPlatformService {
         transactions.push({
           deposit: false,
           token: this.getTokenByAddress(escrowEvent.returnValues.token),
-          amount: this.web3.utils.fromWei(escrowEvent.returnValues.amount, 'ether'),
+          amount: escrowEvent.returnValues.amount,
           transactionHash: escrowEvent.transactionHash,
           blockNumber: escrowEvent.blockNumber,
         });

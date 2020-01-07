@@ -19,7 +19,8 @@ export class WalletTransactionComponent implements OnInit {
 
   constructor(private nutsPlatformService: NutsPlatformService, private zone: NgZone) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.walletTransactions = await this.nutsPlatformService.getWalletTransactions(this.instrument);
     this.networkSubscription = this.nutsPlatformService.currentNetworkSubject.subscribe(() => {
       this.updateWalletTransactions();
     });

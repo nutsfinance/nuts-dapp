@@ -22,6 +22,7 @@ export class WalletWithdrawComponent implements OnInit {
   }
 
   async withdraw() {
+    console.log(this.selectedToken);
     if (this.selectedToken === 'ETH') {
       await this.nutsPlatformService.withdrawETH(this.instrument, this.amount);
     } else {
