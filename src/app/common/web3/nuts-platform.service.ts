@@ -488,12 +488,13 @@ export class NutsPlatformService {
     batch.execute();
 
     return Promise.all(promises);
-}
+  }
 
-  private getTokenByAddress(tokenAddress: string): string {
+  public getTokenByAddress(tokenAddress: string): string {
+    if (tokenAddress === ETH_ADDRESS) return 'ETH';
     const tokens = this.contractAddresses[this.currentNetwork].tokens;
     for (const tokenName in tokens) {
-      if (tokens[tokenName] === tokenAddress) {
+      if (tokens[tokenName].toLowerCase() === tokenAddress.toLowerCase()) {
         return tokenName;
       }
     }

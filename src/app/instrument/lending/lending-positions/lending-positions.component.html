@@ -1,48 +1,60 @@
 <div class="tab-group">
-    <div [ngClass]="{'tab-label': true, 'selected': selectedTab == 'all'}" (click)="selectTab('all')">All</div>
-    <div [ngClass]="{'tab-label': true, 'selected': selectedTab == 'engageable'}" (click)="selectTab('engageable')">
-        Engageable</div>
-    <div [ngClass]="{'tab-label': true, 'selected': selectedTab == 'engaged'}" (click)="selectTab('engaged')">Engaged
-    </div>
-    <div [ngClass]="{'tab-label': true, 'selected': selectedTab == 'inactive'}" (click)="selectTab('inactive')">Inactive
-    </div>
+  <div [ngClass]="{'tab-label': true, 'selected': selectedTab == 'all'}" (click)="selectTab('all')">All</div>
+  <div [ngClass]="{'tab-label': true, 'selected': selectedTab == 'engageable'}" (click)="selectTab('engageable')">
+    Engageable</div>
+  <div [ngClass]="{'tab-label': true, 'selected': selectedTab == 'engaged'}" (click)="selectTab('engaged')">Engaged
+  </div>
+  <div [ngClass]="{'tab-label': true, 'selected': selectedTab == 'inactive'}" (click)="selectTab('inactive')">Inactive
+  </div>
 </div>
 
 <table mat-table [dataSource]="lendingIssuances" class="issuance-table">
 
-    <!--- Note that these columns can be defined in any order.
+  <!--- Note that these columns can be defined in any order.
           The actual rendered columns are set as a property on the row definition" -->
-  
-    <!-- Position Column -->
-    <ng-container matColumnDef="position">
-      <th mat-header-cell *matHeaderCellDef class="issuance-header"> Position </th>
-      <td mat-cell *matCellDef="let issuance" class="issuance-content">  </td>
-    </ng-container>
-  
-    <!-- Role Column -->
-    <ng-container matColumnDef="role">
-      <th mat-header-cell *matHeaderCellDef class="issuance-header"> Role </th>
-      <td mat-cell *matCellDef="let issuance" class="issuance-content">  </td>
-    </ng-container>
-  
-    <!-- Status Column -->
-    <ng-container matColumnDef="status">
-      <th mat-header-cell *matHeaderCellDef class="issuance-header"> Status </th>
-      <td mat-cell *matCellDef="let issuance" class="issuance-content"> </td>
-    </ng-container>
 
-    <!-- Amount Column -->
-    <ng-container matColumnDef="amount">
-        <th mat-header-cell *matHeaderCellDef class="issuance-header"> Amount </th>
-        <td mat-cell *matCellDef="let issuance" class="issuance-content"> </td>
-      </ng-container>
+  <!-- Position Column -->
+  <ng-container matColumnDef="position">
+    <th mat-header-cell *matHeaderCellDef class="issuance-header"> Position </th>
+    <td mat-cell *matCellDef="let issuance" class="issuance-content"> {{issuance.issuanceId}} </td>
+  </ng-container>
 
-      <!-- Expiry Column -->
-    <ng-container matColumnDef="expiry">
-        <th mat-header-cell *matHeaderCellDef class="issuance-header"> Expiry </th>
-        <td mat-cell *matCellDef="let issuance" class="issuance-content"> </td>
-      </ng-container>
-  
-    <tr mat-header-row *matHeaderRowDef="columns"></tr>
-    <tr mat-row *matRowDef="let row; columns: columns;"></tr>
-  </table>
+  <!-- Role Column -->
+  <ng-container matColumnDef="role">
+    <th mat-header-cell *matHeaderCellDef class="issuance-header"> Role </th>
+    <td mat-cell *matCellDef="let issuance" class="issuance-content">
+      {{issuance.makerAddress == currentAccount ? 'Maker' : 'Taker'}} </td>
+  </ng-container>
+
+  <!-- Status Column -->
+  <ng-container matColumnDef="status">
+    <th mat-header-cell *matHeaderCellDef class="issuance-header"> Status </th>
+    <td mat-cell *matCellDef="let issuance" class="issuance-content"> {{issuance.getIssuanceState()}}</td>
+  </ng-container>
+
+  <!-- Amount Column -->
+  <ng-container matColumnDef="amount">
+    <th mat-header-cell *matHeaderCellDef class="issuance-header"> Amount </th>
+    <td mat-cell *matCellDef="let issuance" class="issuance-content">
+      <div>Principal {{issuance.lendingAmount}} {{nutsPlatformService.getTokenByAddress(issuance.lendingTokenAddress)}}</div>
+      <div *ngIf="issuance.state != 2">Collateral {{issuance.collateralAmount}} {{nutsPlatformService.getTokenByAddress(issuance.colleteralTokenAddress)}}</div>
+      <div>Interest {{issuance.interestAmount}} {{nutsPlatformService.getTokenByAddress(issuance.lendingTokenAddress)}}</div>
+
+      <button mat-raised-button color="secondary">Detail</button>
+    </td>
+  </ng-container>
+
+  <!-- Expiry Column -->
+  <ng-container matColumnDef="expiry">
+    <th mat-header-cell *matHeaderCellDef class="issuance-header"> Expiry </th>
+    <td mat-cell *matCellDef="let issuance" class="issuance-content">
+      <div *ngIf="issuance.state == 2">{{issuance.engagementDueTimestamp * 1000 | date: 'MM-dd-yyyy'}}</div>
+      <div *ngIf="issuance.state != 2">{{issuance.issuanceDueTimestamp * 1000 | date: 'MM-dd-yyyy'}}</div>
+
+      <button mat-raised-button color="primary">Close</button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columns"></tr>
+  <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+</table>

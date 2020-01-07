@@ -18,4 +18,8 @@ export class IssuanceModel {
         public engagementTimestamp: number, public settlementTimestamp: number, public issuanceProxyAddress: string,
         public issuanceEscrowAddress: string, public state: IssuanceState,
         public supplementalLineItems: SupplementalLineItemModel[]) { }
+
+    getIssuanceState(): string {
+        return IssuanceState[this.state];
+    }
 }
