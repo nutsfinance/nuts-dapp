@@ -1,21 +1,3 @@
-.tab-group {
-  width: 100%;
-  white-space: nowrap;
-  display: flex;
-  justify-content: space-around;
-  margin-top: 10px;
-}
-.tab-label {
-  display: inline-block;
-  font-family: "GillSans-Light", Helvetica, Arial, serif;
-  font-size: 14px;
-  height: 32px;
-  padding: 0 10px;
-}
-.tab-label.selected {
-  color: #8bc34a;
-  border-bottom: 2px solid #8bc34a;
-}
 .issuance-table {
   width: 100%;
 }
@@ -41,11 +23,13 @@
 .issuance-action {
   flex-direction: row;
   justify-content: flex-end;
+  padding: 10px 0;
 }
-.issuance-action-button {
+.issuance-detail-button,
+.issuance-engage-button {
   margin: 0 10px;
   font-weight: 400;
 }
-.issuance-amount {
-  min-width: 110px;
+.issuance-engage-button {
+  color: white;
 }

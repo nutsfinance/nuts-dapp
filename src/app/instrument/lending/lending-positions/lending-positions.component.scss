@@ -35,7 +35,6 @@
 }
 
 .issuance-action-row {
-    border-width: 0px;
     display: flex;
     justify-content: flex-end;
 }
@@ -54,6 +53,7 @@
 
 .issuance-action-button {
     margin: 0 10px;
+    font-weight: 400;
 }
 
 .issuance-amount {

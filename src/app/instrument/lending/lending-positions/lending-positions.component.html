@@ -60,7 +60,7 @@
   </ng-container>
 
 
-  <mat-header-row *matHeaderRowDef="columns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: columns;" class="issuance-content-row"></mat-row>>
+  <mat-header-row *matHeaderRowDef="['position', 'role', 'status', 'amount', 'expiry']"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: ['position', 'role', 'status', 'amount', 'expiry'];" class="issuance-content-row"></mat-row>>
   <mat-row *matRowDef="let row; columns: ['action']; when: isActionRow" class="issuance-action-row"></mat-row>>
 </mat-table>

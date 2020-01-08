@@ -1,0 +1,42 @@
+.issuance-table {
+    width: 100%;
+}
+
+.issuance-header {
+    font-family: "GillSans", Helvetica, Arial, serif;
+    font-size: 16px;
+    justify-content: center;
+}
+
+.issuance-content-row {
+    border-width: 0px;
+    padding-top: 12px;
+}
+
+.issuance-action-row {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.issuance-content {
+    font-family: "GillSans-Light", Helvetica, Arial, serif;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+.issuance-action {
+    flex-direction: row;
+    justify-content: flex-end;
+    padding: 10px 0;
+}
+
+.issuance-detail-button,
+.issuance-engage-button {
+    margin: 0 10px;
+    font-weight: 400;
+}
+
+.issuance-engage-button {
+    color: white;
+}
