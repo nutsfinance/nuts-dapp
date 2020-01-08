@@ -1,9 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import {DataSource} from '@angular/cdk/table';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {BehaviorSubject, Subscription} from 'rxjs';
+import {LendingIssuanceModel} from '../../../common/model/lending-issuance.model';
+import {NutsPlatformService} from '../../../common/web3/nuts-platform.service';
 
-import { NutsPlatformService } from '../../../common/web3/nuts-platform.service';
-import { LendingIssuanceModel } from '../../../common/model/lending-issuance.model';
- 
+
 @Component({
   selector: 'app-lending-positions',
   templateUrl: './lending-positions.component.html',
@@ -14,11 +15,13 @@ export class LendingPositionsComponent implements OnInit, OnDestroy {
   private columns: string[] = ['position', 'role', 'status', 'amount', 'expiry'];
   private currentAccount: string;
   private lendingIssuances: LendingIssuanceModel[] = [];
-  
+  private lendingIssuanceDataSource = new LendingIssuanceDataSource;
+  private isActionRow = (_, item) => item.action;
+
   private accountUpdatedSubscription: Subscription;
   private lendingIssuancesUpdatedSubscription: Subscription;
 
-  constructor(private nutsPlatformService: NutsPlatformService) { }
+  constructor(private nutsPlatformService: NutsPlatformService) {}
 
   ngOnInit() {
     this.currentAccount = this.nutsPlatformService.currentAccount;
@@ -44,9 +47,31 @@ export class LendingPositionsComponent implements OnInit, OnDestroy {
   updateLendingIssuances() {
     console.log('Update lending positions');
     this.lendingIssuances = this.nutsPlatformService.lendingIssuances.filter(issuance => {
-      return issuance.makerAddress.toLowerCase() === this.currentAccount.toLowerCase() || 
-      issuance.takerAddress.toLowerCase() === this.currentAccount.toLowerCase()
+      return issuance.makerAddress.toLowerCase() === this.currentAccount.toLowerCase() ||
+        issuance.takerAddress.toLowerCase() === this.currentAccount.toLowerCase()
     });
+    this.lendingIssuanceDataSource.setData(this.lendingIssuances);
     console.log(this.lendingIssuances);
   }
+}
+
+class LendingIssuanceDataSource implements DataSource<any> {
+
+  private lendingIssuanceSubject = new BehaviorSubject<any>([]);
+
+  setData(lendingIssuances: LendingIssuanceModel[]) {
+    const splittedData = [];
+    lendingIssuances.forEach(issuance => {
+      splittedData.push(issuance);
+      splittedData.push({issuanceId: issuance.issuanceId, action: true});
+    });
+
+    this.lendingIssuanceSubject.next(splittedData);
+  }
+
+  connect() {
+    return this.lendingIssuanceSubject;
+  }
+
+  disconnect() {}
 }
