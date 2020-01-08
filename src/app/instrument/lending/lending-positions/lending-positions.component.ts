@@ -14,7 +14,6 @@ export class LendingPositionsComponent implements OnInit, OnDestroy {
   private selectedTab = 'all';
   private columns: string[] = ['position', 'role', 'status', 'amount', 'expiry'];
   private currentAccount: string;
-  private lendingIssuances: LendingIssuanceModel[] = [];
   private lendingIssuanceDataSource = new LendingIssuanceDataSource;
   private isActionRow = (_, item) => item.action;
 
@@ -42,16 +41,24 @@ export class LendingPositionsComponent implements OnInit, OnDestroy {
 
   selectTab(tab: string) {
     this.selectedTab = tab;
+    this.updateLendingIssuances();
   }
 
   updateLendingIssuances() {
-    console.log('Update lending positions');
-    this.lendingIssuances = this.nutsPlatformService.lendingIssuances.filter(issuance => {
-      return issuance.makerAddress.toLowerCase() === this.currentAccount.toLowerCase() ||
-        issuance.takerAddress.toLowerCase() === this.currentAccount.toLowerCase()
+    const lendingIssuances = this.nutsPlatformService.lendingIssuances.filter(issuance => {
+      let inState = true;
+      if (this.selectedTab === 'engageable') {
+        inState = issuance.state === 2;
+      } else if (this.selectedTab === 'engaged') {
+        inState = issuance.state === 3;
+      } else if (this.selectedTab === 'inactive') {
+        inState = issuance.state > 3;
+      }
+      const inPosition = issuance.makerAddress.toLowerCase() === this.currentAccount.toLowerCase() ||
+        issuance.takerAddress.toLowerCase() === this.currentAccount.toLowerCase();
+      return inState && inPosition;
     });
-    this.lendingIssuanceDataSource.setData(this.lendingIssuances);
-    console.log(this.lendingIssuances);
+    this.lendingIssuanceDataSource.setData(lendingIssuances);
   }
 }
 

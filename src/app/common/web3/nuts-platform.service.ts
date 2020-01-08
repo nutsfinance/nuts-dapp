@@ -177,7 +177,7 @@ export class NutsPlatformService {
   public transactionConfirmedSubject = new Subject<string>();
   public balanceUpdatedSubject = new Subject<string>();
 
-  public lendingIssuances: LendingIssuanceModel[];
+  public lendingIssuances: LendingIssuanceModel[] = [];
   public lendingIssuancesUpdatedSubject = new Subject<LendingIssuanceModel[]>();
 
   constructor() {
