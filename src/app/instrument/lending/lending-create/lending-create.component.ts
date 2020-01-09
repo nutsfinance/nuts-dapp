@@ -50,4 +50,13 @@ export class LendingCreateComponent implements OnInit {
       this.collateralRatio, this.tenor, this.interestRate);
     console.log(result);
   }
+
+  resetForm() {
+    this.principalToken = 'ETH';
+    this.principalAmount = 0;
+    this.collateralToken = 'ETH';
+    this.collateralRatio = 0;
+    this.tenor = 0;
+    this.interestRate = 0;
+  }
 }

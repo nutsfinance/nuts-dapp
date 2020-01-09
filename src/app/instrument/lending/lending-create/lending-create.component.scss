@@ -1,7 +1,7 @@
 $input-height: 48px;
 
 .create-card {
-  padding-top: 0;
+  padding-top: 10px;
 }
 
 .input-label {
@@ -55,4 +55,18 @@ $input-height: 48px;
 .create-button {
   width: 150px;
   color: white;
+}
+
+.form-reset {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.reset-button {
+  font-family: "GillSans", Helvetica, Arial, serif;
+  font-size: 16.0px;
+  color: #8bc34a;
+  display: inline-block;
+  margin: 10px 10px 20px 0;
+  cursor: pointer;
 }
