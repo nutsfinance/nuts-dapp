@@ -13,11 +13,11 @@ export class LendingCreateComponent implements OnInit {
   private showAlternativeColleral = false;
   private showAlternativeInterest = false;
   private principalToken = 'ETH';
-  private principalAmount: number;
+  private principalAmount = '';
   private collateralToken = 'ETH';
-  private tenor: number;
-  private collateralRatio: number;
-  private interestRate: number;
+  private tenor: number = 0;
+  private collateralRatio: number = 0;
+  private interestRate: number = 0;
 
   constructor(private nutsPlatformService: NutsPlatformService) { }
 
@@ -46,14 +46,14 @@ export class LendingCreateComponent implements OnInit {
   }
 
   async createLendingIssuance() {
-    const result = await this.nutsPlatformService.createLendingIssuance(this.principalToken, this.principalAmount, this.collateralToken,
+    const result = await this.nutsPlatformService.createLendingIssuance(this.principalToken, Number(this.principalAmount), this.collateralToken,
       this.collateralRatio, this.tenor, this.interestRate);
     console.log(result);
   }
 
   resetForm() {
     this.principalToken = 'ETH';
-    this.principalAmount = 0;
+    this.principalAmount = '';
     this.collateralToken = 'ETH';
     this.collateralRatio = 0;
     this.tenor = 0;

@@ -121,6 +121,14 @@
   </div>
 
   <div class="row">
+    <div class="col-xs-8">
+      <span class="balance-content">
+        Projected interest cost: {{principalAmount * interestRate * tenor / 100}} {{principalToken}}
+      </span>
+    </div>
+  </div>
+
+  <div class="row">
     <div class="col-xs-12">
       <div class="create-button-wrapper">
         <button mat-raised-button color="primary" class="create-button" (click)="createLendingIssuance()">Create</button>
