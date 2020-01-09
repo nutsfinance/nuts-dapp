@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy, OnChanges, SimpleChanges, NgZone } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, OnChanges, SimpleChanges, NgZone } from '@angular/core';
 import { NutsPlatformService } from '../web3/nuts-platform.service';
 
 import { Subscription } from 'rxjs';
@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 export class InstrumentEscrowBalanceComponent implements OnInit, OnChanges, OnDestroy {
   @Input() private selectedToken: string;
   @Input() private instrument: string;
+  @Output() private balanceUpdated = new EventEmitter<number>();
   private tokenBalance: number;
   private networkSubscription: Subscription;
   private accountSubscription: Subscription;
@@ -48,6 +49,7 @@ export class InstrumentEscrowBalanceComponent implements OnInit, OnChanges, OnDe
     this.nutsPlatformService_.getInstrumentEscrowBalance(this.instrument, this.selectedToken).then(balance => {
       this.zone.run(() => {
         this.tokenBalance = balance;
+        this.balanceUpdated.next(balance);
       });
     });
   }

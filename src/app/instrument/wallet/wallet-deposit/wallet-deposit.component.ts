@@ -11,6 +11,7 @@ export class WalletDepositComponent implements OnInit {
   @Input() private instrument: string;
   private selectedToken = 'ETH';
   private amount: number;
+  private accountBalance: number;
   private showApprove = false;
   private showError = false;
 
@@ -20,6 +21,7 @@ export class WalletDepositComponent implements OnInit {
   }
 
   onTokenSelected(token: string) {
+    this.amount = 0;
     this.selectedToken = token;
     this.showApprove = this.selectedToken !== 'ETH';
   }

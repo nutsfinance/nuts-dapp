@@ -2,7 +2,7 @@
   <div class="col-xs-8">
     <mat-form-field appearance="outline" class="deposit-amount-input">
       <input matInput placeholder="Enter amount" [(ngModel)]="amount" (change)="onAmountChange()">
-      <span matSuffix>MAX</span>
+      <span matSuffix (click)="amount = accountBalance">MAX</span>
       <mat-error *ngIf="showError">
         Please enter amount.
       </mat-error>
@@ -18,7 +18,7 @@
     <img src="../../../../assets/images/wallet-balance.png" class="balance-icon">
     <span class="balance-content">
       Wallet Balance: 
-      <app-account-balance [selectedToken]="selectedToken"></app-account-balance>
+      <app-account-balance [selectedToken]="selectedToken" (balanceUpdated)="accountBalance = $event"></app-account-balance>
       {{selectedToken}}
     </span>
   </div>

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy, OnChanges, SimpleChanges, NgZone } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, OnChanges, SimpleChanges, NgZone } from '@angular/core';
 import { NutsPlatformService } from '../web3/nuts-platform.service';
 
 import { Subscription } from 'rxjs';
@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
 })
 export class AccountBalanceComponent implements OnInit, OnDestroy, OnChanges {
   @Input() private selectedToken: string;
+  @Output() private balanceUpdated = new EventEmitter<number>();
   private tokenBalance: number;
   private networkSubscription: Subscription;
   private accountSubscription: Subscription;
@@ -47,6 +48,7 @@ export class AccountBalanceComponent implements OnInit, OnDestroy, OnChanges {
     this.nutsPlatformService_.getAccountBalance(this.selectedToken).then(balance => {
       this.zone.run(() => {
         this.tokenBalance = balance;
+        this.balanceUpdated.emit(balance);
       });
     });
   }

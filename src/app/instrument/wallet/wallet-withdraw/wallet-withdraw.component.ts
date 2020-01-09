@@ -10,6 +10,7 @@ import { NutsPlatformService } from '../../../common/web3/nuts-platform.service'
 export class WalletWithdrawComponent implements OnInit {
   @Input() private instrument: string;
   private selectedToken = 'ETH';
+  private instrumentEscrowBalance: number;
   private amount: number;
 
   constructor(private nutsPlatformService: NutsPlatformService) { }
@@ -18,6 +19,7 @@ export class WalletWithdrawComponent implements OnInit {
   }
 
   onTokenSelected(token: string) {
+    this.amount = 0;
     this.selectedToken = token;
   }
 
