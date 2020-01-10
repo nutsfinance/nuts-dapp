@@ -3,10 +3,13 @@
     <mat-form-field appearance="outline" class="deposit-amount-input">
       <input matInput placeholder="Enter amount" [(ngModel)]="amount">
       <span matSuffix (click)="amount = instrumentEscrowBalance">MAX</span>
+      <mat-error>
+        Please enter amount.
+      </mat-error>
     </mat-form-field>
   </div>
   <div class="col-xs-4">
-    <app-token-select (tokenSelected)="onTokenSelected($event)"></app-token-select>
+    <app-token-select [selectedToken]="selectedToken" (tokenSelected)="onTokenSelected($event)"></app-token-select>
   </div>
 </div>
 

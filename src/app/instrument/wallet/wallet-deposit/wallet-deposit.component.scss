@@ -28,3 +28,9 @@
 .deposit-button:not(.valid) {
   background-color: #9B9B9B;
 }
+
+.error-message {
+  color: #f44336;
+  font-size: 85%;
+  margin-left: 10px;
+}
