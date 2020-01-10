@@ -1,7 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {Component, Input, OnInit} from '@angular/core';
+import {FormControl, FormGroup, NgForm} from '@angular/forms';
+import {NutsPlatformService} from '../../../common/web3/nuts-platform.service';
 
-import { NutsPlatformService } from '../../../common/web3/nuts-platform.service';
 
 @Component({
   selector: 'app-wallet-deposit',
@@ -16,10 +16,10 @@ export class WalletDepositComponent implements OnInit {
   private amountControl: FormControl;
   private depositForm: FormGroup;
 
-  constructor(private nutsPlatformService: NutsPlatformService) { }
+  constructor(private nutsPlatformService: NutsPlatformService) {}
 
   ngOnInit() {
-    this.amountControl = new FormControl('', [ Validators.required, this.validBalance.bind(this) ]);
+    this.amountControl = new FormControl('', this.validBalance.bind(this));
     this.depositForm = new FormGroup({amount: this.amountControl});
   }
 
@@ -33,7 +33,7 @@ export class WalletDepositComponent implements OnInit {
     this.depositForm.patchValue({amount: this.accountBalance});
   }
 
-  async submit() {
+  async submit(form: NgForm) {
     console.log(this.amountControl);
     console.log(this.depositForm);
     if (!this.depositForm.valid) {
@@ -48,21 +48,22 @@ export class WalletDepositComponent implements OnInit {
       } else {
         await this.nutsPlatformService.depositToken(this.instrument, this.selectedToken, this.amountControl.value);
       }
-      this.depositForm.reset();
+      form.resetForm();
       this.nutsPlatformService.balanceUpdatedSubject.next(this.selectedToken);
     }
   }
 
   validBalance(control: FormControl): {[s: string]: boolean} {
-    // Let Validators.required handle the empty input.
     if (!control.value) {
-      return null;
+      return {'required': true};
     }
     if (this.accountBalance < Number(control.value)) {
       return {'insufficientBalance': true};
-    } else if (Number(control.value) <= 0) {
+    }
+    if (Number(control.value) <= 0) {
       return {'nonPositiveAmount': true};
-    } else if (this.selectedToken !== 'ETH' && !/^[1-9][0-9]*$/.test(control.value)) {
+    }
+    if (this.selectedToken !== 'ETH' && !/^[1-9][0-9]*$/.test(control.value)) {
       return {'nonIntegerAmount': true};
     }
     return null;
