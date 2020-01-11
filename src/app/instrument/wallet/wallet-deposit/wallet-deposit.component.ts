@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, NgForm} from '@angular/forms';
 import {NutsPlatformService} from '../../../common/web3/nuts-platform.service';
 
@@ -10,33 +10,34 @@ import {NutsPlatformService} from '../../../common/web3/nuts-platform.service';
 })
 export class WalletDepositComponent implements OnInit {
   @Input() private instrument: string;
+  @ViewChild('form', {static: true}) private form: NgForm;
   private selectedToken = 'ETH';
   private accountBalance: number;
   private showApprove = false;
   private amountControl: FormControl;
-  private depositForm: FormGroup;
+  private depositFormGroup: FormGroup;
 
   constructor(private nutsPlatformService: NutsPlatformService) {}
 
   ngOnInit() {
     this.amountControl = new FormControl('', this.validBalance.bind(this));
-    this.depositForm = new FormGroup({amount: this.amountControl});
+    this.depositFormGroup = new FormGroup({amount: this.amountControl});
   }
 
   onTokenSelected(token: string) {
-    this.depositForm.reset();
+    this.form.reset();
     this.selectedToken = token;
     this.showApprove = this.selectedToken !== 'ETH';
   }
 
   setMaxAmount() {
-    this.depositForm.patchValue({amount: this.accountBalance});
+    this.depositFormGroup.patchValue({amount: this.accountBalance});
   }
 
-  async submit(form: NgForm) {
+  async submit() {
     console.log(this.amountControl);
-    console.log(this.depositForm);
-    if (!this.depositForm.valid) {
+    console.log(this.depositFormGroup);
+    if (!this.depositFormGroup.valid) {
       return;
     }
     if (this.showApprove) {
@@ -48,9 +49,13 @@ export class WalletDepositComponent implements OnInit {
       } else {
         await this.nutsPlatformService.depositToken(this.instrument, this.selectedToken, this.amountControl.value);
       }
-      form.resetForm();
+      this.form.resetForm();
       this.nutsPlatformService.balanceUpdatedSubject.next(this.selectedToken);
     }
+  }
+
+  testForm() {
+    console.log(this.depositFormGroup);
   }
 
   validBalance(control: FormControl): {[s: string]: boolean} {

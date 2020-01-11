@@ -17,6 +17,17 @@ $input-height: 48px;
   height: 60px;
 }
 
+.error-content {
+  font-family: "GillSans-Light", Helvetica, Arial, serif;
+  font-size: 14px;
+  color: #f44336;
+}
+
+.deposit-button {
+  text-decoration: underline;
+  font-weight: 600;
+}
+
 .balance-content {
   font-family: "GillSans-Light", Helvetica, Arial, serif;
   font-size: 16px;
@@ -55,6 +66,10 @@ $input-height: 48px;
 .create-button {
   width: 150px;
   color: white;
+}
+
+.create-button:not(.valid) {
+  background-color: #9B9B9B;
 }
 
 .form-reset {

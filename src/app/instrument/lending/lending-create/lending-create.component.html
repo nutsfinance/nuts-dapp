@@ -1,138 +1,192 @@
 <mat-card class="create-card">
-  <div class="row">
-    <div class="col-xs-6">
-      <span class="input-label">Principal</span>
-    </div>
-    <div class="col-xs-6 form-reset">
-      <span class="reset-button" (click)="resetForm()">Reset</span>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-xs-8">
-      <mat-form-field appearance="outline" class="amount-input">
-        <input matInput placeholder="Amount" [(ngModel)]="principalAmount">
-      </mat-form-field>
-    </div>
-    <div class="col-xs-4">
-      <app-token-select [selectedToken]="principalToken" (tokenSelected)="onPrincipalTokenSelected($event)"></app-token-select>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-xs-12">
-      <span class="balance-content">
-        Lending Account Balance:
-        <app-instrument-escrow-balance [instrument]="'lending'" [selectedToken]="principalToken"></app-instrument-escrow-balance>
-        {{principalToken}}
-      </span>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-xs-12">
-      <span class="input-label">Tenor</span>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-xs-8">
-      <mat-button-toggle-group class="tenor-input" [value]="tenor" (change)="onTenorChange($event)">
-        <mat-button-toggle value="15">15D</mat-button-toggle>
-        <mat-button-toggle value="30">30D</mat-button-toggle>
-        <mat-button-toggle value="45">45D</mat-button-toggle>
-        <mat-button-toggle value="60">60D</mat-button-toggle>
-      </mat-button-toggle-group>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-xs-8">
-      <span class="alternative-content" *ngIf="!showAlternativeTenor" (click)="showAlternativeTenor = true">
-        Enter a different amount.
-      </span>
-      <mat-form-field appearance="outline" class="amount-input" *ngIf="showAlternativeTenor">
-        <input matInput placeholder="2 ~ 90 Days" [(ngModel)]="tenor">
-      </mat-form-field>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-xs-12">
-      <span class="input-label">Collateral</span>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-xs-8">
-      <mat-button-toggle-group class="tenor-input" [value]="collateralRatio" (change)="onCollateralRatioChange($event)">
-        <mat-button-toggle value="50">50%</mat-button-toggle>
-        <mat-button-toggle value="100">100%</mat-button-toggle>
-        <mat-button-toggle value="150">150%</mat-button-toggle>
-        <mat-button-toggle value="200">200%</mat-button-toggle>
-      </mat-button-toggle-group>
-    </div>
-    <div class="col-xs-4">
-      <app-token-select [selectedToken]="collateralToken" (tokenSelected)="onCollateralTokenSelected($event)"></app-token-select>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-xs-8">
-      <span class="alternative-content" *ngIf="!showAlternativeColleral" (click)="showAlternativeColleral = true">
-        Enter a different amount.
-      </span>
-      <mat-form-field appearance="outline" class="amount-input" *ngIf="showAlternativeColleral">
-        <input matInput placeholder="50 ~ 200" [(ngModel)]="collateralRatio">
-        <span matSuffix>%</span>
-      </mat-form-field>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-xs-12">
-      <span class="input-label">Interest</span>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-xs-12">
-      <mat-button-toggle-group class="tenor-input" [value]="interestRate" (change)="onInterestRateChange($event)">
-        <mat-button-toggle value="0.010">0.010</mat-button-toggle>
-        <mat-button-toggle value="0.020">0.020</mat-button-toggle>
-        <mat-button-toggle value="0.030">0.030</mat-button-toggle>
-        <mat-button-toggle value="0.040">0.040</mat-button-toggle>
-      </mat-button-toggle-group>
-      <span class="hint-content">
-        % per day.
-      </span>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-xs-8">
-      <span class="alternative-content" *ngIf="!showAlternativeInterest" (click)="showAlternativeInterest = true">
-        Enter a different amount.
-      </span>
-      <mat-form-field appearance="outline" class="amount-input" *ngIf="showAlternativeInterest">
-        <input matInput placeholder="0.010 ~ 5.000" [(ngModel)]="interestRate">
-      </mat-form-field>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-xs-8">
-      <span class="balance-content">
-        Projected interest cost: {{principalAmount * interestRate * tenor / 100}} {{principalToken}}
-      </span>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-xs-12">
-      <div class="create-button-wrapper">
-        <button mat-raised-button color="primary" class="create-button" (click)="createLendingIssuance()">Create</button>
+  <form #form="ngForm" [formGroup]="createFormGroup" (ngSubmit)="createLendingIssuance()">
+    <div class="row">
+      <div class="col-xs-6">
+        <span class="input-label">Principal</span>
+      </div>
+      <div class="col-xs-6 form-reset">
+        <span class="reset-button" (click)="resetForm()">Reset</span>
       </div>
     </div>
-  </div>
+
+    <div class="row">
+      <div class="col-xs-8">
+        <mat-form-field appearance="outline" class="amount-input">
+          <input matInput placeholder="Amount" formControlName="principalAmount">
+        </mat-form-field>
+      </div>
+      <div class="col-xs-4">
+        <app-token-select [selectedToken]="principalToken" (tokenSelected)="onPrincipalTokenSelected($event)">
+        </app-token-select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="error-content" *ngIf="shouldShowErrorMessage('principalAmount')">
+          <div *ngIf="createFormGroup.controls['principalAmount'].errors.required">
+            Please enter amount.
+          </div>
+          <div *ngIf="createFormGroup.controls['principalAmount'].errors.insufficientBalance">
+            Insufficient balance.
+            <a class="deposit-button" routerLink="/instrument/lending">Deposit</a>
+          </div>
+          <div *ngIf="createFormGroup.controls['principalAmount'].errors.nonPositiveAmount">
+            The amount must be positive.
+          </div>
+          <div *ngIf="createFormGroup.controls['principalAmount'].errors.nonIntegerAmount">
+            The amount must be integer.
+          </div>
+        </div>
+        <div class="balance-content">
+          Lending Account Balance:
+          <app-instrument-escrow-balance [instrument]="'lending'" [selectedToken]="principalToken"
+            (balanceUpdated)="principalTokenBalance = $event">
+          </app-instrument-escrow-balance>
+          {{principalToken}}
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <span class="input-label">Tenor</span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-8">
+        <mat-button-toggle-group class="tenor-input" [value]="createFormGroup.value['tenor']" (change)="onTenorChange($event)">
+          <mat-button-toggle value="15">15D</mat-button-toggle>
+          <mat-button-toggle value="30">30D</mat-button-toggle>
+          <mat-button-toggle value="45">45D</mat-button-toggle>
+          <mat-button-toggle value="60">60D</mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <span class="alternative-content" *ngIf="!showAlternativeTenor" (click)="showAlternativeTenor = true">
+          Enter a different amount.
+        </span>
+        <mat-form-field appearance="outline" class="amount-input" *ngIf="showAlternativeTenor">
+          <input matInput placeholder="2 ~ 90 Days" formControlName="tenor">
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="error-content" *ngIf="shouldShowErrorMessage('tenor')">
+          <div *ngIf="createFormGroup.controls['tenor'].errors.required">
+            Please enter a number between 2-90 days.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <span class="input-label">Collateral</span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-8">
+        <mat-button-toggle-group class="tenor-input" [value]="createFormGroup.value['collateralRatio']"
+          (change)="onCollateralRatioChange($event)">
+          <mat-button-toggle value="50">50%</mat-button-toggle>
+          <mat-button-toggle value="100">100%</mat-button-toggle>
+          <mat-button-toggle value="150">150%</mat-button-toggle>
+          <mat-button-toggle value="200">200%</mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+      <div class="col-xs-4">
+        <app-token-select [selectedToken]="collateralToken" (tokenSelected)="onCollateralTokenSelected($event)">
+        </app-token-select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-8">
+        <span class="alternative-content" *ngIf="!showAlternativeColleral" (click)="showAlternativeColleral = true">
+          Enter a different amount.
+        </span>
+        <mat-form-field appearance="outline" class="amount-input" *ngIf="showAlternativeColleral">
+          <input matInput placeholder="50 ~ 200" formControlName="collateralRatio">
+          <span matSuffix>%</span>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="error-content" *ngIf="shouldShowErrorMessage('collateralRatio')">
+          <div *ngIf="createFormGroup.controls['collateralRatio'].errors.required">
+            Please enter a number between 50% - 200%.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <span class="input-label">Interest</span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <mat-button-toggle-group class="tenor-input" [value]="createFormGroup.value['interestRate']" (change)="onInterestRateChange($event)">
+          <mat-button-toggle value="0.010">0.010</mat-button-toggle>
+          <mat-button-toggle value="0.020">0.020</mat-button-toggle>
+          <mat-button-toggle value="0.030">0.030</mat-button-toggle>
+          <mat-button-toggle value="0.040">0.040</mat-button-toggle>
+        </mat-button-toggle-group>
+        <span class="hint-content">
+          % per day.
+        </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-8">
+        <span class="alternative-content" *ngIf="!showAlternativeInterest" (click)="showAlternativeInterest = true">
+          Enter a different amount.
+        </span>
+        <mat-form-field appearance="outline" class="amount-input" *ngIf="showAlternativeInterest">
+          <input matInput placeholder="0.010 ~ 5.000" formControlName="interestRate">
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="error-content" *ngIf="shouldShowErrorMessage('interestRate')">
+          <div *ngIf="createFormGroup.controls['interestRate'].errors.required">
+            Please enter a number between 0.010% ~ 5.000%.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-8">
+        <span class="balance-content">
+          Projected interest cost: {{createFormGroup.value['principalAmount'] * createFormGroup.value['interestRate'] * createFormGroup.value['tenor'] / 100}} {{principalToken}}
+        </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="create-button-wrapper">
+          <button mat-raised-button color="primary"
+            [ngClass]="{'create-button': true, 'valid': createFormGroup.valid}">Create</button>
+        </div>
+      </div>
+    </div>
+
+  </form>
 </mat-card>
