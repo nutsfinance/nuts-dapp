@@ -1,46 +1,48 @@
-<div class="row">
-  <div class="col-xs-8">
-    <mat-form-field appearance="outline" class="deposit-amount-input">
-      <input matInput placeholder="Enter amount" [(ngModel)]="amount">
-      <span matSuffix (click)="amount = instrumentEscrowBalance">MAX</span>
-      <mat-error>
-        Please enter amount.
-      </mat-error>
-    </mat-form-field>
-  </div>
-  <div class="col-xs-4">
-    <app-token-select [selectedToken]="selectedToken" (tokenSelected)="onTokenSelected($event)"></app-token-select>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-xs-12">
-    <img src="../../../../assets/images/wallet-balance.png" class="balance-icon">
-    <span class="balance-content">
-      Wallet Balance:
-      <app-account-balance [selectedToken]="selectedToken"></app-account-balance>
-      {{selectedToken}}
-    </span>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-xs-12">
-    <img src="../../../../assets/images/account-balance.png" class="balance-icon">
-    <span class="balance-content">
-      Account Balance:
-      <app-instrument-escrow-balance [instrument]="instrument" [selectedToken]="selectedToken"
-        (balanceUpdated)="instrumentEscrowBalance = $event"></app-instrument-escrow-balance>
-      {{selectedToken}}
-    </span>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-xs-12">
-    <div class="withdraw-button-wrapper">
-      <button mat-raised-button color="primary" [ngClass]="{'withdraw-button': true, 'valid': amount > 0}"
-        (click)="withdraw()">Withdraw</button>
+<form #form="ngForm" [formGroup]="withdrawForm" (ngSubmit)="withdraw(form)">
+  <div class="row">
+    <div class="col-xs-8">
+      <mat-form-field appearance="outline" class="deposit-amount-input">
+        <input matInput placeholder="Enter amount" formControlName="amount">
+        <span matSuffix (click)="setMaxAmount()">MAX</span>
+        <mat-error *ngIf="amountControl.errors && amountControl.errors.required">Please enter amount.</mat-error>
+        <mat-error *ngIf="amountControl.errors && amountControl.errors.insufficientBalance">Insufficient balance.</mat-error>
+        <mat-error *ngIf="amountControl.errors && amountControl.errors.nonPositiveAmount">The amount must be positive.</mat-error>
+        <mat-error *ngIf="amountControl.errors && amountControl.errors.nonIntegerAmount">The amount must be integer.</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="col-xs-4">
+      <app-token-select [selectedToken]="selectedToken" (tokenSelected)="onTokenSelected($event)"></app-token-select>
     </div>
   </div>
-</div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <img src="../../../../assets/images/wallet-balance.png" class="balance-icon">
+      <span class="balance-content">
+        Wallet Balance:
+        <app-account-balance [selectedToken]="selectedToken"></app-account-balance>
+        {{selectedToken}}
+      </span>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <img src="../../../../assets/images/account-balance.png" class="balance-icon">
+      <span class="balance-content">
+        Account Balance:
+        <app-instrument-escrow-balance [instrument]="instrument" [selectedToken]="selectedToken"
+          (balanceUpdated)="instrumentEscrowBalance = $event"></app-instrument-escrow-balance>
+        {{selectedToken}}
+      </span>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="withdraw-button-wrapper">
+        <button mat-raised-button color="primary" [ngClass]="{'withdraw-button': true, 'valid': withdrawForm.valid}">Withdraw</button>
+      </div>
+    </div>
+  </div>
+</form>
