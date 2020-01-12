@@ -24,9 +24,9 @@ export class LendingCreateComponent implements OnInit {
   ngOnInit() {
     this.createFormGroup = new FormGroup({
       'principalAmount': new FormControl('', this.validPrincipalAmount.bind(this)),
-      'tenor': new FormControl('', Validators.required),
-      'collateralRatio': new FormControl('', Validators.required),
-      'interestRate': new FormControl('', Validators.required),
+      'tenor': new FormControl('', this.validTenor),
+      'collateralRatio': new FormControl('', this.validCollateralRatio),
+      'interestRate': new FormControl('', this.validInterestRate),
     });
   }
 
@@ -54,17 +54,29 @@ export class LendingCreateComponent implements OnInit {
 
   async createLendingIssuance() {
     console.log(this.createFormGroup);
-    // const result = await this.nutsPlatformService.createLendingIssuance(this.principalToken, 
-    //   Number(this.createFormGroup.value['principalAmount']), this.collateralToken,
-    //   Number(this.createFormGroup.value['collateralRatio']), Number(this.createFormGroup.value['tenor']),
-    //   Number(this.createFormGroup.value['interestRate']));
-    // console.log(result);
+    if (!this.createFormGroup.valid) {
+      return;
+    }
+    const result = await this.nutsPlatformService.createLendingIssuance(this.principalToken, 
+      this.createFormGroup.value['principalAmount'], this.collateralToken,
+      this.createFormGroup.value['collateralRatio'], this.createFormGroup.value['tenor'],
+      this.createFormGroup.value['interestRate']);
+    console.log(result);
   }
 
   resetForm() {
     this.principalToken = 'ETH';
     this.collateralToken = 'ETH';
     this.form.resetForm();
+  }
+
+  getInterest(): number {
+    const principalAmount = this.createFormGroup.value['principalAmount'];
+    const interestRate = this.createFormGroup.value['interestRate'];
+    const tenor = this.createFormGroup.value['tenor'];
+    const interest = principalAmount * interestRate * tenor / 100;
+
+    return interest;
   }
 
   /**
@@ -93,6 +105,39 @@ export class LendingCreateComponent implements OnInit {
     }
     if (this.principalToken !== 'ETH' && !/^[1-9][0-9]*$/.test(control.value)) {
       return {'nonIntegerAmount': true};
+    }
+    return null;
+  }
+
+  validTenor(control: FormControl): {[s: string]: boolean} {
+    if (!control.value) {
+      return {'required': true};
+    }
+    if (!/^[1-9][0-9]*$/.test(control.value)) {
+      return {'nonIntegerAmount': true};
+    }
+    if (Number(control.value) < 2 || Number(control.value) > 90) {
+      return {'invalidValue': true};
+    }
+    return null;
+  }
+
+  validCollateralRatio(control: FormControl): {[s: string]: boolean} {
+    if (!control.value) {
+      return {'required': true};
+    }
+    if (Number(control.value) < 50 || Number(control.value) > 200) {
+      return {'invalidValue': true};
+    }
+    return null;
+  }
+
+  validInterestRate(control: FormControl): {[s: string]: boolean} {
+    if (!control.value) {
+      return {'required': true};
+    }
+    if (Number(control.value) < 0.01 || Number(control.value) > 5) {
+      return {'invalidValue': true};
     }
     return null;
   }

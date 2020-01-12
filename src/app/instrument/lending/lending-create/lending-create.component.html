@@ -79,7 +79,7 @@
     <div class="row">
       <div class="col-xs-12">
         <div class="error-content" *ngIf="shouldShowErrorMessage('tenor')">
-          <div *ngIf="createFormGroup.controls['tenor'].errors.required">
+          <div *ngIf="createFormGroup.controls['tenor'].errors">
             Please enter a number between 2-90 days.
           </div>
         </div>
@@ -123,7 +123,7 @@
     <div class="row">
       <div class="col-xs-12">
         <div class="error-content" *ngIf="shouldShowErrorMessage('collateralRatio')">
-          <div *ngIf="createFormGroup.controls['collateralRatio'].errors.required">
+          <div *ngIf="createFormGroup.controls['collateralRatio'].errors">
             Please enter a number between 50% - 200%.
           </div>
         </div>
@@ -164,7 +164,7 @@
     <div class="row">
       <div class="col-xs-12">
         <div class="error-content" *ngIf="shouldShowErrorMessage('interestRate')">
-          <div *ngIf="createFormGroup.controls['interestRate'].errors.required">
+          <div *ngIf="createFormGroup.controls['interestRate'].errors">
             Please enter a number between 0.010% ~ 5.000%.
           </div>
         </div>
@@ -174,7 +174,7 @@
     <div class="row">
       <div class="col-xs-8">
         <span class="balance-content">
-          Projected interest cost: {{createFormGroup.value['principalAmount'] * createFormGroup.value['interestRate'] * createFormGroup.value['tenor'] / 100}} {{principalToken}}
+          Projected interest cost: {{this.getInterest()}} {{principalToken}}
         </span>
       </div>
     </div>
