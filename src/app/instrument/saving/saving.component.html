@@ -1,12 +1,9 @@
 <app-account-address></app-account-address>
 <div class="tab-group">
-  <div [ngClass]="{'tab-label': true, 'selected': selectedTab == 'wallet'}" (click)="selectTab('wallet')">Withdraw/Deposit</div>
-  <div [ngClass]="{'tab-label': true, 'selected': selectedTab == 'create'}" (click)="selectTab('create')">Create</div>
-  <div [ngClass]="{'tab-label': true, 'selected': selectedTab == 'engage'}" (click)="selectTab('engage')">Engage</div>
-  <div [ngClass]="{'tab-label': true, 'selected': selectedTab == 'positions'}" (click)="selectTab('positions')">My Positions</div>
+  <a class="tab-label" routerLink="/instrument/saving/wallet" routerLinkActive="selected">Withdraw/Deposit</a>
+  <a class="tab-label" routerLink="/instrument/saving/create" routerLinkActive="selected">Create</a>
+  <a class="tab-label" routerLink="/instrument/saving/engage" routerLinkActive="selected">Engage</a>
+  <a class="tab-label" routerLink="/instrument/saving/positions" routerLinkActive="selected">My Positions</a>
 </div>
 
-<app-wallet [instrument]="'saving'" *ngIf="selectedTab == 'wallet'"></app-wallet>
-<p *ngIf="selectedTab == 'create'">Saving create works!</p>
-<p *ngIf="selectedTab == 'engage'">Saving engage works!</p>
-<p *ngIf="selectedTab == 'positions'">Saving positions works!</p>
+<router-outlet></router-outlet>

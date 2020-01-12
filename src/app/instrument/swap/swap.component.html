@@ -1,12 +1,9 @@
 <app-account-address></app-account-address>
 <div class="tab-group">
-  <div [ngClass]="{'tab-label': true, 'selected': selectedTab == 'wallet'}" (click)="selectTab('wallet')">Withdraw/Deposit</div>
-  <div [ngClass]="{'tab-label': true, 'selected': selectedTab == 'create'}" (click)="selectTab('create')">Create</div>
-  <div [ngClass]="{'tab-label': true, 'selected': selectedTab == 'engage'}" (click)="selectTab('engage')">Engage</div>
-  <div [ngClass]="{'tab-label': true, 'selected': selectedTab == 'positions'}" (click)="selectTab('positions')">My Positions</div>
+  <a class="tab-label" routerLink="/instrument/swap/wallet" routerLinkActive="selected">Withdraw/Deposit</a>
+  <a class="tab-label" routerLink="/instrument/swap/create" routerLinkActive="selected">Create</a>
+  <a class="tab-label" routerLink="/instrument/swap/engage" routerLinkActive="selected">Engage</a>
+  <a class="tab-label" routerLink="/instrument/swap/positions" routerLinkActive="selected">My Positions</a>
 </div>
 
-<app-wallet [instrument]="'swap'" *ngIf="selectedTab == 'wallet'"></app-wallet>
-<app-swap-create *ngIf="selectedTab == 'create'"></app-swap-create>
-<app-swap-engage *ngIf="selectedTab == 'engage'"></app-swap-engage>
-<app-swap-positions *ngIf="selectedTab == 'positions'"></app-swap-positions>
+<router-outlet></router-outlet>
