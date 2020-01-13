@@ -100,7 +100,7 @@ export class LendingCreateComponent implements OnInit {
     if (this.principalTokenBalance < Number(control.value)) {
       return {'insufficientBalance': true};
     }
-    if (Number(control.value) <= 0) {
+    if ((this.principalToken === 'ETH' && !Number.isNaN(control.value)) || Number(control.value) <= 0) {
       return {'nonPositiveAmount': true};
     }
     if (this.principalToken !== 'ETH' && !/^[1-9][0-9]*$/.test(control.value)) {

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 
 import { NutsPlatformService } from '../../../common/web3/nuts-platform.service';
 import { FormControl, NgForm, FormGroup } from '@angular/forms';
@@ -10,6 +10,7 @@ import { FormControl, NgForm, FormGroup } from '@angular/forms';
 })
 export class WalletWithdrawComponent implements OnInit {
   @Input() private instrument: string;
+  @ViewChild('form', {static: true}) private form: NgForm;
   private selectedToken = 'ETH';
   private instrumentEscrowBalance: number;
   private amountControl: FormControl;
@@ -31,7 +32,7 @@ export class WalletWithdrawComponent implements OnInit {
     this.withdrawForm.patchValue({amount: this.instrumentEscrowBalance});
   }
 
-  async withdraw(form: NgForm) {
+  async withdraw() {
     console.log(this.withdrawForm);
     if (!this.withdrawForm.valid) {
       return;
@@ -41,7 +42,7 @@ export class WalletWithdrawComponent implements OnInit {
     } else {
       await this.nutsPlatformService.withdrawToken(this.instrument, this.selectedToken, this.amountControl.value);
     }
-    form.resetForm();
+    this.form.resetForm();
     this.nutsPlatformService.balanceUpdatedSubject.next(this.selectedToken);
   }
 
@@ -52,7 +53,7 @@ export class WalletWithdrawComponent implements OnInit {
     if (this.instrumentEscrowBalance < Number(control.value)) {
       return {'insufficientBalance': true};
     }
-    if (Number(control.value) <= 0) {
+    if ((this.selectedToken === 'ETH' && !Number.isNaN(control.value)) || Number(control.value) <= 0) {
       return {'nonPositiveAmount': true};
     }
     if (this.selectedToken !== 'ETH' && !/^[1-9][0-9]*$/.test(control.value)) {

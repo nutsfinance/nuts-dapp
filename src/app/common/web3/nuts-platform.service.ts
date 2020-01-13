@@ -87,29 +87,29 @@ export class NutsPlatformService {
     },
     4: {
       tokens: {
-        USDT: '0x8e4A3E7ED6F4A529AD803a963333C320900789cE',
-        USDC: '0x7f0fe444702d421421a59A124aCC6AfB220c1683',
-        DAI: '0x89050cd5C37c852125245B5dcDf3DB49775f239a',
-        NUTS: '0x41A0AC24D1f4664Ab623756Cf6B87B6750470cfd'
+        USDT: '0xF2d3a89be3a9A499b08F79C2727bE912febed26C',
+        USDC: '0x6111835ded0d415cD3D102A4A1b1d2015c1ee8BE',
+        DAI: '0x6ab06cd020eb552Ef9f0e3A48ccA93Bb6dA7B7Ef',
+        NUTS: '0x51d3F129e5Fb1F1A0010bff7750DDd36651F450e'
       },
       platform: {
         lending: {
-          instrumentManager: '0x5B0E5c566700dCEF12ae6D2Aa577bc720858Edc5',
-          instrumentEscrow: '0xfF304d9a02d04601c289EB955B09179201B0f972'
+          instrumentManager: '0xffc0D9B27902880710b801ee565Ec1D495E747E0',
+          instrumentEscrow: '0x7148ac3E660083edB4FD308e089297e9657F2a37'
         },
         borrowing: {
-          instrumentManager: '0xdCf52926CcA5344F776C5d8AE78a73fac87BC723',
-          instrumentEscrow: '0x9478a88Bcb3351bB6A060891288731F4C9CDA027'
+          instrumentManager: '0xC2D4EC94001e837AC11797B7675682D37AE3C4F8',
+          instrumentEscrow: '0xDe280CdD16F6E7f26768d928Ff5D304655D9A21D'
         },
         saving: {
-          instrumentManager: '0x4Cd3d1d6b3E8cbC2E481502d1d21806C5aAB6f6E',
-          instrumentEscrow: '0x1B4EEBDaB18df7A049D538a1F7180A5Ff8788401'
+          instrumentManager: '0x146F6b69eCa3c0eF79b7CEa05A57d5Bc43543F23',
+          instrumentEscrow: '0x1269f24AcA218788A55e948ef84b74C099ce98dE'
         },
         swap: {
-          instrumentManager: '0x9Dfd2D5d921bd25a5023Fd58bc252485c18DaD94',
-          instrumentEscrow: '0xc517A0937a08E2DfA2b819567Add4f15d1Af0e8D'
+          instrumentManager: '0x1C0c3A5b50dBc3A7f150AB00259Fcf6804F4e310',
+          instrumentEscrow: '0x67423902D8021808Fc072254Ab236A9027C96291'
         },
-        parametersUtil: '0xb0501a061cAc17Db1C46Fe83724a9BAc6Ce14d42'
+        parametersUtil: '0xC75686859e6687508049EC373115dc803b10b3d9'
       }
     },
     42: {
@@ -298,7 +298,7 @@ export class NutsPlatformService {
       });
   }
 
-  public async withdrawETH(instrument: string, amount: number) {
+  public async withdrawETH(instrument: string, amount: string) {
     if (!this.contractAddresses[this.currentNetwork]) {
       alert(`Network ${this.currentNetwork} is not supported!`);
     }
@@ -308,7 +308,7 @@ export class NutsPlatformService {
 
     const instrumentEscrowAddress = this.contractAddresses[this.currentNetwork].platform[instrument].instrumentEscrow;
     const instrumentEscrowContract = new this.web3.eth.Contract(InstrumentEscrow, instrumentEscrowAddress);
-    return instrumentEscrowContract.methods.withdraw(this.web3.utils.toWei(amount, 'ether')).send({from: this.currentAccount})
+    return instrumentEscrowContract.methods.withdraw(this.web3.utils.toWei(`${amount}`, 'ether')).send({from: this.currentAccount})
       .on('transactionHash', (transactionHash) => {
         console.log(transactionHash);
         this.transactionSentSubject.next(transactionHash);
@@ -429,7 +429,7 @@ export class NutsPlatformService {
 
     const instrumentManagerAddress = this.contractAddresses[this.currentNetwork].platform.lending.instrumentManager;
     const instrumentManagerContract = new this.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
-    return instrumentManagerContract.methods.createIssuance(lendingParameters).send({from: this.currentAccount})
+    return instrumentManagerContract.methods.createIssuance(lendingParameters).send({from: this.currentAccount, gas: 6721975})
       .on('transactionHash', (transactionHash) => {
         console.log(transactionHash);
         this.transactionSentSubject.next(transactionHash);
