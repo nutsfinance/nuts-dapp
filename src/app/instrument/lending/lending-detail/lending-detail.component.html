@@ -1,0 +1,115 @@
+<mat-card class="detail-card" *ngIf="issuance">
+    <div class="row">
+        <div class="col-xs-12">
+            <h4 class="card-title">Offer Details</h4>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            USD value
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-3 card-label">Principal</div>
+
+        <div class="col-xs-6">
+            <div class="value-content">
+                {{lendingValue}} {{lendingToken}}
+            </div>
+        </div>
+       
+        <div class="col-xs-3"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-3 card-label">Collateral</div>
+
+        <div class="col-xs-6">
+            <div class="value-row">
+                <div class="value-notation">
+                    required
+                </div>
+                <div class="value-content">
+                    {{collateralValue}} {{collateralToken}}
+                </div>
+            </div>
+            <div class="value-row">
+                <div class="value-notation">
+                    ratio
+                </div>
+                <div class="value-content">
+                    {{issuance.collateralRatio / 100}} %
+                </div>
+            </div>
+        </div>
+       
+        <div class="col-xs-3"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-3 card-label">Interest</div>
+
+        <div class="col-xs-6">
+            <div class="value-row">
+                <div class="value-notation">
+                    per day
+                </div>
+                <div class="value-content">
+                    {{lendingValue * issuance.interestRate / 1000000}} {{lendingToken}}
+                </div>
+            </div>
+            <div class="value-row">
+                <div class="value-notation">
+                    total
+                </div>
+                <div class="value-content">
+                    {{lendingValue * issuance.interestRate * issuance.tenorDays / 1000000}} {{lendingToken}}
+                </div>
+            </div>
+        </div>
+       
+        <div class="col-xs-3"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-3 card-label">Tenor</div>
+
+        <div class="col-xs-6">
+            <div class="value-content">
+                {{issuance.tenorDays}}
+            </div>
+        </div>
+       
+        <div class="col-xs-3"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-3 card-label">Engaged on</div>
+
+        <div class="col-xs-6">
+            <div class="value-content">
+                {{issuance.engagementTimestamp * 1000 | date: 'MM-dd-yyyy'}}
+            </div>
+        </div>
+       
+        <div class="col-xs-3"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-3 card-label">Due Date</div>
+
+        <div class="col-xs-6">
+            <div class="value-content">
+                {{issuance.issuanceDueTimestamp * 1000 | date: 'MM-dd-yyyy'}}
+            </div>
+        </div>
+       
+        <div class="col-xs-3"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12"></div>
+    </div>
+</mat-card>

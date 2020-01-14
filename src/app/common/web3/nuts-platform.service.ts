@@ -186,6 +186,25 @@ export class NutsPlatformService {
     });
   }
 
+  public getTokenValueByAddress(tokenAddress: string, value: number): number {
+    if (tokenAddress.toLowerCase() === ETH_ADDRESS.toLowerCase()) {
+      return +this.web3.utils.fromWei(`${value}`, 'ether');
+    } else {
+      return value;
+    }
+  }
+
+  public getTokenNameByAddress(tokenAddress: string): string {
+    if (tokenAddress.toLowerCase() === ETH_ADDRESS.toLowerCase()) return 'ETH';
+    const tokens = this.contractAddresses[this.currentNetwork].tokens;
+    for (const tokenName in tokens) {
+      if (tokens[tokenName].toLowerCase() === tokenAddress.toLowerCase()) {
+        return tokenName;
+      }
+    }
+    return '';
+  }
+
   public async getAccountBalance(token: string): Promise<number> {
     if (!this.web3 || !this.currentAccount) {
       return Promise.resolve(0);
@@ -375,7 +394,7 @@ export class NutsPlatformService {
       } else if (escrowEvent.event === 'TokenDeposited' && escrowEvent.returnValues.depositer.toLowerCase() === this.currentAccount.toLowerCase()) {
         transactions.push({
           deposit: true,
-          token: this.getTokenByAddress(escrowEvent.returnValues.token),
+          token: this.getTokenNameByAddress(escrowEvent.returnValues.token),
           amount: escrowEvent.returnValues.amount,
           transactionHash: escrowEvent.transactionHash,
           blockNumber: escrowEvent.blockNumber,
@@ -383,7 +402,7 @@ export class NutsPlatformService {
       } else if (escrowEvent.event === 'TokenWithdrawn' && escrowEvent.returnValues.withdrawer.toLowerCase() === this.currentAccount.toLowerCase()) {
         transactions.push({
           deposit: false,
-          token: this.getTokenByAddress(escrowEvent.returnValues.token),
+          token: this.getTokenNameByAddress(escrowEvent.returnValues.token),
           amount: escrowEvent.returnValues.amount,
           transactionHash: escrowEvent.transactionHash,
           blockNumber: escrowEvent.blockNumber,
@@ -473,6 +492,10 @@ export class NutsPlatformService {
     console.log(this.lendingIssuances);
   }
 
+  public getLendingIssuance(issuanceId: number): LendingIssuanceModel {
+    return this.lendingIssuances.find(issuance => issuance.issuanceId === issuanceId);
+  }
+
   private makeBatchRequest(calls) {
     let batch = new this.web3.BatchRequest();
 
@@ -488,17 +511,6 @@ export class NutsPlatformService {
     batch.execute();
 
     return Promise.all(promises);
-  }
-
-  public getTokenByAddress(tokenAddress: string): string {
-    if (tokenAddress === ETH_ADDRESS) return 'ETH';
-    const tokens = this.contractAddresses[this.currentNetwork].tokens;
-    for (const tokenName in tokens) {
-      if (tokens[tokenName].toLowerCase() === tokenAddress.toLowerCase()) {
-        return tokenName;
-      }
-    }
-    return '';
   }
 
   private async bootstrapWeb3() {

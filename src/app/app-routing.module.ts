@@ -15,6 +15,7 @@ import { BorrowingPositionsComponent } from './instrument/borrowing/borrowing-po
 import { SwapCreateComponent } from './instrument/swap/swap-create/swap-create.component';
 import { SwapEngageComponent } from './instrument/swap/swap-engage/swap-engage.component';
 import { SwapPositionsComponent } from './instrument/swap/swap-positions/swap-positions.component';
+import { LendingDetailComponent } from './instrument/lending/lending-detail/lending-detail.component';
 
 
 
@@ -35,7 +36,8 @@ const routes: Routes = [
           { path: 'wallet', component: WalletComponent, data: { instrument: 'lending' } },
           { path: 'create', component: LendingCreateComponent },
           { path: 'engage', component: LendingEngageComponent },
-          { path: 'positions', component: LendingPositionsComponent }
+          { path: 'positions', component: LendingPositionsComponent },
+          { path: ':id', component: LendingDetailComponent }
         ]
       },
       {

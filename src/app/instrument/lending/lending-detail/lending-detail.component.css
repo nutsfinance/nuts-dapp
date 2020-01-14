@@ -1,0 +1,26 @@
+.detail-card {
+  font-family: "GillSans-Light", Helvetica, Arial, serif;
+  color: #4a4a4a;
+}
+.card-title {
+  font-size: 18px;
+}
+.card-label {
+  font-size: 16px;
+}
+.value-row {
+  display: flex;
+}
+.value-notation {
+  display: inline-block;
+  width: 40%;
+  text-align: right;
+  padding-right: 5px;
+}
+.value-content {
+  display: inline-block;
+  width: 60%;
+  text-align: left;
+  position: absolute;
+  right: 0;
+}
