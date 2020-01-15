@@ -29,8 +29,8 @@ export interface WalletTransaction {
   providedIn: 'root'
 })
 export class NutsPlatformService {
-  private web3: any;
-  private contractAddresses = {
+  public web3: any;
+  public contractAddresses = {
     1: {
       tokens: {
         USDT: '',

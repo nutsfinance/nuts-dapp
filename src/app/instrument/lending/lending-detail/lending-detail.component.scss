@@ -1,6 +1,14 @@
 .detail-card {
-    font-family: "GillSans-Light", Helvetica, Arial, serif;
-    color: #4A4A4A;
+    font-family: "GillSans", Helvetica, Arial, serif;
+    color: rgba(74, 73, 74, 1.0);
+    margin: 10px;
+    padding: 30px 20px;
+}
+
+.navigate-back {
+    height: 20px;
+    margin-right: 15px;
+    cursor: pointer;
 }
 
 .card-title {
@@ -11,6 +19,18 @@
     font-size: 16px;
 }
 
+.detail-row {
+    margin-top: 22px;
+    margin-bottom: 22px;
+}
+
+.detail-value {
+    text-align: right;
+    font-family: "GillSans-Light", Helvetica, Arial, serif;
+    font-size: 12.0px;
+    color: rgba(155, 154, 155, 1.0);
+}
+
 .value-row {
     display: flex;
 }
@@ -19,7 +39,9 @@
     display: inline-block;
     width: 40%;
     text-align: right;
-    padding-right: 5px;
+    padding-right: 15px;
+    color: rgba(155, 154, 155, 1.0);
+    font-size: 12px;
 }
 
 .value-content {
@@ -28,4 +50,20 @@
     text-align: left;
     position: absolute;
     right: 0;
+    font-size: 12px;
+}
+
+.action-row {
+    display: flex;
+    justify-content: center;
+}
+
+.engage-button,
+.repay-button {
+    width: 150px;
+    color: white;
+}
+
+.close-button {
+    width: 150px;
 }
