@@ -522,18 +522,16 @@ export class NutsPlatformService {
       throw new Error('Please install MetaMask.')
     }
     this.web3 = new Web3(ethereum);
-    ethereum.on('accountsChanged', (accounts) => this.handleAccountChanged(accounts));
-    ethereum.on('networkChanged', (network) => this.handleNetworkChanged(network));
+    ethereum.on('accountsChanged', this.handleAccountChanged.bind(this));
+    ethereum.on('networkChanged', this.handleNetworkChanged.bind(this));
+    console.log(ethereum);
+    try {
+      await ethereum.enable();    
+    } catch (error) {
+      // Access control error
+    }
     this.handleAccountChanged([ethereum.selectedAddress]);
     this.handleNetworkChanged(Number(ethereum.chainId));
-
-    // ethereum.send('eth_requestAccounts')
-    //   .then((accounts) => {
-    //     this.handleAccountChanged(accounts.result);
-    //   })
-    //   .catch(error => {
-    //     console.error(error);
-    //   });
   }
 
   private handleAccountChanged(accounts) {

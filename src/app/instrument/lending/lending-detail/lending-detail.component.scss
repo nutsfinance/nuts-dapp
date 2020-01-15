@@ -17,6 +17,7 @@
 
 .card-label {
     font-size: 16px;
+    padding-right: 0;
 }
 
 .detail-row {
@@ -29,6 +30,7 @@
     font-family: "GillSans-Light", Helvetica, Arial, serif;
     font-size: 12.0px;
     color: rgba(155, 154, 155, 1.0);
+    padding-left: 0;
 }
 
 .value-row {
@@ -60,10 +62,10 @@
 
 .engage-button,
 .repay-button {
-    width: 150px;
+    width: 180px;
     color: white;
 }
 
 .close-button {
-    width: 150px;
+    width: 180px;
 }

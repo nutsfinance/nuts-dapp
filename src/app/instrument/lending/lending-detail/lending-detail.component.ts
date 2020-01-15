@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
+import { Location } from '@angular/common';
 import { NutsPlatformService, USD_ADDRESS } from 'src/app/common/web3/nuts-platform.service';
 import { PriceOracleService } from 'src/app/common/web3/price-oracle.service';
 import { ActivatedRoute } from '@angular/router';
@@ -20,12 +21,15 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
   private collateralValue: Promise<number>;
   private convertedCollateralValue: Promise<number>;
   private convertedLendingValue: Promise<number>;
+  private convertedPerDayInterestValue: Promise<number>;
+  private convertedTotalInterestValue: Promise<number>;
 
+  private accountUpdatedSubscription: Subscription;
   private issuanceIdSubscription: Subscription;
   private lendingUpdatedSubscription: Subscription;
 
   constructor(private nutsPlatformService: NutsPlatformService, private priceOracleService: PriceOracleService,
-    private route: ActivatedRoute, private zone: NgZone) { }
+    private route: ActivatedRoute, private zone: NgZone, private location: Location) { }
 
   ngOnInit() {
     this.issuanceId = this.route.snapshot.params['id'];
@@ -34,12 +38,16 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
       this.issuanceId = +params['id'];
       this.updateLendingIssuance();
     });
+    this.accountUpdatedSubscription = this.nutsPlatformService.currentAccountSubject.subscribe(_ => {
+      this.updateLendingIssuance();
+    });
     this.lendingUpdatedSubscription = this.nutsPlatformService.lendingIssuancesUpdatedSubject.subscribe(_ => {
       this.updateLendingIssuance();
     });
   }
 
   ngOnDestroy() {
+    this.accountUpdatedSubscription.unsubscribe();
     this.issuanceIdSubscription.unsubscribe();
     this.lendingUpdatedSubscription.unsubscribe();
   }
@@ -51,18 +59,29 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
     return baseTokenAmount * result[1] / result[0];
   }
 
+  navigateBack() {
+    this.location.back();
+  }
+
   private updateLendingIssuance() {
     this.zone.run(() => {
       this.issuance = this.nutsPlatformService.getLendingIssuance(this.issuanceId);
       console.log(this.issuance);
       if (this.issuance) {
+        console.log(this.issuance.makerAddress, this.nutsPlatformService.currentAccount);
         this.lendingToken = this.nutsPlatformService.getTokenNameByAddress(this.issuance.lendingTokenAddress);
         this.lendingValue = this.nutsPlatformService.getTokenValueByAddress(this.issuance.lendingTokenAddress, this.issuance.lendingAmount);
         this.collateralToken = this.nutsPlatformService.getTokenNameByAddress(this.issuance.collateralTokenAddress);
 
         this.collateralValue = this.getConvertedValue(this.issuance.collateralTokenAddress,
-            this.issuance.lendingTokenAddress, this.lendingValue * this.issuance.collateralRatio / 10000);
+          this.issuance.lendingTokenAddress, this.lendingValue * this.issuance.collateralRatio / 10000);
+        this.convertedCollateralValue = this.getConvertedValue(USD_ADDRESS,
+          this.issuance.lendingTokenAddress, this.lendingValue * this.issuance.collateralRatio / 10000);
         this.convertedLendingValue = this.getConvertedValue(USD_ADDRESS, this.issuance.lendingTokenAddress, this.lendingValue);
+        this.convertedPerDayInterestValue = this.getConvertedValue(USD_ADDRESS, this.issuance.lendingTokenAddress,
+          this.lendingValue * this.issuance.interestRate / 1000000);
+        this.convertedTotalInterestValue = this.getConvertedValue(USD_ADDRESS, this.issuance.lendingTokenAddress,
+          this.lendingValue * this.issuance.interestRate * this.issuance.tenorDays / 1000000);
       }
     });
   }
