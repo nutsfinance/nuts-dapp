@@ -1,7 +1,8 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {FormControl, FormGroup, NgForm} from '@angular/forms';
-import {MatButtonToggleChange} from '@angular/material';
-import {NutsPlatformService} from '../../../common/web3/nuts-platform.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, NgForm } from '@angular/forms';
+import { MatButtonToggleChange } from '@angular/material';
+import { NutsPlatformService } from '../../../common/web3/nuts-platform.service';
+import { PriceOracleService } from '../../../common/web3/price-oracle.service';
 
 
 @Component({
@@ -10,7 +11,7 @@ import {NutsPlatformService} from '../../../common/web3/nuts-platform.service';
   styleUrls: ['./lending-create.component.scss']
 })
 export class LendingCreateComponent implements OnInit {
-  @ViewChild('form', {static: true}) private form: NgForm;
+  @ViewChild('form', { static: true }) private form: NgForm;
   private createFormGroup: FormGroup;
   private showAlternativeTenor = false;
   private showAlternativeColleral = false;
@@ -18,8 +19,10 @@ export class LendingCreateComponent implements OnInit {
   private principalToken = 'ETH';
   private principalTokenBalance: number;
   private collateralToken = 'ETH';
+  private collateralValue: Promise<number> = Promise.resolve(0);
+  private interestValue = 0;
 
-  constructor(private nutsPlatformService: NutsPlatformService) {}
+  constructor(private nutsPlatformService: NutsPlatformService, private priceOracleSercvice: PriceOracleService) { }
 
   ngOnInit() {
     this.createFormGroup = new FormGroup({
@@ -30,26 +33,45 @@ export class LendingCreateComponent implements OnInit {
     });
   }
 
+  onPrincipalAmountUpdated() {
+    this.collateralValue = this.getCollateralValue();
+    this.interestValue = this.getInterestValue();
+  }
+
   onPrincipalTokenSelected(token: string) {
     this.principalToken = token;
     this.createFormGroup.controls['principalAmount'].reset();
+    this.collateralValue = this.getCollateralValue();
   }
 
   onTenorChange(tenorChange: MatButtonToggleChange) {
-    this.createFormGroup.patchValue({'tenor': tenorChange.value});
+    this.createFormGroup.patchValue({ 'tenor': tenorChange.value });
+    this.interestValue = this.getInterestValue();
   }
 
   onCollateralTokenSelected(token: string) {
     this.collateralToken = token;
     this.createFormGroup.controls['collateralRatio'].reset();
+    this.collateralValue = this.getCollateralValue();
   }
 
   onCollateralRatioChange(collateralRatioChange: MatButtonToggleChange) {
-    this.createFormGroup.patchValue({'collateralRatio': collateralRatioChange.value});
+    this.createFormGroup.patchValue({ 'collateralRatio': collateralRatioChange.value });
+    this.collateralValue = this.getCollateralValue();
   }
 
   onInterestRateChange(interestRateChange: MatButtonToggleChange) {
-    this.createFormGroup.patchValue({'interestRate': interestRateChange.value});
+    this.createFormGroup.patchValue({ 'interestRate': interestRateChange.value });
+    this.interestValue = this.getInterestValue();
+    console.log(this.interestValue);
+  }
+
+  async getCollateralValue() {
+    const principalTokenAddress = this.nutsPlatformService.getTokenAddressByName(this.principalToken);
+    const collateralTokenAddress = this.nutsPlatformService.getTokenAddressByName(this.collateralToken);
+    const result = await this.priceOracleSercvice.getPrice(collateralTokenAddress, principalTokenAddress);
+    console.log(result);
+    return this.createFormGroup.value['principalAmount'] * this.createFormGroup.value['collateralRatio'] * result[1] / (result[0] * 100);
   }
 
   async createLendingIssuance() {
@@ -70,11 +92,12 @@ export class LendingCreateComponent implements OnInit {
     this.form.resetForm();
   }
 
-  getInterest(): number {
+  getInterestValue(): number {
     const principalAmount = this.createFormGroup.value['principalAmount'];
     const interestRate = this.createFormGroup.value['interestRate'];
     const tenor = this.createFormGroup.value['tenor'];
     const interest = principalAmount * interestRate * tenor / 100;
+    console.log(principalAmount, interestRate, tenor, interest);
 
     return interest;
   }
@@ -93,51 +116,51 @@ export class LendingCreateComponent implements OnInit {
     return controlInvalid && (controlTouched || formSubmitted);
   }
 
-  validPrincipalAmount(control: FormControl): {[s: string]: boolean} {
+  validPrincipalAmount(control: FormControl): { [s: string]: boolean } {
     if (!control.value) {
-      return {'required': true};
+      return { 'required': true };
     }
     if (this.principalTokenBalance < Number(control.value)) {
-      return {'insufficientBalance': true};
+      return { 'insufficientBalance': true };
     }
     if ((this.principalToken === 'ETH' && Number.isNaN(control.value)) || Number(control.value) <= 0) {
-      return {'nonPositiveAmount': true};
+      return { 'nonPositiveAmount': true };
     }
     if (this.principalToken !== 'ETH' && !/^[1-9][0-9]*$/.test(control.value)) {
-      return {'nonIntegerAmount': true};
+      return { 'nonIntegerAmount': true };
     }
     return null;
   }
 
-  validTenor(control: FormControl): {[s: string]: boolean} {
+  validTenor(control: FormControl): { [s: string]: boolean } {
     if (!control.value) {
-      return {'required': true};
+      return { 'required': true };
     }
     if (!/^[1-9][0-9]*$/.test(control.value)) {
-      return {'nonIntegerAmount': true};
+      return { 'nonIntegerAmount': true };
     }
     if (Number(control.value) < 2 || Number(control.value) > 90) {
-      return {'invalidValue': true};
+      return { 'invalidValue': true };
     }
     return null;
   }
 
-  validCollateralRatio(control: FormControl): {[s: string]: boolean} {
+  validCollateralRatio(control: FormControl): { [s: string]: boolean } {
     if (!control.value) {
-      return {'required': true};
+      return { 'required': true };
     }
     if (Number(control.value) < 50 || Number(control.value) > 200) {
-      return {'invalidValue': true};
+      return { 'invalidValue': true };
     }
     return null;
   }
 
-  validInterestRate(control: FormControl): {[s: string]: boolean} {
+  validInterestRate(control: FormControl): { [s: string]: boolean } {
     if (!control.value) {
-      return {'required': true};
+      return { 'required': true };
     }
     if (Number(control.value) < 0.01 || Number(control.value) > 5) {
-      return {'invalidValue': true};
+      return { 'invalidValue': true };
     }
     return null;
   }

@@ -207,6 +207,11 @@ export class NutsPlatformService {
     return '';
   }
 
+  public getTokenAddressByName(tokenName: string): string {
+    if (tokenName === 'ETH')  return ETH_ADDRESS;
+    return this.contractAddresses[this.currentNetwork].tokens[tokenName];
+  }
+
   public async getAccountBalance(token: string): Promise<number> {
     if (!this.web3 || !this.currentAccount) {
       return Promise.resolve(0);

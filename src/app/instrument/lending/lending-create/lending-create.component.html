@@ -12,7 +12,7 @@
     <div class="row">
       <div class="col-xs-8">
         <mat-form-field appearance="outline" class="amount-input">
-          <input matInput placeholder="Amount" formControlName="principalAmount">
+          <input matInput placeholder="Amount" formControlName="principalAmount" (ngModelChange)="onPrincipalAmountUpdated()">
         </mat-form-field>
       </div>
       <div class="col-xs-4">
@@ -132,6 +132,14 @@
 
     <div class="row">
       <div class="col-xs-12">
+        <span class="balance-content">
+          Projected collateral cost: {{ collateralValue | async }} {{collateralToken}}
+        </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
         <span class="input-label">Interest</span>
       </div>
     </div>
@@ -174,7 +182,7 @@
     <div class="row">
       <div class="col-xs-12">
         <span class="balance-content">
-          Projected interest cost: {{this.getInterest()}} {{principalToken}}
+          Projected interest cost: {{interestValue}} {{principalToken}}
         </span>
       </div>
     </div>
