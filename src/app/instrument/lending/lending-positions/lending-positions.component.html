@@ -36,9 +36,18 @@
   <ng-container matColumnDef="amount">
     <mat-header-cell *matHeaderCellDef class="issuance-header issuance-amount"> Amount </mat-header-cell>
     <mat-cell *matCellDef="let issuance" class="issuance-content issuance-amount">
-      <div>Principal {{issuance.lendingAmount}} {{nutsPlatformService.getTokenByAddress(issuance.lendingTokenAddress)}}</div>
-      <div *ngIf="issuance.state != 2">Collateral {{issuance.collateralAmount}} {{nutsPlatformService.getTokenByAddress(issuance.colleteralTokenAddress)}}</div>
-      <div >Interest {{issuance.interestAmount}} {{nutsPlatformService.getTokenByAddress(issuance.lendingTokenAddress)}}</div>
+      <div>
+        Principal {{nutsPlatformService.getTokenValueByAddress(issuance.lendingTokenAddress, issuance.lendingAmount)}}
+        {{nutsPlatformService.getTokenNameByAddress(issuance.lendingTokenAddress)}}
+      </div>
+      <div *ngIf="issuance.state != 2">
+        Collateral {{nutsPlatformService.getTokenValueByAddress(issuance.collateralTokenAddress, issuance.collateralAmount)}}
+        {{nutsPlatformService.getTokenNameByAddress(issuance.collateralTokenAddress)}}
+      </div>
+      <div >
+        Interest {{nutsPlatformService.getTokenValueByAddress(issuance.lendingTokenAddress, issuance.interestAmount)}}
+        {{nutsPlatformService.getTokenNameByAddress(issuance.lendingTokenAddress)}}
+      </div>
     </mat-cell>
   </ng-container>
 
@@ -55,7 +64,7 @@
     <mat-header-cell *matHeaderCellDef class="issuance-header"></mat-header-cell>
     <mat-cell *matCellDef="let issuance" class="issuance-action">
       <button mat-button color="secondary" class="issuance-action-button">Detail</button>
-      <button mat-button color="primary" class="issuance-action-button">Close</button>
+      <a mat-button color="primary" class="issuance-action-button" routerLink="/instrument/lending/{{issuance.issuanceId}}">Close</a>
     </mat-cell>
   </ng-container>
 

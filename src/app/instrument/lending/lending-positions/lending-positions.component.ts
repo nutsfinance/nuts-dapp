@@ -1,7 +1,7 @@
-import { Component, OnDestroy, OnInit, NgZone } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { LendingIssuanceDataSource } from '../lending-issuance.datasource';
-import { NutsPlatformService } from '../../../common/web3/nuts-platform.service';
+import {Component, NgZone, OnDestroy, OnInit} from '@angular/core';
+import {Subscription} from 'rxjs';
+import {NutsPlatformService} from '../../../common/web3/nuts-platform.service';
+import {LendingIssuanceDataSource} from '../lending-issuance.datasource';
 
 
 @Component({
@@ -18,7 +18,7 @@ export class LendingPositionsComponent implements OnInit, OnDestroy {
   private accountUpdatedSubscription: Subscription;
   private lendingIssuancesUpdatedSubscription: Subscription;
 
-  constructor(private nutsPlatformService: NutsPlatformService, private zone: NgZone) { }
+  constructor(private nutsPlatformService: NutsPlatformService, private zone: NgZone) {}
 
   ngOnInit() {
     this.currentAccount = this.nutsPlatformService.currentAccount;

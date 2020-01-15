@@ -6,7 +6,7 @@
     </div>
 
     <div class="row">
-        <div class="col-xs-12 detail-value">
+        <div class="col-xs-12 detail-value detail-label">
             USD value
         </div>
     </div>
@@ -19,7 +19,7 @@
                 {{lendingValue}} {{lendingToken}}
             </div>
         </div>
-       
+
         <div class="col-xs-3 detail-value">
             $ {{ convertedLendingValue | async }}
         </div>
@@ -46,7 +46,7 @@
                 </div>
             </div>
         </div>
-       
+
         <div class="col-xs-3 detail-value">
             $ {{ convertedCollateralValue | async }}
         </div>
@@ -73,7 +73,7 @@
                 </div>
             </div>
         </div>
-       
+
         <div class="col-xs-3">
             <div class="detail-value">
                 $ {{ convertedPerDayInterestValue | async }}
@@ -92,7 +92,7 @@
                 {{issuance.tenorDays}} days
             </div>
         </div>
-       
+
         <div class="col-xs-2"></div>
     </div>
 
@@ -104,7 +104,7 @@
                 {{issuance.engagementTimestamp * 1000 | date: 'MM-dd-yyyy'}}
             </div>
         </div>
-       
+
         <div class="col-xs-2"></div>
     </div>
 
@@ -116,25 +116,25 @@
                 {{ (issuance.state <= 2? issuance.engagementDueTimestamp * 1000 : issuance.issuanceDueTimestamp * 1000) | date: 'MM-dd-yyyy'}}
             </div>
         </div>
-       
+
         <div class="col-xs-2"></div>
     </div>
 
     <div class="row">
         <div class="col-xs-12 action-row" *ngIf="issuance.state == 2 && issuance.makerAddress != nutsPlatformService.currentAccount">
-            <button mat-raised-button color="primary" class="engage-button">Engage</button>
+            <button mat-raised-button color="primary" class="engage-button" (click)="engageIssuance()">Engage</button>
         </div>
     </div>
 
     <div class="row">
         <div class="col-xs-12 action-row" *ngIf="issuance.state == 3 && issuance.takerAddress == nutsPlatformService.currentAccount">
-            <button mat-raised-button color="primary" class="repay-button">Repay</button>
+            <button mat-raised-button color="primary" class="repay-button" (click)="repayIssuance()">Repay</button>
         </div>
     </div>
 
     <div class="row">
         <div class="col-xs-12 action-row" *ngIf="issuance.state == 2 && issuance.makerAddress == nutsPlatformService.currentAccount">
-            <button mat-stroked-button color="primary" class="close-button">Close Position</button>
+            <button mat-stroked-button color="primary" class="close-button" (click)="cancelIssuance()">Close Position</button>
         </div>
     </div>
 </mat-card>

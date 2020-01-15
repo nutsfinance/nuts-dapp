@@ -14,16 +14,22 @@
 }
 .card-label {
   font-size: 16px;
+  padding-right: 0;
 }
 .detail-row {
   margin-top: 22px;
   margin-bottom: 22px;
+}
+.detail-label {
+  margin-bottom: -10px;
+  margin-top: 10px;
 }
 .detail-value {
   text-align: right;
   font-family: "GillSans-Light", Helvetica, Arial, serif;
   font-size: 12px;
   color: #9b9a9b;
+  padding-left: 0;
 }
 .value-row {
   display: flex;
@@ -50,9 +56,9 @@
 }
 .engage-button,
 .repay-button {
-  width: 150px;
+  width: 180px;
   color: white;
 }
 .close-button {
-  width: 150px;
+  width: 180px;
 }

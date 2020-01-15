@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
-import { Location } from '@angular/common';
-import { NutsPlatformService, USD_ADDRESS } from 'src/app/common/web3/nuts-platform.service';
-import { PriceOracleService } from 'src/app/common/web3/price-oracle.service';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { LendingIssuanceModel } from 'src/app/common/model/lending-issuance.model';
+import {Location} from '@angular/common';
+import {Component, NgZone, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {Subscription} from 'rxjs';
+import {LendingIssuanceModel} from 'src/app/common/model/lending-issuance.model';
+import {NutsPlatformService, USD_ADDRESS} from 'src/app/common/web3/nuts-platform.service';
+import {PriceOracleService} from 'src/app/common/web3/price-oracle.service';
 
 @Component({
   selector: 'app-lending-detail',
@@ -29,7 +29,7 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
   private lendingUpdatedSubscription: Subscription;
 
   constructor(private nutsPlatformService: NutsPlatformService, private priceOracleService: PriceOracleService,
-    private route: ActivatedRoute, private zone: NgZone, private location: Location) { }
+    private route: ActivatedRoute, private zone: NgZone, private location: Location) {}
 
   ngOnInit() {
     this.issuanceId = this.route.snapshot.params['id'];
@@ -61,6 +61,19 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
 
   navigateBack() {
     this.location.back();
+  }
+
+  engageIssuance() {
+
+  }
+
+  repayIssuance() {
+
+  }
+
+  async cancelIssuance() {
+    const result = await this.nutsPlatformService.cancelIssuance('lending', this.issuanceId);
+    console.log(result);
   }
 
   private updateLendingIssuance() {

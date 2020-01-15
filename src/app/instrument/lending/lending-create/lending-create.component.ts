@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatButtonToggleChange } from '@angular/material';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {FormControl, FormGroup, NgForm} from '@angular/forms';
+import {MatButtonToggleChange} from '@angular/material';
+import {NutsPlatformService} from '../../../common/web3/nuts-platform.service';
 
-import { NutsPlatformService } from '../../../common/web3/nuts-platform.service';
-import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-lending-create',
@@ -19,7 +19,7 @@ export class LendingCreateComponent implements OnInit {
   private principalTokenBalance: number;
   private collateralToken = 'ETH';
 
-  constructor(private nutsPlatformService: NutsPlatformService) { }
+  constructor(private nutsPlatformService: NutsPlatformService) {}
 
   ngOnInit() {
     this.createFormGroup = new FormGroup({
@@ -57,7 +57,7 @@ export class LendingCreateComponent implements OnInit {
     if (!this.createFormGroup.valid) {
       return;
     }
-    const result = await this.nutsPlatformService.createLendingIssuance(this.principalToken, 
+    const result = await this.nutsPlatformService.createLendingIssuance(this.principalToken,
       this.createFormGroup.value['principalAmount'], this.collateralToken,
       this.createFormGroup.value['collateralRatio'], this.createFormGroup.value['tenor'],
       this.createFormGroup.value['interestRate']);
@@ -83,7 +83,7 @@ export class LendingCreateComponent implements OnInit {
    * Should show error message when the control is invalid and either
    * 1) The control is touched
    * 2) Or the form is submitted
-   * @param controlName 
+   * @param controlName
    */
   shouldShowErrorMessage(controlName: string): boolean {
     const formSubmitted = this.form.submitted;

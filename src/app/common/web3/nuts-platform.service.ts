@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
-import { LendingData } from 'nuts-platform-protobuf-messages';
-import { LendingIssuanceModel } from '../model/lending-issuance.model';
+import {Injectable} from '@angular/core';
+import {LendingData} from 'nuts-platform-protobuf-messages';
+import {Subject} from 'rxjs';
+import {LendingIssuanceModel} from '../model/lending-issuance.model';
 
 const Web3 = require('web3');
 const ERC20 = require('./abi/IERC20.json');
@@ -215,8 +215,8 @@ export class NutsPlatformService {
     if (token === 'ETH') {
       const weiBalance = await this.web3.eth.getBalance(this.currentAccount);
       return +this.web3.utils.fromWei(weiBalance, 'ether');
-    } else if (token && this.contractAddresses[this.currentNetwork] 
-        && this.contractAddresses[this.currentNetwork].tokens[token]) {
+    } else if (token && this.contractAddresses[this.currentNetwork]
+      && this.contractAddresses[this.currentNetwork].tokens[token]) {
       const tokenAddress = this.contractAddresses[this.currentNetwork].tokens[token];
       const tokenContract = new this.web3.eth.Contract(ERC20, tokenAddress);
       return tokenContract.methods.balanceOf(this.currentAccount).call();
@@ -420,7 +420,7 @@ export class NutsPlatformService {
   }
 
   public async createLendingIssuance(principalToken: string, principalAmount: number, collateralToken: string,
-      collateralRatio: number, tenor: number, interestRate: number) {
+    collateralRatio: number, tenor: number, interestRate: number) {
     if (!this.contractAddresses[this.currentNetwork]) {
       alert(`Network ${this.currentNetwork} is not supported!`);
       return;
@@ -459,7 +459,31 @@ export class NutsPlatformService {
         console.log(receipt);
         this.transactionConfirmedSubject.next(receipt.transactionHash);
       });
-      
+
+  }
+
+  public async cancelIssuance(instrument: string, issuanceId: number) {
+    if (!this.contractAddresses[this.currentNetwork]) {
+      alert(`Network ${this.currentNetwork} is not supported!`);
+      return;
+    }
+    if (!this.contractAddresses[this.currentNetwork].platform[instrument]) {
+      alert(`Instrument ${instrument} is not supported!`);
+      return;
+    }
+
+    const instrumentManagerAddress = this.contractAddresses[this.currentNetwork].platform[instrument].instrumentManager;
+    const instrumentManagerContract = new this.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
+    return instrumentManagerContract.methods.notifyCustomEvent(issuanceId, this.web3.utils.fromAscii("cancel_issuance"),
+      this.web3.utils.fromAscii("")).send({from: this.currentAccount, gas: 6721975})
+      .on('transactionHash', (transactionHash) => {
+        console.log(transactionHash);
+        this.transactionSentSubject.next(transactionHash);
+      })
+      .on('receipt', (receipt) => {
+        console.log(receipt);
+        this.transactionConfirmedSubject.next(receipt.transactionHash);
+      });
   }
 
   public async getLendingIssuances() {
@@ -478,9 +502,9 @@ export class NutsPlatformService {
     const instrumentManagerContract = new this.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
     const issuanceCount = await instrumentManagerContract.methods.getLastIssuanceId().call({from: this.currentAccount});
     console.log(issuanceCount);
-    
+
     const batchedRequests = [];
-   for (let i = 1; i <= issuanceCount; i++) {
+    for (let i = 1; i <= issuanceCount; i++) {
       batchedRequests.push(instrumentManagerContract.methods.getCustomData(i, this.web3.utils.fromAscii("lending_data")).call);
     }
     const lendingData = await this.makeBatchRequest(batchedRequests);
@@ -502,13 +526,13 @@ export class NutsPlatformService {
     let batch = new this.web3.BatchRequest();
 
     let promises = calls.map(call => {
-        return new Promise((res, rej) => {
-            let req = call.request({from: this.currentAccount}, (err, data) => {
-                if(err) rej(err);
-                else res(data)
-            });
-            batch.add(req)
-        })
+      return new Promise((res, rej) => {
+        let req = call.request({from: this.currentAccount}, (err, data) => {
+          if (err) rej(err);
+          else res(data)
+        });
+        batch.add(req)
+      })
     })
     batch.execute();
 
@@ -517,7 +541,7 @@ export class NutsPlatformService {
 
   private async bootstrapWeb3() {
     console.log('Bootstrap web3');
-    const { ethereum } = window;
+    const {ethereum} = window;
     if (!ethereum || !ethereum.isMetaMask) {
       throw new Error('Please install MetaMask.')
     }
@@ -526,7 +550,7 @@ export class NutsPlatformService {
     ethereum.on('networkChanged', this.handleNetworkChanged.bind(this));
     console.log(ethereum);
     try {
-      await ethereum.enable();    
+      await ethereum.enable();
     } catch (error) {
       // Access control error
     }
