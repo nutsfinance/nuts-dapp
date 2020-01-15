@@ -12,7 +12,8 @@ const ParametersUtil = require('./abi/ParametersUtil.json');
 
 const INTEREST_RATE_DECIMALS = 10000;
 const COLLATERAL_RATIO_DECIMALS = 100;
-const ETH_ADDRESS = '0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF';
+export const ETH_ADDRESS = '0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF';
+export const USD_ADDRESS = '0x3EfC5E3c4CFFc638E9C506bb0F040EA0d8d3D094';
 
 declare let require: any;
 declare let window: any;
@@ -109,7 +110,8 @@ export class NutsPlatformService {
           instrumentManager: '0x1C0c3A5b50dBc3A7f150AB00259Fcf6804F4e310',
           instrumentEscrow: '0x67423902D8021808Fc072254Ab236A9027C96291'
         },
-        parametersUtil: '0xC75686859e6687508049EC373115dc803b10b3d9'
+        parametersUtil: '0xC75686859e6687508049EC373115dc803b10b3d9',
+        priceOracle: '0xDe728cBf438c730D383E95bbE8B7fE8547CBBdf1'
       }
     },
     42: {
