@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { FormControl, NgForm, FormGroup } from '@angular/forms';
 
 import { NutsPlatformService } from '../../../common/web3/nuts-platform.service';
-import { FormControl, NgForm, FormGroup } from '@angular/forms';
+import { InstrumentEscrowService } from '../../../common/web3/instrument-escrow.service';
 
 @Component({
   selector: 'app-wallet-withdraw',
@@ -16,7 +17,7 @@ export class WalletWithdrawComponent implements OnInit {
   private amountControl: FormControl;
   private withdrawForm: FormGroup;
 
-  constructor(private nutsPlatformService: NutsPlatformService) { }
+  constructor(private nutsPlatformService: NutsPlatformService, private instrumentEscrowService: InstrumentEscrowService) { }
 
   ngOnInit() {
     this.amountControl = new FormControl('', this.validBalance.bind(this));
@@ -38,9 +39,9 @@ export class WalletWithdrawComponent implements OnInit {
       return;
     }
     if (this.selectedToken === 'ETH') {
-      await this.nutsPlatformService.withdrawETH(this.instrument, this.amountControl.value);
+      await this.instrumentEscrowService.withdrawETH(this.instrument, this.amountControl.value);
     } else {
-      await this.nutsPlatformService.withdrawToken(this.instrument, this.selectedToken, this.amountControl.value);
+      await this.instrumentEscrowService.withdrawToken(this.instrument, this.selectedToken, this.amountControl.value);
     }
     this.form.resetForm();
     this.nutsPlatformService.balanceUpdatedSubject.next(this.selectedToken);

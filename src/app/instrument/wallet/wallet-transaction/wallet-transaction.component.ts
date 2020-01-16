@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy, Input, NgZone } from '@angular/core';
-
-import { NutsPlatformService, WalletTransaction } from '../../../common/web3/nuts-platform.service';
-
 import { Subscription } from 'rxjs';
+
+import { NutsPlatformService } from '../../../common/web3/nuts-platform.service';
+import { InstrumentEscrowService, WalletTransaction } from '../../../common/web3/instrument-escrow.service';
 
 @Component({
   selector: 'app-wallet-transaction',
@@ -17,10 +17,13 @@ export class WalletTransactionComponent implements OnInit {
   private accountSubscription: Subscription;
   private balanceSubscription: Subscription;
 
-  constructor(private nutsPlatformService: NutsPlatformService, private zone: NgZone) { }
+  constructor(private nutsPlatformService: NutsPlatformService, private instrumentEscrowService: InstrumentEscrowService,
+              private zone: NgZone) { }
 
-  async ngOnInit() {
-    this.walletTransactions = await this.nutsPlatformService.getWalletTransactions(this.instrument);
+  ngOnInit() {
+    this.instrumentEscrowService.getWalletTransactions(this.instrument).then((transactions) => {
+      this.walletTransactions = transactions;
+    });
     this.networkSubscription = this.nutsPlatformService.currentNetworkSubject.subscribe(() => {
       this.updateWalletTransactions();
     });
@@ -33,15 +36,13 @@ export class WalletTransactionComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    if (this.networkSubscription) {
-      this.networkSubscription.unsubscribe();
-      this.accountSubscription.unsubscribe();
-      this.balanceSubscription.unsubscribe();
-    }
+    this.networkSubscription.unsubscribe();
+    this.accountSubscription.unsubscribe();
+    this.balanceSubscription.unsubscribe();
   }
 
   private async updateWalletTransactions() {
-    const transactions = await this.nutsPlatformService.getWalletTransactions(this.instrument);
+    const transactions = await this.instrumentEscrowService.getWalletTransactions(this.instrument);
     this.zone.run(() => {
       this.walletTransactions = transactions;
     });

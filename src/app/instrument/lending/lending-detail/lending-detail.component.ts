@@ -17,6 +17,8 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
   private lendingToken: string;
   private lendingValue: number;
   private collateralToken: string;
+  private lendingTokenBalance: number;
+  private collateralTokenBalance: number;
 
   private collateralValue: Promise<number>;
   private convertedCollateralValue: Promise<number>;
