@@ -36,6 +36,7 @@ import { WalletComponent } from './instrument/wallet/wallet.component';
 import { MaterialModule } from './material/material-module';
 import { BlockTimestampComponent } from './common/block-timestamp/block-timestamp.component';
 import { LendingDetailComponent } from './instrument/lending/lending-detail/lending-detail.component';
+import { LendingCardComponent } from './instrument/lending/lending-card/lending-card.component';
 
 
 @NgModule({
@@ -75,6 +76,7 @@ import { LendingDetailComponent } from './instrument/lending/lending-detail/lend
     TransactionPendingDialog,
     BlockTimestampComponent,
     LendingDetailComponent,
+    LendingCardComponent,
   ],
   entryComponents: [
     CurrencySelectSheetComponent,
