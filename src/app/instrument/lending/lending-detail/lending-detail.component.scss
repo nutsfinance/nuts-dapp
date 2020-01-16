@@ -71,6 +71,11 @@
     color: white;
 }
 
+.engage-button:not(.valid),
+.repay-button:not(.valid) {
+    background-color: #9B9B9B;
+}
+
 .close-button {
     width: 180px;
 }

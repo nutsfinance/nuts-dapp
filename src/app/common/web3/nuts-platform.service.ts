@@ -467,6 +467,52 @@ export class NutsPlatformService {
 
   }
 
+  public async engageIssuance(instrument: string, issuanceId: number) {
+    if (!this.contractAddresses[this.currentNetwork]) {
+      alert(`Network ${this.currentNetwork} is not supported!`);
+      return;
+    }
+    if (!this.contractAddresses[this.currentNetwork].platform[instrument]) {
+      alert(`Instrument ${instrument} is not supported!`);
+      return;
+    }
+
+    const instrumentManagerAddress = this.contractAddresses[this.currentNetwork].platform[instrument].instrumentManager;
+    const instrumentManagerContract = new this.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
+    return instrumentManagerContract.methods.engageIssuance(issuanceId, this.web3.utils.fromAscii("")).send({from: this.currentAccount, gas: 6721975})
+      .on('transactionHash', (transactionHash) => {
+        console.log(transactionHash);
+        this.transactionSentSubject.next(transactionHash);
+      })
+      .on('receipt', (receipt) => {
+        console.log(receipt);
+        this.transactionConfirmedSubject.next(receipt.transactionHash);
+      });
+  }
+
+  public async repayIssuance(instrument: string, issuanceId: number, tokenAddress: string, amount: number) {
+    if (!this.contractAddresses[this.currentNetwork]) {
+      alert(`Network ${this.currentNetwork} is not supported!`);
+      return;
+    }
+    if (!this.contractAddresses[this.currentNetwork].platform[instrument]) {
+      alert(`Instrument ${instrument} is not supported!`);
+      return;
+    }
+
+    const instrumentManagerAddress = this.contractAddresses[this.currentNetwork].platform[instrument].instrumentManager;
+    const instrumentManagerContract = new this.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
+    return instrumentManagerContract.methods.depositToIssuance(issuanceId, tokenAddress, amount).send({from: this.currentAccount, gas: 6721975})
+      .on('transactionHash', (transactionHash) => {
+        console.log(transactionHash);
+        this.transactionSentSubject.next(transactionHash);
+      })
+      .on('receipt', (receipt) => {
+        console.log(receipt);
+        this.transactionConfirmedSubject.next(receipt.transactionHash);
+      });
+  }
+
   public async cancelIssuance(instrument: string, issuanceId: number) {
     if (!this.contractAddresses[this.currentNetwork]) {
       alert(`Network ${this.currentNetwork} is not supported!`);

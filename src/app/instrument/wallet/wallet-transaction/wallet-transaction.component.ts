@@ -33,9 +33,11 @@ export class WalletTransactionComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.networkSubscription.unsubscribe();
-    this.accountSubscription.unsubscribe();
-    this.balanceSubscription.unsubscribe();
+    if (this.networkSubscription) {
+      this.networkSubscription.unsubscribe();
+      this.accountSubscription.unsubscribe();
+      this.balanceSubscription.unsubscribe();
+    }
   }
 
   private async updateWalletTransactions() {

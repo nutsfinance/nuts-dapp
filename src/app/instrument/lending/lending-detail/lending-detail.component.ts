@@ -63,12 +63,15 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
     this.location.back();
   }
 
-  engageIssuance() {
-
+  async engageIssuance() {
+    const result = await this.nutsPlatformService.engageIssuance('lending', this.issuanceId);
+    console.log(result);
   }
 
-  repayIssuance() {
-
+  async repayIssuance() {
+    const result = await this.nutsPlatformService.repayIssuance('lending', this.issuanceId, this.issuance.lendingTokenAddress,
+      this.issuance.lendingAmount + this.issuance.interestAmount);
+    console.log(result);
   }
 
   async cancelIssuance() {
