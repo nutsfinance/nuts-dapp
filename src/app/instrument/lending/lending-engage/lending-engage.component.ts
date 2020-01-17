@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, NgZone } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { LendingIssuanceDataSource } from '../lending-issuance.datasource';
 import { NutsPlatformService } from '../../../common/web3/nuts-platform.service';
+import { LendingIssuanceModel } from 'src/app/common/model/lending-issuance.model';
 
 @Component({
   selector: 'app-lending-engage',
@@ -10,9 +10,7 @@ import { NutsPlatformService } from '../../../common/web3/nuts-platform.service'
 })
 export class LendingEngageComponent implements OnInit, OnDestroy {
   private currentAccount: string;
-  private lendingIssuanceDataSource = new LendingIssuanceDataSource;
-  private isActionRow = (_, item) => item.action;
-
+  private issuances: LendingIssuanceModel[] = [];
   private accountUpdatedSubscription: Subscription;
   private lendingIssuancesUpdatedSubscription: Subscription;
 
@@ -42,7 +40,7 @@ export class LendingEngageComponent implements OnInit, OnDestroy {
         // Issuances in Engageable state and the maker is not current user.
         return issuance.state === 2 && issuance.makerAddress.toLowerCase() !== this.currentAccount.toLowerCase();
       });
-      this.lendingIssuanceDataSource.setData(lendingIssuances);
+      this.issuances = lendingIssuances;
     });
   }
 }

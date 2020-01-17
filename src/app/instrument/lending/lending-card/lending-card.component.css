@@ -1,7 +1,7 @@
 .issuance-card {
   font-family: "GillSans-Light", Helvetica, Arial, serif;
   color: #4a494a;
-  padding: 22px;
+  padding: 22px 22px 10px;
   margin: 10px;
 }
 .issuance-card-title {
@@ -33,7 +33,8 @@
   width: 12px;
   height: 12px;
 }
-.issuance-card-content {
+.issuance-card-content,
+.more-content-container {
   display: flex;
 }
 .content-container {
@@ -49,6 +50,11 @@
 .content-value {
   font-family: "GillSans", Helvetica, Arial, serif;
   margin-bottom: 3px;
+}
+.more-content-title {
+  font-family: "GillSans-Light", Helvetica, Arial, serif;
+  font-size: 12px;
+  margin: 10px 0;
 }
 .issuance-card-actions {
   display: flex;

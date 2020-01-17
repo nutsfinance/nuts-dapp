@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { LendingIssuanceModel } from 'src/app/common/model/lending-issuance.model';
-import { NutsPlatformService } from 'src/app/common/web3/nuts-platform.service';
+import { NutsPlatformService, USD_ADDRESS } from 'src/app/common/web3/nuts-platform.service';
 import { PriceOracleService } from 'src/app/common/web3/price-oracle.service';
 import { Subscription } from 'rxjs';
 
@@ -17,6 +17,12 @@ export class LendingCardComponent implements OnInit, OnDestroy {
   private collateralToken: string;
   private collateralValue: Promise<number>;
 
+  private convertedLendingValue: Promise<number>;
+  private convertedCollateralValue: Promise<number>;
+  private convertedPerDayInterestValue: Promise<number>;
+  private convertedTotalInterestValue: Promise<number>;
+
+  private showMore = false;
   private currentAccountSubscription: Subscription;
 
 
@@ -35,6 +41,14 @@ export class LendingCardComponent implements OnInit, OnDestroy {
     this.collateralToken = this.nutsPlatformService.getTokenNameByAddress(this.issuance.collateralTokenAddress);
     this.collateralValue = this.issuance.collateralAmount ? Promise.resolve(this.nutsPlatformService.getTokenValueByAddress(this.issuance.lendingTokenAddress, this.issuance.collateralAmount)) :
       this.getConvertedValue(this.issuance.collateralTokenAddress, this.issuance.lendingTokenAddress, this.lendingValue * this.issuance.collateralRatio / 10000);
+
+    this.convertedCollateralValue = this.getConvertedValue(USD_ADDRESS,
+      this.issuance.lendingTokenAddress, this.lendingValue * this.issuance.collateralRatio / 10000);
+    this.convertedLendingValue = this.getConvertedValue(USD_ADDRESS, this.issuance.lendingTokenAddress, this.lendingValue);
+    this.convertedPerDayInterestValue = this.getConvertedValue(USD_ADDRESS, this.issuance.lendingTokenAddress,
+      this.lendingValue * this.issuance.interestRate / 1000000);
+    this.convertedTotalInterestValue = this.getConvertedValue(USD_ADDRESS, this.issuance.lendingTokenAddress,
+      this.lendingValue * this.issuance.interestRate * this.issuance.tenorDays / 1000000);
   }
 
   ngOnDestroy() {

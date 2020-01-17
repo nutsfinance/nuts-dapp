@@ -34,6 +34,7 @@
     <div class="issuance-card-content">
         <div class="content-container">
             <div class="content-label">Principal</div>
+            <div class="content-sublabel">lending</div>
             <div class="content-value">{{lendingValue}} {{lendingToken}}</div>
         </div>
         <div class="content-container">
@@ -51,8 +52,29 @@
             <div class="content-value">{{ lendingValue * issuance.interestRate * issuance.tenorDays / 1000000 }} {{lendingToken}}</div>
         </div>
     </div>
+    <div class="issuance-card-more-content"  *ngIf="showMore">
+        <div class="more-content-title">USD Value</div>
+        <div class="more-content-container">
+            <div class="content-container">
+                <div class="content-sublabel">lending</div>
+                <div class="content-value">$ {{ convertedLendingValue | async }}</div>
+            </div>
+            <div class="content-container">
+                <div class="content-sublabel">required</div>
+                <div class="content-value">$ {{ convertedCollateralValue | async }}</div>
+                <div class="content-sublabel">ratio</div>
+                <div class="content-value">{{ issuance.collateralRatio / 100 }} %</div>
+            </div>
+            <div class="content-container">
+                <div class="content-sublabel">per day</div>
+                <div class="content-value">$ {{ convertedPerDayInterestValue | async }}</div>
+                <div class="content-sublabel">total</div>
+                <div class="content-value">$ {{ convertedTotalInterestValue | async }}</div>
+            </div>
+        </div>
+    </div>
     <div class="issuance-card-actions">
-        <button mat-button color="secondary" class="issuance-action-button">Detail</button>
+        <button mat-button color="secondary" class="issuance-action-button" (click)="showMore = !showMore">{{ showMore ? 'Hide' : 'Detail' }}</button>
         <a mat-raised-button color="primary" class="issuance-action-button engage-button" 
             routerLink="/instrument/lending/{{issuance.issuanceId}}"
             *ngIf="issuance.state == 2 && issuance.makerAddress != currentAccount">
