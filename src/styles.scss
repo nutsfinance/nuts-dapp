@@ -4,3 +4,10 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: "GillSans-Light", Helvetica, Arial, serif;  }
+
+@import '~@angular/material/theming';
+$custom-typography: mat-typography-config(
+  $font-family: '"GillSans", Helvetica, Arial, serif'
+);
+
+@include angular-material-typography($custom-typography);

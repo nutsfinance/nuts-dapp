@@ -1,1 +1,67 @@
-<p>lending-card works!</p>
+<mat-card class="issuance-card">
+    <div class="issuance-card-title">
+        <div>Issuance ID: {{issuance.issuanceId}}</div>
+        <div>
+            <span [ngStyle]="{'color':issuance.state <= 2 ? '#8bc34a' : 'grey', 'font-size': '20px'}">&#8226;</span>
+            {{issuance.getIssuanceState()}}
+        </div>
+    </div>
+    <div class="issuance-card-subtitle">
+        <div class="subtitle-container" *ngIf="issuance.makerAddress == currentAccount || issuance.takerAddress == currentAccount">
+            <div class="subtitle-icon">
+                <img src="../../../../assets/images/role.png" alt="role" class="subtitle-icon-image">
+                role
+            </div>
+            {{ issuance.makerAddress == currentAccount ? 'maker' : 'taker' }}
+        </div>
+
+        <div class="subtitle-container">
+            <div class="subtitle-icon">
+                <img src="../../../../assets/images/calendar.png" alt="expiry" class="subtitle-icon-image">
+                expiry
+            </div>
+            {{(issuance.state == 2 || issuance.state == 5 || issuance.state == 6? issuance.engagementDueTimestamp * 1000 : issuance.issuanceDueTimestamp * 1000) | date: 'MM-dd-yyyy'}}
+        </div>
+
+        <div class="subtitle-container">
+            <div class="subtitle-icon">
+                <img src="../../../../assets/images/calendar.png" alt="tenor" class="subtitle-icon-image">
+                tenor
+            </div>
+            {{issuance.tenorDays}} days
+        </div>
+    </div>
+    <div class="issuance-card-content">
+        <div class="content-container">
+            <div class="content-label">Principal</div>
+            <div class="content-value">{{lendingValue}} {{lendingToken}}</div>
+        </div>
+        <div class="content-container">
+            <div class="content-label">Collateral</div>
+            <div class="content-sublabel">required</div>
+            <div class="content-value">{{ collateralValue | async }} {{collateralToken}}</div>
+            <div class="content-sublabel">ratio</div>
+            <div class="content-value">{{ issuance.collateralRatio / 100 }} %</div>
+        </div>
+        <div class="content-container">
+            <div class="content-label">Interest</div>
+            <div class="content-sublabel">per day</div>
+            <div class="content-value">{{ lendingValue * issuance.interestRate / 1000000 }} {{lendingToken}}</div>
+            <div class="content-sublabel">total</div>
+            <div class="content-value">{{ lendingValue * issuance.interestRate * issuance.tenorDays / 1000000 }} {{lendingToken}}</div>
+        </div>
+    </div>
+    <div class="issuance-card-actions">
+        <button mat-button color="secondary" class="issuance-action-button">Detail</button>
+        <a mat-raised-button color="primary" class="issuance-action-button engage-button" 
+            routerLink="/instrument/lending/{{issuance.issuanceId}}"
+            *ngIf="issuance.state == 2 && issuance.makerAddress != currentAccount">
+            Engage
+        </a>
+        <a mat-stroked-button color="primary" class="issuance-action-button" 
+            routerLink="/instrument/lending/{{issuance.issuanceId}}"
+            *ngIf="issuance.state == 2 && issuance.makerAddress == currentAccount">
+            Close Position
+        </a>
+    </div>
+</mat-card>

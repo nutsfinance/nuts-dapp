@@ -1,8 +1,7 @@
-import {Component, NgZone, OnDestroy, OnInit} from '@angular/core';
-import {Subscription} from 'rxjs';
-import {NutsPlatformService} from '../../../common/web3/nuts-platform.service';
-import {LendingIssuanceDataSource} from '../lending-issuance.datasource';
-
+import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { NutsPlatformService } from '../../../common/web3/nuts-platform.service';
+import { LendingIssuanceModel } from 'src/app/common/model/lending-issuance.model';
 
 @Component({
   selector: 'app-lending-positions',
@@ -12,13 +11,11 @@ import {LendingIssuanceDataSource} from '../lending-issuance.datasource';
 export class LendingPositionsComponent implements OnInit, OnDestroy {
   private selectedTab = 'all';
   private currentAccount: string;
-  private lendingIssuanceDataSource = new LendingIssuanceDataSource;
-  private isActionRow = (_, item) => item.action;
-
+  private issuances: LendingIssuanceModel[] = [];
   private accountUpdatedSubscription: Subscription;
   private lendingIssuancesUpdatedSubscription: Subscription;
 
-  constructor(private nutsPlatformService: NutsPlatformService, private zone: NgZone) {}
+  constructor(private nutsPlatformService: NutsPlatformService, private zone: NgZone) { }
 
   ngOnInit() {
     this.currentAccount = this.nutsPlatformService.currentAccount;
@@ -58,7 +55,7 @@ export class LendingPositionsComponent implements OnInit, OnDestroy {
           issuance.takerAddress.toLowerCase() === this.currentAccount.toLowerCase();
         return inState && inPosition;
       });
-      this.lendingIssuanceDataSource.setData(lendingIssuances);
+      this.issuances = lendingIssuances;
     });
   }
 }
