@@ -59,6 +59,14 @@
   width: 180px;
   color: white;
 }
+.engage-button:not(.valid),
+.repay-button:not(.valid) {
+  background-color: #9b9b9b;
+}
 .close-button {
   width: 180px;
+}
+.deposit-button {
+  float: right;
+  text-decoration: underline;
 }

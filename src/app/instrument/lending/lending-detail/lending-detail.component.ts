@@ -17,10 +17,12 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
   private lendingToken: string;
   private lendingValue: number;
   private collateralToken: string;
-  private lendingTokenBalance: number;
-  private collateralTokenBalance: number;
+  private lendingTokenBalance: number = -1;
+  private collateralTokenBalance: number = -1;
+  private collateralValue = 0;
+  private perDayInterestValue;
+  private totalInterestValue;
 
-  private collateralValue: Promise<number>;
   private convertedCollateralValue: Promise<number>;
   private convertedLendingValue: Promise<number>;
   private convertedPerDayInterestValue: Promise<number>;
@@ -66,14 +68,18 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
   }
 
   async engageIssuance() {
-    const result = await this.nutsPlatformService.engageIssuance('lending', this.issuanceId);
-    console.log(result);
+    if (this.collateralTokenBalance >= this.collateralValue) {
+      const result = await this.nutsPlatformService.engageIssuance('lending', this.issuanceId);
+      console.log(result);
+    }
   }
 
   async repayIssuance() {
-    const result = await this.nutsPlatformService.repayIssuance('lending', this.issuanceId, this.issuance.lendingTokenAddress,
-      this.issuance.lendingAmount + this.issuance.interestAmount);
-    console.log(result);
+    if (this.collateralTokenBalance >= this.lendingValue + this.totalInterestValue) {
+      const result = await this.nutsPlatformService.repayIssuance('lending', this.issuanceId, this.issuance.lendingTokenAddress,
+        this.issuance.lendingAmount + this.issuance.interestAmount);
+      console.log(result);
+    }
   }
 
   async cancelIssuance() {
@@ -90,16 +96,16 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
         this.lendingToken = this.nutsPlatformService.getTokenNameByAddress(this.issuance.lendingTokenAddress);
         this.lendingValue = this.nutsPlatformService.getTokenValueByAddress(this.issuance.lendingTokenAddress, this.issuance.lendingAmount);
         this.collateralToken = this.nutsPlatformService.getTokenNameByAddress(this.issuance.collateralTokenAddress);
-
-        this.collateralValue = this.getConvertedValue(this.issuance.collateralTokenAddress,
-          this.issuance.lendingTokenAddress, this.lendingValue * this.issuance.collateralRatio / 10000);
+        this.perDayInterestValue = this.lendingValue * this.issuance.interestRate / 1000000;
+        this.totalInterestValue = this.perDayInterestValue * this.issuance.tenorDays;
+        this.getConvertedValue(this.issuance.collateralTokenAddress, this.issuance.lendingTokenAddress, this.lendingValue * this.issuance.collateralRatio / 10000).then(value => {
+          this.collateralValue = value;
+        });
         this.convertedCollateralValue = this.getConvertedValue(USD_ADDRESS,
           this.issuance.lendingTokenAddress, this.lendingValue * this.issuance.collateralRatio / 10000);
         this.convertedLendingValue = this.getConvertedValue(USD_ADDRESS, this.issuance.lendingTokenAddress, this.lendingValue);
-        this.convertedPerDayInterestValue = this.getConvertedValue(USD_ADDRESS, this.issuance.lendingTokenAddress,
-          this.lendingValue * this.issuance.interestRate / 1000000);
-        this.convertedTotalInterestValue = this.getConvertedValue(USD_ADDRESS, this.issuance.lendingTokenAddress,
-          this.lendingValue * this.issuance.interestRate * this.issuance.tenorDays / 1000000);
+        this.convertedPerDayInterestValue = this.getConvertedValue(USD_ADDRESS, this.issuance.lendingTokenAddress, this.perDayInterestValue);
+        this.convertedTotalInterestValue = this.getConvertedValue(USD_ADDRESS, this.issuance.lendingTokenAddress, this.totalInterestValue);
       }
     });
   }

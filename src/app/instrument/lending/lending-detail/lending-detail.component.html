@@ -34,7 +34,7 @@
                     required
                 </div>
                 <div class="value-content">
-                    {{ collateralValue | async }} {{collateralToken}}
+                    {{ collateralValue }} {{collateralToken}}
                 </div>
             </div>
             <div class="value-row">
@@ -61,7 +61,7 @@
                     per day
                 </div>
                 <div class="value-content">
-                    {{lendingValue * issuance.interestRate / 1000000}} {{lendingToken}}
+                    {{perDayInterestValue}} {{lendingToken}}
                 </div>
             </div>
             <div class="value-row">
@@ -69,7 +69,7 @@
                     total
                 </div>
                 <div class="value-content">
-                    {{lendingValue * issuance.interestRate * issuance.tenorDays / 1000000}} {{lendingToken}}
+                    {{totalInterestValue}} {{lendingToken}}
                 </div>
             </div>
         </div>
@@ -120,15 +120,40 @@
         <div class="col-xs-2"></div>
     </div>
 
-    <div class="row">
-        <div class="col-xs-12 action-row" *ngIf="issuance.state == 2 && issuance.makerAddress != nutsPlatformService.currentAccount">
-            <button mat-raised-button color="primary" class="engage-button" (click)="engageIssuance()">Engage</button>
+    <div class="row" *ngIf="issuance.state == 2 && issuance.makerAddress != nutsPlatformService.currentAccount">
+        <div class="col-xs-12 action-row">
+            <button mat-raised-button color="primary" [ngClass]="{'engage-button': true, 'valid': collateralTokenBalance >= collateralValue}"
+                (click)="engageIssuance()">Engage</button>
+        </div>
+    </div>
+    <div class="row" [ngStyle]="{'display': collateralTokenBalance >= 0 && collateralTokenBalance < collateralValue ? 'initial' : 'hidden'}"
+        *ngIf="issuance.state == 2 && issuance.makerAddress != nutsPlatformService.currentAccount">
+        <div class="col-xs-12">
+            <span style="color: red;">Insufficient balance</span>
+            (<span style="color: blue;"><app-instrument-escrow-balance [instrument]="'lending'" [selectedToken]="collateralToken"
+                (balanceUpdated)="collateralTokenBalance = $event">
+            </app-instrument-escrow-balance>
+            {{collateralToken}}</span> available)
+            <a class="deposit-button" routerLink="/instrument/lending/wallet">Deposit</a>
         </div>
     </div>
 
     <div class="row">
         <div class="col-xs-12 action-row" *ngIf="issuance.state == 3 && issuance.takerAddress == nutsPlatformService.currentAccount">
-            <button mat-raised-button color="primary" class="repay-button" (click)="repayIssuance()">Repay</button>
+            <button mat-raised-button color="primary" [ngClass]="{'repay-button': true, 'valid': collateralTokenBalance >= lendingValue + totalInterestValue}"
+                (click)="repayIssuance()">Repay</button>
+        </div>
+    </div>
+
+    <div class="row" [ngStyle]="{'display': lendingTokenBalance >= 0 && collateralTokenBalance < lendingValue + totalInterestValue ? 'initial' : 'hidden'}"
+        *ngIf="issuance.state == 3 && issuance.takerAddress == nutsPlatformService.currentAccount">
+        <div class="col-xs-12">
+            <span style="color: red;">Insufficient balance</span>
+            (<span style="color: blue;"><app-instrument-escrow-balance [instrument]="'lending'" [selectedToken]="lendingToken"
+                (balanceUpdated)="lendingTokenBalance = $event">
+            </app-instrument-escrow-balance>
+            {{lendingToken}}</span> available)
+            <a class="deposit-button" routerLink="/instrument/lending/wallet">Deposit</a>
         </div>
     </div>
 

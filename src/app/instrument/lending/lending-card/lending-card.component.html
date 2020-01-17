@@ -80,7 +80,7 @@
             *ngIf="issuance.state == 2 && issuance.makerAddress != currentAccount">
             Engage
         </a>
-        <a mat-stroked-button color="primary" class="issuance-action-button" 
+        <a mat-stroked-button color="primary" class="issuance-action-button close-button" 
             routerLink="/instrument/lending/{{issuance.issuanceId}}"
             *ngIf="issuance.state == 2 && issuance.makerAddress == currentAccount">
             Close Position
