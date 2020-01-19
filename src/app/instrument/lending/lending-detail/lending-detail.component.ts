@@ -56,13 +56,6 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
     this.lendingUpdatedSubscription.unsubscribe();
   }
 
-  async getConvertedValue(baseTokenAddress: string, quoteTokenAddress: string, baseTokenAmount: number) {
-    console.log(baseTokenAddress, quoteTokenAddress, baseTokenAmount);
-    const result = await this.priceOracleService.getPrice(baseTokenAddress, quoteTokenAddress);
-    console.log(result);
-    return baseTokenAmount * result[1] / result[0];
-  }
-
   navigateBack() {
     this.location.back();
   }
@@ -97,15 +90,18 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
         this.lendingValue = this.nutsPlatformService.getTokenValueByAddress(this.issuance.lendingTokenAddress, this.issuance.lendingAmount);
         this.collateralToken = this.nutsPlatformService.getTokenNameByAddress(this.issuance.collateralTokenAddress);
         this.perDayInterestValue = this.lendingValue * this.issuance.interestRate / 1000000;
-        this.totalInterestValue = this.perDayInterestValue * this.issuance.tenorDays;
-        this.getConvertedValue(this.issuance.collateralTokenAddress, this.issuance.lendingTokenAddress, this.lendingValue * this.issuance.collateralRatio / 10000).then(value => {
+        this.totalInterestValue = this.lendingValue * this.issuance.interestRate * this.issuance.tenorDays / 1000000;
+        this.priceOracleService.getConvertedValue(this.issuance.collateralTokenAddress, this.issuance.lendingTokenAddress, this.lendingValue * this.issuance.collateralRatio, 10000).then(value => {
           this.collateralValue = value;
         });
-        this.convertedCollateralValue = this.getConvertedValue(USD_ADDRESS,
-          this.issuance.lendingTokenAddress, this.lendingValue * this.issuance.collateralRatio / 10000);
-        this.convertedLendingValue = this.getConvertedValue(USD_ADDRESS, this.issuance.lendingTokenAddress, this.lendingValue);
-        this.convertedPerDayInterestValue = this.getConvertedValue(USD_ADDRESS, this.issuance.lendingTokenAddress, this.perDayInterestValue);
-        this.convertedTotalInterestValue = this.getConvertedValue(USD_ADDRESS, this.issuance.lendingTokenAddress, this.totalInterestValue);
+        
+        this.convertedCollateralValue = this.priceOracleService.getConvertedValue(USD_ADDRESS,
+          this.issuance.lendingTokenAddress, this.lendingValue * this.issuance.collateralRatio, 10000);
+        this.convertedLendingValue = this.priceOracleService.getConvertedValue(USD_ADDRESS, this.issuance.lendingTokenAddress, this.lendingValue);
+        this.convertedPerDayInterestValue = this.priceOracleService.getConvertedValue(USD_ADDRESS, this.issuance.lendingTokenAddress,
+          this.lendingValue * this.issuance.interestRate, 1000000);
+        this.convertedTotalInterestValue = this.priceOracleService.getConvertedValue(USD_ADDRESS, this.issuance.lendingTokenAddress,
+          this.lendingValue * this.issuance.interestRate * this.issuance.tenorDays, 1000000);
       }
     });
   }

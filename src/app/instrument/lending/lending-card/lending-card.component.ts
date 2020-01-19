@@ -40,25 +40,18 @@ export class LendingCardComponent implements OnInit, OnDestroy {
     this.lendingValue = this.nutsPlatformService.getTokenValueByAddress(this.issuance.lendingTokenAddress, this.issuance.lendingAmount);
     this.collateralToken = this.nutsPlatformService.getTokenNameByAddress(this.issuance.collateralTokenAddress);
     this.collateralValue = this.issuance.collateralAmount ? Promise.resolve(this.nutsPlatformService.getTokenValueByAddress(this.issuance.lendingTokenAddress, this.issuance.collateralAmount)) :
-      this.getConvertedValue(this.issuance.collateralTokenAddress, this.issuance.lendingTokenAddress, this.lendingValue * this.issuance.collateralRatio / 10000);
+      this.priceOracleService.getConvertedValue(this.issuance.collateralTokenAddress, this.issuance.lendingTokenAddress, this.lendingValue * this.issuance.collateralRatio / 10000);
 
-    this.convertedCollateralValue = this.getConvertedValue(USD_ADDRESS,
-      this.issuance.lendingTokenAddress, this.lendingValue * this.issuance.collateralRatio / 10000);
-    this.convertedLendingValue = this.getConvertedValue(USD_ADDRESS, this.issuance.lendingTokenAddress, this.lendingValue);
-    this.convertedPerDayInterestValue = this.getConvertedValue(USD_ADDRESS, this.issuance.lendingTokenAddress,
-      this.lendingValue * this.issuance.interestRate / 1000000);
-    this.convertedTotalInterestValue = this.getConvertedValue(USD_ADDRESS, this.issuance.lendingTokenAddress,
-      this.lendingValue * this.issuance.interestRate * this.issuance.tenorDays / 1000000);
+    this.convertedCollateralValue = this.priceOracleService.getConvertedValue(USD_ADDRESS,
+      this.issuance.lendingTokenAddress, this.lendingValue * this.issuance.collateralRatio, 10000);
+    this.convertedLendingValue = this.priceOracleService.getConvertedValue(USD_ADDRESS, this.issuance.lendingTokenAddress, this.lendingValue);
+    this.convertedPerDayInterestValue = this.priceOracleService.getConvertedValue(USD_ADDRESS, this.issuance.lendingTokenAddress,
+      this.lendingValue * this.issuance.interestRate, 1000000);
+    this.convertedTotalInterestValue = this.priceOracleService.getConvertedValue(USD_ADDRESS, this.issuance.lendingTokenAddress,
+      this.lendingValue * this.issuance.interestRate * this.issuance.tenorDays, 1000000);
   }
 
   ngOnDestroy() {
     this.currentAccountSubscription.unsubscribe();
-  }
-
-  async getConvertedValue(baseTokenAddress: string, quoteTokenAddress: string, baseTokenAmount: number) {
-    console.log(baseTokenAddress, quoteTokenAddress, baseTokenAmount);
-    const result = await this.priceOracleService.getPrice(baseTokenAddress, quoteTokenAddress);
-    console.log(result);
-    return baseTokenAmount * result[1] / result[0];
   }
 }

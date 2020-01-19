@@ -34,4 +34,11 @@ export class PriceOracleService {
 
     return result;
   }
+
+  async getConvertedValue(baseTokenAddress: string, quoteTokenAddress: string, numerator: number, denominator = 1) {
+    console.log(baseTokenAddress, quoteTokenAddress, numerator, denominator);
+    const result = await this.getPrice(baseTokenAddress, quoteTokenAddress);
+    console.log(result);
+    return numerator * result[1] / (result[0] * denominator);
+  }
 }

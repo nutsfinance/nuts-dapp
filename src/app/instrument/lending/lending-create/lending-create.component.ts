@@ -93,10 +93,10 @@ export class LendingCreateComponent implements OnInit {
   }
 
   getInterestValue(): number {
-    const principalAmount = this.createFormGroup.value['principalAmount'];
-    const interestRate = this.createFormGroup.value['interestRate'];
+    const principalAmount = this.createFormGroup.value['principalAmount'] * 10000;
+    const interestRate = this.createFormGroup.value['interestRate'] * 10000;
     const tenor = this.createFormGroup.value['tenor'];
-    const interest = principalAmount * interestRate * tenor / 100;
+    const interest = principalAmount * interestRate * tenor / 10000000000;
     console.log(principalAmount, interestRate, tenor, interest);
 
     return interest;
