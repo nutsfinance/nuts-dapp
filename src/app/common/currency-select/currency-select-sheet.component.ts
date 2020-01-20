@@ -11,7 +11,7 @@ export class CurrencySelectSheetComponent {
 
     selectCurrency(currency: string): void {
         console.log(currency);
-        this._bottomSheetRef.dismiss();
+        this._bottomSheetRef.dismiss(currency);
         event.preventDefault();
     }
 }

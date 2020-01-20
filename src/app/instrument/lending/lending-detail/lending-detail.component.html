@@ -21,7 +21,7 @@
         </div>
 
         <div class="col-xs-3 detail-value">
-            $ {{ convertedLendingValue | async }}
+            {{currencyService.getCurrencySymbol()}} {{ convertedLendingValue | async | number: '1.0-4'}}
         </div>
     </div>
 
@@ -48,7 +48,7 @@
         </div>
 
         <div class="col-xs-3 detail-value">
-            $ {{ convertedCollateralValue | async }}
+            {{currencyService.getCurrencySymbol()}} {{ convertedCollateralValue | async | number: '1.0-4' }}
         </div>
     </div>
 
@@ -76,10 +76,10 @@
 
         <div class="col-xs-3">
             <div class="detail-value">
-                $ {{ convertedPerDayInterestValue | async }}
+                {{currencyService.getCurrencySymbol()}} {{ convertedPerDayInterestValue | async | number: '1.0-4' }}
             </div>
             <div class="detail-value">
-                $ {{ convertedTotalInterestValue | async }}
+                {{currencyService.getCurrencySymbol()}} {{ convertedTotalInterestValue | async | number: '1.0-4' }}
             </div>
         </div>
     </div>

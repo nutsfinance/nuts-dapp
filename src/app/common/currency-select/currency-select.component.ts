@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 
 import { CurrencySelectSheetComponent } from './currency-select-sheet.component';
+import { CurrencyService } from './currency.service';
 
 @Component({
   selector: 'app-currency-select',
@@ -11,12 +12,20 @@ import { CurrencySelectSheetComponent } from './currency-select-sheet.component'
 export class CurrencySelectComponent implements OnInit {
   private currency = 'USD';
 
-  constructor(private _bottomSheet: MatBottomSheet) {}
+  constructor(private _bottomSheet: MatBottomSheet, private currencyService: CurrencyService) {}
 
   ngOnInit() {
+    this.currency = this.currencyService.currency;
   }
 
   openBottomSheet(): void {
-    this._bottomSheet.open(CurrencySelectSheetComponent);
+    const bottomSheetRef = this._bottomSheet.open(CurrencySelectSheetComponent);
+    bottomSheetRef.afterDismissed().subscribe((currency) => {
+      if (this.currency != currency) {
+        console.log(currency);
+        this.currency = currency;
+        this.currencyService.setCurrency(currency);
+      }
+    });
   }
 }

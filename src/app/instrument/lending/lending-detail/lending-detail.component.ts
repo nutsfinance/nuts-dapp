@@ -1,10 +1,11 @@
-import {Location} from '@angular/common';
-import {Component, NgZone, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Subscription} from 'rxjs';
-import {LendingIssuanceModel} from 'src/app/common/model/lending-issuance.model';
-import {NutsPlatformService, USD_ADDRESS} from 'src/app/common/web3/nuts-platform.service';
-import {PriceOracleService} from 'src/app/common/web3/price-oracle.service';
+import { Location } from '@angular/common';
+import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { LendingIssuanceModel } from 'src/app/common/model/lending-issuance.model';
+import { NutsPlatformService, USD_ADDRESS, CNY_ADDRESS } from 'src/app/common/web3/nuts-platform.service';
+import { PriceOracleService } from 'src/app/common/web3/price-oracle.service';
+import { CurrencyService } from 'src/app/common/currency-select/currency.service';
 
 @Component({
   selector: 'app-lending-detail',
@@ -31,9 +32,11 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
   private accountUpdatedSubscription: Subscription;
   private issuanceIdSubscription: Subscription;
   private lendingUpdatedSubscription: Subscription;
+  private currencyUpdatedSubscription: Subscription;
 
   constructor(private nutsPlatformService: NutsPlatformService, private priceOracleService: PriceOracleService,
-    private route: ActivatedRoute, private zone: NgZone, private location: Location) {}
+              private currencyService: CurrencyService, private route: ActivatedRoute, private zone: NgZone,
+              private location: Location) { }
 
   ngOnInit() {
     this.issuanceId = this.route.snapshot.params['id'];
@@ -48,12 +51,16 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
     this.lendingUpdatedSubscription = this.nutsPlatformService.lendingIssuancesUpdatedSubject.subscribe(_ => {
       this.updateLendingIssuance();
     });
+    this.currencyUpdatedSubscription = this.currencyService.currencyUpdatedSubject.subscribe(_ => {
+      this.updateLendingIssuance();
+    });
   }
 
   ngOnDestroy() {
     this.accountUpdatedSubscription.unsubscribe();
     this.issuanceIdSubscription.unsubscribe();
     this.lendingUpdatedSubscription.unsubscribe();
+    this.currencyUpdatedSubscription.unsubscribe();
   }
 
   navigateBack() {
@@ -84,6 +91,7 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
     this.zone.run(() => {
       this.issuance = this.nutsPlatformService.getLendingIssuance(this.issuanceId);
       console.log(this.issuance);
+      console.log(this.currencyService.currency);
       if (this.issuance) {
         console.log(this.issuance.makerAddress, this.nutsPlatformService.currentAccount);
         this.lendingToken = this.nutsPlatformService.getTokenNameByAddress(this.issuance.lendingTokenAddress);
@@ -94,13 +102,14 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
         this.priceOracleService.getConvertedValue(this.issuance.collateralTokenAddress, this.issuance.lendingTokenAddress, this.lendingValue * this.issuance.collateralRatio, 10000).then(value => {
           this.collateralValue = value;
         });
-        
-        this.convertedCollateralValue = this.priceOracleService.getConvertedValue(USD_ADDRESS,
+
+        const targetTokenAddress = this.currencyService.currency === 'USD' ? USD_ADDRESS : CNY_ADDRESS;
+        this.convertedCollateralValue = this.priceOracleService.getConvertedValue(targetTokenAddress,
           this.issuance.lendingTokenAddress, this.lendingValue * this.issuance.collateralRatio, 10000);
-        this.convertedLendingValue = this.priceOracleService.getConvertedValue(USD_ADDRESS, this.issuance.lendingTokenAddress, this.lendingValue);
-        this.convertedPerDayInterestValue = this.priceOracleService.getConvertedValue(USD_ADDRESS, this.issuance.lendingTokenAddress,
+        this.convertedLendingValue = this.priceOracleService.getConvertedValue(targetTokenAddress, this.issuance.lendingTokenAddress, this.lendingValue);
+        this.convertedPerDayInterestValue = this.priceOracleService.getConvertedValue(targetTokenAddress, this.issuance.lendingTokenAddress,
           this.lendingValue * this.issuance.interestRate, 1000000);
-        this.convertedTotalInterestValue = this.priceOracleService.getConvertedValue(USD_ADDRESS, this.issuance.lendingTokenAddress,
+        this.convertedTotalInterestValue = this.priceOracleService.getConvertedValue(targetTokenAddress, this.issuance.lendingTokenAddress,
           this.lendingValue * this.issuance.interestRate * this.issuance.tenorDays, 1000000);
       }
     });

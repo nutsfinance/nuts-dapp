@@ -57,19 +57,19 @@
         <div class="more-content-container">
             <div class="content-container">
                 <div class="content-sublabel">lending</div>
-                <div class="content-value">$ {{ convertedLendingValue | async }}</div>
+                <div class="content-value">{{currencyService.getCurrencySymbol()}} {{ convertedLendingValue | async | number: '1.0-4' }}</div>
             </div>
             <div class="content-container">
                 <div class="content-sublabel">required</div>
-                <div class="content-value">$ {{ convertedCollateralValue | async }}</div>
+                <div class="content-value">{{currencyService.getCurrencySymbol()}} {{ convertedCollateralValue | async | number: '1.0-4' }}</div>
                 <div class="content-sublabel">ratio</div>
                 <div class="content-value">{{ issuance.collateralRatio / 100 }} %</div>
             </div>
             <div class="content-container">
                 <div class="content-sublabel">per day</div>
-                <div class="content-value">$ {{ convertedPerDayInterestValue | async }}</div>
+                <div class="content-value">{{currencyService.getCurrencySymbol()}} {{ convertedPerDayInterestValue | async | number: '1.0-4' }}</div>
                 <div class="content-sublabel">total</div>
-                <div class="content-value">$ {{ convertedTotalInterestValue | async }}</div>
+                <div class="content-value">{{currencyService.getCurrencySymbol()}} {{ convertedTotalInterestValue | async | number: '1.0-4' }}</div>
             </div>
         </div>
     </div>

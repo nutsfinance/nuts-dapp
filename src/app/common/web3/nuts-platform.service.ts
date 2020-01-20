@@ -12,6 +12,7 @@ const INTEREST_RATE_DECIMALS = 10000;
 const COLLATERAL_RATIO_DECIMALS = 100;
 export const ETH_ADDRESS = '0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF';
 export const USD_ADDRESS = '0x3EfC5E3c4CFFc638E9C506bb0F040EA0d8d3D094';
+export const CNY_ADDRESS = '0x2D5254e5905c6671b1804eac23Ba3F1C8773Ee46';
 
 declare let require: any;
 declare let window: any;
@@ -78,30 +79,30 @@ export class NutsPlatformService {
     },
     4: {
       tokens: {
-        USDT: '0xF2d3a89be3a9A499b08F79C2727bE912febed26C',
-        USDC: '0x6111835ded0d415cD3D102A4A1b1d2015c1ee8BE',
-        DAI: '0x6ab06cd020eb552Ef9f0e3A48ccA93Bb6dA7B7Ef',
-        NUTS: '0x51d3F129e5Fb1F1A0010bff7750DDd36651F450e'
+        USDT: '0xc48e183cccC9372951DE2423BF2F30E4eA481748',
+        USDC: '0x47535B02434C1C8E0A1Cc5f3a7d2E19160E4dF48',
+        DAI: '0xb1B522e704B1A50277EEeAC273457Ff90a835301',
+        NUTS: '0xCb5Dff1C09C3e454a9415c82CE141824b64DD62D'
       },
       platform: {
         lending: {
-          instrumentManager: '0xffc0D9B27902880710b801ee565Ec1D495E747E0',
-          instrumentEscrow: '0x7148ac3E660083edB4FD308e089297e9657F2a37'
+          instrumentManager: '0xDf48c167569775299b2Ec61ec9FCAdF82e2e95a8',
+          instrumentEscrow: '0xdBDba63369E3aF1f9146BFfb2b468411e6c65F7d'
         },
         borrowing: {
-          instrumentManager: '0xC2D4EC94001e837AC11797B7675682D37AE3C4F8',
-          instrumentEscrow: '0xDe280CdD16F6E7f26768d928Ff5D304655D9A21D'
+          instrumentManager: '0xf70df9612df76639f6B1Dcd32A0639a6d065B1fA',
+          instrumentEscrow: '0x509b17396821516685725f1Ff854ABd4a8036a33'
         },
         saving: {
-          instrumentManager: '0x146F6b69eCa3c0eF79b7CEa05A57d5Bc43543F23',
-          instrumentEscrow: '0x1269f24AcA218788A55e948ef84b74C099ce98dE'
+          instrumentManager: '0x861838c70E107494fd89726BdE9C193721aE4D92',
+          instrumentEscrow: '0x193d1beBEdb6F62d89D17f94122325d09ff94C72'
         },
         swap: {
-          instrumentManager: '0x1C0c3A5b50dBc3A7f150AB00259Fcf6804F4e310',
-          instrumentEscrow: '0x67423902D8021808Fc072254Ab236A9027C96291'
+          instrumentManager: '0x6EAC28537e8721CC5F112C647ea5C95Ff8c2d447',
+          instrumentEscrow: '0x09A754c505cFfd2a6a34a3c841Ac644Cf0941450'
         },
-        parametersUtil: '0xC75686859e6687508049EC373115dc803b10b3d9',
-        priceOracle: '0xDe728cBf438c730D383E95bbE8B7fE8547CBBdf1'
+        parametersUtil: '0x0604C963c1750D2F440Cf79587441012a05385Af',
+        priceOracle: '0x4d3317c4cE37Da043275bb554CC8Cc50FFaaC949'
       }
     },
     42: {
