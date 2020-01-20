@@ -54,7 +54,7 @@ export class WalletWithdrawComponent implements OnInit {
     if (this.instrumentEscrowBalance < Number(control.value)) {
       return {'insufficientBalance': true};
     }
-    if ((this.selectedToken === 'ETH' && Number.isNaN(control.value)) || Number(control.value) <= 0) {
+    if ((this.selectedToken === 'ETH' && Number.isNaN(Number(control.value))) || Number(control.value) <= 0) {
       return {'nonPositiveAmount': true};
     }
     if (this.selectedToken !== 'ETH' && !/^[1-9][0-9]*$/.test(control.value)) {

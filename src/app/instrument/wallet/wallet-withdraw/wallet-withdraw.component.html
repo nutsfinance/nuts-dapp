@@ -6,7 +6,7 @@
         <span matSuffix (click)="setMaxAmount()">MAX</span>
         <mat-error *ngIf="amountControl.errors && amountControl.errors.required">Please enter amount.</mat-error>
         <mat-error *ngIf="amountControl.errors && amountControl.errors.insufficientBalance">Insufficient balance.</mat-error>
-        <mat-error *ngIf="amountControl.errors && amountControl.errors.nonPositiveAmount">The amount must be positive.</mat-error>
+        <mat-error *ngIf="amountControl.errors && amountControl.errors.nonPositiveAmount">The amount must be positive number.</mat-error>
         <mat-error *ngIf="amountControl.errors && amountControl.errors.nonIntegerAmount">The amount must be integer.</mat-error>
       </mat-form-field>
     </div>

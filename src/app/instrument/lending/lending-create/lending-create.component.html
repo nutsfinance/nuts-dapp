@@ -32,7 +32,7 @@
             <a class="deposit-button" routerLink="/instrument/lending/wallet">Deposit</a>
           </div>
           <div *ngIf="createFormGroup.controls['principalAmount'].errors.nonPositiveAmount">
-            The amount must be positive.
+            The amount must be positive number.
           </div>
           <div *ngIf="createFormGroup.controls['principalAmount'].errors.nonIntegerAmount">
             The amount must be integer.
