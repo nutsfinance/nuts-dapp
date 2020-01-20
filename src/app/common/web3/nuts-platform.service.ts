@@ -87,19 +87,23 @@ export class NutsPlatformService {
       platform: {
         lending: {
           instrumentManager: '0xDf48c167569775299b2Ec61ec9FCAdF82e2e95a8',
-          instrumentEscrow: '0xdBDba63369E3aF1f9146BFfb2b468411e6c65F7d'
+          instrumentEscrow: '0xdBDba63369E3aF1f9146BFfb2b468411e6c65F7d',
+          instrumentId: 2
         },
         borrowing: {
           instrumentManager: '0xf70df9612df76639f6B1Dcd32A0639a6d065B1fA',
-          instrumentEscrow: '0x509b17396821516685725f1Ff854ABd4a8036a33'
+          instrumentEscrow: '0x509b17396821516685725f1Ff854ABd4a8036a33',
+          instrumentId: 3
         },
         saving: {
           instrumentManager: '0x861838c70E107494fd89726BdE9C193721aE4D92',
-          instrumentEscrow: '0x193d1beBEdb6F62d89D17f94122325d09ff94C72'
+          instrumentEscrow: '0x193d1beBEdb6F62d89D17f94122325d09ff94C72',
+          instrumentId: 1
         },
         swap: {
           instrumentManager: '0x6EAC28537e8721CC5F112C647ea5C95Ff8c2d447',
-          instrumentEscrow: '0x09A754c505cFfd2a6a34a3c841Ac644Cf0941450'
+          instrumentEscrow: '0x09A754c505cFfd2a6a34a3c841Ac644Cf0941450',
+          instrumentId: 4
         },
         parametersUtil: '0x0604C963c1750D2F440Cf79587441012a05385Af',
         priceOracle: '0x4d3317c4cE37Da043275bb554CC8Cc50FFaaC949'
@@ -201,6 +205,19 @@ export class NutsPlatformService {
   public getTokenAddressByName(tokenName: string): string {
     if (tokenName === 'ETH')  return ETH_ADDRESS;
     return this.contractAddresses[this.currentNetwork].tokens[tokenName];
+  }
+
+  public getInstrumentId(instrument: string): number {
+    if (!this.contractAddresses[this.currentNetwork]) {
+      alert(`Network ${this.currentNetwork} is not supported!`);
+      return;
+    }
+    if (!this.contractAddresses[this.currentNetwork].platform[instrument]) {
+      alert(`Instrument ${instrument} is not supported!`);
+      return;
+    }
+
+    return this.contractAddresses[this.currentNetwork].platform[instrument].instrumentId;
   }
 
   public async getAccountBalance(token: string): Promise<number> {

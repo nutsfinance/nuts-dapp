@@ -1,6 +1,6 @@
 <mat-card class="issuance-card">
     <div class="issuance-card-title">
-        <div>Issuance ID: {{issuance.issuanceId}}</div>
+        <div>Issuance ID: {{nutsPlatformService.getInstrumentId("lending")}}-{{issuance.issuanceId}}</div>
         <div>
             <span [ngStyle]="{'color':issuance.state <= 2 ? '#8bc34a' : 'grey', 'font-size': '20px'}">&#8226;</span>
             {{issuance.getIssuanceState()}}
@@ -25,7 +25,7 @@
 
         <div class="subtitle-container">
             <div class="subtitle-icon">
-                <img src="../../../../assets/images/calendar.png" alt="tenor" class="subtitle-icon-image">
+                <img src="../../../../assets/images/clock.jpg" alt="tenor" class="subtitle-icon-image">
                 tenor
             </div>
             {{issuance.tenorDays}} days
