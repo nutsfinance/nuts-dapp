@@ -21,7 +21,7 @@ export class CurrencySelectComponent implements OnInit {
   openBottomSheet(): void {
     const bottomSheetRef = this._bottomSheet.open(CurrencySelectSheetComponent);
     bottomSheetRef.afterDismissed().subscribe((currency) => {
-      if (this.currency != currency) {
+      if (currency && this.currency != currency) {
         console.log(currency);
         this.currency = currency;
         this.currencyService.setCurrency(currency);

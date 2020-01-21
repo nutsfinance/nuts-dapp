@@ -25,7 +25,7 @@
 
         <div class="subtitle-container">
             <div class="subtitle-icon">
-                <img src="../../../../assets/images/clock.jpg" alt="tenor" class="subtitle-icon-image">
+                <img src="../../../../assets/images/clock.png" alt="tenor" class="subtitle-icon-image">
                 tenor
             </div>
             {{issuance.tenorDays}} days
@@ -40,7 +40,7 @@
         <div class="content-container">
             <div class="content-label">Collateral</div>
             <div class="content-sublabel">required</div>
-            <div class="content-value">{{ collateralValue | async }} {{collateralToken}}</div>
+            <div class="content-value">{{ collateralValue | async | number: '1.0-4' }} {{collateralToken}}</div>
             <div class="content-sublabel">ratio</div>
             <div class="content-value">{{ issuance.collateralRatio / 100 }} %</div>
         </div>

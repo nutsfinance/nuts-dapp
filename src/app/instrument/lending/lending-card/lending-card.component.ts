@@ -41,7 +41,7 @@ export class LendingCardComponent implements OnInit, OnDestroy {
     this.lendingValue = this.nutsPlatformService.getTokenValueByAddress(this.issuance.lendingTokenAddress, this.issuance.lendingAmount);
     this.collateralToken = this.nutsPlatformService.getTokenNameByAddress(this.issuance.collateralTokenAddress);
     this.collateralValue = this.issuance.collateralAmount ? Promise.resolve(this.nutsPlatformService.getTokenValueByAddress(this.issuance.lendingTokenAddress, this.issuance.collateralAmount)) :
-      this.priceOracleService.getConvertedValue(this.issuance.collateralTokenAddress, this.issuance.lendingTokenAddress, this.lendingValue * this.issuance.collateralRatio / 10000);
+      this.priceOracleService.getConvertedValue(this.issuance.collateralTokenAddress, this.issuance.lendingTokenAddress, this.lendingValue * this.issuance.collateralRatio, 10000);
     this.updateConvertedValues();
     this.currencyUpdatedSubscription = this.currencyService.currencyUpdatedSubject.subscribe(_ => {
       this.updateConvertedValues();

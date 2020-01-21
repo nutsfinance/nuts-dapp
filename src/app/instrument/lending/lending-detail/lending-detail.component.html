@@ -34,7 +34,7 @@
                     required
                 </div>
                 <div class="value-content">
-                    {{ collateralValue }} {{collateralToken}}
+                    {{ collateralValue | number: '1.0-4' }} {{collateralToken}}
                 </div>
             </div>
             <div class="value-row">

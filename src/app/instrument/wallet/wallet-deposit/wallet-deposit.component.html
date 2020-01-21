@@ -3,7 +3,7 @@
     <div class="col-xs-8">
       <mat-form-field appearance="outline" class="deposit-amount-input">
         <input matInput placeholder="Enter amount" formControlName="amount">
-        <span matSuffix (click)="setMaxAmount()">MAX</span>
+        <span matSuffix (click)="setMaxAmount()" style="color:#8bc34a;">MAX</span>
         <mat-error *ngIf="amountControl.errors && amountControl.errors.required">Please enter amount.</mat-error>
         <mat-error *ngIf="amountControl.errors && amountControl.errors.insufficientBalance">Insufficient balance.</mat-error>
         <mat-error *ngIf="amountControl.errors && amountControl.errors.nonPositiveAmount">The amount must be positive number.</mat-error>
