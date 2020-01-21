@@ -1,14 +1,14 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { DataSource } from '@angular/cdk/table';
-import { BehaviorSubject, Subscription } from 'rxjs';
-import { LendingIssuanceModel } from 'src/app/common/model/lending-issuance.model';
-import { NutsPlatformService } from 'src/app/common/web3/nuts-platform.service';
+import {DataSource} from '@angular/cdk/table';
+import {Component, NgZone, OnDestroy, OnInit} from '@angular/core';
+import {BehaviorSubject, Subscription} from 'rxjs';
+import {NutsPlatformService} from 'src/app/common/web3/nuts-platform.service';
 
 interface Position {
   instrument: string,
-  id: number,
+  issuanceId: number,
   creationTimestamp: number,
   role: string,
+  state: string,
   token: string,
   amount: number,
   action: string
@@ -20,41 +20,77 @@ interface Position {
   styleUrls: ['./dashboard-position-balance.component.scss']
 })
 export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
+  private activePositions: Position[] = [];
   private lendingIssuanceSubscription: Subscription;
   private currentAccountSubscription: Subscription;
+  private positionDataSource: PositionDataSource;
 
-  constructor(private nutsPlatformService: NutsPlatformService) { }
+  constructor(private nutsPlatformService: NutsPlatformService, private zone: NgZone) {}
 
   ngOnInit() {
+    this.positionDataSource = new PositionDataSource(this.nutsPlatformService);
+    this.updatePositions();
+    this.lendingIssuanceSubscription = this.nutsPlatformService.lendingIssuancesUpdatedSubject.subscribe(_ => {
+      this.updatePositions();
+    });
+    this.currentAccountSubscription = this.nutsPlatformService.currentAccountSubject.subscribe(_ => {
+      this.updatePositions();
+    });
   }
 
   ngOnDestroy() {
+    this.lendingIssuanceSubscription.unsubscribe();
+    this.currentAccountSubscription.unsubscribe();
+  }
 
+  private updatePositions() {
+    this.zone.run(() => {
+      const positions = [];
+      this.nutsPlatformService.lendingIssuances.forEach(issuance => {
+        // If the current user is maker and the issuance is engageable.
+        if (issuance.makerAddress === this.nutsPlatformService.currentAccount
+          && issuance.state === 2) {
+          positions.push({
+            instrument: 'lending',
+            issuanceId: issuance.issuanceId,
+            creationTimestamp: issuance.creationTimestamp,
+            role: 'maker',
+            state: issuance.getIssuanceState(),
+            token: this.nutsPlatformService.getTokenNameByAddress(issuance.lendingTokenAddress),
+            amount: this.nutsPlatformService.getTokenValueByAddress(issuance.lendingTokenAddress, issuance.lendingAmount),
+            action: 'close'
+          });
+        }
+
+        // If the current user is taker and the issuance is engaged.
+        if (issuance.takerAddress === this.nutsPlatformService.currentAccount
+          && issuance.state == 3) {
+          positions.push({
+            instrument: 'lending',
+            issuanceId: issuance.issuanceId,
+            creationTimestamp: issuance.creationTimestamp,
+            role: 'taker',
+            state: issuance.getIssuanceState(),
+            token: this.nutsPlatformService.getTokenNameByAddress(issuance.lendingTokenAddress),
+            amount: this.nutsPlatformService.getTokenValueByAddress(issuance.lendingTokenAddress, issuance.lendingAmount + issuance.interestAmount),
+            action: 'repay'
+          });
+        }
+      });
+
+      this.activePositions = positions;
+      this.positionDataSource.setData(positions);
+    });
   }
 }
 
-class LendingIssuanceDataSource implements DataSource<Position> {
+class PositionDataSource implements DataSource<Position> {
+
+  constructor(private nutsPlatformService: NutsPlatformService) {}
 
   private positionSubject = new BehaviorSubject<Position[]>([]);
 
-  setData(lendingIssuances: LendingIssuanceModel[]) {
-    const positions = [];
-    lendingIssuances.forEach(issuance => {
-      
-    });
-
-    positions.push(lendingIssuances.map((issuance) => {
-      return {
-        instrument: 'lending',
-        id: issuance.issuanceId,
-        creationTimestamp: issuance.creationTimestamp,
-        role: string,
-        token: string,
-        amount: number,
-        action: string
-      };
-    }));
-
+  setData(positions: Position[]) {
     this.positionSubject.next(positions);
   }
 
@@ -62,5 +98,5 @@ class LendingIssuanceDataSource implements DataSource<Position> {
     return this.positionSubject;
   }
 
-  disconnect() { }
+  disconnect() {}
 }

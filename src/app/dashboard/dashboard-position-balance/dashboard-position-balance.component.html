@@ -1,5 +1,61 @@
 <div class="row">
-    <div class="col-xs-12">
-        <span class="dashboard-label">Position Balance</span>
+    <div class="col-xs-12 dashboard-label">
+        Position Balance
     </div>
 </div>
+
+<div class="row">
+    <div class="col-xs-12 dashboard-sublabel">
+        {{activePositions.length}} active {{activePositions.length > 1 ? 'positions' : 'position'}}
+    </div>
+</div>
+
+<mat-table [dataSource]="positionDataSource" class="positions-table">
+
+    <!-- Type Column -->
+    <ng-container matColumnDef="type">
+      <mat-header-cell *matHeaderCellDef class="position-header"> Type </mat-header-cell>
+      <mat-cell *matCellDef="let position" class="position-content">
+        {{position.instrument | titlecase}}
+      </mat-cell>
+    </ng-container>
+
+    <!-- Role Column -->
+    <ng-container matColumnDef="role">
+      <mat-header-cell *matHeaderCellDef class="position-header"> Role </mat-header-cell>
+      <mat-cell *matCellDef="let position" class="position-content">
+        {{position.role | titlecase}}
+      </mat-cell>
+    </ng-container>
+
+    <!-- Status Column -->
+    <ng-container matColumnDef="status">
+      <mat-header-cell *matHeaderCellDef class="position-header position-status"> Status </mat-header-cell>
+      <mat-cell *matCellDef="let position" class="position-content position-status">
+        {{position.state}}
+      </mat-cell>
+    </ng-container>
+
+    <!-- Amount Column -->
+    <ng-container matColumnDef="amount">
+      <mat-header-cell *matHeaderCellDef class="position-header position-amount"> Amount </mat-header-cell>
+      <mat-cell *matCellDef="let position" class="position-content position-amount">
+        {{position.amount}} {{position.token}}
+      </mat-cell>
+    </ng-container>
+
+    <!-- Action Column -->
+    <ng-container matColumnDef="action">
+      <mat-header-cell *matHeaderCellDef class="position-header"> </mat-header-cell>
+      <mat-cell *matCellDef="let position" class="position-content">
+          <a mat-stroked-button color="primary" class="close-button" routerLink="/instrument/lending/{{position.issuanceId}}"
+            *ngIf="position.action == 'close'">Close</a>
+          <a mat-raised-button color="primary" class="repay-button" routerLink="/instrument/lending/{{position.issuanceId}}"
+            *ngIf="position.action == 'repay'">Repay</a>
+      </mat-cell>
+    </ng-container>
+
+
+    <mat-header-row *matHeaderRowDef="['type', 'role', 'status', 'amount', 'action']"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: ['type', 'role', 'status', 'amount', 'action'];" class="position-content-row"></mat-row>>
+  </mat-table>

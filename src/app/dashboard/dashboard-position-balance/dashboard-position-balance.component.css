@@ -3,5 +3,23 @@
   font-size: 16px;
   color: #4a494a;
   display: inline-block;
-  margin-top: 10px;
+  margin: 10px;
+}
+.dashboard-sublabel {
+  margin: 0 10px;
+}
+.positions-table {
+  min-height: 200px;
+}
+.position-header {
+  font-family: "GillSans", Helvetica, Arial, serif;
+  font-size: 16px;
+}
+.position-content {
+  font-family: "GillSans-Light", Helvetica, Arial, serif;
+  font-size: 12px;
+}
+.position-status {
+  word-break: break-all;
+  min-width: 70px;
 }
