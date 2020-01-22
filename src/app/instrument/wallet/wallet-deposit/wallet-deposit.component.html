@@ -17,25 +17,29 @@
 
   <div class="row">
     <div class="col-xs-12">
-      <img src="../../../../assets/images/wallet-balance.png" class="balance-icon">
-      <span class="balance-content">
-        Wallet Balance:
-        <app-account-balance [selectedToken]="selectedToken" (balanceUpdated)="accountBalance = $event">
-        </app-account-balance>
-        {{selectedToken}}
-      </span>
+      <div class="balance-container">
+        <img src="../../../../assets/images/wallet-balance.png" class="balance-icon">
+        <span class="balance-content">
+          Wallet Balance:
+          <app-account-balance [selectedToken]="selectedToken" (balanceUpdated)="accountBalance = $event">
+          </app-account-balance>
+          {{selectedToken}}
+        </span>
+      </div>
     </div>
   </div>
 
   <div class="row">
     <div class="col-xs-12">
-      <img src="../../../../assets/images/account-balance.png" class="balance-icon">
-      <span class="balance-content">
-        Account Balance:
-        <app-instrument-escrow-balance [instrument]="instrument" [selectedToken]="selectedToken">
-        </app-instrument-escrow-balance>
-        {{selectedToken}}
-      </span>
+      <div class="balance-container">
+        <img src="../../../../assets/images/account-balance.png" class="balance-icon">
+        <span class="balance-content">
+          Account Balance:
+          <app-instrument-escrow-balance [instrument]="instrument" [selectedToken]="selectedToken">
+          </app-instrument-escrow-balance>
+          {{selectedToken}}
+        </span>
+      </div>
     </div>
   </div>
 

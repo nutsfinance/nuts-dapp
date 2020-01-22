@@ -1,6 +1,10 @@
 .deposit-amount-input {
   max-width: 100%;
 }
+.balance-container {
+  display: flex;
+  align-items: center;
+}
 .balance-icon {
   width: 18px;
   margin-right: 8px;
