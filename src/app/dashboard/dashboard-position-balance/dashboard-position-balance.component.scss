@@ -3,11 +3,13 @@
     font-size: 16.0px;
     color: rgba(74, 73, 74, 1.0);
     display: inline-block;
-    margin: 10px;
+    margin: 15px 10px 10px;
 }
 
 .dashboard-sublabel {
-  margin: 0 10px;
+  margin: 0 10px 5px;
+  font-family: "GillSans-Light", Helvetica, Arial, serif;
+  font-size: 12px;
 }
 
 .positions-table {
@@ -27,4 +29,9 @@
 .position-status {
   word-break: break-all;
   min-width: 70px;
+}
+
+.position-value {
+  font-size: 18px;
+  padding-right: 2px;
 }
