@@ -37,6 +37,8 @@ import { MaterialModule } from './material/material-module';
 import { BlockTimestampComponent } from './common/block-timestamp/block-timestamp.component';
 import { LendingDetailComponent } from './instrument/lending/lending-detail/lending-detail.component';
 import { LendingCardComponent } from './instrument/lending/lending-card/lending-card.component';
+import { NotificationComponent } from './notification/notification.component';
+import { NotificationRowComponent } from './notification/notification-row/notification-row.component';
 
 
 @NgModule({
@@ -77,6 +79,8 @@ import { LendingCardComponent } from './instrument/lending/lending-card/lending-
     BlockTimestampComponent,
     LendingDetailComponent,
     LendingCardComponent,
+    NotificationComponent,
+    NotificationRowComponent,
   ],
   entryComponents: [
     CurrencySelectSheetComponent,
