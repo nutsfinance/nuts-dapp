@@ -1,11 +1,13 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent, LanguageSelectSheet, TransactionPendingDialog, TransactionCompleteDialog } from './app.component';
+import { AppComponent, LanguageSelectSheet, TransactionCompleteDialog, TransactionPendingDialog } from './app.component';
 import { AccountAddressComponent } from './common/account-address/account-address.component';
 import { AccountBalanceComponent } from './common/account-balance/account-balance.component';
+import { BlockTimestampComponent } from './common/block-timestamp/block-timestamp.component';
 import { CurrencySelectSheetComponent } from './common/currency-select/currency-select-sheet.component';
 import { CurrencySelectComponent } from './common/currency-select/currency-select.component';
 import { InstrumentEscrowBalanceComponent } from './common/instrument-escrow-balance/instrument-escrow-balance.component';
@@ -20,7 +22,9 @@ import { BorrowingCreateComponent } from './instrument/borrowing/borrowing-creat
 import { BorrowingEngageComponent } from './instrument/borrowing/borrowing-engage/borrowing-engage.component';
 import { BorrowingPositionsComponent } from './instrument/borrowing/borrowing-positions/borrowing-positions.component';
 import { BorrowingComponent } from './instrument/borrowing/borrowing.component';
+import { LendingCardComponent } from './instrument/lending/lending-card/lending-card.component';
 import { LendingCreateComponent } from './instrument/lending/lending-create/lending-create.component';
+import { LendingDetailComponent } from './instrument/lending/lending-detail/lending-detail.component';
 import { LendingEngageComponent } from './instrument/lending/lending-engage/lending-engage.component';
 import { LendingPositionsComponent } from './instrument/lending/lending-positions/lending-positions.component';
 import { LendingComponent } from './instrument/lending/lending.component';
@@ -34,11 +38,8 @@ import { WalletTransactionComponent } from './instrument/wallet/wallet-transacti
 import { WalletWithdrawComponent } from './instrument/wallet/wallet-withdraw/wallet-withdraw.component';
 import { WalletComponent } from './instrument/wallet/wallet.component';
 import { MaterialModule } from './material/material-module';
-import { BlockTimestampComponent } from './common/block-timestamp/block-timestamp.component';
-import { LendingDetailComponent } from './instrument/lending/lending-detail/lending-detail.component';
-import { LendingCardComponent } from './instrument/lending/lending-card/lending-card.component';
-import { NotificationComponent } from './notification/notification.component';
 import { NotificationRowComponent } from './notification/notification-row/notification-row.component';
+import { NotificationComponent } from './notification/notification.component';
 
 
 @NgModule({
@@ -96,6 +97,7 @@ import { NotificationRowComponent } from './notification/notification-row/notifi
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

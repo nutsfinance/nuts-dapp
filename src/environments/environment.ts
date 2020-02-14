@@ -3,7 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  notificationServer: 'http://b5b41197-default-rinkebyno-c2f9-1499220532.us-east-2.elb.amazonaws.com/',
 };
 
 /*

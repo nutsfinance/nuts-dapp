@@ -1,8 +1,9 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, NgForm } from '@angular/forms';
-import { NutsPlatformService } from '../../../common/web3/nuts-platform.service';
 import { InstrumentEscrowService } from '../../../common/web3/instrument-escrow.service';
-
+import { ETH_ADDRESS, NutsPlatformService } from '../../../common/web3/nuts-platform.service';
+import { NotificationService } from '../../../notification/notification.service';
+import { TransactionModel, TransactionType } from '../../../notification/transaction.model';
 
 @Component({
   selector: 'app-wallet-deposit',
@@ -18,7 +19,8 @@ export class WalletDepositComponent implements OnInit {
   private amountControl: FormControl;
   private depositFormGroup: FormGroup;
 
-  constructor(private nutsPlatformService: NutsPlatformService, private instrumentEscrowService: InstrumentEscrowService) { }
+  constructor(private nutsPlatformService: NutsPlatformService, private instrumentEscrowService: InstrumentEscrowService,
+    private notificationService: NotificationService) { }
 
   ngOnInit() {
     this.amountControl = new FormControl('', this.validBalance.bind(this));
@@ -42,11 +44,27 @@ export class WalletDepositComponent implements OnInit {
       return;
     }
     if (this.showApprove) {
-      await this.instrumentEscrowService.approve(this.instrument, this.selectedToken, this.amountControl.value);
+      const receipt = await this.instrumentEscrowService.approve(this.instrument, this.selectedToken, this.amountControl.value);
+      console.log(receipt);
+
+      // Records the new transaction to the backend.
+
       this.showApprove = false;
     } else {
       if (this.selectedToken === 'ETH') {
-        await this.instrumentEscrowService.depositETH(this.instrument, this.amountControl.value);
+        this.instrumentEscrowService.depositETH(this.instrument, this.amountControl.value).on('transactionHash', (transactionHash) => {
+          console.log(transactionHash);
+
+          // Records the transaction
+          const depositTransaction = new TransactionModel(transactionHash, TransactionType.DEPOSIT,
+            this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId(this.instrument),
+            {
+              tokenAddress: ETH_ADDRESS,
+              amount: this.amountControl.value,
+            }
+          );
+          this.notificationService.addTransaction(depositTransaction).subscribe(result => console.log(result));
+        });
       } else {
         await this.instrumentEscrowService.depositToken(this.instrument, this.selectedToken, this.amountControl.value);
       }
