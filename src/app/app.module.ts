@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent, LanguageSelectSheet, TransactionCompleteDialog, TransactionPendingDialog } from './app.component';
+import { AppComponent } from './app.component';
 import { AccountAddressComponent } from './common/account-address/account-address.component';
 import { AccountBalanceComponent } from './common/account-balance/account-balance.component';
 import { BlockTimestampComponent } from './common/block-timestamp/block-timestamp.component';
@@ -40,6 +40,7 @@ import { WalletComponent } from './instrument/wallet/wallet.component';
 import { MaterialModule } from './material/material-module';
 import { NotificationRowComponent } from './notification/notification-row/notification-row.component';
 import { NotificationComponent } from './notification/notification.component';
+import { InstrumentComponent, LanguageSelectSheet, TransactionCompleteDialog, TransactionPendingDialog } from './instrument/instrument.component';
 
 
 @NgModule({
@@ -82,6 +83,7 @@ import { NotificationComponent } from './notification/notification.component';
     LendingCardComponent,
     NotificationComponent,
     NotificationRowComponent,
+    InstrumentComponent,
   ],
   entryComponents: [
     CurrencySelectSheetComponent,

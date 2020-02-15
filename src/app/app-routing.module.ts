@@ -16,16 +16,18 @@ import { SwapCreateComponent } from './instrument/swap/swap-create/swap-create.c
 import { SwapEngageComponent } from './instrument/swap/swap-engage/swap-engage.component';
 import { SwapPositionsComponent } from './instrument/swap/swap-positions/swap-positions.component';
 import { LendingDetailComponent } from './instrument/lending/lending-detail/lending-detail.component';
-
-
+import { InstrumentComponent } from './instrument/instrument.component';
 
 
 const routes: Routes = [
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-  { path: 'dashboard', component: DashboardComponent },
+  { path: '', redirectTo: 'instrument', pathMatch: 'full' },
   {
     path: 'instrument',
+    component: InstrumentComponent,
     children: [
+      {
+        path: '', component: DashboardComponent, pathMatch: 'full',
+      },
       {
         path: 'saving', component: SavingComponent, children: [
           { path: 'wallet', component: WalletComponent, data: { instrument: 'saving' } }
