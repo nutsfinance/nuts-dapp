@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
-import { NutsPlatformService } from './nuts-platform.service';
+
+import { TransactionModel, TransactionType } from '../../notification/transaction.model';
+import { NotificationService } from '../../notification/notification.service';
+import { ETH_ADDRESS, NutsPlatformService } from './nuts-platform.service';
 
 const ERC20 = require('./abi/IERC20.json');
 const InstrumentEscrow = require('./abi/InstrumentEscrowInterface.json');
@@ -18,7 +21,7 @@ export interface WalletTransaction {
 })
 export class InstrumentEscrowService {
 
-  constructor(private nutsPlatformService: NutsPlatformService) { }
+  constructor(private nutsPlatformService: NutsPlatformService, private notificationService: NotificationService) { }
 
   public async getWalletBalance(instrument: string, token: string): Promise<number> {
     if (!this.nutsPlatformService.web3 || !this.nutsPlatformService.currentAccount) {
@@ -82,6 +85,15 @@ export class InstrumentEscrowService {
       .on('transactionHash', (transactionHash) => {
         console.log(transactionHash);
         this.nutsPlatformService.transactionSentSubject.next(transactionHash);
+        // Records the transaction
+        const depositTransaction = new TransactionModel(transactionHash, TransactionType.DEPOSIT,
+          this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId(instrument),
+          {
+            tokenAddress: ETH_ADDRESS,
+            amount: `${amount}`,
+          }
+        );
+        this.notificationService.addTransaction(depositTransaction).subscribe(result => console.log(result));
       })
       .on('receipt', (receipt) => {
         console.log(receipt);

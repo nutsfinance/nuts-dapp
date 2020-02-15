@@ -1,9 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, NgForm } from '@angular/forms';
 import { InstrumentEscrowService } from '../../../common/web3/instrument-escrow.service';
-import { ETH_ADDRESS, NutsPlatformService } from '../../../common/web3/nuts-platform.service';
-import { NotificationService } from '../../../notification/notification.service';
-import { TransactionModel, TransactionType } from '../../../notification/transaction.model';
+import { NutsPlatformService } from '../../../common/web3/nuts-platform.service';
 
 @Component({
   selector: 'app-wallet-deposit',
@@ -19,8 +17,7 @@ export class WalletDepositComponent implements OnInit {
   private amountControl: FormControl;
   private depositFormGroup: FormGroup;
 
-  constructor(private nutsPlatformService: NutsPlatformService, private instrumentEscrowService: InstrumentEscrowService,
-    private notificationService: NotificationService) { }
+  constructor(private nutsPlatformService: NutsPlatformService, private instrumentEscrowService: InstrumentEscrowService) { }
 
   ngOnInit() {
     this.amountControl = new FormControl('', this.validBalance.bind(this));
@@ -52,19 +49,7 @@ export class WalletDepositComponent implements OnInit {
       this.showApprove = false;
     } else {
       if (this.selectedToken === 'ETH') {
-        this.instrumentEscrowService.depositETH(this.instrument, this.amountControl.value).on('transactionHash', (transactionHash) => {
-          console.log(transactionHash);
-
-          // Records the transaction
-          const depositTransaction = new TransactionModel(transactionHash, TransactionType.DEPOSIT,
-            this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId(this.instrument),
-            {
-              tokenAddress: ETH_ADDRESS,
-              amount: this.amountControl.value,
-            }
-          );
-          this.notificationService.addTransaction(depositTransaction).subscribe(result => console.log(result));
-        });
+        await this.instrumentEscrowService.depositETH(this.instrument, this.amountControl.value);
       } else {
         await this.instrumentEscrowService.depositToken(this.instrument, this.selectedToken, this.amountControl.value);
       }

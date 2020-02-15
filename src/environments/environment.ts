@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  notificationServer: 'http://b5b41197-default-rinkebyno-c2f9-1499220532.us-east-2.elb.amazonaws.com/',
+  notificationServer: 'http://b5b41197-default-rinkebyno-c2f9-1499220532.us-east-2.elb.amazonaws.com',
 };
 
 /*

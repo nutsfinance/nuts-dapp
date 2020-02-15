@@ -15,6 +15,8 @@ export class NotificationService {
   constructor(private nutsPlatformService: NutsPlatformService, private http: HttpClient) { }
 
   addTransaction(transaction: TransactionModel) {
-    return this.http.post(`{this.notificationServer}/transactions`, transaction);
+    console.log(this.notificationServer);
+    console.log(`${this.notificationServer}/transactions`);
+    return this.http.post(`${this.notificationServer}/transactions`, transaction);
   }
 }
