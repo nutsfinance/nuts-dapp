@@ -14,10 +14,10 @@ import { InstrumentEscrowBalanceComponent } from './common/instrument-escrow-bal
 import { NetworkToolbarComponent } from './common/network-toolbar/network-toolbar.component';
 import { TokenSelectSheetComponent } from './common/token-select/token-select-sheet.component';
 import { TokenSelectComponent } from './common/token-select/token-select.component';
-import { DashboardAccountBalanceComponent } from './dashboard/dashboard-account-balance/dashboard-account-balance.component';
-import { DashboardMiningBalanceComponent } from './dashboard/dashboard-mining-balance/dashboard-mining-balance.component';
-import { DashboardPositionBalanceComponent } from './dashboard/dashboard-position-balance/dashboard-position-balance.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { DashboardAccountBalanceComponent } from './instrument/dashboard/dashboard-account-balance/dashboard-account-balance.component';
+import { DashboardMiningBalanceComponent } from './instrument/dashboard/dashboard-mining-balance/dashboard-mining-balance.component';
+import { DashboardPositionBalanceComponent } from './instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component';
+import { DashboardComponent } from './instrument/dashboard/dashboard.component';
 import { BorrowingCreateComponent } from './instrument/borrowing/borrowing-create/borrowing-create.component';
 import { BorrowingEngageComponent } from './instrument/borrowing/borrowing-engage/borrowing-engage.component';
 import { BorrowingPositionsComponent } from './instrument/borrowing/borrowing-positions/borrowing-positions.component';

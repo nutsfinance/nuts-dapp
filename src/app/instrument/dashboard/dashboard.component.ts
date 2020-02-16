@@ -1,6 +1,4 @@
-import {Component, OnInit} from '@angular/core';
-import {NutsPlatformService} from '../common/web3/nuts-platform.service';
-
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,7 +7,7 @@ import {NutsPlatformService} from '../common/web3/nuts-platform.service';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor(private nustPlatformService: NutsPlatformService) {}
+  constructor() { }
 
   ngOnInit() {
   }

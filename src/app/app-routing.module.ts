@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { DashboardComponent } from './instrument/dashboard/dashboard.component';
 import { BorrowingComponent } from './instrument/borrowing/borrowing.component';
 import { LendingComponent } from './instrument/lending/lending.component';
 import { SavingComponent } from './instrument/saving/saving.component';
@@ -17,10 +17,12 @@ import { SwapEngageComponent } from './instrument/swap/swap-engage/swap-engage.c
 import { SwapPositionsComponent } from './instrument/swap/swap-positions/swap-positions.component';
 import { LendingDetailComponent } from './instrument/lending/lending-detail/lending-detail.component';
 import { InstrumentComponent } from './instrument/instrument.component';
+import { NotificationComponent } from './notification/notification.component';
 
 
 const routes: Routes = [
   { path: '', redirectTo: 'instrument', pathMatch: 'full' },
+  { path: 'notification', component: NotificationComponent },
   {
     path: 'instrument',
     component: InstrumentComponent,
