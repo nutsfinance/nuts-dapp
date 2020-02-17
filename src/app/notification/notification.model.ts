@@ -8,7 +8,7 @@ export enum NotificationStatus {
   READ = 2,
 }
 
-export class Notification {
+export class NotificationModel {
   constructor(public notificationId: string, public userAddress: string,
     public creationTimestamp: number, public instrumentId: number,
     public issuanceId: number, public category: NotificationCategory,

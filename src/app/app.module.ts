@@ -41,7 +41,7 @@ import { MaterialModule } from './material/material-module';
 import { NotificationRowComponent } from './notification/notification-row/notification-row.component';
 import { NotificationComponent } from './notification/notification.component';
 import { InstrumentComponent, LanguageSelectSheet, TransactionCompleteDialog, TransactionPendingDialog } from './instrument/instrument.component';
-
+import { TimeAgoPipe } from 'time-ago-pipe';
 
 @NgModule({
   declarations: [
@@ -84,6 +84,7 @@ import { InstrumentComponent, LanguageSelectSheet, TransactionCompleteDialog, Tr
     NotificationComponent,
     NotificationRowComponent,
     InstrumentComponent,
+    TimeAgoPipe,
   ],
   entryComponents: [
     CurrencySelectSheetComponent,

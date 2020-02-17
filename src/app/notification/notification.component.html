@@ -1,1 +1,13 @@
-<p>notification works!</p>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 title-container">
+            <img src="../../../../assets/images/navigate_back.png" class="navigate-back" (click)="navigateBack()">
+            <span class="title">Notifications</span>
+        </div>
+    </div>
+
+    <app-notification-row
+        *ngFor="let notification of notifications"
+        [notification]="notification">
+    </app-notification-row>
+</div>

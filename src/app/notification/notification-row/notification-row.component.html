@@ -1,1 +1,19 @@
-<p>notification-row works!</p>
+<div class="row notification-container">
+    <div class="col-xs-2">
+        <div class="notification-icon">
+            <img src="../../../assets/images/transaction-initiated.png" class="icon-image">
+        </div>
+    </div>
+    <div class="col-xs-8">
+        <div class="notification-content">
+            <div class="notification-title">{{notification.title}}</div>
+            <div class="notification-message">{{notification.message}}</div>
+            <div class="notification-timestamp">{{notification.creationTimestamp | timeAgo}}</div>
+        </div>
+    </div>
+    <div class="col-xs-2">
+        <div class="notification-icon">
+            <img src="../../../assets/images/etherscan.png" class="icon-image">
+        </div>
+    </div>
+</div>
