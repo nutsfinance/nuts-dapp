@@ -11,24 +11,37 @@ import { NotificationModel, NotificationCategory, NotificationStatus } from './n
   styleUrls: ['./notification.component.scss']
 })
 export class NotificationComponent implements OnInit, OnDestroy {
+  private showAll = false;
   private notifications: NotificationModel[] = [];
   private notificationSubscription: Subscription;
 
   constructor(private location: Location, private notificationService: NotificationService) { }
 
   ngOnInit() {
-    this.notifications = this.notificationService.notifications;
+    this.updateNotifications();
     this.notificationSubscription = this.notificationService.notificationUpdatedSubject.subscribe(notifications => {
       this.notifications = notifications;
     });
   }
   
   ngOnDestroy() {
-    this.notificationSubscription.unsubscribe();
+    this.updateNotifications();
   }
 
   navigateBack() {
     this.location.back();
   }
 
+  toggleShowAll() {
+    this.showAll = !this.showAll;
+    this.updateNotifications();
+  }
+
+  private updateNotifications() {
+    if (this.showAll) {
+      this.notifications = this.notificationService.notifications;
+    } else {
+      this.notifications = this.notificationService.notifications.filter(notification => notification.status === 'NEW');
+    }
+  }
 }

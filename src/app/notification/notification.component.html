@@ -1,8 +1,12 @@
 <div class="container">
     <div class="row">
         <div class="col-xs-12 title-container">
-            <img src="../../../../assets/images/navigate_back.png" class="navigate-back" (click)="navigateBack()">
-            <span class="title">Notifications</span>
+            <div>
+                <img src="../../../../assets/images/navigate_back.png" class="navigate-back" (click)="navigateBack()">
+                <span class="title">Notifications</span>
+            </div>
+
+            <button mat-button (click)="toggleShowAll()">{{showAll ? 'Unread' : 'All'}}</button>
         </div>
     </div>
 

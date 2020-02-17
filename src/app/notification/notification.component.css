@@ -2,6 +2,7 @@
   height: 90px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 .navigate-back {
   height: 20px;
