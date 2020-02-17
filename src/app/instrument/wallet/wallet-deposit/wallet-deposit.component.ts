@@ -41,11 +41,7 @@ export class WalletDepositComponent implements OnInit {
       return;
     }
     if (this.showApprove) {
-      const receipt = await this.instrumentEscrowService.approve(this.instrument, this.selectedToken, this.amountControl.value);
-      console.log(receipt);
-
-      // Records the new transaction to the backend.
-
+      await this.instrumentEscrowService.approve(this.instrument, this.selectedToken, this.amountControl.value);
       this.showApprove = false;
     } else {
       if (this.selectedToken === 'ETH') {

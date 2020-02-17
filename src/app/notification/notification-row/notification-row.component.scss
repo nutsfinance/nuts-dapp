@@ -1,5 +1,9 @@
 .notification-container {
-    margin-bottom: 25px;
+    padding-bottom: 25px;
+}
+
+.notification-container.read{
+    background-color: #F2F2F2;
 }
 
 .notification-icon {

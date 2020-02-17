@@ -1,4 +1,4 @@
-<div class="row notification-container">
+<div [ngClass]="{'row': true, 'notification-container': true, 'read': notification.status == 'READ'}">
     <div class="col-xs-2">
         <div class="notification-icon" [ngSwitch]="notification.category">
             <img *ngSwitchCase="'TRANSACTION_INITIATED'" src="../../../assets/images/transaction-initiated.png" class="icon-image">
