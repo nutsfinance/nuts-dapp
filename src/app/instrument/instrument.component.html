@@ -66,9 +66,9 @@
         </div>
         <div class="app-toolbar-right">
           <app-currency-select></app-currency-select>
-          <button mat-icon-button color="primary">
-            <mat-icon class="app-toolbar-icon" [matBadge]="unreadNotificationCount"
-              [matBadgeHidden]="unreadNotificationCount == 0"
+          <button mat-icon-button color="primary" (click)="openNotificationDialog()">
+            <mat-icon class="app-toolbar-icon" [matBadge]="unreadNotifications.length"
+              [matBadgeHidden]="unreadNotifications.length == 0"
               matBadgeSize="small" 
               matBadgeColor="warn">notifications_none
             </mat-icon>

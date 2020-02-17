@@ -6,7 +6,8 @@ import { Subscription } from 'rxjs';
 
 import { NutsPlatformService } from '../common/web3/nuts-platform.service';
 import { NotificationService } from '../notification/notification.service';
-import { NotificationStatus } from '../notification/notification.model';
+import { NotificationStatus, NotificationModel } from '../notification/notification.model';
+import { NotificationDialog } from '../notification/notification-dialog/notification-dialog.component';
 
 export interface TransactionData {
   transactionHash: string,
@@ -21,14 +22,15 @@ export interface TransactionData {
 })
 export class InstrumentComponent implements OnInit, OnDestroy {
   private language: string = 'English';
-  private unreadNotificationCount = 0;
 
   private transactionSentSubscription: Subscription;
   private transactionConfirmedSubscription: Subscription;
   private transactionPendingDialog: MatDialogRef<TransactionPendingDialog>;
   private transactionCompleteDialog: MatDialogRef<TransactionCompleteDialog>;
 
+  private unreadNotifications: NotificationModel[] = [];
   private notificationSubscription: Subscription;
+  private notificationDialog: MatDialogRef<NotificationDialog>;
 
   constructor(private _bottomSheet: MatBottomSheet, private dialog: MatDialog, private zone: NgZone,
               private nutsPlatformService: NutsPlatformService, private notificationService: NotificationService) { }
@@ -55,7 +57,7 @@ export class InstrumentComponent implements OnInit, OnDestroy {
     });
 
     this.notificationSubscription = this.notificationService.notificationUpdatedSubject.subscribe(notifications => {
-      this.unreadNotificationCount = notifications.filter(notification => notification.status === NotificationStatus.NEW).length;
+      this.unreadNotifications = notifications.filter(notification => notification.status === NotificationStatus.NEW);
     });
   }
 
@@ -86,6 +88,16 @@ export class InstrumentComponent implements OnInit, OnDestroy {
       if (language) {
         console.log(language);
         this.language = language;
+      }
+    });
+  }
+
+  openNotificationDialog() {
+    this.dialog.open(NotificationDialog, {
+      width: '90%',
+      data: this.unreadNotifications,
+      position: {
+        top: '100px'
       }
     });
   }

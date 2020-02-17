@@ -1,0 +1,65 @@
+.notification-container {
+    margin-bottom: 40px;
+}
+
+.notification-row {
+    padding-bottom: 10px;
+}
+
+.notification-content {
+    padding-right: 0;
+}
+
+.notification-action {
+    text-align: start;
+    margin-top: 45px;
+    padding: 0 10px;
+}
+
+.icon-image {
+    width: 20px;
+    margin-right: 10px;
+}
+
+.action-image {
+    width: 100%;
+}
+
+.notification-title {
+    font-size: 16px;
+    padding: 10px 0 7px 0;
+    font-family: "GillSans", Helvetica, Arial, serif;
+}
+
+.transaction-initiated {
+    color: #AEAEB2;
+}
+
+.transaction-confirmed {
+    color: #82C34D;
+}
+
+.transaction-failed {
+    color: #B52A2A;
+}
+
+.assets {
+    color: #0755ED;
+}
+
+.expiration {
+    color: #F5A623;
+}
+
+.due {
+    color: '#B52A2A';
+}
+
+.notification-timestamp {
+    font-size: 14px;
+    color: #AEAEB2;
+}
+
+.notification-actions {
+    margin-bottom: -18px;
+}

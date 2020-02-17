@@ -42,6 +42,7 @@ import { NotificationRowComponent } from './notification/notification-row/notifi
 import { NotificationComponent } from './notification/notification.component';
 import { InstrumentComponent, LanguageSelectSheet, TransactionCompleteDialog, TransactionPendingDialog } from './instrument/instrument.component';
 import { TimeAgoPipe } from 'time-ago-pipe';
+import { NotificationDialog } from './notification/notification-dialog/notification-dialog.component';
 
 @NgModule({
   declarations: [
@@ -85,6 +86,7 @@ import { TimeAgoPipe } from 'time-ago-pipe';
     NotificationRowComponent,
     InstrumentComponent,
     TimeAgoPipe,
+    NotificationDialog,
   ],
   entryComponents: [
     CurrencySelectSheetComponent,
@@ -92,6 +94,7 @@ import { TimeAgoPipe } from 'time-ago-pipe';
     LanguageSelectSheet,
     TransactionCompleteDialog,
     TransactionPendingDialog,
+    NotificationDialog,
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,44 @@
+<h1 mat-dialog-title>Notifications</h1>
+<hr>
+<div mat-dialog-content class="notification-container">
+    <div class="row notification-row" *ngFor="let notification of notifications">
+        <div class="col-xs-10 notification-content">
+            <div class="notification-title" [ngSwitch]="notification.category">
+                <span *ngSwitchCase="'TRANSACTION_INITIATED'" class="transaction-initiated">
+                    <img src="../../../assets/images/transaction-initiated.png" class="icon-image">
+                    {{notification.title}}
+                </span>
+                <span *ngSwitchCase="'TRANSACTION_CONFIRMED'" class="transaction-confirmed">
+                    <img src="../../../assets/images/transaction-confirmed.png" class="icon-image">
+                    {{notification.title}}
+                </span>
+                <span *ngSwitchCase="'TRANSACTION_FAILED'" class="transaction-failed">
+                    <img src="../../../assets/images/transaction-failed.png" class="icon-image">
+                    {{notification.title}}
+                </span>
+                <span *ngSwitchCase="'ASSETS'" class="assets">
+                    <img src="../../../assets/images/assets.png" class="icon-image">
+                    {{notification.title}}
+                </span>
+                <span *ngSwitchCase="'EXPIRATION'" class="expiration">
+                    <img src="../../../assets/images/expiration.png" class="icon-image">
+                    {{notification.title}}
+                </span>
+                <span *ngSwitchCase="'DUE'" class="due">
+                    <img src="../../../assets/images/due.png" class="icon-image">
+                    {{notification.title}}
+                </span>
+            </div>
+            <div class="notification-message">{{notification.message}}</div>
+            <div class="notification-timestamp">{{notification.creationTimestamp | timeAgo}}</div>
+        </div>
+        <div class="col-xs-2 notification-action">
+            <img src="../../../assets/images/etherscan.png" class="action-image">
+        </div>
+    </div>
+</div>
+<mat-dialog-actions align="end" class="notification-actions">
+    <button color="secondary" mat-button cdkFocusInitial>Read all</button>
+    <button color="primary" mat-button >More</button>
+</mat-dialog-actions>
+
