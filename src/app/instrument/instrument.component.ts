@@ -5,6 +5,8 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { Subscription } from 'rxjs';
 
 import { NutsPlatformService } from '../common/web3/nuts-platform.service';
+import { NotificationService } from '../notification/notification.service';
+import { NotificationStatus } from '../notification/notification.model';
 
 export interface TransactionData {
   transactionHash: string,
@@ -19,13 +21,17 @@ export interface TransactionData {
 })
 export class InstrumentComponent implements OnInit, OnDestroy {
   private language: string = 'English';
+  private unreadNotificationCount = 0;
+
   private transactionSentSubscription: Subscription;
   private transactionConfirmedSubscription: Subscription;
   private transactionPendingDialog: MatDialogRef<TransactionPendingDialog>;
   private transactionCompleteDialog: MatDialogRef<TransactionCompleteDialog>;
 
-  constructor(private _bottomSheet: MatBottomSheet, private dialog: MatDialog,
-              private nutsPlatformService: NutsPlatformService, private zone: NgZone) { }
+  private notificationSubscription: Subscription;
+
+  constructor(private _bottomSheet: MatBottomSheet, private dialog: MatDialog, private zone: NgZone,
+              private nutsPlatformService: NutsPlatformService, private notificationService: NotificationService) { }
 
   ngOnInit() {
     this.transactionSentSubscription = this.nutsPlatformService.transactionSentSubject.subscribe((transactionHash) => {
@@ -47,11 +53,16 @@ export class InstrumentComponent implements OnInit, OnDestroy {
         });
       });      
     });
+
+    this.notificationSubscription = this.notificationService.notificationUpdatedSubject.subscribe(notifications => {
+      this.unreadNotificationCount = notifications.filter(notification => notification.status === NotificationStatus.NEW).length;
+    });
   }
 
   ngOnDestroy() {
     this.transactionSentSubscription.unsubscribe();
     this.transactionConfirmedSubscription.unsubscribe();
+    this.notificationSubscription.unsubscribe();
   }
 
   getTransactionData(transactionHash: string): TransactionData {
