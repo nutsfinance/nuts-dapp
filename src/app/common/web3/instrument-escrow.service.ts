@@ -64,6 +64,16 @@ export class InstrumentEscrowService {
       .on('transactionHash', (transactionHash) => {
         console.log(transactionHash);
         this.nutsPlatformService.transactionSentSubject.next(transactionHash);
+
+        // Records the transaction
+        const depositTransaction = new TransactionModel(transactionHash, TransactionType.APPROVE,
+          this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId(instrument),
+          {
+            tokenAddress: token,
+            amount: `${amount}`,
+          }
+        );
+        this.notificationService.addTransaction(depositTransaction).subscribe(result => console.log(result));
       })
       .on('receipt', (receipt) => {
         console.log(receipt);
