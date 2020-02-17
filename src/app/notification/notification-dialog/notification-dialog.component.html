@@ -1,5 +1,10 @@
-<h1 mat-dialog-title>Notifications</h1>
-<hr>
+<div class="title-container">
+    <h1 class="notifications-title">Notifications</h1>
+    <button mat-icon-button aria-label="Close notification dialog" mat-dialog-close>
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+<hr class="notification-divider">
 <div mat-dialog-content class="notification-container">
     <div class="row notification-row" *ngFor="let notification of notifications">
         <div class="col-xs-10 notification-content">
@@ -38,7 +43,7 @@
     </div>
 </div>
 <mat-dialog-actions align="end" class="notification-actions">
-    <button color="secondary" mat-button cdkFocusInitial>Read all</button>
-    <button color="primary" mat-button >More</button>
+    <button color="secondary" mat-button cdkFocusInitial>Mark all as read</button>
+    <a routerLink="/notification" color="primary" mat-button mat-dialog-close>More</a>
 </mat-dialog-actions>
 

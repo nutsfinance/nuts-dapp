@@ -1,6 +1,20 @@
 .notification-container {
   margin-bottom: 40px;
 }
+.title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.notifications-title {
+  display: inline-block;
+  font: 500 20px/32px "GillSans", Helvetica, Arial, serif;
+  margin: 0;
+}
+.notification-divider {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
 .notification-row {
   padding-bottom: 10px;
 }
@@ -17,7 +31,7 @@
   margin-right: 10px;
 }
 .action-image {
-  width: 100%;
+  width: 95%;
 }
 .notification-title {
   font-size: 16px;
