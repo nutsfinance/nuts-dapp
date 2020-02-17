@@ -1,18 +1,30 @@
 <div class="row notification-container">
     <div class="col-xs-2">
-        <div class="notification-icon">
-            <img src="../../../assets/images/transaction-initiated.png" class="icon-image">
+        <div class="notification-icon" [ngSwitch]="notification.category">
+            <img *ngSwitchCase="'TRANSACTION_INITIATED'" src="../../../assets/images/transaction-initiated.png" class="icon-image">
+            <img *ngSwitchCase="'TRANSACTION_CONFIRMED'" src="../../../assets/images/transaction-confirmed.png" class="icon-image">
+            <img *ngSwitchCase="'TRANSACTION_FAILED'" src="../../../assets/images/transaction-failed.png" class="icon-image">
+            <img *ngSwitchCase="'ASSETS'" src="../../../assets/images/assets.png" class="icon-image">
+            <img *ngSwitchCase="'EXPIRATION'" src="../../../assets/images/expiration.png" class="icon-image">
+            <img *ngSwitchCase="'DUE'" src="../../../assets/images/due.png" class="icon-image">
         </div>
     </div>
     <div class="col-xs-8">
         <div class="notification-content">
-            <div class="notification-title">{{notification.title}}</div>
+            <div class="notification-title" [ngSwitch]="notification.category">
+                <span *ngSwitchCase="'TRANSACTION_INITIATED'" class="transaction-initiated">{{notification.title}}</span>
+                <span *ngSwitchCase="'TRANSACTION_CONFIRMED'" class="transaction-confirmed">{{notification.title}}</span>
+                <span *ngSwitchCase="'TRANSACTION_FAILED'" class="transaction-failed">{{notification.title}}</span>
+                <span *ngSwitchCase="'ASSETS'" class="assets">{{notification.title}}</span>
+                <span *ngSwitchCase="'EXPIRATION'" class="expiration">{{notification.title}}</span>
+                <span *ngSwitchCase="'DUE'" class="due">{{notification.title}}</span>
+            </div>
             <div class="notification-message">{{notification.message}}</div>
             <div class="notification-timestamp">{{notification.creationTimestamp | timeAgo}}</div>
         </div>
     </div>
     <div class="col-xs-2">
-        <div class="notification-icon">
+        <div class="notification-action">
             <img src="../../../assets/images/etherscan.png" class="icon-image">
         </div>
     </div>

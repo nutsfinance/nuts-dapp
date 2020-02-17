@@ -1,7 +1,7 @@
 export enum TransactionType {
-  APPROVE = 1,
-  DEPOSIT = 2,
-  WITHDRAW = 3,
+  APPROVE = 'APPROVE',
+  DEPOSIT = 'DEPOSIT',
+  WITHDRAW = 'WITHDRAW',
 }
 
 export class TransactionModel {

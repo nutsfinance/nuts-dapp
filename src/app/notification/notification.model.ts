@@ -1,11 +1,15 @@
 export enum NotificationCategory {
-  TRANSACTION_INITIATED = 1,
-  TRANSACTION_CONFIRMED = 2,
+  TRANSACTION_INITIATED = 'TRANSACTION_INITIATED',
+  TRANSACTION_CONFIRMED = 'TRANSACTION_CONFIRMED',
+  TRANSACTION_FAILED = 'TRANSACTION_FAILED',
+  ASSETS = 'ASSETS',
+  EXPIRATION = 'EXPIRATION',
+  DUE = 'DUE',
 }
 
 export enum NotificationStatus {
-  NEW = 1,
-  READ = 2,
+  NEW = 'NEW',
+  READ = 'READ',
 }
 
 export class NotificationModel {
