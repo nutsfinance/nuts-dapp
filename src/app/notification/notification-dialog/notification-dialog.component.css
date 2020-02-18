@@ -1,5 +1,6 @@
 .notification-container {
   margin-bottom: 40px;
+  max-height: 40vh;
 }
 .title-container {
   display: flex;
@@ -27,7 +28,7 @@
   padding: 0 10px;
 }
 .icon-image {
-  width: 20px;
+  width: 15px;
   margin-right: 10px;
 }
 .action-image {
@@ -62,4 +63,8 @@
 }
 .notification-actions {
   margin-bottom: -18px;
+}
+.no-notifications {
+  font-size: 16px;
+  padding-top: 20px;
 }
