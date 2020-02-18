@@ -46,7 +46,7 @@ export class InstrumentEscrowService {
     }
   }
 
-  public async approve(instrument: string, token: string, amount: number) {
+  public approve(instrument: string, token: string, amount: number) {
     if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork]) {
       alert(`Network ${this.nutsPlatformService.currentNetwork} is not supported!`);
     }
@@ -83,7 +83,7 @@ export class InstrumentEscrowService {
       });
   }
 
-  public async depositETH(instrument: string, amount: number) {
+  public depositETH(instrument: string, amount: number) {
     if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork]) {
       alert(`Network ${this.nutsPlatformService.currentNetwork} is not supported!`);
     }
@@ -116,7 +116,7 @@ export class InstrumentEscrowService {
       });
   }
 
-  public async depositToken(instrument: string, token: string, amount: number) {
+  public depositToken(instrument: string, token: string, amount: number) {
     if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork]) {
       alert(`Network ${this.nutsPlatformService.currentNetwork} is not supported!`);
     }
@@ -153,7 +153,7 @@ export class InstrumentEscrowService {
       });
   }
 
-  public async withdrawETH(instrument: string, amount: string) {
+  public withdrawETH(instrument: string, amount: string) {
     if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork]) {
       alert(`Network ${this.nutsPlatformService.currentNetwork} is not supported!`);
     }
@@ -186,7 +186,7 @@ export class InstrumentEscrowService {
       });
   }
 
-  public async withdrawToken(instrument: string, token: string, amount: number) {
+  public withdrawToken(instrument: string, token: string, amount: number) {
     if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork]) {
       alert(`Network ${this.nutsPlatformService.currentNetwork} is not supported!`);
     }

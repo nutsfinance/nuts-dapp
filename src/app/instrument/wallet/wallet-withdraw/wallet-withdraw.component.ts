@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, Input, OnInit, ViewChild, NgZone } from '@angular/core';
 import { FormControl, FormGroup, NgForm } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { InstrumentEscrowService } from '../../../common/web3/instrument-escrow.service';
@@ -23,7 +23,8 @@ export class WalletWithdrawComponent implements OnInit {
   private amountControl: FormControl;
   private withdrawForm: FormGroup;
 
-  constructor(private dialog: MatDialog, private nutsPlatformService: NutsPlatformService,
+  constructor(private dialog: MatDialog, private zone: NgZone,
+    private nutsPlatformService: NutsPlatformService,
     private instrumentEscrowService: InstrumentEscrowService) { }
 
   ngOnInit() {
@@ -40,29 +41,36 @@ export class WalletWithdrawComponent implements OnInit {
     this.withdrawForm.patchValue({ amount: this.instrumentEscrowBalance });
   }
 
-  async withdraw() {
+  withdraw() {
     console.log(this.withdrawForm);
     if (!this.withdrawForm.valid) {
       return;
     }
+    let withdrawPromise;
     if (this.selectedToken === 'ETH') {
-      this.instrumentEscrowService.withdrawETH(this.instrument, this.amountControl.value);
+      withdrawPromise = this.instrumentEscrowService.withdrawETH(this.instrument, this.amountControl.value);
+        
     } else {
-      this.instrumentEscrowService.withdrawToken(this.instrument, this.selectedToken, this.amountControl.value);
+      withdrawPromise = this.instrumentEscrowService.withdrawToken(this.instrument, this.selectedToken, this.amountControl.value);
     }
 
-    // Opens Withdraw Initiated dialog.
-    this.dialog.open(WithdrawInitiatedDialog, {
-      width: '90%',
-      data: {
-        fspName: FSP_NAME,
-        tokenName: this.nutsPlatformService.getTokenNameByAddress(this.selectedToken),
-        amount: this.nutsPlatformService.getTokenValueByAddress(this.selectedToken, this.amountControl.value),
-      },
+    withdrawPromise.on('transactionHash', transactionHash => {
+      this.zone.run(() => {
+        // Opens Withdraw Initiated dialog.
+        this.dialog.open(WithdrawInitiatedDialog, {
+          width: '90%',
+          data: {
+            fspName: FSP_NAME,
+            tokenName: this.nutsPlatformService.getTokenNameByAddress(this.selectedToken),
+            amount: this.nutsPlatformService.getTokenValueByAddress(this.selectedToken, this.amountControl.value),
+          },
+        });
+
+        this.form.resetForm();
+        this.nutsPlatformService.balanceUpdatedSubject.next(this.selectedToken);
+      });
     });
 
-    this.form.resetForm();
-    this.nutsPlatformService.balanceUpdatedSubject.next(this.selectedToken);
   }
 
   validBalance(control: FormControl): { [s: string]: boolean } {

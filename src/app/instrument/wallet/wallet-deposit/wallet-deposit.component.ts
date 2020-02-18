@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, Input, OnInit, ViewChild, NgZone } from '@angular/core';
 import { FormControl, FormGroup, NgForm } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { InstrumentEscrowService } from '../../../common/web3/instrument-escrow.service';
@@ -24,7 +24,8 @@ export class WalletDepositComponent implements OnInit {
   private amountControl: FormControl;
   private depositFormGroup: FormGroup;
 
-  constructor(private dialog: MatDialog, private nutsPlatformService: NutsPlatformService,
+  constructor(private dialog: MatDialog, private zone: NgZone,
+    private nutsPlatformService: NutsPlatformService,
     private instrumentEscrowService: InstrumentEscrowService) { }
 
   ngOnInit() {
@@ -42,7 +43,7 @@ export class WalletDepositComponent implements OnInit {
     this.depositFormGroup.patchValue({ amount: this.accountBalance });
   }
 
-  async submit() {
+  submit() {
     console.log(this.amountControl);
     console.log(this.depositFormGroup);
 
@@ -50,37 +51,61 @@ export class WalletDepositComponent implements OnInit {
       return;
     }
     if (this.showApprove) {
-      this.instrumentEscrowService.approve(this.instrument, this.selectedToken, this.amountControl.value);
-      this.showApprove = false;
-
-      // Opens Approval Initiated dialog.
-      this.dialog.open(ApproveInitiatedDialog, {
-        width: '90%',
-        data: {
-          fspName: FSP_NAME,
-          tokenName: this.nutsPlatformService.getTokenNameByAddress(this.selectedToken),
-          amount: this.nutsPlatformService.getTokenValueByAddress(this.selectedToken, this.amountControl.value),
-        },
-      });
+      this.instrumentEscrowService.approve(this.instrument, this.selectedToken, this.amountControl.value)
+        .on('transactionHash', transactionHash => {
+          this.zone.run(() => {
+            // Opens Approval Initiated dialog.
+            this.dialog.open(ApproveInitiatedDialog, {
+              width: '90%',
+              data: {
+                fspName: FSP_NAME,
+                tokenName: this.nutsPlatformService.getTokenNameByAddress(this.selectedToken),
+                amount: this.nutsPlatformService.getTokenValueByAddress(this.selectedToken, this.amountControl.value),
+              },
+            });
+          });
+        });
     } else {
       if (this.selectedToken === 'ETH') {
-        this.instrumentEscrowService.depositETH(this.instrument, this.amountControl.value);
+        this.instrumentEscrowService.depositETH(this.instrument, this.amountControl.value)
+          .on('transactionHash', transactionHash => {
+
+            this.zone.run(() => {
+              // Opens Deposit Initiated dialog.
+              this.dialog.open(DepositInitiatedDialog, {
+                width: '90%',
+                data: {
+                  fspName: FSP_NAME,
+                  tokenName: this.nutsPlatformService.getTokenNameByAddress(this.selectedToken),
+                  amount: this.nutsPlatformService.getTokenValueByAddress(this.selectedToken, this.amountControl.value),
+                },
+              });
+              this.form.resetForm();
+              this.nutsPlatformService.balanceUpdatedSubject.next(this.selectedToken);
+            });
+
+          })
+          .on('error', console.error);
       } else {
-        this.instrumentEscrowService.depositToken(this.instrument, this.selectedToken, this.amountControl.value);
+        this.instrumentEscrowService.depositToken(this.instrument, this.selectedToken, this.amountControl.value)
+          .on('transactionHash', transactionHash => {
+
+            this.zone.run(() => {
+              // Opens Deposit Initiated dialog.
+              this.dialog.open(DepositInitiatedDialog, {
+                width: '90%',
+                data: {
+                  fspName: FSP_NAME,
+                  tokenName: this.nutsPlatformService.getTokenNameByAddress(this.selectedToken),
+                  amount: this.nutsPlatformService.getTokenValueByAddress(this.selectedToken, this.amountControl.value),
+                },
+              });
+              this.form.resetForm();
+              this.nutsPlatformService.balanceUpdatedSubject.next(this.selectedToken);
+            });
+
+          });
       }
-
-      // Opens Deposit Initiated dialog.
-      this.dialog.open(DepositInitiatedDialog, {
-        width: '90%',
-        data: {
-          fspName: FSP_NAME,
-          tokenName: this.nutsPlatformService.getTokenNameByAddress(this.selectedToken),
-          amount: this.nutsPlatformService.getTokenValueByAddress(this.selectedToken, this.amountControl.value),
-        },
-      });
-
-      this.form.resetForm();
-      this.nutsPlatformService.balanceUpdatedSubject.next(this.selectedToken);
     }
   }
 
