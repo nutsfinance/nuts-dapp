@@ -5,10 +5,15 @@
                 <img src="../../../../assets/images/navigate_back.png" class="navigate-back" (click)="navigateBack()">
                 <span class="title">Notifications</span>
             </div>
-            <button color="secondary" mat-button (click)="showSelect = !showSelect">{{showSelect ? 'Cancel' : 'Select'}}</button>
-            <button mat-button (click)="saveNotifications()" *ngIf="showSelect">Mark as Read</button>
-            <button mat-button (click)="toggleShowAll()" *ngIf="!showSelect">{{showAll ? 'Unread' : 'All'}}</button>
+            <button color="secondary" mat-button (click)="showSelect = !showSelect" *ngIf="notifications.length > 0">{{showSelect ? 'Cancel' : 'Select'}}</button>
+            <button mat-button (click)="saveNotifications()" *ngIf="showSelect && notifications.length > 0">Mark as Read</button>
+            <button mat-button (click)="toggleShowAll()" *ngIf="!showSelect && notifications.length > 0">{{showAll ? 'Unread' : 'All'}}</button>
         </div>
+    </div>
+
+    <div class="no-notification-container" *ngIf="notifications.length == 0">
+        <img src="../../assets/images/no-notification.png" class="no-notification-image" />
+        <p class="no-notification-content">You're up to date!</p>
     </div>
 
     <app-notification-row
