@@ -37,7 +37,7 @@ import { SwapPositionsComponent } from './instrument/swap/swap-positions/swap-po
 import { SwapComponent } from './instrument/swap/swap.component';
 import { ApproveInitiatedDialog, DepositInitiatedDialog, WalletDepositComponent } from './instrument/wallet/wallet-deposit/wallet-deposit.component';
 import { WalletTransactionComponent } from './instrument/wallet/wallet-transaction/wallet-transaction.component';
-import { WalletWithdrawComponent } from './instrument/wallet/wallet-withdraw/wallet-withdraw.component';
+import { WalletWithdrawComponent, WithdrawInitiatedDialog } from './instrument/wallet/wallet-withdraw/wallet-withdraw.component';
 import { WalletComponent } from './instrument/wallet/wallet.component';
 import { MaterialModule } from './material/material-module';
 import { NotificationDialog } from './notification/notification-dialog/notification-dialog.component';
@@ -89,6 +89,7 @@ import { NotificationComponent } from './notification/notification.component';
     TimeAgoPipe,
     NotificationDialog,
     DepositInitiatedDialog,
+    WithdrawInitiatedDialog,
   ],
   entryComponents: [
     CurrencySelectSheetComponent,
@@ -99,6 +100,7 @@ import { NotificationComponent } from './notification/notification.component';
     NotificationDialog,
     ApproveInitiatedDialog,
     DepositInitiatedDialog,
+    WithdrawInitiatedDialog,
   ],
   imports: [
     BrowserModule,
