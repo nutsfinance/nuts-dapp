@@ -11,9 +11,11 @@ import { NotificationModel, NotificationCategory, NotificationStatus } from './n
   styleUrls: ['./notification.component.scss']
 })
 export class NotificationComponent implements OnInit, OnDestroy {
-  private showAll = false;
+  private showAll = true;
+  private showSelect = false;
   private notifications: NotificationModel[] = [];
   private notificationSubscription: Subscription;
+  private notificationStatusUpdate: {[id: string]: NotificationStatus} = {};
 
   constructor(private location: Location, private notificationService: NotificationService) { }
 
@@ -35,6 +37,15 @@ export class NotificationComponent implements OnInit, OnDestroy {
   toggleShowAll() {
     this.showAll = !this.showAll;
     this.updateNotifications();
+  }
+
+  onNotificationStatusUpdated(update: {id: string, status: NotificationStatus}) {
+    this.notificationStatusUpdate[update.id] = update.status;
+  }
+
+  saveNotifications() {
+    console.log(this.notificationStatusUpdate);
+    this.showSelect = false;
   }
 
   private updateNotifications() {

@@ -1,12 +1,18 @@
-<div [ngClass]="{'row': true, 'notification-container': true, 'read': notification.status == 'READ'}">
+<div [ngClass]="{'row': true, 'notification-container': true, 'read': notificationStatus == 'READ'}">
     <div class="col-xs-2">
-        <div class="notification-icon" [ngSwitch]="notification.category">
+        <div class="notification-icon" [ngSwitch]="notification.category" *ngIf="!showSelect">
             <img *ngSwitchCase="'TRANSACTION_INITIATED'" src="../../../assets/images/transaction-initiated.png" class="icon-image">
             <img *ngSwitchCase="'TRANSACTION_CONFIRMED'" src="../../../assets/images/transaction-confirmed.png" class="icon-image">
             <img *ngSwitchCase="'TRANSACTION_FAILED'" src="../../../assets/images/transaction-failed.png" class="icon-image">
             <img *ngSwitchCase="'ASSETS'" src="../../../assets/images/assets.png" class="icon-image">
             <img *ngSwitchCase="'EXPIRATION'" src="../../../assets/images/expiration.png" class="icon-image">
             <img *ngSwitchCase="'DUE'" src="../../../assets/images/due.png" class="icon-image">
+        </div>
+        <div class="notification-icon" *ngIf="showSelect">
+            <mat-checkbox color="primary"
+                [checked]="notificationStatus == 'READ'"
+                (change)="onStatusChanged($event)">
+            </mat-checkbox>
         </div>
     </div>
     <div class="col-xs-8">
@@ -25,7 +31,7 @@
     </div>
     <div class="col-xs-2">
         <div class="notification-action">
-            <img src="../../../assets/images/etherscan.png" class="icon-image">
+            <img src="../../../assets/images/etherscan.png" class="icon-image" (click)="openEtherScan()">
         </div>
     </div>
 </div>
