@@ -4,7 +4,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { InstrumentEscrowService } from '../../../common/web3/instrument-escrow.service';
 import { FSP_NAME, NutsPlatformService } from '../../../common/web3/nuts-platform.service';
 
-export interface ApprovalData {
+export interface DepositData {
   fspName: string,
   tokenName: string,
   amount: number,
@@ -58,16 +58,27 @@ export class WalletDepositComponent implements OnInit {
         width: '90%',
         data: {
           fspName: FSP_NAME,
-          tokenName: 'ETH',
-          amount: 2.2
+          tokenName: this.nutsPlatformService.getTokenNameByAddress(this.selectedToken),
+          amount: this.nutsPlatformService.getTokenValueByAddress(this.selectedToken, this.amountControl.value),
         },
       });
     } else {
       if (this.selectedToken === 'ETH') {
-        await this.instrumentEscrowService.depositETH(this.instrument, this.amountControl.value);
+        this.instrumentEscrowService.depositETH(this.instrument, this.amountControl.value);
       } else {
-        await this.instrumentEscrowService.depositToken(this.instrument, this.selectedToken, this.amountControl.value);
+        this.instrumentEscrowService.depositToken(this.instrument, this.selectedToken, this.amountControl.value);
       }
+
+      // Opens Deposit Initiated dialog.
+      this.dialog.open(DepositInitiatedDialog, {
+        width: '90%',
+        data: {
+          fspName: FSP_NAME,
+          tokenName: this.nutsPlatformService.getTokenNameByAddress(this.selectedToken),
+          amount: this.nutsPlatformService.getTokenValueByAddress(this.selectedToken, this.amountControl.value),
+        },
+      });
+
       this.form.resetForm();
       this.nutsPlatformService.balanceUpdatedSubject.next(this.selectedToken);
     }
@@ -104,5 +115,18 @@ export class ApproveInitiatedDialog {
 
   constructor(
     public dialogRef: MatDialogRef<ApproveInitiatedDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: ApprovalData) { }
+    @Inject(MAT_DIALOG_DATA) public data: DepositData) { }
+}
+
+
+@Component({
+  selector: 'deposit-initiated-dialog',
+  templateUrl: 'deposit-initiated-dialog.html',
+  styleUrls: ['./deposit-initiated-dialog.scss'],
+})
+export class DepositInitiatedDialog {
+
+  constructor(
+    public dialogRef: MatDialogRef<DepositInitiatedDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: DepositData) { }
 }

@@ -63,7 +63,7 @@ export class InstrumentEscrowService {
     return tokenContract.methods.approve(instrumentEscrowAddress, amount).send({ from: this.nutsPlatformService.currentAccount })
       .on('transactionHash', (transactionHash) => {
         console.log(transactionHash);
-        this.nutsPlatformService.transactionSentSubject.next(transactionHash);
+        // this.nutsPlatformService.transactionSentSubject.next(transactionHash);
 
         // Records the transaction
         const depositTransaction = new TransactionModel(transactionHash, TransactionType.APPROVE,
@@ -73,7 +73,9 @@ export class InstrumentEscrowService {
             amount: `${amount}`,
           }
         );
-        // this.notificationService.addTransaction(depositTransaction).subscribe(result => console.log(result));
+        this.notificationService.addTransaction(depositTransaction).subscribe(result => console.log(result));
+        // Refreshes the notification
+        this.notificationService.getNotifications(this.nutsPlatformService.currentAccount);
       })
       .on('receipt', (receipt) => {
         console.log(receipt);
@@ -94,7 +96,8 @@ export class InstrumentEscrowService {
     return instrumentEscrowContract.methods.deposit().send({ from: this.nutsPlatformService.currentAccount, value: this.nutsPlatformService.web3.utils.toWei(amount, 'ether') })
       .on('transactionHash', (transactionHash) => {
         console.log(transactionHash);
-        this.nutsPlatformService.transactionSentSubject.next(transactionHash);
+        // this.nutsPlatformService.transactionSentSubject.next(transactionHash);
+
         // Records the transaction
         const depositTransaction = new TransactionModel(transactionHash, TransactionType.DEPOSIT,
           this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId(instrument),
@@ -104,10 +107,12 @@ export class InstrumentEscrowService {
           }
         );
         this.notificationService.addTransaction(depositTransaction).subscribe(result => console.log(result));
+        // Refreshes the notification
+        this.notificationService.getNotifications(this.nutsPlatformService.currentAccount);
       })
       .on('receipt', (receipt) => {
         console.log(receipt);
-        this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
+        // this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
       });
   }
 
@@ -128,11 +133,23 @@ export class InstrumentEscrowService {
     return instrumentEscrowContract.methods.depositToken(tokenAddress, amount).send({ from: this.nutsPlatformService.currentAccount })
       .on('transactionHash', (transactionHash) => {
         console.log(transactionHash);
-        this.nutsPlatformService.transactionSentSubject.next(transactionHash);
+        // this.nutsPlatformService.transactionSentSubject.next(transactionHash);
+
+        // Records the transaction
+        const depositTransaction = new TransactionModel(transactionHash, TransactionType.DEPOSIT,
+          this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId(instrument),
+          {
+            tokenAddress: token,
+            amount: `${amount}`,
+          }
+        );
+        this.notificationService.addTransaction(depositTransaction).subscribe(result => console.log(result));
+        // Refreshes the notification
+        this.notificationService.getNotifications(this.nutsPlatformService.currentAccount);
       })
       .on('receipt', (receipt) => {
         console.log(receipt);
-        this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
+        // this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
       });
   }
 
