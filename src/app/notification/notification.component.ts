@@ -22,7 +22,7 @@ export class NotificationComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.updateNotifications();
     this.notificationSubscription = this.notificationService.notificationUpdatedSubject.subscribe(notifications => {
-      this.notifications = notifications;
+      this.updateNotifications();
     });
   }
   
