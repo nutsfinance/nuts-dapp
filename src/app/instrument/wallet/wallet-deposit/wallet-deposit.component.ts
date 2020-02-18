@@ -1,7 +1,14 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, NgForm } from '@angular/forms';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { InstrumentEscrowService } from '../../../common/web3/instrument-escrow.service';
-import { NutsPlatformService } from '../../../common/web3/nuts-platform.service';
+import { FSP_NAME, NutsPlatformService } from '../../../common/web3/nuts-platform.service';
+
+export interface ApprovalData {
+  fspName: string,
+  tokenName: string,
+  amount: number,
+}
 
 @Component({
   selector: 'app-wallet-deposit',
@@ -17,7 +24,8 @@ export class WalletDepositComponent implements OnInit {
   private amountControl: FormControl;
   private depositFormGroup: FormGroup;
 
-  constructor(private nutsPlatformService: NutsPlatformService, private instrumentEscrowService: InstrumentEscrowService) { }
+  constructor(private dialog: MatDialog, private nutsPlatformService: NutsPlatformService,
+    private instrumentEscrowService: InstrumentEscrowService) { }
 
   ngOnInit() {
     this.amountControl = new FormControl('', this.validBalance.bind(this));
@@ -37,12 +45,23 @@ export class WalletDepositComponent implements OnInit {
   async submit() {
     console.log(this.amountControl);
     console.log(this.depositFormGroup);
+
     if (!this.depositFormGroup.valid) {
       return;
     }
     if (this.showApprove) {
-      await this.instrumentEscrowService.approve(this.instrument, this.selectedToken, this.amountControl.value);
+      this.instrumentEscrowService.approve(this.instrument, this.selectedToken, this.amountControl.value);
       this.showApprove = false;
+
+      // Opens Approval Initiated dialog.
+      this.dialog.open(ApproveInitiatedDialog, {
+        width: '90%',
+        data: {
+          fspName: FSP_NAME,
+          tokenName: 'ETH',
+          amount: 2.2
+        },
+      });
     } else {
       if (this.selectedToken === 'ETH') {
         await this.instrumentEscrowService.depositETH(this.instrument, this.amountControl.value);
@@ -73,4 +92,17 @@ export class WalletDepositComponent implements OnInit {
     }
     return null;
   }
+}
+
+
+@Component({
+  selector: 'approve-initiated-dialog',
+  templateUrl: 'approve-initiated-dialog.html',
+  styleUrls: ['./approve-initiated-dialog.scss'],
+})
+export class ApproveInitiatedDialog {
+
+  constructor(
+    public dialogRef: MatDialogRef<ApproveInitiatedDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: ApprovalData) { }
 }

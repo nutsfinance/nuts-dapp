@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-
-import { TransactionModel, TransactionType } from '../../notification/transaction.model';
 import { NotificationService } from '../../notification/notification.service';
+import { TransactionModel, TransactionType } from '../../notification/transaction.model';
 import { ETH_ADDRESS, NutsPlatformService } from './nuts-platform.service';
+
 
 const ERC20 = require('./abi/IERC20.json');
 const InstrumentEscrow = require('./abi/InstrumentEscrowInterface.json');
@@ -60,7 +60,7 @@ export class InstrumentEscrowService {
     const instrumentEscrowAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument].instrumentEscrow;
     const tokenAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].tokens[token];
     const tokenContract = new this.nutsPlatformService.web3.eth.Contract(ERC20, tokenAddress);
-    return tokenContract.methods.approve(instrumentEscrowAddress, amount).send({from: this.nutsPlatformService.currentAccount})
+    return tokenContract.methods.approve(instrumentEscrowAddress, amount).send({ from: this.nutsPlatformService.currentAccount })
       .on('transactionHash', (transactionHash) => {
         console.log(transactionHash);
         this.nutsPlatformService.transactionSentSubject.next(transactionHash);
@@ -73,11 +73,11 @@ export class InstrumentEscrowService {
             amount: `${amount}`,
           }
         );
-        this.notificationService.addTransaction(depositTransaction).subscribe(result => console.log(result));
+        // this.notificationService.addTransaction(depositTransaction).subscribe(result => console.log(result));
       })
       .on('receipt', (receipt) => {
         console.log(receipt);
-        this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
+        // this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
       });
   }
 
@@ -91,7 +91,7 @@ export class InstrumentEscrowService {
 
     const instrumentEscrowAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument].instrumentEscrow;
     const instrumentEscrowContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentEscrow, instrumentEscrowAddress);
-    return instrumentEscrowContract.methods.deposit().send({from: this.nutsPlatformService.currentAccount, value: this.nutsPlatformService.web3.utils.toWei(amount, 'ether')})
+    return instrumentEscrowContract.methods.deposit().send({ from: this.nutsPlatformService.currentAccount, value: this.nutsPlatformService.web3.utils.toWei(amount, 'ether') })
       .on('transactionHash', (transactionHash) => {
         console.log(transactionHash);
         this.nutsPlatformService.transactionSentSubject.next(transactionHash);
@@ -125,7 +125,7 @@ export class InstrumentEscrowService {
     const instrumentEscrowAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument].instrumentEscrow;
     const instrumentEscrowContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentEscrow, instrumentEscrowAddress);
     const tokenAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].tokens[token];
-    return instrumentEscrowContract.methods.depositToken(tokenAddress, amount).send({from: this.nutsPlatformService.currentAccount})
+    return instrumentEscrowContract.methods.depositToken(tokenAddress, amount).send({ from: this.nutsPlatformService.currentAccount })
       .on('transactionHash', (transactionHash) => {
         console.log(transactionHash);
         this.nutsPlatformService.transactionSentSubject.next(transactionHash);
@@ -146,7 +146,7 @@ export class InstrumentEscrowService {
 
     const instrumentEscrowAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument].instrumentEscrow;
     const instrumentEscrowContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentEscrow, instrumentEscrowAddress);
-    return instrumentEscrowContract.methods.withdraw(this.nutsPlatformService.web3.utils.toWei(`${amount}`, 'ether')).send({from: this.nutsPlatformService.currentAccount})
+    return instrumentEscrowContract.methods.withdraw(this.nutsPlatformService.web3.utils.toWei(`${amount}`, 'ether')).send({ from: this.nutsPlatformService.currentAccount })
       .on('transactionHash', (transactionHash) => {
         console.log(transactionHash);
         this.nutsPlatformService.transactionSentSubject.next(transactionHash);
@@ -171,7 +171,7 @@ export class InstrumentEscrowService {
     const instrumentEscrowAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument].instrumentEscrow;
     const instrumentEscrowContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentEscrow, instrumentEscrowAddress);
     const tokenAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].tokens[token];
-    return instrumentEscrowContract.methods.withdrawToken(tokenAddress, amount).send({from: this.nutsPlatformService.currentAccount})
+    return instrumentEscrowContract.methods.withdrawToken(tokenAddress, amount).send({ from: this.nutsPlatformService.currentAccount })
       .on('transactionHash', (transactionHash) => {
         console.log(transactionHash);
         this.nutsPlatformService.transactionSentSubject.next(transactionHash);
@@ -191,7 +191,7 @@ export class InstrumentEscrowService {
     }
     const instrumentEscrowAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument].instrumentEscrow;
     const instrumentEscrowContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentEscrow, instrumentEscrowAddress);
-    const instrumentEscrowEvents = await instrumentEscrowContract.getPastEvents('allEvents', {fromBlock: 0, toBlock: 'latest'});
+    const instrumentEscrowEvents = await instrumentEscrowContract.getPastEvents('allEvents', { fromBlock: 0, toBlock: 'latest' });
     const transactions: WalletTransaction[] = [];
     instrumentEscrowEvents.forEach((escrowEvent) => {
       if (escrowEvent.event === 'Deposited' && escrowEvent.returnValues.depositer.toLowerCase() === this.nutsPlatformService.currentAccount.toLowerCase()) {

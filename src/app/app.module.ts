@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TimeAgoPipe } from 'time-ago-pipe';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AccountAddressComponent } from './common/account-address/account-address.component';
@@ -14,14 +15,15 @@ import { InstrumentEscrowBalanceComponent } from './common/instrument-escrow-bal
 import { NetworkToolbarComponent } from './common/network-toolbar/network-toolbar.component';
 import { TokenSelectSheetComponent } from './common/token-select/token-select-sheet.component';
 import { TokenSelectComponent } from './common/token-select/token-select.component';
-import { DashboardAccountBalanceComponent } from './instrument/dashboard/dashboard-account-balance/dashboard-account-balance.component';
-import { DashboardMiningBalanceComponent } from './instrument/dashboard/dashboard-mining-balance/dashboard-mining-balance.component';
-import { DashboardPositionBalanceComponent } from './instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component';
-import { DashboardComponent } from './instrument/dashboard/dashboard.component';
 import { BorrowingCreateComponent } from './instrument/borrowing/borrowing-create/borrowing-create.component';
 import { BorrowingEngageComponent } from './instrument/borrowing/borrowing-engage/borrowing-engage.component';
 import { BorrowingPositionsComponent } from './instrument/borrowing/borrowing-positions/borrowing-positions.component';
 import { BorrowingComponent } from './instrument/borrowing/borrowing.component';
+import { DashboardAccountBalanceComponent } from './instrument/dashboard/dashboard-account-balance/dashboard-account-balance.component';
+import { DashboardMiningBalanceComponent } from './instrument/dashboard/dashboard-mining-balance/dashboard-mining-balance.component';
+import { DashboardPositionBalanceComponent } from './instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component';
+import { DashboardComponent } from './instrument/dashboard/dashboard.component';
+import { InstrumentComponent, LanguageSelectSheet, TransactionCompleteDialog, TransactionPendingDialog } from './instrument/instrument.component';
 import { LendingCardComponent } from './instrument/lending/lending-card/lending-card.component';
 import { LendingCreateComponent } from './instrument/lending/lending-create/lending-create.component';
 import { LendingDetailComponent } from './instrument/lending/lending-detail/lending-detail.component';
@@ -33,16 +35,14 @@ import { SwapCreateComponent } from './instrument/swap/swap-create/swap-create.c
 import { SwapEngageComponent } from './instrument/swap/swap-engage/swap-engage.component';
 import { SwapPositionsComponent } from './instrument/swap/swap-positions/swap-positions.component';
 import { SwapComponent } from './instrument/swap/swap.component';
-import { WalletDepositComponent } from './instrument/wallet/wallet-deposit/wallet-deposit.component';
+import { ApproveInitiatedDialog, WalletDepositComponent } from './instrument/wallet/wallet-deposit/wallet-deposit.component';
 import { WalletTransactionComponent } from './instrument/wallet/wallet-transaction/wallet-transaction.component';
 import { WalletWithdrawComponent } from './instrument/wallet/wallet-withdraw/wallet-withdraw.component';
 import { WalletComponent } from './instrument/wallet/wallet.component';
 import { MaterialModule } from './material/material-module';
+import { NotificationDialog } from './notification/notification-dialog/notification-dialog.component';
 import { NotificationRowComponent } from './notification/notification-row/notification-row.component';
 import { NotificationComponent } from './notification/notification.component';
-import { InstrumentComponent, LanguageSelectSheet, TransactionCompleteDialog, TransactionPendingDialog } from './instrument/instrument.component';
-import { TimeAgoPipe } from 'time-ago-pipe';
-import { NotificationDialog } from './notification/notification-dialog/notification-dialog.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +55,7 @@ import { NotificationDialog } from './notification/notification-dialog/notificat
     AccountAddressComponent,
     WalletComponent,
     WalletDepositComponent,
+    ApproveInitiatedDialog,
     WalletWithdrawComponent,
     WalletTransactionComponent,
     LendingCreateComponent,
@@ -95,6 +96,7 @@ import { NotificationDialog } from './notification/notification-dialog/notificat
     TransactionCompleteDialog,
     TransactionPendingDialog,
     NotificationDialog,
+    ApproveInitiatedDialog,
   ],
   imports: [
     BrowserModule,

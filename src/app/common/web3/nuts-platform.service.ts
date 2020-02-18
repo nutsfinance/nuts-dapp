@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
-import {LendingData} from 'nuts-platform-protobuf-messages';
-import {Subject} from 'rxjs';
-import {LendingIssuanceModel} from '../model/lending-issuance.model';
+import { Injectable } from '@angular/core';
+import { LendingData } from 'nuts-platform-protobuf-messages';
+import { Subject } from 'rxjs';
+import { LendingIssuanceModel } from '../model/lending-issuance.model';
 
 const Web3 = require('web3');
 const ERC20 = require('./abi/IERC20.json');
@@ -10,6 +10,7 @@ const ParametersUtil = require('./abi/ParametersUtil.json');
 
 const INTEREST_RATE_DECIMALS = 10000;
 const COLLATERAL_RATIO_DECIMALS = 100;
+export const FSP_NAME = 'acoconut.nuts.finance';
 export const ETH_ADDRESS = '0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF';
 export const USD_ADDRESS = '0x3EfC5E3c4CFFc638E9C506bb0F040EA0d8d3D094';
 export const CNY_ADDRESS = '0x2D5254e5905c6671b1804eac23Ba3F1C8773Ee46';
@@ -21,7 +22,10 @@ declare let window: any;
   providedIn: 'root'
 })
 export class NutsPlatformService {
-  public web3: any;
+
+  /**
+   * Public data that should set in templates.
+   */
   public contractAddresses = {
     1: {
       tokens: {
@@ -165,6 +169,7 @@ export class NutsPlatformService {
     },
   };
 
+  public web3: any;
   public currentAccount: string;
   public currentAccountSubject = new Subject<string>();
   public currentNetwork: number;
@@ -203,7 +208,7 @@ export class NutsPlatformService {
   }
 
   public getTokenAddressByName(tokenName: string): string {
-    if (tokenName === 'ETH')  return ETH_ADDRESS;
+    if (tokenName === 'ETH') return ETH_ADDRESS;
     return this.contractAddresses[this.currentNetwork].tokens[tokenName];
   }
 
@@ -270,11 +275,11 @@ export class NutsPlatformService {
     console.log(collateralTokenAddress, principalTokenAddress, lendingAmount,
       collateralRatio * COLLATERAL_RATIO_DECIMALS, tenor, interestRate * INTEREST_RATE_DECIMALS);
     const lendingParameters = await parametersUtilContract.methods.getLendingMakerParameters(collateralTokenAddress, principalTokenAddress, lendingAmount,
-      collateralRatio * COLLATERAL_RATIO_DECIMALS, tenor, interestRate * INTEREST_RATE_DECIMALS).call({from: this.currentAccount});
+      collateralRatio * COLLATERAL_RATIO_DECIMALS, tenor, interestRate * INTEREST_RATE_DECIMALS).call({ from: this.currentAccount });
 
     const instrumentManagerAddress = this.contractAddresses[this.currentNetwork].platform.lending.instrumentManager;
     const instrumentManagerContract = new this.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
-    return instrumentManagerContract.methods.createIssuance(lendingParameters).send({from: this.currentAccount, gas: 6721975})
+    return instrumentManagerContract.methods.createIssuance(lendingParameters).send({ from: this.currentAccount, gas: 6721975 })
       .on('transactionHash', (transactionHash) => {
         console.log(transactionHash);
         this.transactionSentSubject.next(transactionHash);
@@ -298,7 +303,7 @@ export class NutsPlatformService {
 
     const instrumentManagerAddress = this.contractAddresses[this.currentNetwork].platform[instrument].instrumentManager;
     const instrumentManagerContract = new this.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
-    return instrumentManagerContract.methods.engageIssuance(issuanceId, this.web3.utils.fromAscii("")).send({from: this.currentAccount, gas: 6721975})
+    return instrumentManagerContract.methods.engageIssuance(issuanceId, this.web3.utils.fromAscii("")).send({ from: this.currentAccount, gas: 6721975 })
       .on('transactionHash', (transactionHash) => {
         console.log(transactionHash);
         this.transactionSentSubject.next(transactionHash);
@@ -321,7 +326,7 @@ export class NutsPlatformService {
 
     const instrumentManagerAddress = this.contractAddresses[this.currentNetwork].platform[instrument].instrumentManager;
     const instrumentManagerContract = new this.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
-    return instrumentManagerContract.methods.depositToIssuance(issuanceId, tokenAddress, amount).send({from: this.currentAccount, gas: 6721975})
+    return instrumentManagerContract.methods.depositToIssuance(issuanceId, tokenAddress, amount).send({ from: this.currentAccount, gas: 6721975 })
       .on('transactionHash', (transactionHash) => {
         console.log(transactionHash);
         this.transactionSentSubject.next(transactionHash);
@@ -345,7 +350,7 @@ export class NutsPlatformService {
     const instrumentManagerAddress = this.contractAddresses[this.currentNetwork].platform[instrument].instrumentManager;
     const instrumentManagerContract = new this.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
     return instrumentManagerContract.methods.notifyCustomEvent(issuanceId, this.web3.utils.fromAscii("cancel_issuance"),
-      this.web3.utils.fromAscii("")).send({from: this.currentAccount, gas: 6721975})
+      this.web3.utils.fromAscii("")).send({ from: this.currentAccount, gas: 6721975 })
       .on('transactionHash', (transactionHash) => {
         console.log(transactionHash);
         this.transactionSentSubject.next(transactionHash);
@@ -370,7 +375,7 @@ export class NutsPlatformService {
     }
     const instrumentManagerAddress = this.contractAddresses[this.currentNetwork].platform.lending.instrumentManager;
     const instrumentManagerContract = new this.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
-    const issuanceCount = await instrumentManagerContract.methods.getLastIssuanceId().call({from: this.currentAccount});
+    const issuanceCount = await instrumentManagerContract.methods.getLastIssuanceId().call({ from: this.currentAccount });
     console.log(issuanceCount);
 
     const batchedRequests = [];
@@ -397,7 +402,7 @@ export class NutsPlatformService {
 
     let promises = calls.map(call => {
       return new Promise((res, rej) => {
-        let req = call.request({from: this.currentAccount}, (err, data) => {
+        let req = call.request({ from: this.currentAccount }, (err, data) => {
           if (err) rej(err);
           else res(data)
         });
@@ -411,7 +416,7 @@ export class NutsPlatformService {
 
   private async bootstrapWeb3() {
     console.log('Bootstrap web3');
-    const {ethereum} = window;
+    const { ethereum } = window;
     if (!ethereum || !ethereum.isMetaMask) {
       throw new Error('Please install MetaMask.')
     }
