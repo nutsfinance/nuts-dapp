@@ -5,3 +5,6 @@
   display: inline-block;
   margin: 10px;
 }
+.balance-container {
+  height: 500px;
+}
