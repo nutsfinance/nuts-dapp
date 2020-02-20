@@ -25,7 +25,7 @@
                 <span *ngSwitchCase="'EXPIRATION'" class="expiration">{{notification.title}}</span>
                 <span *ngSwitchCase="'DUE'" class="due">{{notification.title}}</span>
             </div>
-            <div class="notification-message">{{notification.message}}</div>
+            <div class="notification-message">{{notification.message}} <a [href]="getEtherscanLink()" *ngIf="notification.transactionHash">{{getTransactionShortHash()}}</a></div>
             <div class="notification-timestamp">{{notification.creationTimestamp | timeAgo}}</div>
         </div>
     </div>

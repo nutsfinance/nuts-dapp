@@ -34,7 +34,10 @@
                     {{notification.title}}
                 </span>
             </div>
-            <div class="notification-message">{{notification.message}}</div>
+            <div class="notification-message">
+                {{notification.message}} 
+                <a [href]="getEtherscanLink(notification.transactionHash)" *ngIf="notification.transactionHash">{{getTransactionShortHash(notification.transactionHash)}}</a>
+            </div>
             <div class="notification-timestamp">{{notification.creationTimestamp | timeAgo}}</div>
         </div>
         <div class="col-xs-2 notification-action">

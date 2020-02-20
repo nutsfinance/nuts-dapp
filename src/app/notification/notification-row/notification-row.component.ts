@@ -2,6 +2,7 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitte
 
 import { NotificationModel, NotificationStatus } from '../notification.model';
 import { MatCheckboxChange } from '@angular/material';
+import { NutsPlatformService } from 'src/app/common/web3/nuts-platform.service';
 
 @Component({
   selector: 'app-notification-row',
@@ -14,7 +15,7 @@ export class NotificationRowComponent implements OnInit, OnChanges {
   @Output() statusUpdated = new EventEmitter<{id: string, status: NotificationStatus}>();
   private notificationStatus: NotificationStatus;
 
-  constructor() { }
+  constructor(private nutsPlatformService: NutsPlatformService) { }
 
   ngOnInit() {
     this.notificationStatus = this.notification.status;
@@ -31,8 +32,23 @@ export class NotificationRowComponent implements OnInit, OnChanges {
     this.statusUpdated.next({id: this.notification.notificationId, status: this.notificationStatus});
   }
 
-  openEtherScan() {
-    console.log('Open Ether scan');
-    return false;
+  getEtherscanLink(): string {
+    switch(this.nutsPlatformService.currentNetwork) {
+      case 1:
+        return `https://etherscan.io/tx/${this.notification.transactionHash}`;
+      case 3:
+        return `https://ropsten.etherscan.io/tx/${this.notification.transactionHash}`;
+      case 4:
+        return `https://rinkeby.etherscan.io/tx/${this.notification.transactionHash}`;
+      case 42:
+        return `https://kovan.etherscan.io/tx/${this.notification.transactionHash}`;
+      default:
+        return '';
+    }
+  }
+
+  getTransactionShortHash(): string {
+    const transactionHash = this.notification.transactionHash;
+    return `[${transactionHash.slice(0, 5)}...${transactionHash.slice(transactionHash.length - 4)}]`;
   }
 }
