@@ -17,10 +17,12 @@ export interface DepositData {
 })
 export class WalletDepositComponent implements OnInit {
   @Input() private instrument: string;
+  @Input() private selectedToken = 'ETH';
+  @Input() private amount: string;
+  @Input() private showApprove = false;
+
   @ViewChild('form', { static: true }) private form: NgForm;
-  private selectedToken = 'ETH';
   private accountBalance: number;
-  private showApprove = false;
   private amountControl: FormControl;
   private depositFormGroup: FormGroup;
 
@@ -29,7 +31,7 @@ export class WalletDepositComponent implements OnInit {
     private instrumentEscrowService: InstrumentEscrowService) { }
 
   ngOnInit() {
-    this.amountControl = new FormControl('', this.validBalance.bind(this));
+    this.amountControl = new FormControl(this.amount, this.validBalance.bind(this));
     this.depositFormGroup = new FormGroup({ amount: this.amountControl });
   }
 
