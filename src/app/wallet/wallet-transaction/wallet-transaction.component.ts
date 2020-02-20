@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy, Input, NgZone } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { NutsPlatformService } from '../../../common/web3/nuts-platform.service';
-import { InstrumentEscrowService, WalletTransaction } from '../../../common/web3/instrument-escrow.service';
+import { NutsPlatformService } from '../../common/web3/nuts-platform.service';
+import { InstrumentEscrowService, WalletTransaction } from '../../common/web3/instrument-escrow.service';
 
 @Component({
   selector: 'app-wallet-transaction',

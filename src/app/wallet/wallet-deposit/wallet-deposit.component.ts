@@ -1,8 +1,8 @@
 import { Component, Inject, Input, OnInit, ViewChild, NgZone } from '@angular/core';
 import { FormControl, FormGroup, NgForm } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { InstrumentEscrowService } from '../../../common/web3/instrument-escrow.service';
-import { FSP_NAME, NutsPlatformService } from '../../../common/web3/nuts-platform.service';
+import { InstrumentEscrowService } from '../../common/web3/instrument-escrow.service';
+import { FSP_NAME, NutsPlatformService } from '../../common/web3/nuts-platform.service';
 
 export interface DepositData {
   fspName: string,

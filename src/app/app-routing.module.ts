@@ -5,7 +5,7 @@ import { BorrowingComponent } from './instrument/borrowing/borrowing.component';
 import { LendingComponent } from './instrument/lending/lending.component';
 import { SavingComponent } from './instrument/saving/saving.component';
 import { SwapComponent } from './instrument/swap/swap.component';
-import { WalletComponent } from './instrument/wallet/wallet.component';
+import { WalletComponent } from './wallet/wallet.component';
 import { LendingCreateComponent } from './instrument/lending/lending-create/lending-create.component';
 import { LendingPositionsComponent } from './instrument/lending/lending-positions/lending-positions.component';
 import { BorrowingCreateComponent } from './instrument/borrowing/borrowing-create/borrowing-create.component';
