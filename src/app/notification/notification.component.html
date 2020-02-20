@@ -7,7 +7,7 @@
             </div>
             <button color="secondary" mat-button (click)="showSelect = !showSelect" *ngIf="notifications.length > 0">{{showSelect ? 'Cancel' : 'Select'}}</button>
             <button mat-button (click)="saveNotifications()" *ngIf="showSelect && notifications.length > 0">Mark as Read</button>
-            <button mat-button (click)="toggleShowAll()" *ngIf="!showSelect && notifications.length > 0">{{showAll ? 'Unread' : 'All'}}</button>
+            <button mat-button (click)="toggleShowAll()" *ngIf="!showSelect">{{showAll ? 'Unread' : 'All'}}</button>
         </div>
     </div>
 
