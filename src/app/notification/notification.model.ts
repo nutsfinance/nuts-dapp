@@ -1,3 +1,5 @@
+import { TransactionType } from './transaction.model';
+
 export enum NotificationCategory {
   TRANSACTION_INITIATED = 'TRANSACTION_INITIATED',
   TRANSACTION_CONFIRMED = 'TRANSACTION_CONFIRMED',
@@ -14,7 +16,9 @@ export enum NotificationStatus {
 
 export class NotificationModel {
   constructor(public notificationId: string, public userAddress: string,
-    public creationTimestamp: number, public instrumentId: number,
-    public issuanceId: number, public category: NotificationCategory,
-    public status: NotificationStatus, public title: string, public message: string) {}
+    public transactionHash: string, public creationTimestamp: number,
+    public instrumentId: number, public issuanceId: number,
+    public category: NotificationCategory, public status: NotificationStatus,
+    public title: string, public message: string,
+    public type: TransactionType, public metadata: {[key: string]: string}) {}
 }

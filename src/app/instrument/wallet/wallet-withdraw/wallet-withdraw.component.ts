@@ -61,8 +61,8 @@ export class WalletWithdrawComponent implements OnInit {
           width: '90%',
           data: {
             fspName: FSP_NAME,
-            tokenName: this.nutsPlatformService.getTokenNameByAddress(this.selectedToken),
-            amount: this.nutsPlatformService.getTokenValueByAddress(this.selectedToken, this.amountControl.value),
+            tokenName: this.selectedToken,
+            amount: this.amountControl.value,
           },
         });
 

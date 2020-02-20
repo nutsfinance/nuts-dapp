@@ -9,19 +9,19 @@ import { MultiDataSet, Label } from 'ng2-charts';
 })
 export class DashboardAccountBalanceComponent implements OnInit {
   // Doughnut
-  public doughnutChartLabels: Label[] = ['Download Sales', 'In-Store Sales', 'Mail-Order Sales'];
+  public doughnutChartLabels: Label[] = ['Saving', 'Lending', 'Borrowing', 'Swap'];
   public doughnutChartData: MultiDataSet = [
-    [350, 450, 100],
+    [200, 350, 450, 100],
   ];
   public doughnutChartType: ChartType = 'doughnut';
 
   public options = {
         title: {
             display: true,
-            text: 'Custom Chart Title'
+            text: 'Instrument Balance'
         },
         legend: {
-          position: 'bottom'
+          position: 'bottom',
         },
         aspectRatio: 1.2
   };
