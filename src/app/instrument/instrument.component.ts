@@ -1,18 +1,25 @@
 import { Component, OnInit, OnDestroy, Inject, NgZone } from '@angular/core';
+import { Router } from '@angular/router';
 import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar, MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 
 import { Subscription } from 'rxjs';
 
 import { NutsPlatformService } from '../common/web3/nuts-platform.service';
 import { NotificationService } from '../notification/notification.service';
-import { NotificationStatus, NotificationModel } from '../notification/notification.model';
+import { NotificationStatus, NotificationModel, NotificationCategory } from '../notification/notification.model';
 import { NotificationDialog } from '../notification/notification-dialog/notification-dialog.component';
 
 export interface TransactionData {
   transactionHash: string,
   transactionLink: string,
   transactionShortHash: string,
+}
+
+export interface NotificationData {
+  category: NotificationCategory,
+  content: string,
 }
 
 @Component({
@@ -32,8 +39,9 @@ export class InstrumentComponent implements OnInit, OnDestroy {
   private notificationSubscription: Subscription;
   private notificationDialog: MatDialogRef<NotificationDialog>;
 
-  constructor(private _bottomSheet: MatBottomSheet, private dialog: MatDialog, private zone: NgZone,
-              private nutsPlatformService: NutsPlatformService, private notificationService: NotificationService) { }
+  constructor(private _bottomSheet: MatBottomSheet, private dialog: MatDialog, private snackBar: MatSnackBar,
+              private zone: NgZone, private nutsPlatformService: NutsPlatformService,
+              private notificationService: NotificationService) { }
 
   ngOnInit() {
     this.transactionSentSubscription = this.nutsPlatformService.transactionSentSubject.subscribe((transactionHash) => {
@@ -102,6 +110,21 @@ export class InstrumentComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  openSnackBar() {
+    // let snackBarRef = this.snackBar.open('Approval Successful', 'View More');
+    // snackBarRef.afterDismissed().subscribe(dismiss => {
+    //   if (dismiss.dismissedByAction) {
+    //     this.router.navigate(['/notification']);
+    //   }
+    // });
+    this.snackBar.openFromComponent(NotificationSnackBar, {
+      data: {
+        category: NotificationCategory.TRANSACTION_CONFIRMED,
+        content: 'Approval Successful!'
+      }
+    });
+  }
 }
 
 @Component({
@@ -139,8 +162,7 @@ export class TransactionPendingDialog {
 })
 export class TransactionCompleteDialog {
 
-  constructor(
-    public dialogRef: MatDialogRef<TransactionCompleteDialog>,
+  constructor(public dialogRef: MatDialogRef<TransactionCompleteDialog>,
     @Inject(MAT_DIALOG_DATA) public data: TransactionData) { }
 
     closeDialog() {
@@ -150,3 +172,21 @@ export class TransactionCompleteDialog {
     }
 }
 
+@Component({
+  selector: 'notification-snack-bar',
+  templateUrl: 'notification-snack-bar.html',
+  styleUrls: ['./notification-snack-bar.scss'],
+})
+export class NotificationSnackBar {
+  constructor(public snackBarRef: MatSnackBarRef<NotificationSnackBar>,
+    @Inject(MAT_SNACK_BAR_DATA) public data: NotificationData, private router: Router) { }
+
+  dismiss() {
+    this.snackBarRef.dismiss();
+  }
+
+  viewMore() {
+    this.snackBarRef.dismiss();
+    this.router.navigate(['/notification']);
+  }
+}

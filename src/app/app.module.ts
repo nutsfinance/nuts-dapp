@@ -24,7 +24,7 @@ import { DashboardAccountBalanceComponent } from './instrument/dashboard/dashboa
 import { DashboardMiningBalanceComponent } from './instrument/dashboard/dashboard-mining-balance/dashboard-mining-balance.component';
 import { DashboardPositionBalanceComponent } from './instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component';
 import { DashboardComponent } from './instrument/dashboard/dashboard.component';
-import { InstrumentComponent, LanguageSelectSheet, TransactionCompleteDialog, TransactionPendingDialog } from './instrument/instrument.component';
+import { InstrumentComponent, LanguageSelectSheet, TransactionCompleteDialog, TransactionPendingDialog, NotificationSnackBar } from './instrument/instrument.component';
 import { LendingCardComponent } from './instrument/lending/lending-card/lending-card.component';
 import { LendingCreateComponent } from './instrument/lending/lending-create/lending-create.component';
 import { LendingDetailComponent } from './instrument/lending/lending-detail/lending-detail.component';
@@ -81,6 +81,7 @@ import { NotificationComponent } from './notification/notification.component';
     LanguageSelectSheet,
     TransactionCompleteDialog,
     TransactionPendingDialog,
+    NotificationSnackBar,
     BlockTimestampComponent,
     LendingDetailComponent,
     LendingCardComponent,
@@ -98,6 +99,7 @@ import { NotificationComponent } from './notification/notification.component';
     LanguageSelectSheet,
     TransactionCompleteDialog,
     TransactionPendingDialog,
+    NotificationSnackBar,
     NotificationDialog,
     ApproveInitiatedDialog,
     DepositInitiatedDialog,

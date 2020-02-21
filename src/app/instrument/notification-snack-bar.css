@@ -1,0 +1,9 @@
+.content-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.content {
+  color: white;
+  margin: 0;
+}
