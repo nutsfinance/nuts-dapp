@@ -225,6 +225,20 @@ export class NutsPlatformService {
     return this.contractAddresses[this.currentNetwork].platform[instrument].instrumentId;
   }
 
+  public getInstrumentById(instrumentId: number): string {
+    if (!this.contractAddresses[this.currentNetwork]) {
+      alert(`Network ${this.currentNetwork} is not supported!`);
+      return;
+    }
+    for (let instrument in this.contractAddresses[this.currentNetwork].platform) {
+      if (this.contractAddresses[this.currentNetwork].platform[instrument].instrumentId === instrumentId) {
+        return instrument;
+      }
+    }
+
+    return '';
+  }
+
   public async getAccountBalance(token: string): Promise<number> {
     if (!this.web3 || !this.currentAccount) {
       return Promise.resolve(0);

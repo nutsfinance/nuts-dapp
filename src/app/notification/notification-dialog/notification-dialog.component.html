@@ -7,7 +7,7 @@
 <hr class="notification-divider">
 <div mat-dialog-content class="notification-container" *ngIf="notifications.length > 0">
     <div class="row notification-row" *ngFor="let notification of notifications">
-        <div class="col-xs-10 notification-content">
+        <div class="col-xs-9 notification-content">
             <div class="notification-title" [ngSwitch]="notification.category">
                 <span *ngSwitchCase="'TRANSACTION_INITIATED'" class="transaction-initiated">
                     <img src="../../../assets/images/transaction-initiated.png" class="icon-image">
@@ -40,8 +40,13 @@
             </div>
             <div class="notification-timestamp">{{notification.creationTimestamp | timeAgo}}</div>
         </div>
-        <div class="col-xs-2 notification-action">
-            <img src="../../../assets/images/etherscan.png" class="action-image">
+        <div class="col-xs-3 notification-action">
+            <button mat-button color="primary" class="notification-button"
+                *ngIf="notification.category == 'TRANSACTION_FAILED'" 
+                (click)="retryTransaction(notification)">Retry</button>
+            <button mat-button color="primary" class="notification-button"
+                *ngIf="notification.category != 'TRANSACTION_FAILED'"
+                (click)="onNotificationAction(notification)">{{getNotificationAction(notification)}}</button>
         </div>
     </div>
 </div>
@@ -50,6 +55,6 @@
 </div>
 <mat-dialog-actions align="end" class="notification-actions">
     <button color="secondary" mat-button cdkFocusInitial *ngIf="notifications.length > 0">Mark all as read</button>
-    <a routerLink="/notification" color="primary" mat-button mat-dialog-close>More</a>
+    <a class="more-button" routerLink="/notification" color="primary" mat-raised-button mat-dialog-close>More</a>
 </mat-dialog-actions>
 

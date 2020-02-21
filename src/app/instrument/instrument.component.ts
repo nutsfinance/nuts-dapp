@@ -57,7 +57,8 @@ export class InstrumentComponent implements OnInit, OnDestroy {
     });
 
     this.notificationSubscription = this.notificationService.notificationUpdatedSubject.subscribe(notifications => {
-      this.unreadNotifications = notifications.filter(notification => notification.status === NotificationStatus.NEW);
+      this.unreadNotifications = notifications.filter(notification => notification.status === NotificationStatus.NEW)
+        .sort((n1, n2) => n2.creationTimestamp - n1.creationTimestamp);
     });
   }
 

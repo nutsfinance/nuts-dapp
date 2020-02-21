@@ -50,9 +50,11 @@ export class NotificationComponent implements OnInit, OnDestroy {
 
   private updateNotifications() {
     if (this.showAll) {
-      this.notifications = this.notificationService.notifications;
+      this.notifications = this.notificationService.notifications.sort((n1, n2) => n2.creationTimestamp - n1.creationTimestamp);
     } else {
-      this.notifications = this.notificationService.notifications.filter(notification => notification.status === 'NEW');
+      this.notifications = this.notificationService.notifications
+        .filter(notification => notification.status === 'NEW')
+        .sort((n1, n2) => n2.creationTimestamp - n1.creationTimestamp);
     }
   }
 }

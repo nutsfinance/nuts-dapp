@@ -30,8 +30,8 @@
 
 .notification-action {
     text-align: start;
-    margin-top: 45px;
-    padding: 0 10px;
+    margin-top: 35px;
+    padding: 0;
 }
 
 .icon-image {
@@ -44,7 +44,7 @@
 }
 
 .notification-title {
-    font-size: 16px;
+    font-size: 15px;
     padding: 10px 0 7px 0;
     font-family: "GillSans", Helvetica, Arial, serif;
 }
@@ -73,6 +73,10 @@
     color: '#B52A2A';
 }
 
+.notification-message {
+    font-size: 13px;
+}
+
 .notification-timestamp {
     font-size: 14px;
     color: #AEAEB2;
@@ -82,7 +86,16 @@
     margin-bottom: -18px;
 }
 
+.notification-button {
+    padding: 0;
+    font-size: 15px;
+}
+
 .no-notifications {
     font-size: 16px;
     padding-top: 20px;
+}
+
+.more-button {
+    color: white;
 }

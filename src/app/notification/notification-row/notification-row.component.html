@@ -15,7 +15,7 @@
             </mat-checkbox>
         </div>
     </div>
-    <div class="col-xs-8">
+    <div class="col-xs-7">
         <div class="notification-content">
             <div class="notification-title" [ngSwitch]="notification.category">
                 <span *ngSwitchCase="'TRANSACTION_INITIATED'" class="transaction-initiated">{{notification.title}}</span>
@@ -29,9 +29,14 @@
             <div class="notification-timestamp">{{notification.creationTimestamp | timeAgo}}</div>
         </div>
     </div>
-    <div class="col-xs-2">
+    <div class="col-xs-3">
         <div class="notification-action">
-            <img src="../../../assets/images/etherscan.png" class="icon-image" (click)="openEtherScan()">
+            <button mat-button color="primary" class="notification-button"
+                *ngIf="notification.category == 'TRANSACTION_FAILED'" 
+                (click)="retryTransaction()">Retry</button>
+            <button mat-button color="primary" class="notification-button"
+                *ngIf="notification.category != 'TRANSACTION_FAILED'"
+                (click)="onNotificationAction()">{{getNotificationAction()}}</button>
         </div>
     </div>
 </div>

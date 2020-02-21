@@ -1,8 +1,10 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 import { NotificationModel } from '../notification.model';
 import { NutsPlatformService } from 'src/app/common/web3/nuts-platform.service';
+import { TransactionType } from '../transaction.model';
 
 @Component({
   selector: 'app-notification-dialog',
@@ -13,7 +15,7 @@ export class NotificationDialog implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<NotificationDialog>,
     @Inject(MAT_DIALOG_DATA) public notifications: NotificationModel[],
-    private nutsPlatformService: NutsPlatformService) { }
+    private nutsPlatformService: NutsPlatformService, private router: Router) { }
 
   ngOnInit() {
   }
@@ -41,5 +43,31 @@ export class NotificationDialog implements OnInit {
 
   getTransactionShortHash(transactionHash: string): string {
     return `[${transactionHash.slice(0, 5)}...${transactionHash.slice(transactionHash.length - 4)}]`;
+  }
+
+  retryTransaction(notification: NotificationModel) {
+
+  }
+
+  onNotificationAction(notification: NotificationModel) {
+    this.dialogRef.close();
+    if (notification.type === TransactionType.APPROVE) {
+      this.router.navigate([`/instrument/${notification.metadata['instrumentName']}/wallet`], {queryParams: {
+        panel: 'deposit',
+        token: notification.metadata['tokenName'],
+        amount: notification.metadata['amount'],
+        showApprove: false
+      }});
+    } else if (notification.type === TransactionType.DEPOSIT || notification.type === TransactionType.WITHDRAW) {
+      this.router.navigate([`/instrument/${notification.metadata['instrumentName']}/wallet`], {queryParams: {panel: 'transactions'}});
+    }
+  }
+
+  getNotificationAction(notification: NotificationModel): string {
+    if (notification.type === TransactionType.APPROVE) {
+      return 'Deposit';
+    }
+
+    return 'View';
   }
 }

@@ -60,6 +60,12 @@ export class InstrumentEscrowService {
     const instrumentEscrowAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument].instrumentEscrow;
     const tokenAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].tokens[token];
     const tokenContract = new this.nutsPlatformService.web3.eth.Contract(ERC20, tokenAddress);
+    console.log({
+      instrumentName: instrument,
+      tokenName: token,
+      tokenAddress,
+      amount: `${amount}`,
+    });
     return tokenContract.methods.approve(instrumentEscrowAddress, amount).send({ from: this.nutsPlatformService.currentAccount })
       .on('transactionHash', (transactionHash) => {
         console.log(transactionHash);
@@ -69,7 +75,9 @@ export class InstrumentEscrowService {
         const depositTransaction = new TransactionModel(transactionHash, TransactionType.APPROVE,
           this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId(instrument),
           {
-            tokenAddress: token,
+            instrumentName: instrument,
+            tokenName: token,
+            tokenAddress,
             amount: `${amount}`,
           }
         );
@@ -102,6 +110,8 @@ export class InstrumentEscrowService {
         const depositTransaction = new TransactionModel(transactionHash, TransactionType.DEPOSIT,
           this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId(instrument),
           {
+            instrumentName: instrument,
+            tokenName: 'ETH',
             tokenAddress: ETH_ADDRESS,
             amount: `${amount}`,
           }
@@ -139,7 +149,9 @@ export class InstrumentEscrowService {
         const depositTransaction = new TransactionModel(transactionHash, TransactionType.DEPOSIT,
           this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId(instrument),
           {
-            tokenAddress: token,
+            instrumentName: instrument,
+            tokenName: token,
+            tokenAddress,
             amount: `${amount}`,
           }
         );
@@ -172,6 +184,8 @@ export class InstrumentEscrowService {
         const depositTransaction = new TransactionModel(transactionHash, TransactionType.WITHDRAW,
           this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId(instrument),
           {
+            instrumentName: instrument,
+            tokenName: 'ETH',
             tokenAddress: ETH_ADDRESS,
             amount: `${amount}`,
           }
@@ -209,7 +223,9 @@ export class InstrumentEscrowService {
         const depositTransaction = new TransactionModel(transactionHash, TransactionType.WITHDRAW,
           this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId(instrument),
           {
-            tokenAddress: token,
+            instrumentName: instrument,
+            tokenName: token,
+            tokenAddress,
             amount: `${amount}`,
           }
         );
