@@ -40,8 +40,8 @@ export class InstrumentComponent implements OnInit, OnDestroy {
   private notificationDialog: MatDialogRef<NotificationDialog>;
 
   constructor(private _bottomSheet: MatBottomSheet, private dialog: MatDialog, private snackBar: MatSnackBar,
-              private zone: NgZone, private nutsPlatformService: NutsPlatformService,
-              private notificationService: NotificationService) { }
+    private zone: NgZone, private nutsPlatformService: NutsPlatformService,
+    private notificationService: NotificationService) { }
 
   ngOnInit() {
     this.transactionSentSubscription = this.nutsPlatformService.transactionSentSubject.subscribe((transactionHash) => {
@@ -61,7 +61,7 @@ export class InstrumentComponent implements OnInit, OnDestroy {
           width: '250px',
           data: this.getTransactionData(transactionHash)
         });
-      });      
+      });
     });
 
     this.notificationSubscription = this.notificationService.notificationUpdatedSubject.subscribe(notifications => {
@@ -112,6 +112,27 @@ export class InstrumentComponent implements OnInit, OnDestroy {
   }
 
   openSnackBar() {
+    let snackBarPanelClass = '';
+    switch (this.unreadNotifications[0].category) {
+      case NotificationCategory.TRANSACTION_INITIATED:
+        snackBarPanelClass = 'transaction-initiated-container';
+        break;
+      case NotificationCategory.TRANSACTION_CONFIRMED:
+        snackBarPanelClass = 'transaction-confirmed-container';
+        break;
+      case NotificationCategory.TRANSACTION_FAILED:
+        snackBarPanelClass = 'transaction-failed-container';
+        break;
+      case NotificationCategory.ASSETS:
+        snackBarPanelClass = 'assets-container';
+        break;
+      case NotificationCategory.EXPIRATION:
+        snackBarPanelClass = 'expiration-container';
+        break;
+      case NotificationCategory.DUE:
+        snackBarPanelClass = 'due-container';
+        break;
+    }
     // let snackBarRef = this.snackBar.open('Approval Successful', 'View More');
     // snackBarRef.afterDismissed().subscribe(dismiss => {
     //   if (dismiss.dismissedByAction) {
@@ -122,7 +143,9 @@ export class InstrumentComponent implements OnInit, OnDestroy {
       data: {
         category: NotificationCategory.TRANSACTION_CONFIRMED,
         content: 'Approval Successful!'
-      }
+      },
+      panelClass: snackBarPanelClass,
+      duration: 3000,
     });
   }
 }
@@ -165,11 +188,11 @@ export class TransactionCompleteDialog {
   constructor(public dialogRef: MatDialogRef<TransactionCompleteDialog>,
     @Inject(MAT_DIALOG_DATA) public data: TransactionData) { }
 
-    closeDialog() {
-      console.log('Closing');
-      this.dialogRef.close();
-      console.log('Should close');
-    }
+  closeDialog() {
+    console.log('Closing');
+    this.dialogRef.close();
+    console.log('Should close');
+  }
 }
 
 @Component({

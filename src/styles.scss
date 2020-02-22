@@ -11,3 +11,27 @@ $custom-typography: mat-typography-config(
 );
 
 @include angular-material-typography($custom-typography);
+
+.transaction-initiated-container {
+  background-color: #AEAEB2;
+}
+
+.transaction-confirmed-container {
+  background-color: #82C34D;
+}
+
+.transaction-failed-container {
+  background-color: #B52A2A;
+}
+
+.assets-container {
+  background-color: #0755ED;
+}
+
+.expiration-container {
+  background-color: #F5A623;
+}
+
+.due-container {
+  background-color: '#B52A2A';
+}
