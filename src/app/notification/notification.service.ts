@@ -17,17 +17,17 @@ export class NotificationService {
   constructor(private nutsPlatformService: NutsPlatformService, private http: HttpClient) {
     this.nutsPlatformService.currentAccountSubject.subscribe(currentAddress => {
       if (currentAddress) {
-        this.getNotifications(currentAddress);
+        this.getNotifications().subscribe(notifications => {
+          this.notifications = notifications;
+          this.notificationUpdatedSubject.next(notifications);
+        });
       }
     });
   }
 
-  getNotifications(userAddress: string) {
-    this.http.get<NotificationModel[]>(`${environment.notificationServer}/notifications/${userAddress}`).subscribe(notifications => {
-      console.log(notifications);
-      this.notifications = notifications;
-      this.notificationUpdatedSubject.next(notifications);
-    });
+  getNotifications() {
+    const currentAddress = this.nutsPlatformService.currentAccount;
+    return this.http.get<NotificationModel[]>(`${environment.notificationServer}/notifications/${currentAddress}`);
   }
 
   addTransaction(transaction: TransactionModel) {

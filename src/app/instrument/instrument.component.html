@@ -62,7 +62,7 @@
           <button mat-icon-button (click)="sidenav.open()" color="primary">
             <mat-icon class="app-toolbar-icon">menu</mat-icon>
           </button>
-          <img src="../assets/images/logo.png" alt="logo" class="toolbar-logo" (click)="openSnackBar()">
+          <img src="../assets/images/logo.png" alt="logo" class="toolbar-logo" (click)="openSnackBar(unreadNotifications[0].category)">
         </div>
         <div class="app-toolbar-right">
           <app-currency-select></app-currency-select>

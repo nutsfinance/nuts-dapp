@@ -82,8 +82,6 @@ export class InstrumentEscrowService {
           }
         );
         this.notificationService.addTransaction(depositTransaction).subscribe(result => console.log(result));
-        // Refreshes the notification
-        this.notificationService.getNotifications(this.nutsPlatformService.currentAccount);
       })
       .on('receipt', (receipt) => {
         console.log(receipt);
@@ -117,8 +115,6 @@ export class InstrumentEscrowService {
           }
         );
         this.notificationService.addTransaction(depositTransaction).subscribe(result => console.log(result));
-        // Refreshes the notification
-        this.notificationService.getNotifications(this.nutsPlatformService.currentAccount);
       })
       .on('receipt', (receipt) => {
         console.log(receipt);
@@ -156,8 +152,6 @@ export class InstrumentEscrowService {
           }
         );
         this.notificationService.addTransaction(depositTransaction).subscribe(result => console.log(result));
-        // Refreshes the notification
-        this.notificationService.getNotifications(this.nutsPlatformService.currentAccount);
       })
       .on('receipt', (receipt) => {
         console.log(receipt);
@@ -191,8 +185,6 @@ export class InstrumentEscrowService {
           }
         );
         this.notificationService.addTransaction(depositTransaction).subscribe(result => console.log(result));
-        // Refreshes the notification
-        this.notificationService.getNotifications(this.nutsPlatformService.currentAccount);
       })
       .on('receipt', (receipt) => {
         console.log(receipt);
@@ -230,8 +222,6 @@ export class InstrumentEscrowService {
           }
         );
         this.notificationService.addTransaction(depositTransaction).subscribe(result => console.log(result));
-        // Refreshes the notification
-        this.notificationService.getNotifications(this.nutsPlatformService.currentAccount);
       })
       .on('receipt', (receipt) => {
         console.log(receipt);

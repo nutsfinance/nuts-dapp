@@ -35,6 +35,7 @@ export class InstrumentComponent implements OnInit, OnDestroy {
   private transactionPendingDialog: MatDialogRef<TransactionPendingDialog>;
   private transactionCompleteDialog: MatDialogRef<TransactionCompleteDialog>;
 
+  private notificationHandler;
   private unreadNotifications: NotificationModel[] = [];
   private notificationSubscription: Subscription;
   private notificationDialog: MatDialogRef<NotificationDialog>;
@@ -68,12 +69,16 @@ export class InstrumentComponent implements OnInit, OnDestroy {
       this.unreadNotifications = notifications.filter(notification => notification.status === NotificationStatus.NEW)
         .sort((n1, n2) => n2.creationTimestamp - n1.creationTimestamp);
     });
+
+    console.log('Setting interval');
+    this.notificationHandler = setInterval(this.reloadNotifications.bind(this), 10000);
   }
 
   ngOnDestroy() {
     this.transactionSentSubscription.unsubscribe();
     this.transactionConfirmedSubscription.unsubscribe();
     this.notificationSubscription.unsubscribe();
+    clearInterval(this.notificationHandler);
   }
 
   getTransactionData(transactionHash: string): TransactionData {
@@ -111,9 +116,9 @@ export class InstrumentComponent implements OnInit, OnDestroy {
     });
   }
 
-  openSnackBar() {
+  openSnackBar(notification: NotificationModel) {
     let snackBarPanelClass = '';
-    switch (this.unreadNotifications[0].category) {
+    switch (notification.category) {
       case NotificationCategory.TRANSACTION_INITIATED:
         snackBarPanelClass = 'transaction-initiated-container';
         break;
@@ -145,7 +150,29 @@ export class InstrumentComponent implements OnInit, OnDestroy {
         content: 'Approval Successful!'
       },
       panelClass: snackBarPanelClass,
-      duration: 3000,
+      duration: 5000,
+    });
+  }
+
+  reloadNotifications() {
+    console.log('Reloading notification');
+    this.notificationService.getNotifications().subscribe(notifications => {
+      console.log(notifications);
+      // If the notification amount is not changed, no op.
+      if (notifications.length === this.notificationService.notifications.length) return;
+
+      // Check whether are any new unread notifications.
+      for (let i = notifications.length - 1; i >= this.notificationService.notifications.length; i--) {
+        if (notifications[i].status === NotificationStatus.NEW) {
+          console.log('New notification', notifications[i]);
+          this.openSnackBar(notifications[i]);
+          break;
+        }
+      }
+
+      // Updates the notification list
+      this.notificationService.notifications = notifications;
+      this.notificationService.notificationUpdatedSubject.next(notifications);
     });
   }
 }
