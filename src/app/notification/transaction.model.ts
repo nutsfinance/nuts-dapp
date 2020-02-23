@@ -2,6 +2,7 @@ export enum TransactionType {
   APPROVE = 'APPROVE',
   DEPOSIT = 'DEPOSIT',
   WITHDRAW = 'WITHDRAW',
+  CREATE_OFFER = 'CREATE_OFFER',
 }
 
 export class TransactionModel {

@@ -31,7 +31,7 @@ export class AccountAddressComponent implements OnInit {
     if (!this.currentAccount_) {
       return 'N/A';
     } else {
-      return `${this.currentAccount_.slice(0, 5)}....${this.currentAccount_.slice(this.currentAccount_.length - 4)}`;
+      return `${this.currentAccount_.slice(0, 6)}....${this.currentAccount_.slice(this.currentAccount_.length - 4)}`;
     }
   }
 }

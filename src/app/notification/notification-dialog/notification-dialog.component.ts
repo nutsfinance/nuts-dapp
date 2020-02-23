@@ -54,7 +54,7 @@ export class NotificationDialog implements OnInit, OnDestroy {
   }
 
   getTransactionShortHash(transactionHash: string): string {
-    return `[${transactionHash.slice(0, 5)}...${transactionHash.slice(transactionHash.length - 4)}]`;
+    return `[${transactionHash.slice(0, 6)}...${transactionHash.slice(transactionHash.length - 4)}]`;
   }
 
   retryTransaction(notification: NotificationModel) {
@@ -63,6 +63,10 @@ export class NotificationDialog implements OnInit, OnDestroy {
 
   onNotificationAction(notification: NotificationModel) {
     this.dialogRef.close();
+    // Mark the notification as READ
+    notification.status = NotificationStatus.READ;
+    this.notificationService.updateNotification(notification);
+
     if (notification.type === TransactionType.APPROVE) {
       this.router.navigate([`/instrument/${notification.metadata['instrumentName']}/wallet`], {queryParams: {
         panel: 'deposit',

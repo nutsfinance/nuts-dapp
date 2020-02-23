@@ -5,6 +5,7 @@ import { NotificationModel, NotificationStatus } from '../notification.model';
 import { MatCheckboxChange } from '@angular/material';
 import { NutsPlatformService } from 'src/app/common/web3/nuts-platform.service';
 import { TransactionType } from '../transaction.model';
+import { NotificationService } from '../notification.service';
 
 @Component({
   selector: 'app-notification-row',
@@ -17,7 +18,8 @@ export class NotificationRowComponent implements OnInit, OnChanges {
   @Output() statusUpdated = new EventEmitter<{id: string, status: NotificationStatus}>();
   private notificationStatus: NotificationStatus;
 
-  constructor(private nutsPlatformService: NutsPlatformService, private router: Router) { }
+  constructor(private nutsPlatformService: NutsPlatformService, private notificationService: NotificationService,
+    private router: Router) { }
 
   ngOnInit() {
     this.notificationStatus = this.notification.status;
@@ -51,7 +53,7 @@ export class NotificationRowComponent implements OnInit, OnChanges {
 
   getTransactionShortHash(): string {
     const transactionHash = this.notification.transactionHash;
-    return `[${transactionHash.slice(0, 5)}...${transactionHash.slice(transactionHash.length - 4)}]`;
+    return `[${transactionHash.slice(0, 6)}...${transactionHash.slice(transactionHash.length - 4)}]`;
   }
 
   retryTransaction() {
@@ -59,6 +61,10 @@ export class NotificationRowComponent implements OnInit, OnChanges {
   }
 
   onNotificationAction() {
+    // Mark notification as READ
+    this.notification.status = NotificationStatus.READ;
+    this.notificationService.updateNotification(this.notification);
+
     if (this.notification.type === TransactionType.APPROVE) {
       this.router.navigate([`/instrument/${this.notification.metadata['instrumentName']}/wallet`], {queryParams: {
         panel: 'deposit',
