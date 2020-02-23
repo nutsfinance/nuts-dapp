@@ -1,23 +1,35 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
-import { NotificationModel } from '../notification.model';
+import { NotificationModel, NotificationStatus } from '../notification.model';
 import { NutsPlatformService } from 'src/app/common/web3/nuts-platform.service';
 import { TransactionType } from '../transaction.model';
+import { NotificationService } from '../notification.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-notification-dialog',
   templateUrl: './notification-dialog.component.html',
   styleUrls: ['./notification-dialog.component.scss']
 })
-export class NotificationDialog implements OnInit {
+export class NotificationDialog implements OnInit, OnDestroy {
+  private notificationSubscription: Subscription;
 
   constructor(public dialogRef: MatDialogRef<NotificationDialog>,
     @Inject(MAT_DIALOG_DATA) public notifications: NotificationModel[],
-    private nutsPlatformService: NutsPlatformService, private router: Router) { }
+    private nutsPlatformService: NutsPlatformService, private router: Router,
+    private notificationService: NotificationService) { }
 
   ngOnInit() {
+    this.notificationSubscription = this.notificationService.notificationUpdatedSubject.subscribe((notifications) => {
+      this.notifications = notifications.filter(notification => notification.status === 'NEW')
+      .sort((n1, n2) => n2.creationTimestamp - n1.creationTimestamp);
+    });
+  }
+
+  ngOnDestroy() {
+    this.notificationSubscription.unsubscribe();
   }
 
   closeDialog() {
@@ -69,5 +81,12 @@ export class NotificationDialog implements OnInit {
     }
 
     return 'View';
+  }
+
+  markAllRead() {
+    for (let notification of this.notifications) {
+      notification.status = NotificationStatus.READ;
+    }
+    this.notificationService.updateNotifications(this.notifications);
   }
 }

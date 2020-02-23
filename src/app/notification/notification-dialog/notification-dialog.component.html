@@ -54,7 +54,7 @@
     <p class="no-notifications">There are no new notifications.</p>
 </div>
 <mat-dialog-actions align="end" class="notification-actions">
-    <button color="secondary" mat-button cdkFocusInitial *ngIf="notifications.length > 0">Mark all as read</button>
+    <button color="secondary" mat-button cdkFocusInitial *ngIf="notifications.length > 0" (click)="markAllRead()">Mark all as read</button>
     <a class="more-button" routerLink="/notification" color="primary" mat-raised-button mat-dialog-close>More</a>
 </mat-dialog-actions>
 

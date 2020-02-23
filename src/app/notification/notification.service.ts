@@ -34,4 +34,32 @@ export class NotificationService {
     console.log(`${environment.notificationServer}/transactions`);
     return this.http.post(`${environment.notificationServer}/transactions`, transaction);
   }
+
+  updateNotification(notification: NotificationModel) {
+    this.http.put<NotificationModel>(`${environment.notificationServer}/notifications/${notification.notificationId}`, notification).subscribe(updatedNotification => {
+      for (let i = 0; i < this.notifications.length; i++) {
+        if (this.notifications[i].notificationId === updatedNotification.notificationId) {
+          this.notifications[i] = updatedNotification;
+          break;
+        }
+      }
+
+      this.notificationUpdatedSubject.next(this.notifications);
+    });
+  }
+
+  updateNotifications(notifications: NotificationModel[]) {
+    this.http.put<NotificationModel[]>(`${environment.notificationServer}/notifications`, notifications).subscribe(updatedNotifications => {
+      for (let notification of notifications) {
+        for (let i = 0; i < this.notifications.length; i++) {
+          if (this.notifications[i].notificationId === notification.notificationId) {
+            this.notifications[i] = notification;
+            break;
+          }
+        }
+      }
+
+      this.notificationUpdatedSubject.next(this.notifications);
+    });
+  }
 }
