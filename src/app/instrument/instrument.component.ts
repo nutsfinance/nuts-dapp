@@ -154,7 +154,7 @@ export class InstrumentComponent implements OnInit, OnDestroy {
     });
   }
 
-  reloadNotifications() {
+  private reloadNotifications() {
     console.log('Reloading notification');
     this.notificationService.getNotifications().subscribe(notifications => {
       console.log(notifications);

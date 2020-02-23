@@ -35,7 +35,7 @@
                 *ngIf="notification.category == 'TRANSACTION_FAILED'" 
                 (click)="retryTransaction()">Retry</button>
             <button mat-button color="primary" class="notification-button"
-                *ngIf="notification.category != 'TRANSACTION_FAILED'"
+                *ngIf="notification.category != 'TRANSACTION_FAILED' && notification.category != 'TRANSACTION_INITIATED'"
                 (click)="onNotificationAction()">{{getNotificationAction()}}</button>
         </div>
     </div>
