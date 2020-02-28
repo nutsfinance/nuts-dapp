@@ -64,16 +64,17 @@ export class NotificationRowComponent implements OnInit, OnChanges {
     // Mark notification as READ
     this.notification.status = NotificationStatus.READ;
     this.notificationService.updateNotification(this.notification);
+    const instrumentName = this.nutsPlatformService.getInstrumentById(this.notification.instrumentId);
 
     if (this.notification.type === TransactionType.APPROVE) {
-      this.router.navigate([`/instrument/${this.notification.metadata['instrumentName']}/wallet`], {queryParams: {
+      this.router.navigate([`/instrument/${instrumentName}/wallet`], {queryParams: {
         panel: 'deposit',
         token: this.notification.metadata['tokenName'],
         amount: this.notification.metadata['amount'],
         showApprove: false
       }});
     } else if (this.notification.type === TransactionType.DEPOSIT || this.notification.type === TransactionType.WITHDRAW) {
-      this.router.navigate([`/instrument/${this.notification.metadata['instrumentName']}/wallet`], {queryParams: {panel: 'transactions'}});
+      this.router.navigate([`/instrument/${instrumentName}/wallet`], {queryParams: {panel: 'transactions'}});
     }
   }
 

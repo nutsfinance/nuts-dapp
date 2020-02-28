@@ -99,7 +99,7 @@ export class InstrumentEscrowService {
 
     const instrumentEscrowAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument].instrumentEscrow;
     const instrumentEscrowContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentEscrow, instrumentEscrowAddress);
-    return instrumentEscrowContract.methods.deposit().send({ from: this.nutsPlatformService.currentAccount, value: this.nutsPlatformService.web3.utils.toWei(amount, 'ether') })
+    return instrumentEscrowContract.methods.deposit().send({ from: this.nutsPlatformService.currentAccount, value: this.nutsPlatformService.web3.utils.toWei(`${amount}`, 'ether') })
       .on('transactionHash', (transactionHash) => {
         console.log(transactionHash);
         // this.nutsPlatformService.transactionSentSubject.next(transactionHash);

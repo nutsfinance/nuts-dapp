@@ -169,6 +169,10 @@ export class NutsPlatformService {
     },
   };
 
+  /**
+   * End of public template data
+   */
+
   public web3: any;
   public currentAccount: string;
   public currentAccountSubject = new Subject<string>();
@@ -186,6 +190,7 @@ export class NutsPlatformService {
     window.addEventListener('load', () => {
       this.bootstrapWeb3();
     });
+    // this.bootstrapWeb3();
   }
 
   public getTokenValueByAddress(tokenAddress: string, value: number): number {
@@ -441,10 +446,20 @@ export class NutsPlatformService {
     try {
       await ethereum.enable();
     } catch (error) {
+      console.error(error);
       // Access control error
     }
+
     this.handleAccountChanged([ethereum.selectedAddress]);
-    this.handleNetworkChanged(Number(ethereum.chainId));
+    this.handleNetworkChanged(Number(ethereum.networkVersion));
+
+    try {
+      this.handleNetworkChanged(await ethereum.send('eth_chainId'));
+      this.handleAccountChanged(await ethereum.send('eth_accounts'));
+    } catch (error) {
+      console.error(error);
+      // Access control error
+    }
   }
 
   private handleAccountChanged(accounts) {
@@ -452,6 +467,7 @@ export class NutsPlatformService {
     if (accounts && accounts.length > 0 && accounts[0] != this.currentAccount) {
       this.currentAccount = accounts[0];
       this.currentAccountSubject.next(accounts[0]);
+      console.log('Account updated', this.currentAccount);
     }
   }
 
@@ -461,6 +477,7 @@ export class NutsPlatformService {
       this.currentNetwork = network;
       this.currentNetworkSubject.next(network);
       this.getLendingIssuances();
+      console.log('Network updated', this.currentNetwork);
     }
   }
 }

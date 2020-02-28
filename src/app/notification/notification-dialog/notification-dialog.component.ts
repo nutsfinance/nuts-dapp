@@ -66,16 +66,17 @@ export class NotificationDialog implements OnInit, OnDestroy {
     // Mark the notification as READ
     notification.status = NotificationStatus.READ;
     this.notificationService.updateNotification(notification);
+    const instrumentName = this.nutsPlatformService.getInstrumentById(notification.instrumentId);
 
     if (notification.type === TransactionType.APPROVE) {
-      this.router.navigate([`/instrument/${notification.metadata['instrumentName']}/wallet`], {queryParams: {
+      this.router.navigate([`/instrument/${instrumentName}/wallet`], {queryParams: {
         panel: 'deposit',
         token: notification.metadata['tokenName'],
         amount: notification.metadata['amount'],
         showApprove: false
       }});
     } else if (notification.type === TransactionType.DEPOSIT || notification.type === TransactionType.WITHDRAW) {
-      this.router.navigate([`/instrument/${notification.metadata['instrumentName']}/wallet`], {queryParams: {panel: 'transactions'}});
+      this.router.navigate([`/instrument/${instrumentName}/wallet`], {queryParams: {panel: 'transactions'}});
     }
   }
 
