@@ -30,11 +30,6 @@ export interface NotificationData {
 export class InstrumentComponent implements OnInit, OnDestroy {
   private language: string = 'English';
 
-  private transactionSentSubscription: Subscription;
-  private transactionConfirmedSubscription: Subscription;
-  private transactionPendingDialog: MatDialogRef<TransactionPendingDialog>;
-  private transactionCompleteDialog: MatDialogRef<TransactionCompleteDialog>;
-
   private notificationHandler;
   private unreadNotifications: NotificationModel[] = [];
   private notificationSubscription: Subscription;
@@ -45,26 +40,6 @@ export class InstrumentComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService) { }
 
   ngOnInit() {
-    this.transactionSentSubscription = this.nutsPlatformService.transactionSentSubject.subscribe((transactionHash) => {
-      console.log(transactionHash);
-      this.zone.run(() => {
-        this.transactionPendingDialog = this.dialog.open(TransactionPendingDialog, {
-          width: '250px',
-          data: this.getTransactionData(transactionHash)
-        });
-      });
-    });
-
-    this.transactionConfirmedSubscription = this.nutsPlatformService.transactionConfirmedSubject.subscribe((transactionHash) => {
-      this.zone.run(() => {
-        this.transactionPendingDialog.close();
-        this.transactionCompleteDialog = this.dialog.open(TransactionCompleteDialog, {
-          width: '250px',
-          data: this.getTransactionData(transactionHash)
-        });
-      });
-    });
-
     this.notificationSubscription = this.notificationService.notificationUpdatedSubject.subscribe(notifications => {
       this.unreadNotifications = notifications.filter(notification => notification.status === NotificationStatus.NEW)
         .sort((n1, n2) => n2.creationTimestamp - n1.creationTimestamp);
@@ -75,8 +50,6 @@ export class InstrumentComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.transactionSentSubscription.unsubscribe();
-    this.transactionConfirmedSubscription.unsubscribe();
     this.notificationSubscription.unsubscribe();
     clearInterval(this.notificationHandler);
   }
@@ -191,35 +164,6 @@ export class LanguageSelectSheet {
     event.preventDefault();
   }
 
-}
-
-@Component({
-  selector: 'transaction-pending-dialog',
-  templateUrl: 'transaction-pending-dialog.html',
-  styleUrls: ['./instrument.component.scss'],
-})
-export class TransactionPendingDialog {
-
-  constructor(
-    public dialogRef: MatDialogRef<TransactionPendingDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: TransactionData) { }
-}
-
-@Component({
-  selector: 'transaction-complete-dialog',
-  templateUrl: 'transaction-complete-dialog.html',
-  styleUrls: ['./instrument.component.scss'],
-})
-export class TransactionCompleteDialog {
-
-  constructor(public dialogRef: MatDialogRef<TransactionCompleteDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: TransactionData) { }
-
-  closeDialog() {
-    console.log('Closing');
-    this.dialogRef.close();
-    console.log('Should close');
-  }
 }
 
 @Component({
