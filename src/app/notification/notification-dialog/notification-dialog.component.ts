@@ -66,17 +66,30 @@ export class NotificationDialog implements OnInit, OnDestroy {
     // Mark the notification as READ
     notification.status = NotificationStatus.READ;
     this.notificationService.updateNotification(notification);
-    const instrumentName = this.nutsPlatformService.getInstrumentById(notification.instrumentId);
+    const instrumentName = this.nutsPlatformService.getInstrumentById(+notification.instrumentId);
+    console.log(instrumentName);
 
-    if (notification.type === TransactionType.APPROVE) {
-      this.router.navigate([`/instrument/${instrumentName}/wallet`], {queryParams: {
-        panel: 'deposit',
-        token: notification.metadata['tokenName'],
-        amount: notification.metadata['amount'],
-        showApprove: false
-      }});
-    } else if (notification.type === TransactionType.DEPOSIT || notification.type === TransactionType.WITHDRAW) {
-      this.router.navigate([`/instrument/${instrumentName}/wallet`], {queryParams: {panel: 'transactions'}});
+    switch (notification.type) {
+      case TransactionType.APPROVE:
+        this.router.navigate([`/instrument/${instrumentName}/wallet`], {
+          queryParams: {
+            panel: 'deposit',
+            token: notification.metadata['tokenName'],
+            amount: notification.metadata['amount'],
+            showApprove: false
+          }
+        });
+        break;
+      case TransactionType.DEPOSIT:
+      case TransactionType.WITHDRAW:
+        this.router.navigate([`/instrument/${instrumentName}/wallet`], { queryParams: { panel: 'transactions' } });
+        break;
+      case TransactionType.CREATE_OFFER:
+        this.router.navigate([`/instrument/${instrumentName}/positions`], { queryParams: { tab: 'engaged' } });
+        break;
+      case TransactionType.CANCEL_OFFER:
+        this.router.navigate([`/instrument/${instrumentName}/positions`], { queryParams: { tab: 'inactive' } });
+        break;
     }
   }
 

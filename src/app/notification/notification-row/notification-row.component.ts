@@ -15,7 +15,7 @@ import { NotificationService } from '../notification.service';
 export class NotificationRowComponent implements OnInit, OnChanges {
   @Input() notification: NotificationModel;
   @Input() showSelect: boolean;
-  @Output() statusUpdated = new EventEmitter<{id: string, status: NotificationStatus}>();
+  @Output() statusUpdated = new EventEmitter<{ id: string, status: NotificationStatus }>();
   private notificationStatus: NotificationStatus;
 
   constructor(private nutsPlatformService: NutsPlatformService, private notificationService: NotificationService,
@@ -30,14 +30,14 @@ export class NotificationRowComponent implements OnInit, OnChanges {
     // Refreshes the notification status when select/cancel is clicked.
     this.notificationStatus = this.notification.status;
   }
-  
+
   onStatusChanged(change: MatCheckboxChange) {
     this.notificationStatus = change.checked ? NotificationStatus.READ : NotificationStatus.NEW;
-    this.statusUpdated.next({id: this.notification.notificationId, status: this.notificationStatus});
+    this.statusUpdated.next({ id: this.notification.notificationId, status: this.notificationStatus });
   }
 
   getEtherscanLink(): string {
-    switch(this.nutsPlatformService.currentNetwork) {
+    switch (this.nutsPlatformService.currentNetwork) {
       case 1:
         return `https://etherscan.io/tx/${this.notification.transactionHash}`;
       case 3:
@@ -61,21 +61,35 @@ export class NotificationRowComponent implements OnInit, OnChanges {
   }
 
   onNotificationAction() {
+    console.log(this.notification);
     // Mark notification as READ
     this.notification.status = NotificationStatus.READ;
     this.notificationService.updateNotification(this.notification);
-    const instrumentName = this.nutsPlatformService.getInstrumentById(this.notification.instrumentId);
+    const instrumentName = this.nutsPlatformService.getInstrumentById(+this.notification.instrumentId);
+    console.log(instrumentName);
 
-    if (this.notification.type === TransactionType.APPROVE) {
-      this.router.navigate([`/instrument/${instrumentName}/wallet`], {queryParams: {
-        panel: 'deposit',
-        token: this.notification.metadata['tokenName'],
-        amount: this.notification.metadata['amount'],
-        showApprove: false
-      }});
-    } else if (this.notification.type === TransactionType.DEPOSIT || this.notification.type === TransactionType.WITHDRAW) {
-      this.router.navigate([`/instrument/${instrumentName}/wallet`], {queryParams: {panel: 'transactions'}});
-    } 
+    switch (this.notification.type) {
+      case TransactionType.APPROVE:
+        this.router.navigate([`/instrument/${instrumentName}/wallet`], {
+          queryParams: {
+            panel: 'deposit',
+            token: this.notification.metadata['tokenName'],
+            amount: this.notification.metadata['amount'],
+            showApprove: false
+          }
+        });
+        break;
+      case TransactionType.DEPOSIT:
+      case TransactionType.WITHDRAW:
+        this.router.navigate([`/instrument/${instrumentName}/wallet`], { queryParams: { panel: 'transactions' } });
+        break;
+      case TransactionType.CREATE_OFFER:
+        this.router.navigate([`/instrument/${instrumentName}/positions`], { queryParams: { tab: 'engaged' } });
+        break;
+      case TransactionType.CANCEL_OFFER:
+        this.router.navigate([`/instrument/${instrumentName}/positions`], { queryParams: { tab: 'inactive' } });
+        break;
+    }
   }
 
   getNotificationAction(): string {
