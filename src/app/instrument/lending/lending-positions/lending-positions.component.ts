@@ -50,6 +50,7 @@ export class LendingPositionsComponent implements OnInit, OnDestroy {
   }
 
   updateLendingIssuances() {
+    console.log('Lending issuance updated', this.instrumentService.lendingIssuances);
     this.zone.run(() => {
       const lendingIssuances = this.instrumentService.lendingIssuances.filter(issuance => {
         let inState = true;

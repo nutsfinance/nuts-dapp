@@ -88,6 +88,7 @@ export class InstrumentService {
       })
       .on('receipt', (receipt) => {
         console.log(receipt);
+        this.reloadIssuances('lending');
         this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
       });
   }
@@ -120,6 +121,8 @@ export class InstrumentService {
       })
       .on('receipt', (receipt) => {
         console.log(receipt);
+        // Updates the issuance list.
+        this.reloadIssuances(instrument);
         this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
       });
   }
@@ -158,6 +161,8 @@ export class InstrumentService {
       })
       .on('receipt', (receipt) => {
         console.log(receipt);
+        // Updates the issuance list.
+        this.reloadIssuances(instrument);
         this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
       });
   }
@@ -191,6 +196,8 @@ export class InstrumentService {
       })
       .on('receipt', (receipt) => {
         console.log(receipt);
+        // Updates the issuance list.
+        this.reloadIssuances(instrument);
         this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
       });
   }
@@ -246,5 +253,13 @@ export class InstrumentService {
     batch.execute();
 
     return Promise.all(promises);
+  }
+
+  private reloadIssuances(instrument: string) {
+    switch(instrument) {
+      case 'lending':
+        this.getLendingIssuances();
+        break;
+    }
   }
 }

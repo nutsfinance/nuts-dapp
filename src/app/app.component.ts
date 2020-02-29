@@ -6,7 +6,6 @@ import { NotificationCategory, NotificationModel, NotificationStatus } from './n
 import { NotificationService } from './notification/notification.service';
 import { Subscription } from 'rxjs';
 import { NutsPlatformService } from './common/web3/nuts-platform.service';
-import { InstrumentService } from './common/web3/instrument.service';
 
 export interface NotificationData {
   category: NotificationCategory,
@@ -24,7 +23,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private transactionConfirmedSubscription: Subscription;
 
   constructor(private notificationService: NotificationService, private nutsPlatformService: NutsPlatformService,
-    private instrumentService: InstrumentService, private snackBar: MatSnackBar, private zone: NgZone) { }
+    private snackBar: MatSnackBar, private zone: NgZone) { }
 
   ngOnInit() {
     this.transactionConfirmedSubscription = this.nutsPlatformService.transactionSentSubject.subscribe(_ => {
@@ -38,7 +37,7 @@ export class AppComponent implements OnInit, OnDestroy {
       // this.reloadNotifications();
     });
     console.log('Setting interval');
-    this.notificationHandler = setInterval(this.reloadNotifications.bind(this), 10000);
+    this.notificationHandler = setInterval(this.reloadNotifications.bind(this), 20000);
   }
 
   ngOnDestroy() {
@@ -88,8 +87,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private reloadNotifications() {
     this.notificationService.getNotifications().subscribe(notifications => {
-      const currentNotifications = this.notificationService.notifications.sort((n1, n2) => n2.creationTimestamp = n1.creationTimestamp);
+      const currentNotifications = this.notificationService.notifications.sort((n1, n2) => n2.creationTimestamp - n1.creationTimestamp);
       const reloadedNotifications = notifications.sort((n1, n2) => n2.creationTimestamp - n1.creationTimestamp);
+
       // Checks whether the notification list is updated.
       // If notifications length is not the same, it must be updated.
       let updated = reloadedNotifications.length !== currentNotifications.length;
@@ -108,18 +108,19 @@ export class AppComponent implements OnInit, OnDestroy {
         return;
       }
 
+      console.log('Current notifications', currentNotifications);
+      console.log('Reloaded notifications', reloadedNotifications);
+      for (let i = 0; i < reloadedNotifications.length; i++) {
+        console.log(i, currentNotifications[i], reloadedNotifications[i]);
+      }
+
       // Check whether are any new unread notifications.
-      for (let i = reloadedNotifications.length - 1; i >= 0; i--) {
+      for (let i = 0; i < reloadedNotifications.length; i++) {
         if (reloadedNotifications[i].status === NotificationStatus.NEW) {
           console.log('New notification', reloadedNotifications[i]);
           // Don't show snack bar if it's a transaction initiated notification.
           if (reloadedNotifications[i].category !== NotificationCategory.TRANSACTION_INITIATED) {
             this.openSnackBar(reloadedNotifications[i]);
-          }
-          switch(reloadedNotifications[i].instrumentId) {
-            case this.nutsPlatformService.getInstrumentId('lending'):
-              this.instrumentService.getLendingIssuances();
-              break;
           }
           break;
         }

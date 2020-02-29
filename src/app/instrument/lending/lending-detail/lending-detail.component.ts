@@ -68,24 +68,24 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
     this.location.back();
   }
 
-  async engageIssuance() {
+  engageIssuance() {
     if (this.collateralTokenBalance >= this.collateralValue) {
-      const result = await this.instrumentService.engageIssuance('lending', this.issuanceId);
-      console.log(result);
+      this.instrumentService.engageIssuance('lending', this.issuanceId);
+      this.location.back();
     }
   }
 
-  async repayIssuance() {
+  repayIssuance() {
     if (this.collateralTokenBalance >= this.lendingValue + this.totalInterestValue) {
-      const result = await this.instrumentService.repayIssuance('lending', this.issuanceId, this.issuance.lendingTokenAddress,
+      this.instrumentService.repayIssuance('lending', this.issuanceId, this.issuance.lendingTokenAddress,
         this.issuance.lendingAmount + this.issuance.interestAmount);
-      console.log(result);
+      this.location.back();
     }
   }
 
-  async cancelIssuance() {
-    const result = await this.instrumentService.cancelIssuance('lending', this.issuanceId);
-    console.log(result);
+  cancelIssuance() {
+    this.instrumentService.cancelIssuance('lending', this.issuanceId);
+    this.location.back();
   }
 
   private updateLendingIssuance() {
