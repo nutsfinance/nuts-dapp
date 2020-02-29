@@ -84,7 +84,7 @@ export class NotificationRowComponent implements OnInit, OnChanges {
         this.router.navigate([`/instrument/${instrumentName}/wallet`], { queryParams: { panel: 'transactions' } });
         break;
       case TransactionType.CREATE_OFFER:
-        this.router.navigate([`/instrument/${instrumentName}/positions`], { queryParams: { tab: 'engaged' } });
+        this.router.navigate([`/instrument/${instrumentName}/positions`], { queryParams: { tab: 'engageable' } });
         break;
       case TransactionType.CANCEL_OFFER:
         this.router.navigate([`/instrument/${instrumentName}/positions`], { queryParams: { tab: 'inactive' } });

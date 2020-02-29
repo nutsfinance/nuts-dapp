@@ -88,6 +88,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private reloadNotifications() {
     this.notificationService.getNotifications().subscribe(notifications => {
+      console.log('Current notification', this.notificationService.notifications);
       console.log('Notification reloaded', notifications);
       // Checks whether the notification list is updated.
       // If notifications length is not the same, it must be updated.
