@@ -6,6 +6,7 @@ import { LendingIssuanceModel } from 'src/app/common/model/lending-issuance.mode
 import { NutsPlatformService, USD_ADDRESS, CNY_ADDRESS } from 'src/app/common/web3/nuts-platform.service';
 import { PriceOracleService } from 'src/app/common/web3/price-oracle.service';
 import { CurrencyService } from 'src/app/common/currency-select/currency.service';
+import { InstrumentService } from 'src/app/common/web3/instrument.service';
 
 @Component({
   selector: 'app-lending-detail',
@@ -34,9 +35,9 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
   private lendingUpdatedSubscription: Subscription;
   private currencyUpdatedSubscription: Subscription;
 
-  constructor(private nutsPlatformService: NutsPlatformService, private priceOracleService: PriceOracleService,
-              private currencyService: CurrencyService, private route: ActivatedRoute, private zone: NgZone,
-              private location: Location) { }
+  constructor(private nutsPlatformService: NutsPlatformService, private instrumentService: InstrumentService,
+    private priceOracleService: PriceOracleService, private currencyService: CurrencyService,
+    private route: ActivatedRoute, private zone: NgZone, private location: Location) { }
 
   ngOnInit() {
     this.issuanceId = this.route.snapshot.params['id'];
@@ -48,7 +49,7 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
     this.accountUpdatedSubscription = this.nutsPlatformService.currentAccountSubject.subscribe(_ => {
       this.updateLendingIssuance();
     });
-    this.lendingUpdatedSubscription = this.nutsPlatformService.lendingIssuancesUpdatedSubject.subscribe(_ => {
+    this.lendingUpdatedSubscription = this.instrumentService.lendingIssuancesUpdatedSubject.subscribe(_ => {
       this.updateLendingIssuance();
     });
     this.currencyUpdatedSubscription = this.currencyService.currencyUpdatedSubject.subscribe(_ => {
@@ -69,27 +70,27 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
 
   async engageIssuance() {
     if (this.collateralTokenBalance >= this.collateralValue) {
-      const result = await this.nutsPlatformService.engageIssuance('lending', this.issuanceId);
+      const result = await this.instrumentService.engageIssuance('lending', this.issuanceId);
       console.log(result);
     }
   }
 
   async repayIssuance() {
     if (this.collateralTokenBalance >= this.lendingValue + this.totalInterestValue) {
-      const result = await this.nutsPlatformService.repayIssuance('lending', this.issuanceId, this.issuance.lendingTokenAddress,
+      const result = await this.instrumentService.repayIssuance('lending', this.issuanceId, this.issuance.lendingTokenAddress,
         this.issuance.lendingAmount + this.issuance.interestAmount);
       console.log(result);
     }
   }
 
   async cancelIssuance() {
-    const result = await this.nutsPlatformService.cancelIssuance('lending', this.issuanceId);
+    const result = await this.instrumentService.cancelIssuance('lending', this.issuanceId);
     console.log(result);
   }
 
   private updateLendingIssuance() {
     this.zone.run(() => {
-      this.issuance = this.nutsPlatformService.getLendingIssuance(this.issuanceId);
+      this.issuance = this.instrumentService.getLendingIssuance(this.issuanceId);
       console.log(this.issuance);
       console.log(this.currencyService.currency);
       if (this.issuance) {

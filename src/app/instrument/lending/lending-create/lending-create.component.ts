@@ -3,6 +3,7 @@ import { FormControl, FormGroup, NgForm } from '@angular/forms';
 import { MatButtonToggleChange } from '@angular/material';
 import { NutsPlatformService } from '../../../common/web3/nuts-platform.service';
 import { PriceOracleService } from '../../../common/web3/price-oracle.service';
+import { InstrumentService } from 'src/app/common/web3/instrument.service';
 
 
 @Component({
@@ -22,7 +23,8 @@ export class LendingCreateComponent implements OnInit {
   private collateralValue: Promise<number> = Promise.resolve(0);
   private interestValue = 0;
 
-  constructor(private nutsPlatformService: NutsPlatformService, private priceOracleSercvice: PriceOracleService) { }
+  constructor(private nutsPlatformService: NutsPlatformService, private instrumentService: InstrumentService,
+    private priceOracleSercvice: PriceOracleService) { }
 
   ngOnInit() {
     this.createFormGroup = new FormGroup({
@@ -79,7 +81,7 @@ export class LendingCreateComponent implements OnInit {
     if (!this.createFormGroup.valid) {
       return;
     }
-    const result = await this.nutsPlatformService.createLendingIssuance(this.principalToken,
+    const result = await this.instrumentService.createLendingIssuance(this.principalToken,
       this.createFormGroup.value['principalAmount'], this.collateralToken,
       this.createFormGroup.value['collateralRatio'], this.createFormGroup.value['tenor'],
       this.createFormGroup.value['interestRate']);

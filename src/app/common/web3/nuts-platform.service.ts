@@ -1,15 +1,9 @@
 import { Injectable } from '@angular/core';
-import { LendingData } from 'nuts-platform-protobuf-messages';
 import { Subject } from 'rxjs';
-import { LendingIssuanceModel } from '../model/lending-issuance.model';
 
 const Web3 = require('web3');
 const ERC20 = require('./abi/IERC20.json');
-const InstrumentManager = require('./abi/InstrumentManagerInterface.json');
-const ParametersUtil = require('./abi/ParametersUtil.json');
 
-const INTEREST_RATE_DECIMALS = 10000;
-const COLLATERAL_RATIO_DECIMALS = 100;
 export const FSP_NAME = 'acoconut.nuts.finance';
 export const ETH_ADDRESS = '0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF';
 export const USD_ADDRESS = '0x3EfC5E3c4CFFc638E9C506bb0F040EA0d8d3D094';
@@ -183,9 +177,6 @@ export class NutsPlatformService {
   public transactionConfirmedSubject = new Subject<string>();
   public balanceUpdatedSubject = new Subject<string>();
 
-  public lendingIssuances: LendingIssuanceModel[] = [];
-  public lendingIssuancesUpdatedSubject = new Subject<LendingIssuanceModel[]>();
-
   constructor() {
     window.addEventListener('load', () => {
       this.bootstrapWeb3();
@@ -265,172 +256,6 @@ export class NutsPlatformService {
   public async getBlockTimestamp(blockNumber: string): Promise<number> {
     const block = await this.web3.eth.getBlock(blockNumber);
     return block.timestamp;
-  }
-
-  public async createLendingIssuance(principalToken: string, principalAmount: number, collateralToken: string,
-    collateralRatio: number, tenor: number, interestRate: number) {
-    if (!this.contractAddresses[this.currentNetwork]) {
-      alert(`Network ${this.currentNetwork} is not supported!`);
-      return;
-    }
-    if (!this.contractAddresses[this.currentNetwork].platform.lending) {
-      alert(`Instrument lending is not supported!`);
-      return;
-    }
-    if (principalToken !== 'ETH' && !this.contractAddresses[this.currentNetwork].tokens[principalToken]) {
-      alert(`Token ${principalToken} is not supported!`);
-      return;
-    }
-    if (collateralToken !== 'ETH' && !this.contractAddresses[this.currentNetwork].tokens[collateralToken]) {
-      alert(`Token ${collateralToken} is not supported!`);
-      return;
-    }
-    const parametersUtilAddress = this.contractAddresses[this.currentNetwork].platform.parametersUtil;
-    const parametersUtilContract = new this.web3.eth.Contract(ParametersUtil, parametersUtilAddress);
-
-    const principalTokenAddress = principalToken === 'ETH' ? ETH_ADDRESS : this.contractAddresses[this.currentNetwork].tokens[principalToken];
-    const lendingAmount = principalToken === 'ETH' ? this.web3.utils.toWei(principalAmount, 'ether') : principalAmount;
-    const collateralTokenAddress = collateralToken === 'ETH' ? ETH_ADDRESS : this.contractAddresses[this.currentNetwork].tokens[collateralToken];
-    console.log(collateralTokenAddress, principalTokenAddress, lendingAmount,
-      collateralRatio * COLLATERAL_RATIO_DECIMALS, tenor, interestRate * INTEREST_RATE_DECIMALS);
-    const lendingParameters = await parametersUtilContract.methods.getLendingMakerParameters(collateralTokenAddress, principalTokenAddress, lendingAmount,
-      collateralRatio * COLLATERAL_RATIO_DECIMALS, tenor, interestRate * INTEREST_RATE_DECIMALS).call({ from: this.currentAccount });
-
-    const instrumentManagerAddress = this.contractAddresses[this.currentNetwork].platform.lending.instrumentManager;
-    const instrumentManagerContract = new this.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
-    return instrumentManagerContract.methods.createIssuance(lendingParameters).send({ from: this.currentAccount, gas: 6721975 })
-      .on('transactionHash', (transactionHash) => {
-        console.log(transactionHash);
-        this.transactionSentSubject.next(transactionHash);
-      })
-      .on('receipt', (receipt) => {
-        console.log(receipt);
-        this.transactionConfirmedSubject.next(receipt.transactionHash);
-      });
-
-  }
-
-  public async engageIssuance(instrument: string, issuanceId: number) {
-    if (!this.contractAddresses[this.currentNetwork]) {
-      alert(`Network ${this.currentNetwork} is not supported!`);
-      return;
-    }
-    if (!this.contractAddresses[this.currentNetwork].platform[instrument]) {
-      alert(`Instrument ${instrument} is not supported!`);
-      return;
-    }
-
-    const instrumentManagerAddress = this.contractAddresses[this.currentNetwork].platform[instrument].instrumentManager;
-    const instrumentManagerContract = new this.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
-    return instrumentManagerContract.methods.engageIssuance(issuanceId, this.web3.utils.fromAscii("")).send({ from: this.currentAccount, gas: 6721975 })
-      .on('transactionHash', (transactionHash) => {
-        console.log(transactionHash);
-        this.transactionSentSubject.next(transactionHash);
-      })
-      .on('receipt', (receipt) => {
-        console.log(receipt);
-        this.transactionConfirmedSubject.next(receipt.transactionHash);
-      });
-  }
-
-  public async repayIssuance(instrument: string, issuanceId: number, tokenAddress: string, amount: number) {
-    if (!this.contractAddresses[this.currentNetwork]) {
-      alert(`Network ${this.currentNetwork} is not supported!`);
-      return;
-    }
-    if (!this.contractAddresses[this.currentNetwork].platform[instrument]) {
-      alert(`Instrument ${instrument} is not supported!`);
-      return;
-    }
-
-    const instrumentManagerAddress = this.contractAddresses[this.currentNetwork].platform[instrument].instrumentManager;
-    const instrumentManagerContract = new this.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
-    return instrumentManagerContract.methods.depositToIssuance(issuanceId, tokenAddress, amount).send({ from: this.currentAccount, gas: 6721975 })
-      .on('transactionHash', (transactionHash) => {
-        console.log(transactionHash);
-        this.transactionSentSubject.next(transactionHash);
-      })
-      .on('receipt', (receipt) => {
-        console.log(receipt);
-        this.transactionConfirmedSubject.next(receipt.transactionHash);
-      });
-  }
-
-  public async cancelIssuance(instrument: string, issuanceId: number) {
-    if (!this.contractAddresses[this.currentNetwork]) {
-      alert(`Network ${this.currentNetwork} is not supported!`);
-      return;
-    }
-    if (!this.contractAddresses[this.currentNetwork].platform[instrument]) {
-      alert(`Instrument ${instrument} is not supported!`);
-      return;
-    }
-
-    const instrumentManagerAddress = this.contractAddresses[this.currentNetwork].platform[instrument].instrumentManager;
-    const instrumentManagerContract = new this.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
-    return instrumentManagerContract.methods.notifyCustomEvent(issuanceId, this.web3.utils.fromAscii("cancel_issuance"),
-      this.web3.utils.fromAscii("")).send({ from: this.currentAccount, gas: 6721975 })
-      .on('transactionHash', (transactionHash) => {
-        console.log(transactionHash);
-        this.transactionSentSubject.next(transactionHash);
-      })
-      .on('receipt', (receipt) => {
-        console.log(receipt);
-        this.transactionConfirmedSubject.next(receipt.transactionHash);
-      });
-  }
-
-  public async getLendingIssuances() {
-    if (!this.currentAccount || !this.currentNetwork) {
-      console.log('Either account or network is not set.');
-    }
-    if (!this.contractAddresses[this.currentNetwork]) {
-      alert(`Network ${this.currentNetwork} is not supported!`);
-      return;
-    }
-    if (!this.contractAddresses[this.currentNetwork].platform.lending) {
-      alert(`Instrument lending is not supported!`);
-      return;
-    }
-    const instrumentManagerAddress = this.contractAddresses[this.currentNetwork].platform.lending.instrumentManager;
-    const instrumentManagerContract = new this.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
-    const issuanceCount = await instrumentManagerContract.methods.getLastIssuanceId().call({ from: this.currentAccount });
-    console.log(issuanceCount);
-
-    const batchedRequests = [];
-    for (let i = 1; i <= issuanceCount; i++) {
-      batchedRequests.push(instrumentManagerContract.methods.getCustomData(i, this.web3.utils.fromAscii("lending_data")).call);
-    }
-    const lendingData = await this.makeBatchRequest(batchedRequests);
-    this.lendingIssuances = lendingData.map((data: string) => {
-      const lendingCompleteProperties = LendingData.LendingCompleteProperties.deserializeBinary(Uint8Array.from(Buffer.from(data.substring(2), 'hex')));
-      const lendingIssuance = LendingIssuanceModel.fromMessage(lendingCompleteProperties);
-      console.log(lendingIssuance);
-      return lendingIssuance;
-    });
-    this.lendingIssuancesUpdatedSubject.next(this.lendingIssuances);
-    console.log(this.lendingIssuances);
-  }
-
-  public getLendingIssuance(issuanceId: number): LendingIssuanceModel {
-    return this.lendingIssuances.find(issuance => issuance.issuanceId === issuanceId);
-  }
-
-  private makeBatchRequest(calls) {
-    let batch = new this.web3.BatchRequest();
-
-    let promises = calls.map(call => {
-      return new Promise((res, rej) => {
-        let req = call.request({ from: this.currentAccount }, (err, data) => {
-          if (err) rej(err);
-          else res(data)
-        });
-        batch.add(req)
-      })
-    })
-    batch.execute();
-
-    return Promise.all(promises);
   }
 
   private async bootstrapWeb3() {

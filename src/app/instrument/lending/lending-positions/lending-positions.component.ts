@@ -2,6 +2,7 @@ import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NutsPlatformService } from '../../../common/web3/nuts-platform.service';
 import { LendingIssuanceModel } from 'src/app/common/model/lending-issuance.model';
+import { InstrumentService } from 'src/app/common/web3/instrument.service';
 
 @Component({
   selector: 'app-lending-positions',
@@ -15,13 +16,14 @@ export class LendingPositionsComponent implements OnInit, OnDestroy {
   private accountUpdatedSubscription: Subscription;
   private lendingIssuancesUpdatedSubscription: Subscription;
 
-  constructor(private nutsPlatformService: NutsPlatformService, private zone: NgZone) { }
+  constructor(private nutsPlatformService: NutsPlatformService, private instrumentService: InstrumentService,
+    private zone: NgZone) { }
 
   ngOnInit() {
     this.currentAccount = this.nutsPlatformService.currentAccount;
     // Filters on maker and taker
     this.updateLendingIssuances();
-    this.lendingIssuancesUpdatedSubscription = this.nutsPlatformService.lendingIssuancesUpdatedSubject.subscribe(_ => {
+    this.lendingIssuancesUpdatedSubscription = this.instrumentService.lendingIssuancesUpdatedSubject.subscribe(_ => {
       this.updateLendingIssuances();
     });
     this.accountUpdatedSubscription = this.nutsPlatformService.currentAccountSubject.subscribe(_ => {
@@ -42,7 +44,7 @@ export class LendingPositionsComponent implements OnInit, OnDestroy {
 
   updateLendingIssuances() {
     this.zone.run(() => {
-      const lendingIssuances = this.nutsPlatformService.lendingIssuances.filter(issuance => {
+      const lendingIssuances = this.instrumentService.lendingIssuances.filter(issuance => {
         let inState = true;
         if (this.selectedTab === 'engageable') {
           inState = issuance.state === 2;
