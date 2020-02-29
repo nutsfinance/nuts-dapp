@@ -1,26 +1,13 @@
-import { Component, OnInit, OnDestroy, Inject, NgZone } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+
 import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatSnackBar, MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
 
-import { NutsPlatformService } from '../common/web3/nuts-platform.service';
 import { NotificationService } from '../notification/notification.service';
-import { NotificationStatus, NotificationModel, NotificationCategory } from '../notification/notification.model';
+import { NotificationStatus, NotificationModel } from '../notification/notification.model';
 import { NotificationDialog } from '../notification/notification-dialog/notification-dialog.component';
-
-export interface TransactionData {
-  transactionHash: string,
-  transactionLink: string,
-  transactionShortHash: string,
-}
-
-export interface NotificationData {
-  category: NotificationCategory,
-  content: string,
-}
 
 @Component({
   selector: 'app-instrument',
@@ -30,13 +17,11 @@ export interface NotificationData {
 export class InstrumentComponent implements OnInit, OnDestroy {
   private language: string = 'English';
 
-  private notificationHandler;
   private unreadNotifications: NotificationModel[] = [];
   private notificationSubscription: Subscription;
   private notificationDialog: MatDialogRef<NotificationDialog>;
 
-  constructor(private _bottomSheet: MatBottomSheet, private dialog: MatDialog, private snackBar: MatSnackBar,
-    private zone: NgZone, private nutsPlatformService: NutsPlatformService,
+  constructor(private _bottomSheet: MatBottomSheet, private dialog: MatDialog,
     private notificationService: NotificationService) { }
 
   ngOnInit() {
@@ -44,26 +29,10 @@ export class InstrumentComponent implements OnInit, OnDestroy {
       this.unreadNotifications = notifications.filter(notification => notification.status === NotificationStatus.NEW)
         .sort((n1, n2) => n2.creationTimestamp - n1.creationTimestamp);
     });
-
-    console.log('Setting interval');
-    this.notificationHandler = setInterval(this.reloadNotifications.bind(this), 10000);
   }
 
   ngOnDestroy() {
     this.notificationSubscription.unsubscribe();
-    clearInterval(this.notificationHandler);
-  }
-
-  getTransactionData(transactionHash: string): TransactionData {
-    return {
-      transactionHash,
-      transactionLink: this.getTransactionLink(transactionHash),
-      transactionShortHash: `${transactionHash.slice(0, 5)}....${transactionHash.slice(transactionHash.length - 5)}`,
-    };
-  }
-
-  getTransactionLink(transactionHash: string) {
-    return `https://etherscan.io/tx/${transactionHash}`;
   }
 
   openLanguageBottomSheet(): void {
@@ -88,66 +57,6 @@ export class InstrumentComponent implements OnInit, OnDestroy {
       }
     });
   }
-
-  openSnackBar(notification: NotificationModel) {
-    let snackBarPanelClass = '';
-    switch (notification.category) {
-      case NotificationCategory.TRANSACTION_INITIATED:
-        snackBarPanelClass = 'transaction-initiated-container';
-        break;
-      case NotificationCategory.TRANSACTION_CONFIRMED:
-        snackBarPanelClass = 'transaction-confirmed-container';
-        break;
-      case NotificationCategory.TRANSACTION_FAILED:
-        snackBarPanelClass = 'transaction-failed-container';
-        break;
-      case NotificationCategory.ASSETS:
-        snackBarPanelClass = 'assets-container';
-        break;
-      case NotificationCategory.EXPIRATION:
-        snackBarPanelClass = 'expiration-container';
-        break;
-      case NotificationCategory.DUE:
-        snackBarPanelClass = 'due-container';
-        break;
-    }
-    // let snackBarRef = this.snackBar.open('Approval Successful', 'View More');
-    // snackBarRef.afterDismissed().subscribe(dismiss => {
-    //   if (dismiss.dismissedByAction) {
-    //     this.router.navigate(['/notification']);
-    //   }
-    // });
-    this.snackBar.openFromComponent(NotificationSnackBar, {
-      data: {
-        category: NotificationCategory.TRANSACTION_CONFIRMED,
-        content: 'Approval Successful!'
-      },
-      panelClass: snackBarPanelClass,
-      duration: 5000,
-    });
-  }
-
-  private reloadNotifications() {
-    console.log('Reloading notification');
-    this.notificationService.getNotifications().subscribe(notifications => {
-      console.log(notifications);
-      // If the notification amount is not changed, no op.
-      if (notifications.length === this.notificationService.notifications.length) return;
-
-      // Check whether are any new unread notifications.
-      for (let i = notifications.length - 1; i >= this.notificationService.notifications.length; i--) {
-        if (notifications[i].status === NotificationStatus.NEW) {
-          console.log('New notification', notifications[i]);
-          this.openSnackBar(notifications[i]);
-          break;
-        }
-      }
-
-      // Updates the notification list
-      this.notificationService.notifications = notifications;
-      this.notificationService.notificationUpdatedSubject.next(notifications);
-    });
-  }
 }
 
 @Component({
@@ -164,23 +73,4 @@ export class LanguageSelectSheet {
     event.preventDefault();
   }
 
-}
-
-@Component({
-  selector: 'notification-snack-bar',
-  templateUrl: 'notification-snack-bar.html',
-  styleUrls: ['./notification-snack-bar.scss'],
-})
-export class NotificationSnackBar {
-  constructor(public snackBarRef: MatSnackBarRef<NotificationSnackBar>,
-    @Inject(MAT_SNACK_BAR_DATA) public data: NotificationData, private router: Router) { }
-
-  dismiss() {
-    this.snackBarRef.dismiss();
-  }
-
-  viewMore() {
-    this.snackBarRef.dismiss();
-    this.router.navigate(['/notification']);
-  }
 }

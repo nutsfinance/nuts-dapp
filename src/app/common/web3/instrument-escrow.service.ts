@@ -81,11 +81,15 @@ export class InstrumentEscrowService {
             amount: `${amount}`,
           }
         );
-        this.notificationService.addTransaction(depositTransaction).subscribe(result => console.log(result));
+        this.notificationService.addTransaction(depositTransaction).subscribe(result => {
+          console.log(result);
+          // Note: Transaction Sent event is not sent until the transaction is recored in notification server!
+          this.nutsPlatformService.transactionSentSubject.next(transactionHash);
+        });
       })
       .on('receipt', (receipt) => {
         console.log(receipt);
-        // this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
+        this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
       });
   }
 
@@ -114,11 +118,15 @@ export class InstrumentEscrowService {
             amount: `${amount}`,
           }
         );
-        this.notificationService.addTransaction(depositTransaction).subscribe(result => console.log(result));
+        this.notificationService.addTransaction(depositTransaction).subscribe(result => {
+          console.log(result);
+          // Note: Transaction Sent event is not sent until the transaction is recored in notification server!
+          this.nutsPlatformService.transactionSentSubject.next(transactionHash);
+        });
       })
       .on('receipt', (receipt) => {
         console.log(receipt);
-        // this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
+        this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
       });
   }
 
@@ -151,11 +159,15 @@ export class InstrumentEscrowService {
             amount: `${amount}`,
           }
         );
-        this.notificationService.addTransaction(depositTransaction).subscribe(result => console.log(result));
+        this.notificationService.addTransaction(depositTransaction).subscribe(result => {
+          console.log(result);
+          // Note: Transaction Sent event is not sent until the transaction is recored in notification server!
+          this.nutsPlatformService.transactionSentSubject.next(transactionHash);
+        });
       })
       .on('receipt', (receipt) => {
         console.log(receipt);
-        // this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
+        this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
       });
   }
 
@@ -184,11 +196,15 @@ export class InstrumentEscrowService {
             amount: `${amount}`,
           }
         );
-        this.notificationService.addTransaction(depositTransaction).subscribe(result => console.log(result));
+        this.notificationService.addTransaction(depositTransaction).subscribe(result => {
+          console.log(result);
+          // Note: Transaction Sent event is not sent until the transaction is recored in notification server!
+          this.nutsPlatformService.transactionSentSubject.next(transactionHash);
+        });
       })
       .on('receipt', (receipt) => {
         console.log(receipt);
-        // this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
+        this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
       });
   }
 
@@ -221,11 +237,15 @@ export class InstrumentEscrowService {
             amount: `${amount}`,
           }
         );
-        this.notificationService.addTransaction(depositTransaction).subscribe(result => console.log(result));
+        this.notificationService.addTransaction(depositTransaction).subscribe(result => {
+          console.log(result);
+          // Note: Transaction Sent event is not sent until the transaction is recored in notification server!
+          this.nutsPlatformService.transactionSentSubject.next(transactionHash);
+        });
       })
       .on('receipt', (receipt) => {
         console.log(receipt);
-        // this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
+        this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
       });
   }
 

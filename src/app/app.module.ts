@@ -6,7 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChartsModule } from 'ng2-charts';
 import { TimeAgoPipe } from 'time-ago-pipe';
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import { AppComponent, NotificationSnackBar } from './app.component';
 import { AccountAddressComponent } from './common/account-address/account-address.component';
 import { AccountBalanceComponent } from './common/account-balance/account-balance.component';
 import { BlockTimestampComponent } from './common/block-timestamp/block-timestamp.component';
@@ -24,7 +24,7 @@ import { DashboardAccountBalanceComponent } from './instrument/dashboard/dashboa
 import { DashboardMiningBalanceComponent } from './instrument/dashboard/dashboard-mining-balance/dashboard-mining-balance.component';
 import { DashboardPositionBalanceComponent } from './instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component';
 import { DashboardComponent } from './instrument/dashboard/dashboard.component';
-import { InstrumentComponent, LanguageSelectSheet, NotificationSnackBar } from './instrument/instrument.component';
+import { InstrumentComponent, LanguageSelectSheet } from './instrument/instrument.component';
 import { LendingCardComponent } from './instrument/lending/lending-card/lending-card.component';
 import { LendingCreateComponent } from './instrument/lending/lending-create/lending-create.component';
 import { LendingDetailComponent } from './instrument/lending/lending-detail/lending-detail.component';

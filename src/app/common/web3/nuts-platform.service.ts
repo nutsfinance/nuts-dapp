@@ -453,13 +453,13 @@ export class NutsPlatformService {
     this.handleAccountChanged([ethereum.selectedAddress]);
     this.handleNetworkChanged(Number(ethereum.networkVersion));
 
-    try {
-      this.handleNetworkChanged(await ethereum.send('eth_chainId'));
-      this.handleAccountChanged(await ethereum.send('eth_accounts'));
-    } catch (error) {
-      console.error(error);
-      // Access control error
-    }
+    // try {
+    //   this.handleNetworkChanged(await ethereum.send('eth_chainId'));
+    //   this.handleAccountChanged(await ethereum.send('eth_accounts'));
+    // } catch (error) {
+    //   console.error(error);
+    //   // Access control error
+    // }
   }
 
   private handleAccountChanged(accounts) {
