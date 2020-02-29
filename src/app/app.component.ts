@@ -38,7 +38,7 @@ export class AppComponent implements OnInit, OnDestroy {
       // this.reloadNotifications();
     });
     console.log('Setting interval');
-    this.notificationHandler = setInterval(this.reloadNotifications.bind(this), 30000);
+    this.notificationHandler = setInterval(this.reloadNotifications.bind(this), 10000);
   }
 
   ngOnDestroy() {
@@ -88,14 +88,15 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private reloadNotifications() {
     this.notificationService.getNotifications().subscribe(notifications => {
-      console.log('Current notification', this.notificationService.notifications);
-      console.log('Notification reloaded', notifications);
+      const currentNotifications = this.notificationService.notifications.sort((n1, n2) => n2.creationTimestamp = n1.creationTimestamp);
+      const reloadedNotifications = notifications.sort((n1, n2) => n2.creationTimestamp - n1.creationTimestamp);
       // Checks whether the notification list is updated.
       // If notifications length is not the same, it must be updated.
-      let updated = notifications.length !== this.notificationService.notifications.length;
+      let updated = reloadedNotifications.length !== currentNotifications.length;
       if (!updated) {
-        for (let i = 0; i < notifications.length; i++) {
-          if (notifications[i].notificationId !== this.notificationService.notifications[i].notificationId) {
+        for (let i = 0; i < reloadedNotifications.length; i++) {
+          if (reloadedNotifications[i].notificationId !== currentNotifications[i].notificationId) {
+            console.log('Mismatch', i, reloadedNotifications[i].notificationId, currentNotifications[i].notificationId);
             updated = true;
             break;
           }
@@ -108,14 +109,14 @@ export class AppComponent implements OnInit, OnDestroy {
       }
 
       // Check whether are any new unread notifications.
-      for (let i = notifications.length - 1; i >= 0; i--) {
-        if (notifications[i].status === NotificationStatus.NEW) {
-          console.log('New notification', notifications[i]);
+      for (let i = reloadedNotifications.length - 1; i >= 0; i--) {
+        if (reloadedNotifications[i].status === NotificationStatus.NEW) {
+          console.log('New notification', reloadedNotifications[i]);
           // Don't show snack bar if it's a transaction initiated notification.
-          if (notifications[i].category !== NotificationCategory.TRANSACTION_INITIATED) {
-            this.openSnackBar(notifications[i]);
+          if (reloadedNotifications[i].category !== NotificationCategory.TRANSACTION_INITIATED) {
+            this.openSnackBar(reloadedNotifications[i]);
           }
-          switch(notifications[i].instrumentId) {
+          switch(reloadedNotifications[i].instrumentId) {
             case this.nutsPlatformService.getInstrumentId('lending'):
               this.instrumentService.getLendingIssuances();
               break;
@@ -125,8 +126,8 @@ export class AppComponent implements OnInit, OnDestroy {
       }
 
       // Updates the notification list
-      this.notificationService.notifications = notifications;
-      this.notificationService.notificationUpdatedSubject.next(notifications);
+      this.notificationService.notifications = reloadedNotifications;
+      this.notificationService.notificationUpdatedSubject.next(reloadedNotifications);
     });
   }
 

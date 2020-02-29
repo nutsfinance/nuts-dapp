@@ -18,8 +18,9 @@ export class NotificationService {
     this.nutsPlatformService.currentAccountSubject.subscribe(currentAddress => {
       if (currentAddress) {
         this.getNotifications().subscribe(notifications => {
-          this.notifications = notifications;
-          this.notificationUpdatedSubject.next(notifications);
+          const sortedNotifications = notifications.sort((n1, n2) => n2.creationTimestamp - n1.creationTimestamp);
+          this.notifications = sortedNotifications;
+          this.notificationUpdatedSubject.next(sortedNotifications);
         });
       }
     });
