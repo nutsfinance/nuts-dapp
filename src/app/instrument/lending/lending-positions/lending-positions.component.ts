@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { NutsPlatformService } from '../../../common/web3/nuts-platform.service';
 import { LendingIssuanceModel } from 'src/app/common/model/lending-issuance.model';
 import { InstrumentService } from 'src/app/common/web3/instrument.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-lending-positions',
@@ -15,9 +16,10 @@ export class LendingPositionsComponent implements OnInit, OnDestroy {
   private issuances: LendingIssuanceModel[] = [];
   private accountUpdatedSubscription: Subscription;
   private lendingIssuancesUpdatedSubscription: Subscription;
+  private routeParamSubscription: Subscription;
 
   constructor(private nutsPlatformService: NutsPlatformService, private instrumentService: InstrumentService,
-    private zone: NgZone) { }
+    private route: ActivatedRoute, private zone: NgZone) { }
 
   ngOnInit() {
     this.currentAccount = this.nutsPlatformService.currentAccount;
@@ -30,11 +32,16 @@ export class LendingPositionsComponent implements OnInit, OnDestroy {
       this.currentAccount = this.nutsPlatformService.currentAccount;
       this.updateLendingIssuances();
     });
+    this.selectedTab = this.route.snapshot.queryParams['tab'] || 'all';
+    this.routeParamSubscription = this.route.queryParams.subscribe(queryParams => {
+      this.selectedTab = queryParams['tab'] || 'all';
+    });
   }
 
   ngOnDestroy() {
     this.lendingIssuancesUpdatedSubscription.unsubscribe();
     this.accountUpdatedSubscription.unsubscribe();
+    this.routeParamSubscription.unsubscribe();
   }
 
   selectTab(tab: string) {
