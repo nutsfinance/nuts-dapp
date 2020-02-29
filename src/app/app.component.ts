@@ -6,6 +6,7 @@ import { NotificationCategory, NotificationModel, NotificationStatus } from './n
 import { NotificationService } from './notification/notification.service';
 import { Subscription } from 'rxjs';
 import { NutsPlatformService } from './common/web3/nuts-platform.service';
+import { InstrumentService } from './common/web3/instrument.service';
 
 export interface NotificationData {
   category: NotificationCategory,
@@ -23,7 +24,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private transactionConfirmedSubscription: Subscription;
 
   constructor(private notificationService: NotificationService, private nutsPlatformService: NutsPlatformService,
-    private snackBar: MatSnackBar, private zone: NgZone) { }
+    private instrumentService: InstrumentService, private snackBar: MatSnackBar, private zone: NgZone) { }
 
   ngOnInit() {
     this.transactionConfirmedSubscription = this.nutsPlatformService.transactionSentSubject.subscribe(_ => {
@@ -76,8 +77,8 @@ export class AppComponent implements OnInit, OnDestroy {
     this.zone.run(() => {
       this.snackBar.openFromComponent(NotificationSnackBar, {
         data: {
-          category: NotificationCategory.TRANSACTION_CONFIRMED,
-          content: 'Approval Successful!'
+          category: notification.category,
+          content: `${notification.title}!`,
         },
         panelClass: snackBarPanelClass,
         duration: 5000,
@@ -112,6 +113,11 @@ export class AppComponent implements OnInit, OnDestroy {
           // Don't show snack bar if it's a transaction initiated notification.
           if (notifications[i].category !== NotificationCategory.TRANSACTION_INITIATED) {
             this.openSnackBar(notifications[i]);
+          }
+          switch(notifications[i].instrumentId) {
+            case this.nutsPlatformService.getInstrumentId('lending'):
+              this.instrumentService.getLendingIssuances();
+              break;
           }
           break;
         }

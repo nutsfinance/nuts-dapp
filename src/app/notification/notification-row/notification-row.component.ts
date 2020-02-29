@@ -75,7 +75,7 @@ export class NotificationRowComponent implements OnInit, OnChanges {
       }});
     } else if (this.notification.type === TransactionType.DEPOSIT || this.notification.type === TransactionType.WITHDRAW) {
       this.router.navigate([`/instrument/${instrumentName}/wallet`], {queryParams: {panel: 'transactions'}});
-    }
+    } 
   }
 
   getNotificationAction(): string {
