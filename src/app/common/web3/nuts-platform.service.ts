@@ -301,7 +301,6 @@ export class NutsPlatformService {
     if (network && network != this.currentNetwork) {
       this.currentNetwork = network;
       this.currentNetworkSubject.next(network);
-      this.getLendingIssuances();
       console.log('Network updated', this.currentNetwork);
     }
   }

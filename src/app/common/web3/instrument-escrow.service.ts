@@ -73,7 +73,7 @@ export class InstrumentEscrowService {
 
         // Records the transaction
         const depositTransaction = new TransactionModel(transactionHash, TransactionType.APPROVE,
-          this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId(instrument),
+          this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId(instrument), 0,
           {
             instrumentName: instrument,
             tokenName: token,
@@ -110,7 +110,7 @@ export class InstrumentEscrowService {
 
         // Records the transaction
         const depositTransaction = new TransactionModel(transactionHash, TransactionType.DEPOSIT,
-          this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId(instrument),
+          this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId(instrument), 0,
           {
             instrumentName: instrument,
             tokenName: 'ETH',
@@ -151,7 +151,7 @@ export class InstrumentEscrowService {
 
         // Records the transaction
         const depositTransaction = new TransactionModel(transactionHash, TransactionType.DEPOSIT,
-          this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId(instrument),
+          this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId(instrument), 0,
           {
             instrumentName: instrument,
             tokenName: token,
@@ -188,7 +188,7 @@ export class InstrumentEscrowService {
 
         // Records the transaction
         const depositTransaction = new TransactionModel(transactionHash, TransactionType.WITHDRAW,
-          this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId(instrument),
+          this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId(instrument), 0,
           {
             instrumentName: instrument,
             tokenName: 'ETH',
@@ -229,7 +229,7 @@ export class InstrumentEscrowService {
 
         // Records the transaction
         const depositTransaction = new TransactionModel(transactionHash, TransactionType.WITHDRAW,
-          this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId(instrument),
+          this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId(instrument), 0,
           {
             instrumentName: instrument,
             tokenName: token,

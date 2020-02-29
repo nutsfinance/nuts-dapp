@@ -19,7 +19,11 @@ export class InstrumentService {
   public lendingIssuances: LendingIssuanceModel[] = [];
   public lendingIssuancesUpdatedSubject = new Subject<LendingIssuanceModel[]>();
 
-  constructor(private nutsPlatformService: NutsPlatformService, private notificationService: NotificationService) { }
+  constructor(private nutsPlatformService: NutsPlatformService, private notificationService: NotificationService) {
+    this.nutsPlatformService.currentNetworkSubject.subscribe(_ => {
+      this.getLendingIssuances();
+    });
+  }
 
   public async createLendingIssuance(principalToken: string, principalAmount: number, collateralToken: string,
     collateralRatio: number, tenor: number, interestRate: number) {
@@ -58,8 +62,17 @@ export class InstrumentService {
         // this.nutsPlatformService.transactionSentSubject.next(transactionHash);
         // Records the transaction
         const depositTransaction = new TransactionModel(transactionHash, TransactionType.CREATE_OFFER,
-          this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId('lending'),
+          this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId('lending'), 0,
           {
+            principalTokenName: principalToken,
+            principalTokenAddress,
+            principalAmount: `${principalAmount}`,
+            collateralTokenName: collateralToken,
+            collateralTokenAddress,
+            collateralRatio: `${collateralRatio}`,
+            tenor: `${tenor}`,
+            interestRate: `${interestRate}`,
+
             // instrumentName: instrument,
             // tokenName: token,
             // tokenAddress,
@@ -94,7 +107,16 @@ export class InstrumentService {
     return instrumentManagerContract.methods.engageIssuance(issuanceId, this.nutsPlatformService.web3.utils.fromAscii("")).send({ from: this.nutsPlatformService.currentAccount, gas: 6721975 })
       .on('transactionHash', (transactionHash) => {
         console.log(transactionHash);
-        this.nutsPlatformService.transactionSentSubject.next(transactionHash);
+        // this.nutsPlatformService.transactionSentSubject.next(transactionHash);
+
+        // Records the transaction
+        const depositTransaction = new TransactionModel(transactionHash, TransactionType.ACCEPT_OFFER,
+          this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId('lending'), issuanceId, {});
+        this.notificationService.addTransaction(depositTransaction).subscribe(result => {
+          console.log(result);
+          // Note: Transaction Sent event is not sent until the transaction is recored in notification server!
+          this.nutsPlatformService.transactionSentSubject.next(transactionHash);
+        });
       })
       .on('receipt', (receipt) => {
         console.log(receipt);
@@ -117,7 +139,22 @@ export class InstrumentService {
     return instrumentManagerContract.methods.depositToIssuance(issuanceId, tokenAddress, amount).send({ from: this.nutsPlatformService.currentAccount, gas: 6721975 })
       .on('transactionHash', (transactionHash) => {
         console.log(transactionHash);
-        this.nutsPlatformService.transactionSentSubject.next(transactionHash);
+        // this.nutsPlatformService.transactionSentSubject.next(transactionHash);
+
+        // Records the transaction
+        const depositTransaction = new TransactionModel(transactionHash, TransactionType.PAY_OFFER,
+          this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId('lending'), issuanceId,
+          {
+            principalTokenName: this.nutsPlatformService.getTokenNameByAddress(tokenAddress),
+            principalTokenAddress: tokenAddress,
+            totalAmount: `${amount}`,
+          }
+        );
+        this.notificationService.addTransaction(depositTransaction).subscribe(result => {
+          console.log(result);
+          // Note: Transaction Sent event is not sent until the transaction is recored in notification server!
+          this.nutsPlatformService.transactionSentSubject.next(transactionHash);
+        });
       })
       .on('receipt', (receipt) => {
         console.log(receipt);
@@ -141,7 +178,16 @@ export class InstrumentService {
       this.nutsPlatformService.web3.utils.fromAscii("")).send({ from: this.nutsPlatformService.currentAccount, gas: 6721975 })
       .on('transactionHash', (transactionHash) => {
         console.log(transactionHash);
-        this.nutsPlatformService.transactionSentSubject.next(transactionHash);
+        // this.nutsPlatformService.transactionSentSubject.next(transactionHash);
+
+        // Records the transaction
+        const depositTransaction = new TransactionModel(transactionHash, TransactionType.CANCEL_OFFER,
+          this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId('lending'), issuanceId, {});
+        this.notificationService.addTransaction(depositTransaction).subscribe(result => {
+          console.log(result);
+          // Note: Transaction Sent event is not sent until the transaction is recored in notification server!
+          this.nutsPlatformService.transactionSentSubject.next(transactionHash);
+        });
       })
       .on('receipt', (receipt) => {
         console.log(receipt);

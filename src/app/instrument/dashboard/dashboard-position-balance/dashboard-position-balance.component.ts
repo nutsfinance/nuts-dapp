@@ -1,10 +1,11 @@
-import {DataSource} from '@angular/cdk/table';
-import {Component, NgZone, OnDestroy, OnInit} from '@angular/core';
-import {BehaviorSubject, Subscription} from 'rxjs';
-import {NutsPlatformService, USD_ADDRESS, CNY_ADDRESS} from 'src/app/common/web3/nuts-platform.service';
+import { DataSource } from '@angular/cdk/table';
+import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { NutsPlatformService, USD_ADDRESS, CNY_ADDRESS } from 'src/app/common/web3/nuts-platform.service';
 import { PriceOracleService } from 'src/app/common/web3/price-oracle.service';
 import { CurrencyService } from 'src/app/common/currency-select/currency.service';
 import { SupplementalLineItemModel, SupplementalLineItemType, SupplementalLineItemState } from 'src/app/common/model/supplemental-line-item.model';
+import { InstrumentService } from 'src/app/common/web3/instrument.service';
 
 interface Position {
   instrument: string,
@@ -33,13 +34,13 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
   private currencySubscription: Subscription;
   private positionDataSource: PositionDataSource;
 
-  constructor(private nutsPlatformService: NutsPlatformService, private priceOracleService: PriceOracleService,
-              private currencyService: CurrencyService, private zone: NgZone) {}
+  constructor(private nutsPlatformService: NutsPlatformService, private instrumentService: InstrumentService,
+    private priceOracleService: PriceOracleService, private currencyService: CurrencyService, private zone: NgZone) { }
 
   ngOnInit() {
     this.positionDataSource = new PositionDataSource(this.nutsPlatformService);
     this.updatePositions();
-    this.lendingIssuanceSubscription = this.nutsPlatformService.lendingIssuancesUpdatedSubject.subscribe(_ => {
+    this.lendingIssuanceSubscription = this.instrumentService.lendingIssuancesUpdatedSubject.subscribe(_ => {
       this.updatePositions();
     });
     this.currentAccountSubscription = this.nutsPlatformService.currentAccountSubject.subscribe(_ => {
@@ -60,7 +61,7 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
   private updatePositions() {
     this.zone.run(() => {
       const positions = [];
-      this.nutsPlatformService.lendingIssuances.forEach(issuance => {
+      this.instrumentService.lendingIssuances.forEach(issuance => {
         // If the current user is maker and the issuance is engageable.
         if (issuance.makerAddress === this.nutsPlatformService.currentAccount
           && issuance.state === 2) {
@@ -105,12 +106,12 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
     let totalPayable = 0;
     const targetTokenAddress = this.currencyService.currency === 'USD' ? USD_ADDRESS : CNY_ADDRESS;
     for (let position of this.activePositions) {
-      if (!position.supplementalLineItems)  continue;
+      if (!position.supplementalLineItems) continue;
       for (let item of position.supplementalLineItems) {
-        if (item.type !== SupplementalLineItemType.Payable 
+        if (item.type !== SupplementalLineItemType.Payable
           || item.state !== SupplementalLineItemState.Unpaid
           || item.obligatorAddress !== this.nutsPlatformService.currentAccount) continue;
-        
+
         const amount = this.nutsPlatformService.getTokenValueByAddress(item.tokenAddress, item.amount);
         totalPayable += await this.priceOracleService.getConvertedValue(targetTokenAddress, item.tokenAddress, amount);
       }
@@ -123,12 +124,12 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
     let totalReceivable = 0;
     const targetTokenAddress = this.currencyService.currency === 'USD' ? USD_ADDRESS : CNY_ADDRESS;
     for (let position of this.activePositions) {
-      if (!position.supplementalLineItems)  continue;
+      if (!position.supplementalLineItems) continue;
       for (let item of position.supplementalLineItems) {
-        if (item.type !== SupplementalLineItemType.Payable 
+        if (item.type !== SupplementalLineItemType.Payable
           || item.state !== SupplementalLineItemState.Unpaid
           || item.claimorAddress !== this.nutsPlatformService.currentAccount) continue;
-        
+
         const amount = this.nutsPlatformService.getTokenValueByAddress(item.tokenAddress, item.amount);
         totalReceivable += await this.priceOracleService.getConvertedValue(targetTokenAddress, item.tokenAddress, amount);
       }
@@ -140,7 +141,7 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
 
 class PositionDataSource implements DataSource<Position> {
 
-  constructor(private nutsPlatformService: NutsPlatformService) {}
+  constructor(private nutsPlatformService: NutsPlatformService) { }
 
   private positionSubject = new BehaviorSubject<Position[]>([]);
 
@@ -152,5 +153,5 @@ class PositionDataSource implements DataSource<Position> {
     return this.positionSubject;
   }
 
-  disconnect() {}
+  disconnect() { }
 }
