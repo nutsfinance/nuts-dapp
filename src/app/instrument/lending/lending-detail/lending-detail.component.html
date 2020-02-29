@@ -126,9 +126,8 @@
                 (click)="engageIssuance()">Engage</button>
         </div>
     </div>
-    <div class="row" [ngStyle]="{'display': collateralTokenBalance >= 0 && collateralTokenBalance < collateralValue ? 'initial' : 'hidden'}"
-        *ngIf="issuance.state == 2 && issuance.makerAddress != nutsPlatformService.currentAccount">
-        <div class="col-xs-12">
+    <div class="row" *ngIf="issuance.state == 2 && issuance.makerAddress != nutsPlatformService.currentAccount">
+        <div [ngClass]="{'col-xs-12': true, 'hidden': collateralTokenBalance == -1 || collateralTokenBalance >= collateralValue}">
             <span style="color: red;">Insufficient balance</span>
             (<span style="color: blue;"><app-instrument-escrow-balance [instrument]="'lending'" [selectedToken]="collateralToken"
                 (balanceUpdated)="collateralTokenBalance = $event">
@@ -145,9 +144,8 @@
         </div>
     </div>
 
-    <div class="row" [ngStyle]="{'display': lendingTokenBalance >= 0 && collateralTokenBalance < lendingValue + totalInterestValue ? 'initial' : 'hidden'}"
-        *ngIf="issuance.state == 3 && issuance.takerAddress == nutsPlatformService.currentAccount">
-        <div class="col-xs-12">
+    <div class="row" *ngIf="issuance.state == 3 && issuance.takerAddress == nutsPlatformService.currentAccount">
+        <div [ngClass]="{'col-xs-12': true, 'hidden': lendingTokenBalance == -1 || collateralTokenBalance >= lendingValue + totalInterestValue}">
             <span style="color: red;">Insufficient balance</span>
             (<span style="color: blue;"><app-instrument-escrow-balance [instrument]="'lending'" [selectedToken]="lendingToken"
                 (balanceUpdated)="lendingTokenBalance = $event">

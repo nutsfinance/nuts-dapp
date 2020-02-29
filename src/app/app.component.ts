@@ -23,7 +23,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private transactionConfirmedSubscription: Subscription;
 
   constructor(private notificationService: NotificationService, private nutsPlatformService: NutsPlatformService,
-    private snackBar: MatSnackBar) { }
+    private snackBar: MatSnackBar, private zone: NgZone) { }
 
   ngOnInit() {
     this.transactionConfirmedSubscription = this.nutsPlatformService.transactionSentSubject.subscribe(_ => {
@@ -73,13 +73,15 @@ export class AppComponent implements OnInit, OnDestroy {
     //     this.router.navigate(['/notification']);
     //   }
     // });
-    this.snackBar.openFromComponent(NotificationSnackBar, {
-      data: {
-        category: NotificationCategory.TRANSACTION_CONFIRMED,
-        content: 'Approval Successful!'
-      },
-      panelClass: snackBarPanelClass,
-      duration: 5000,
+    this.zone.run(() => {
+      this.snackBar.openFromComponent(NotificationSnackBar, {
+        data: {
+          category: NotificationCategory.TRANSACTION_CONFIRMED,
+          content: 'Approval Successful!'
+        },
+        panelClass: snackBarPanelClass,
+        duration: 5000,
+      });
     });
   }
 
