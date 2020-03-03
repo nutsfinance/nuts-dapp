@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { LendingData } from 'nuts-platform-protobuf-messages';
 import { NutsPlatformService, ETH_ADDRESS } from './nuts-platform.service';
 import { NotificationService } from 'src/app/notification/notification.service';
-import { TransactionModel, TransactionType } from 'src/app/notification/transaction.model';
+import { TransactionModel, TransactionType, NotificationRole } from 'src/app/notification/transaction.model';
 import { LendingIssuanceModel } from '../model/lending-issuance.model';
 import { Subject } from 'rxjs';
 
@@ -61,7 +61,7 @@ export class InstrumentService {
         console.log(transactionHash);
         // this.nutsPlatformService.transactionSentSubject.next(transactionHash);
         // Records the transaction
-        const depositTransaction = new TransactionModel(transactionHash, TransactionType.CREATE_OFFER,
+        const depositTransaction = new TransactionModel(transactionHash, TransactionType.CREATE_OFFER, NotificationRole.MAKER,
           this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId('lending'), 0,
           {
             principalTokenName: principalToken,
@@ -111,7 +111,7 @@ export class InstrumentService {
         // this.nutsPlatformService.transactionSentSubject.next(transactionHash);
 
         // Records the transaction
-        const depositTransaction = new TransactionModel(transactionHash, TransactionType.ACCEPT_OFFER,
+        const depositTransaction = new TransactionModel(transactionHash, TransactionType.ACCEPT_OFFER, NotificationRole.TAKER,
           this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId('lending'), issuanceId, {});
         this.notificationService.addTransaction(depositTransaction).subscribe(result => {
           console.log(result);
@@ -145,7 +145,7 @@ export class InstrumentService {
         // this.nutsPlatformService.transactionSentSubject.next(transactionHash);
 
         // Records the transaction
-        const depositTransaction = new TransactionModel(transactionHash, TransactionType.PAY_OFFER,
+        const depositTransaction = new TransactionModel(transactionHash, TransactionType.PAY_OFFER,  NotificationRole.TAKER,
           this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId('lending'), issuanceId,
           {
             principalTokenName: this.nutsPlatformService.getTokenNameByAddress(tokenAddress),
@@ -186,7 +186,7 @@ export class InstrumentService {
         // this.nutsPlatformService.transactionSentSubject.next(transactionHash);
 
         // Records the transaction
-        const depositTransaction = new TransactionModel(transactionHash, TransactionType.CANCEL_OFFER,
+        const depositTransaction = new TransactionModel(transactionHash, TransactionType.CANCEL_OFFER, NotificationRole.MAKER,
           this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId('lending'), issuanceId, {});
         this.notificationService.addTransaction(depositTransaction).subscribe(result => {
           console.log(result);

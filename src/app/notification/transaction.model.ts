@@ -8,8 +8,13 @@ export enum TransactionType {
   PAY_OFFER = 'PAY_OFFER',
 }
 
+export enum NotificationRole {
+  TAKER = 'TAKER',
+  MAKER = 'MAKER',
+}
+
 export class TransactionModel {
-  constructor(public transactionHash: string, public type: TransactionType,
+  constructor(public transactionHash: string, public type: TransactionType, public role: NotificationRole,
     public userAddress: string, public instrumentId: number, public issuanceId: number,
     public metadata: {[key: string]: string}) {}
 }

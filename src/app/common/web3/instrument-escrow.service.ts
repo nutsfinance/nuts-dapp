@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NotificationService } from '../../notification/notification.service';
-import { TransactionModel, TransactionType } from '../../notification/transaction.model';
+import { TransactionModel, TransactionType, NotificationRole } from '../../notification/transaction.model';
 import { ETH_ADDRESS, NutsPlatformService } from './nuts-platform.service';
 
 
@@ -72,7 +72,7 @@ export class InstrumentEscrowService {
         // this.nutsPlatformService.transactionSentSubject.next(transactionHash);
 
         // Records the transaction
-        const depositTransaction = new TransactionModel(transactionHash, TransactionType.APPROVE,
+        const depositTransaction = new TransactionModel(transactionHash, TransactionType.APPROVE, NotificationRole.MAKER,
           this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId(instrument), 0,
           {
             instrumentName: instrument,
@@ -109,7 +109,7 @@ export class InstrumentEscrowService {
         // this.nutsPlatformService.transactionSentSubject.next(transactionHash);
 
         // Records the transaction
-        const depositTransaction = new TransactionModel(transactionHash, TransactionType.DEPOSIT,
+        const depositTransaction = new TransactionModel(transactionHash, TransactionType.DEPOSIT, NotificationRole.MAKER,
           this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId(instrument), 0,
           {
             instrumentName: instrument,
@@ -150,7 +150,7 @@ export class InstrumentEscrowService {
         // this.nutsPlatformService.transactionSentSubject.next(transactionHash);
 
         // Records the transaction
-        const depositTransaction = new TransactionModel(transactionHash, TransactionType.DEPOSIT,
+        const depositTransaction = new TransactionModel(transactionHash, TransactionType.DEPOSIT, NotificationRole.MAKER,
           this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId(instrument), 0,
           {
             instrumentName: instrument,
@@ -187,7 +187,7 @@ export class InstrumentEscrowService {
         // this.nutsPlatformService.transactionSentSubject.next(transactionHash);
 
         // Records the transaction
-        const depositTransaction = new TransactionModel(transactionHash, TransactionType.WITHDRAW,
+        const depositTransaction = new TransactionModel(transactionHash, TransactionType.WITHDRAW, NotificationRole.MAKER,
           this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId(instrument), 0,
           {
             instrumentName: instrument,
@@ -228,7 +228,7 @@ export class InstrumentEscrowService {
         // this.nutsPlatformService.transactionSentSubject.next(transactionHash);
 
         // Records the transaction
-        const depositTransaction = new TransactionModel(transactionHash, TransactionType.WITHDRAW,
+        const depositTransaction = new TransactionModel(transactionHash, TransactionType.WITHDRAW, NotificationRole.MAKER,
           this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId(instrument), 0,
           {
             instrumentName: instrument,
