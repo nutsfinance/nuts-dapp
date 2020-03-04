@@ -1,15 +1,9 @@
-import { Component, Inject, Input, OnInit, ViewChild, NgZone } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, NgZone } from '@angular/core';
 import { FormControl, FormGroup, NgForm } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { InstrumentEscrowService } from '../../common/web3/instrument-escrow.service';
 import { FSP_NAME, NutsPlatformService } from '../../common/web3/nuts-platform.service';
 import { TransactionInitiatedDialog } from 'src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component';
-
-export interface DepositData {
-  fspName: string,
-  tokenName: string,
-  amount: number,
-}
 
 @Component({
   selector: 'app-wallet-deposit',
