@@ -167,7 +167,7 @@ export class InstrumentService {
       });
   }
 
-  public async cancelIssuance(instrument: string, issuanceId: number) {
+  public cancelIssuance(instrument: string, issuanceId: number) {
     if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork]) {
       alert(`Network ${this.nutsPlatformService.currentNetwork} is not supported!`);
       return;

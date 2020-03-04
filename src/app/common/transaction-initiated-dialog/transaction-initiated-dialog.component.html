@@ -4,6 +4,7 @@
         <span *ngSwitchCase="'approve'">Approval Initiated</span>
         <span *ngSwitchCase="'deposit'">Deposit Initiated</span>
         <span *ngSwitchCase="'withdraw'">Withdrawal Initiated</span>
+        <span *ngSwitchCase="'cancel_issuance'">Cancellation Initiated</span>
     </p>
   </div>
   <hr class="divider">
@@ -17,6 +18,9 @@
         </span>
         <span *ngSwitchCase="'withdraw'">
             Your withdrawal request for <span style="color: blue;">{{data.amount}} {{data.tokenName}}</span>  has been initiated.
+        </span>
+        <span *ngSwitchCase="'cancel_issuance'">
+            Your cancellation request for lending offer <span style="color: blue;">{{data.issuanceId}}</span> has been initiated
         </span>
     </p>
   </div>

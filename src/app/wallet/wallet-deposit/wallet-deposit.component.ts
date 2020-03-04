@@ -80,7 +80,6 @@ export class WalletDepositComponent implements OnInit {
                 },
               });
               this.form.resetForm();
-              this.nutsPlatformService.balanceUpdatedSubject.next(this.selectedToken);
             });
 
           })
@@ -101,7 +100,6 @@ export class WalletDepositComponent implements OnInit {
                 },
               });
               this.form.resetForm();
-              this.nutsPlatformService.balanceUpdatedSubject.next(this.selectedToken);
             });
 
           });

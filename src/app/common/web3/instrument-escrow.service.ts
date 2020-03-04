@@ -127,6 +127,9 @@ export class InstrumentEscrowService {
       .on('receipt', (receipt) => {
         console.log(receipt);
         this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
+
+        // Update account balance
+        this.nutsPlatformService.balanceUpdatedSubject.next('ETH');
       });
   }
 
@@ -168,6 +171,9 @@ export class InstrumentEscrowService {
       .on('receipt', (receipt) => {
         console.log(receipt);
         this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
+
+        // Update account balance
+        this.nutsPlatformService.balanceUpdatedSubject.next(token);
       });
   }
 
@@ -205,6 +211,9 @@ export class InstrumentEscrowService {
       .on('receipt', (receipt) => {
         console.log(receipt);
         this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
+
+        // Update account balance
+        this.nutsPlatformService.balanceUpdatedSubject.next('ETH');
       });
   }
 
@@ -246,6 +255,9 @@ export class InstrumentEscrowService {
       .on('receipt', (receipt) => {
         console.log(receipt);
         this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
+
+        // Update account balance
+        this.nutsPlatformService.balanceUpdatedSubject.next(token);
       });
   }
 

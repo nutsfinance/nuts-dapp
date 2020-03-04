@@ -7,6 +7,8 @@ import { NutsPlatformService, USD_ADDRESS, CNY_ADDRESS } from 'src/app/common/we
 import { PriceOracleService } from 'src/app/common/web3/price-oracle.service';
 import { CurrencyService } from 'src/app/common/currency-select/currency.service';
 import { InstrumentService } from 'src/app/common/web3/instrument.service';
+import { MatDialog } from '@angular/material';
+import { TransactionInitiatedDialog } from 'src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component';
 
 @Component({
   selector: 'app-lending-detail',
@@ -37,7 +39,7 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
 
   constructor(private nutsPlatformService: NutsPlatformService, private instrumentService: InstrumentService,
     private priceOracleService: PriceOracleService, private currencyService: CurrencyService,
-    private route: ActivatedRoute, private zone: NgZone, private location: Location) { }
+    private route: ActivatedRoute, private zone: NgZone, private location: Location, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.issuanceId = this.route.snapshot.params['id'];
@@ -84,8 +86,21 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
   }
 
   cancelIssuance() {
-    this.instrumentService.cancelIssuance('lending', this.issuanceId);
-    this.location.back();
+    this.instrumentService.cancelIssuance('lending', this.issuanceId).on('transactionHash', transactionHash => {
+      this.zone.run(() => {
+        // Opens Cancel Initiated dialog.
+        const transactionInitiatedDialog = this.dialog.open(TransactionInitiatedDialog, {
+          width: '90%',
+          data: {
+            type: 'cancel_issuance',
+            issuanceId: this.issuance.issuanceId,
+          },
+        });
+        transactionInitiatedDialog.afterClosed().subscribe(() => {
+          this.location.back();
+        });
+      });
+    });
   }
 
   private updateLendingIssuance() {

@@ -6,6 +6,7 @@ export interface TransactionData {
   fspName?: string,
   tokenName?: string,
   amount?: number,
+  issuanceId?: string,
 }
 
 @Component({

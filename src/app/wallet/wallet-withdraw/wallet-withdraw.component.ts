@@ -63,7 +63,6 @@ export class WalletWithdrawComponent implements OnInit {
         });
 
         this.form.resetForm();
-        this.nutsPlatformService.balanceUpdatedSubject.next(this.selectedToken);
       });
     });
 
