@@ -1,18 +1,23 @@
-.title-container {
+.title-line-container {
     height: 90px;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
+.title-container {
+    display: flex;
+    align-items: center;
+}
+
 .navigate-back {
     height: 20px;
-    margin: 0 20px;
+    margin: 0 20px 0 10px;
     cursor: pointer;
 }
 
 .title {
-    font-size: 20px;
+    font-size: 18px;
     font-family: "GillSans", Helvetica, Arial, serif;
 }
 
