@@ -134,7 +134,7 @@ export class InstrumentService {
       });
   }
 
-  public async repayIssuance(instrument: string, issuanceId: number, tokenAddress: string, amount: number) {
+  public repayIssuance(instrument: string, issuanceId: number, tokenAddress: string, amount: number) {
     if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork]) {
       alert(`Network ${this.nutsPlatformService.currentNetwork} is not supported!`);
       return;

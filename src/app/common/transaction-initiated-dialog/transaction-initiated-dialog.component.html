@@ -7,6 +7,7 @@
         <span *ngSwitchCase="'create_issuance'">Offer Creation Initiated</span>
         <span *ngSwitchCase="'engage_issuance'">Engagement Initiated</span>
         <span *ngSwitchCase="'cancel_issuance'">Cancellation Initiated</span>
+        <span *ngSwitchCase="'repay_issuance'">Repayment Initiated</span>
     </p>
   </div>
   <hr class="divider">
@@ -29,6 +30,9 @@
         </span>
         <span *ngSwitchCase="'cancel_issuance'">
             Your cancellation request for lending offer <span style="color: blue;">{{data.issuanceId}}</span> has been initiated.
+        </span>
+        <span *ngSwitchCase="'repay_issuance'">
+            Principal and interests repayment <span style="color: blue;">{{data.totalAmount}} {{data.principalTokenName}}</span> has been initiated.
         </span>
     </p>
   </div>

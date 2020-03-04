@@ -78,7 +78,7 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
           const transactionInitiatedDialog = this.dialog.open(TransactionInitiatedDialog, {
             width: '90%',
             data: {
-              type: 'engagement_issuance',
+              type: 'engage_issuance',
               issuanceId: this.issuance.issuanceId,
               principalAmount: this.nutsPlatformService.getTokenValueByAddress(this.issuance.lendingTokenAddress, this.issuance.lendingAmount),
               principalTokenName: this.nutsPlatformService.getTokenNameByAddress(this.issuance.lendingTokenAddress),
@@ -93,10 +93,25 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
   }
 
   repayIssuance() {
-    if (this.collateralTokenBalance >= this.lendingValue + this.totalInterestValue) {
-      this.instrumentService.repayIssuance('lending', this.issuanceId, this.issuance.lendingTokenAddress,
-        this.issuance.lendingAmount + this.issuance.interestAmount);
-      this.location.back();
+    const totalAmount = this.lendingValue + this.totalInterestValue;
+    if (this.collateralTokenBalance >= totalAmount) {
+      this.instrumentService.repayIssuance('lending', this.issuanceId, this.issuance.lendingTokenAddress,totalAmount).on('transactionHash', transactionHash => {
+        this.zone.run(() => {
+          // Opens Engagement Initiated dialog.
+          const transactionInitiatedDialog = this.dialog.open(TransactionInitiatedDialog, {
+            width: '90%',
+            data: {
+              type: 'repay_issuance',
+              issuanceId: this.issuance.issuanceId,
+              totalAmount: this.nutsPlatformService.getTokenValueByAddress(this.issuance.lendingTokenAddress, totalAmount),
+              principalTokenName: this.nutsPlatformService.getTokenNameByAddress(this.issuance.lendingTokenAddress),
+            },
+          });
+          transactionInitiatedDialog.afterClosed().subscribe(() => {
+            this.location.back();
+          });
+        });
+      });
     }
   }
 

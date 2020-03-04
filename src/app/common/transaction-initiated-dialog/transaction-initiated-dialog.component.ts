@@ -9,6 +9,7 @@ export interface TransactionData {
   issuanceId?: string,
   principalAmount?: number,
   principalTokenName?: string,
+  totalAmount?: number,
 }
 
 @Component({
