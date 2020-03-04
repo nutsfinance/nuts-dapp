@@ -72,8 +72,23 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
 
   engageIssuance() {
     if (this.collateralTokenBalance >= this.collateralValue) {
-      this.instrumentService.engageIssuance('lending', this.issuanceId);
-      this.location.back();
+      this.instrumentService.engageIssuance('lending', this.issuanceId).on('transactionHash', transactionHash => {
+        this.zone.run(() => {
+          // Opens Engagement Initiated dialog.
+          const transactionInitiatedDialog = this.dialog.open(TransactionInitiatedDialog, {
+            width: '90%',
+            data: {
+              type: 'engagement_issuance',
+              issuanceId: this.issuance.issuanceId,
+              principalAmount: this.nutsPlatformService.getTokenValueByAddress(this.issuance.lendingTokenAddress, this.issuance.lendingAmount),
+              principalTokenName: this.nutsPlatformService.getTokenNameByAddress(this.issuance.lendingTokenAddress),
+            },
+          });
+          transactionInitiatedDialog.afterClosed().subscribe(() => {
+            this.location.back();
+          });
+        });
+      });
     }
   }
 

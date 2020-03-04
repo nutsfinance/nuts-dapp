@@ -93,7 +93,7 @@ export class InstrumentService {
       });
   }
 
-  public async engageIssuance(instrument: string, issuanceId: number) {
+  public engageIssuance(instrument: string, issuanceId: number) {
     if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork]) {
       alert(`Network ${this.nutsPlatformService.currentNetwork} is not supported!`);
       return;
