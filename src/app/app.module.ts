@@ -36,14 +36,15 @@ import { SwapCreateComponent } from './instrument/swap/swap-create/swap-create.c
 import { SwapEngageComponent } from './instrument/swap/swap-engage/swap-engage.component';
 import { SwapPositionsComponent } from './instrument/swap/swap-positions/swap-positions.component';
 import { SwapComponent } from './instrument/swap/swap.component';
-import { ApproveInitiatedDialog, DepositInitiatedDialog, WalletDepositComponent } from './wallet/wallet-deposit/wallet-deposit.component';
+import { WalletDepositComponent } from './wallet/wallet-deposit/wallet-deposit.component';
 import { WalletTransactionComponent } from './wallet/wallet-transaction/wallet-transaction.component';
-import { WalletWithdrawComponent, WithdrawInitiatedDialog } from './wallet/wallet-withdraw/wallet-withdraw.component';
+import { WalletWithdrawComponent } from './wallet/wallet-withdraw/wallet-withdraw.component';
 import { WalletComponent } from './wallet/wallet.component';
 import { MaterialModule } from './material/material-module';
 import { NotificationDialog } from './notification/notification-dialog/notification-dialog.component';
 import { NotificationRowComponent } from './notification/notification-row/notification-row.component';
 import { NotificationComponent } from './notification/notification.component';
+import { TransactionInitiatedDialog } from './common/transaction-initiated-dialog/transaction-initiated-dialog.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,6 @@ import { NotificationComponent } from './notification/notification.component';
     AccountAddressComponent,
     WalletComponent,
     WalletDepositComponent,
-    ApproveInitiatedDialog,
     WalletWithdrawComponent,
     WalletTransactionComponent,
     LendingCreateComponent,
@@ -88,8 +88,7 @@ import { NotificationComponent } from './notification/notification.component';
     InstrumentComponent,
     TimeAgoPipe,
     NotificationDialog,
-    DepositInitiatedDialog,
-    WithdrawInitiatedDialog,
+    TransactionInitiatedDialog,
   ],
   entryComponents: [
     CurrencySelectSheetComponent,
@@ -97,9 +96,7 @@ import { NotificationComponent } from './notification/notification.component';
     LanguageSelectSheet,
     NotificationSnackBar,
     NotificationDialog,
-    ApproveInitiatedDialog,
-    DepositInitiatedDialog,
-    WithdrawInitiatedDialog,
+    TransactionInitiatedDialog,
   ],
   imports: [
     BrowserModule,

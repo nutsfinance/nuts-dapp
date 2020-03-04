@@ -1,0 +1,27 @@
+<div class="title-container">
+    <img src="../../../../assets/images/transaction-initiated.png" class="title-image">
+    <p class="title-content" [ngSwitch]="data.type">
+        <span *ngSwitchCase="'approve'">Approval Initiated</span>
+        <span *ngSwitchCase="'deposit'">Deposit Initiated</span>
+        <span *ngSwitchCase="'withdraw'">Withdrawal Initiated</span>
+    </p>
+  </div>
+  <hr class="divider">
+  <div mat-dialog-content class="content-container">
+    <p class="content-text" [ngSwitch]="data.type">
+        <span *ngSwitchCase="'approve'">
+            Approval request for <span style="color: blue">{{data.fspName}}</span> to withdraw and spend up to <span style="color: blue;">{{data.amount}} {{data.tokenName}}</span> has been initiated.
+        </span>
+        <span *ngSwitchCase="'deposit'">
+            Your deposit request for <span style="color: blue;">{{data.amount}} {{data.tokenName}}</span>  has been initiated.
+        </span>
+        <span *ngSwitchCase="'withdraw'">
+            Your withdrawal request for <span style="color: blue;">{{data.amount}} {{data.tokenName}}</span>  has been initiated.
+        </span>
+    </p>
+  </div>
+  <mat-dialog-actions class="action-container" align="center">
+    <button mat-stroked-button mat-dialog-close color="primary" cdkFocusInitial class="action-button">Close</button>
+  </mat-dialog-actions>
+  
+  

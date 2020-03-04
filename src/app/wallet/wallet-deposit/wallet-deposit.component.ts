@@ -3,6 +3,7 @@ import { FormControl, FormGroup, NgForm } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { InstrumentEscrowService } from '../../common/web3/instrument-escrow.service';
 import { FSP_NAME, NutsPlatformService } from '../../common/web3/nuts-platform.service';
+import { TransactionInitiatedDialog } from 'src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component';
 
 export interface DepositData {
   fspName: string,
@@ -57,9 +58,10 @@ export class WalletDepositComponent implements OnInit {
         .on('transactionHash', transactionHash => {
           this.zone.run(() => {
             // Opens Approval Initiated dialog.
-            this.dialog.open(ApproveInitiatedDialog, {
+            this.dialog.open(TransactionInitiatedDialog, {
               width: '90%',
               data: {
+                type: 'approve',
                 fspName: FSP_NAME,
                 tokenName: this.selectedToken,
                 amount: this.amountControl.value,
@@ -74,9 +76,10 @@ export class WalletDepositComponent implements OnInit {
 
             this.zone.run(() => {
               // Opens Deposit Initiated dialog.
-              this.dialog.open(DepositInitiatedDialog, {
+              this.dialog.open(TransactionInitiatedDialog, {
                 width: '90%',
                 data: {
+                  type: 'deposit',
                   fspName: FSP_NAME,
                   tokenName: this.selectedToken,
                   amount: this.amountControl.value,
@@ -94,9 +97,10 @@ export class WalletDepositComponent implements OnInit {
 
             this.zone.run(() => {
               // Opens Deposit Initiated dialog.
-              this.dialog.open(DepositInitiatedDialog, {
+              this.dialog.open(TransactionInitiatedDialog, {
                 width: '90%',
                 data: {
+                  type: 'deposit',
                   fspName: FSP_NAME,
                   tokenName: this.selectedToken,
                   amount: this.amountControl.value,
@@ -130,30 +134,4 @@ export class WalletDepositComponent implements OnInit {
     }
     return null;
   }
-}
-
-
-@Component({
-  selector: 'approve-initiated-dialog',
-  templateUrl: 'approve-initiated-dialog.html',
-  styleUrls: ['./approve-initiated-dialog.scss'],
-})
-export class ApproveInitiatedDialog {
-
-  constructor(
-    public dialogRef: MatDialogRef<ApproveInitiatedDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DepositData) { }
-}
-
-
-@Component({
-  selector: 'deposit-initiated-dialog',
-  templateUrl: 'deposit-initiated-dialog.html',
-  styleUrls: ['./deposit-initiated-dialog.scss'],
-})
-export class DepositInitiatedDialog {
-
-  constructor(
-    public dialogRef: MatDialogRef<DepositInitiatedDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DepositData) { }
 }

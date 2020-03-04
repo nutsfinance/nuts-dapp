@@ -3,6 +3,7 @@ import { FormControl, FormGroup, NgForm } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { InstrumentEscrowService } from '../../common/web3/instrument-escrow.service';
 import { FSP_NAME, NutsPlatformService } from '../../common/web3/nuts-platform.service';
+import { TransactionInitiatedDialog } from 'src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component';
 
 export interface WithdrawData {
   fspName: string,
@@ -57,9 +58,10 @@ export class WalletWithdrawComponent implements OnInit {
     withdrawPromise.on('transactionHash', transactionHash => {
       this.zone.run(() => {
         // Opens Withdraw Initiated dialog.
-        this.dialog.open(WithdrawInitiatedDialog, {
+        this.dialog.open(TransactionInitiatedDialog, {
           width: '90%',
           data: {
+            type: 'withdraw',
             fspName: FSP_NAME,
             tokenName: this.selectedToken,
             amount: this.amountControl.value,
@@ -87,16 +89,4 @@ export class WalletWithdrawComponent implements OnInit {
       return { 'nonIntegerAmount': true };
     }
   }
-}
-
-@Component({
-  selector: 'withdraw-initiated-dialog',
-  templateUrl: 'withdraw-initiated-dialog.html',
-  styleUrls: ['./withdraw-initiated-dialog.scss'],
-})
-export class WithdrawInitiatedDialog {
-
-  constructor(
-    public dialogRef: MatDialogRef<WithdrawInitiatedDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: WithdrawData) { }
 }
