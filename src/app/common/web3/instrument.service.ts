@@ -5,6 +5,7 @@ import { NotificationService } from 'src/app/notification/notification.service';
 import { TransactionModel, TransactionType, NotificationRole } from 'src/app/notification/transaction.model';
 import { LendingIssuanceModel } from '../model/lending-issuance.model';
 import { Subject } from 'rxjs';
+import { LendingMakerParameterModel } from '../model/lending-maker-parameter.model';
 
 const InstrumentManager = require('./abi/InstrumentManagerInterface.json');
 const ParametersUtil = require('./abi/ParametersUtil.json');
@@ -53,6 +54,12 @@ export class InstrumentService {
       collateralRatio * COLLATERAL_RATIO_DECIMALS, tenor, interestRate * INTEREST_RATE_DECIMALS);
     const lendingParameters = await parametersUtilContract.methods.getLendingMakerParameters(collateralTokenAddress, principalTokenAddress, lendingAmount,
       collateralRatio * COLLATERAL_RATIO_DECIMALS, tenor, interestRate * INTEREST_RATE_DECIMALS).call({ from: this.nutsPlatformService.currentAccount });
+    console.log(lendingParameters);
+
+    // const lendingMakerParametersModel = new LendingMakerParameterModel(collateralTokenAddress, principalTokenAddress, lendingAmount,
+    //   collateralRatio * COLLATERAL_RATIO_DECIMALS, tenor, interestRate * INTEREST_RATE_DECIMALS);
+    // const lendingMakerParameters = Buffer.from(lendingMakerParametersModel.toMessage().serializeBinary()).toString('hex');
+    // console.log(lendingMakerParameters);
 
     const instrumentManagerAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform.lending.instrumentManager;
     const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
