@@ -9,6 +9,8 @@ import { CurrencyService } from 'src/app/common/currency-select/currency.service
 import { InstrumentService } from 'src/app/common/web3/instrument.service';
 import { MatDialog } from '@angular/material';
 import { TransactionInitiatedDialog } from 'src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component';
+import { NotificationModel } from 'src/app/notification/notification.model';
+import { NotificationService } from 'src/app/notification/notification.service';
 
 @Component({
   selector: 'app-lending-detail',
@@ -18,6 +20,7 @@ import { TransactionInitiatedDialog } from 'src/app/common/transaction-initiated
 export class LendingDetailComponent implements OnInit, OnDestroy {
   private issuanceId: number;
   private issuance: LendingIssuanceModel;
+  private notifications: NotificationModel[] = [];
   private lendingToken: string;
   private lendingValue: number;
   private collateralToken: string;
@@ -38,8 +41,9 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
   private currencyUpdatedSubscription: Subscription;
 
   constructor(private nutsPlatformService: NutsPlatformService, private instrumentService: InstrumentService,
-    private priceOracleService: PriceOracleService, private currencyService: CurrencyService,
-    private route: ActivatedRoute, private zone: NgZone, private location: Location, private dialog: MatDialog) { }
+    private notificationService: NotificationService, private priceOracleService: PriceOracleService,
+    private currencyService: CurrencyService, private route: ActivatedRoute, private zone: NgZone,
+    private location: Location, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.issuanceId = this.route.snapshot.params['id'];
@@ -158,6 +162,13 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
         this.convertedTotalInterestValue = this.priceOracleService.getConvertedValue(targetTokenAddress, this.issuance.lendingTokenAddress,
           this.lendingValue * this.issuance.interestRate * this.issuance.tenorDays, 1000000);
       }
+
+      const instrumentId = this.nutsPlatformService.getInstrumentId('lending');
+      console.log(this.notificationService.notifications);
+      this.notifications = this.notificationService.notifications.filter(notification => {
+        return notification.instrumentId == instrumentId && notification.issuanceId == this.issuanceId;
+      });
+      console.log(this.notifications);
     });
   }
 }
