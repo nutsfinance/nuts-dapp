@@ -1,4 +1,4 @@
-<table mat-table [dataSource]="walletTransactions" class="transaction-table">
+<table mat-table [dataSource]="walletTransactions" class="transaction-table" *ngIf="walletTransactions.length > 0">
 
     <!--- Note that these columns can be defined in any order.
           The actual rendered columns are set as a property on the row definition" -->
@@ -24,3 +24,9 @@
     <tr mat-header-row *matHeaderRowDef="columns"></tr>
     <tr mat-row *matRowDef="let row; columns: columns;"></tr>
   </table>
+
+  <div class="no-transaction-container" *ngIf="walletTransactions.length == 0">
+    <p class="no-transaction-title">There is currently no transaction history.</p>
+    <p class="no-transaction-content">Click here to create a deposit.</p>
+    <button mat-raised-button color="primary" class="no-transaction-button" (click)="deposit()">Deposit</button>
+  </div>

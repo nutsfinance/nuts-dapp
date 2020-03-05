@@ -1,6 +1,6 @@
 <mat-accordion>
 
-  <mat-expansion-panel [expanded]="panel == 'deposit'">
+  <mat-expansion-panel [expanded]="panel == 'deposit'" (afterExpand)="panel = 'deposit'">
     <mat-expansion-panel-header>
       <div class="panel-header-wrapper">
         <img src="../../../assets/images/vertical-lines.png" class="panel-vertical-line">
@@ -16,7 +16,7 @@
 
   </mat-expansion-panel>
 
-  <mat-expansion-panel [expanded]="panel == 'withdraw'">
+  <mat-expansion-panel [expanded]="panel == 'withdraw'" (afterExpand)="panel = 'withdraw'">
     <mat-expansion-panel-header>
       <div class="panel-header-wrapper">
         <img src="../../../assets/images/vertical-lines.png" class="panel-vertical-line">
@@ -28,7 +28,7 @@
 
   </mat-expansion-panel>
 
-  <mat-expansion-panel [expanded]="panel == 'transactions'">
+  <mat-expansion-panel [expanded]="panel == 'transactions'" (afterExpand)="panel = 'transactions'">
     <mat-expansion-panel-header>
       <div class="panel-header-wrapper">
         <img src="../../../assets/images/vertical-lines.png" class="panel-vertical-line">
@@ -36,7 +36,9 @@
       </div>
     </mat-expansion-panel-header>
 
-    <app-wallet-transaction [instrument]="instrument"></app-wallet-transaction>
+    <app-wallet-transaction [instrument]="instrument"
+      (updatePanel)="panel = $event">
+    </app-wallet-transaction>
 
   </mat-expansion-panel>
 

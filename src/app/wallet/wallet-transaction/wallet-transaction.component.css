@@ -9,3 +9,23 @@
   font-family: "GillSans-Light", Helvetica, Arial, serif;
   font-size: 12px;
 }
+.no-transaction-container {
+  text-align: center;
+}
+.no-transaction-title {
+  font-family: "GillSans", Helvetica, Arial, serif;
+  font-size: 16px;
+  margin-top: 30px;
+}
+.no-transaction-content {
+  font-family: "GillSans-light", Helvetica, Arial, serif;
+  font-size: 14px;
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+.no-transaction-button {
+  display: inline-block;
+  width: 180px;
+  color: white;
+  margin-bottom: 20px;
+}

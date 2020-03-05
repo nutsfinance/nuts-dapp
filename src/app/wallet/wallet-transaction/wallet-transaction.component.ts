@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, NgZone } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, NgZone } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { NutsPlatformService } from '../../common/web3/nuts-platform.service';
@@ -9,8 +9,9 @@ import { InstrumentEscrowService, WalletTransaction } from '../../common/web3/in
   templateUrl: './wallet-transaction.component.html',
   styleUrls: ['./wallet-transaction.component.scss']
 })
-export class WalletTransactionComponent implements OnInit {
+export class WalletTransactionComponent implements OnInit, OnDestroy {
   @Input() private instrument: string;
+  @Output() private updatePanel = new EventEmitter<string>();
   private columns: string[] = ['date', 'action', 'amount'];
   private walletTransactions: WalletTransaction[] = [];
   private networkSubscription: Subscription;
@@ -39,6 +40,10 @@ export class WalletTransactionComponent implements OnInit {
     this.networkSubscription.unsubscribe();
     this.accountSubscription.unsubscribe();
     this.balanceSubscription.unsubscribe();
+  }
+
+  deposit() {
+    this.updatePanel.emit('deposit');
   }
 
   private async updateWalletTransactions() {

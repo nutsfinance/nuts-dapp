@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { ActivatedRoute, Data } from '@angular/router';
 import { Subscription } from 'rxjs';
 
@@ -16,7 +16,7 @@ export class WalletComponent implements OnInit, OnDestroy {
   private showApprove = false;
   private routeParamSubscription: Subscription;
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute, private zone: NgZone) { }
 
   ngOnInit() {
     this.instrument = this.route.snapshot.data['instrument'];
@@ -41,5 +41,4 @@ export class WalletComponent implements OnInit, OnDestroy {
     this.routeDataSubscription.unsubscribe();
     this.routeParamSubscription.unsubscribe();
   }
-
 }
