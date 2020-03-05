@@ -4,11 +4,11 @@ import { NotificationModel, NotificationStatus } from '../notification.model';
 import { NotificationService } from '../notification.service';
 
 @Component({
-  selector: 'app-transaction-notification',
-  templateUrl: './transaction-notification.component.html',
-  styleUrls: ['./transaction-notification.component.scss']
+  selector: 'app-issuance-notification',
+  templateUrl: './issuance-notification.component.html',
+  styleUrls: ['./issuance-notification.component.scss']
 })
-export class TransactionNotificationComponent implements OnInit {
+export class IssuanceNotificationComponent implements OnInit {
   @Input() notifications: NotificationModel[] = [];
   private notificationStatusUpdate: {[id: string]: NotificationStatus} = {};
   private showSelect = false;
@@ -34,5 +34,4 @@ export class TransactionNotificationComponent implements OnInit {
     this.notificationService.updateNotifications(notificationsToUpdate);
     this.showSelect = false;
   }
-
 }

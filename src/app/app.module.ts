@@ -45,7 +45,7 @@ import { NotificationDialog } from './notification/notification-dialog/notificat
 import { NotificationRowComponent } from './notification/notification-row/notification-row.component';
 import { NotificationComponent } from './notification/notification.component';
 import { TransactionInitiatedDialog } from './common/transaction-initiated-dialog/transaction-initiated-dialog.component';
-import { TransactionNotificationComponent } from './notification/transaction-notification/transaction-notification.component';
+import { IssuanceNotificationComponent } from './notification/issuance-notification/issuance-notification.component';
 
 @NgModule({
   declarations: [
@@ -90,7 +90,7 @@ import { TransactionNotificationComponent } from './notification/transaction-not
     TimeAgoPipe,
     NotificationDialog,
     TransactionInitiatedDialog,
-    TransactionNotificationComponent,
+    IssuanceNotificationComponent,
   ],
   entryComponents: [
     CurrencySelectSheetComponent,
