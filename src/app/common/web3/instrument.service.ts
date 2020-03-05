@@ -73,7 +73,7 @@ export class InstrumentService {
           {
             principalTokenName: principalToken,
             principalTokenAddress,
-            principalAmount: `${principalAmount}`,
+            principalAmount: `${lendingAmount}`,
             collateralTokenName: collateralToken,
             collateralTokenAddress,
             collateralRatio: `${collateralRatio}`,
@@ -146,6 +146,7 @@ export class InstrumentService {
 
     const instrumentManagerAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument].instrumentManager;
     const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
+    const totalAmount = tokenAddress === ETH_ADDRESS ? this.nutsPlatformService.web3.utils.toWei(amount, 'ether') : amount;
     return instrumentManagerContract.methods.depositToIssuance(issuanceId, tokenAddress, amount).send({ from: this.nutsPlatformService.currentAccount, gas: 6721975 })
       .on('transactionHash', (transactionHash) => {
         console.log(transactionHash);
@@ -157,7 +158,7 @@ export class InstrumentService {
           {
             principalTokenName: this.nutsPlatformService.getTokenNameByAddress(tokenAddress),
             principalTokenAddress: tokenAddress,
-            totalAmount: `${amount}`,
+            totalAmount: `${totalAmount}`,
           }
         );
         this.notificationService.addTransaction(depositTransaction).subscribe(result => {

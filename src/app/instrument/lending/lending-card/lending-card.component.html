@@ -1,8 +1,8 @@
 <mat-card class="issuance-card">
     <div class="issuance-card-title">
         <div>Issuance ID: {{nutsPlatformService.getInstrumentId("lending")}}-{{issuance.issuanceId}}</div>
-        <div>
-            <span [ngStyle]="{'color':issuance.state <= 2 ? '#8bc34a' : 'grey', 'font-size': '20px'}">&#8226;</span>
+        <div [ngStyle]="{'color':issuance.state <= 3 ? '#8bc34a' : 'grey'}">
+            <span style="font-size: 20px">&#8226;</span>
             {{issuance.getIssuanceState()}}
         </div>
     </div>
@@ -85,9 +85,14 @@
             *ngIf="issuance.state == 2 && issuance.makerAddress == currentAccount">
             Close Position
         </a>
+        <a mat-raised-button color="primary" class="issuance-action-button engage-button" 
+            routerLink="/instrument/lending/{{issuance.issuanceId}}"
+            *ngIf="issuance.state == 3 && issuance.takerAddress == currentAccount">
+            Repay
+        </a>
         <a mat-stroked-button color="primary" class="issuance-action-button close-button" 
             routerLink="/instrument/lending/{{issuance.issuanceId}}"
-            *ngIf="issuance.state != 2">
+            *ngIf="issuance.state != 2 && !(issuance.state == 3 && issuance.takerAddress == currentAccount)">
             View Position
         </a>
     </div>
