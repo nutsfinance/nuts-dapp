@@ -3,10 +3,12 @@
   font-size: 16px;
   color: #4a494a;
   display: inline-block;
-  margin: 10px;
+  margin: 15px 10px 10px;
 }
 .dashboard-sublabel {
-  margin: 0 10px;
+  margin: 0 10px 5px;
+  font-family: "GillSans-Light", Helvetica, Arial, serif;
+  font-size: 12px;
 }
 .positions-table {
   min-height: 200px;
@@ -22,4 +24,12 @@
 .position-status {
   word-break: break-all;
   min-width: 70px;
+}
+.position-value {
+  font-size: 18px;
+  padding-right: 2px;
+}
+.no-position-container {
+  text-align: center;
+  margin: 25px 0 60px;
 }

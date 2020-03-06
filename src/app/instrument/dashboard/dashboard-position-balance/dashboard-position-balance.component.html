@@ -28,7 +28,7 @@
   </div>
 </div>
 
-<mat-table [dataSource]="positionDataSource" class="positions-table">
+<mat-table [dataSource]="positionDataSource" class="positions-table" *ngIf="activePositions.length > 0">
 
   <!-- Type Column -->
   <ng-container matColumnDef="type">
@@ -78,3 +78,7 @@
   <mat-row *matRowDef="let row; columns: ['type', 'role', 'status', 'amount', 'action'];" class="position-content-row">
   </mat-row>>
 </mat-table>
+
+<div class="no-position-container" *ngIf="activePositions.length == 0">
+  There are currently no active positions.
+</div>
