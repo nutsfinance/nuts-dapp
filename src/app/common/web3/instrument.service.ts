@@ -146,8 +146,8 @@ export class InstrumentService {
 
     const instrumentManagerAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument].instrumentManager;
     const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
-    const totalAmount = tokenAddress === ETH_ADDRESS ? this.nutsPlatformService.web3.utils.toWei(amount, 'ether') : amount;
-    return instrumentManagerContract.methods.depositToIssuance(issuanceId, tokenAddress, amount).send({ from: this.nutsPlatformService.currentAccount, gas: 6721975 })
+    const totalAmount = tokenAddress.toLowerCase() === ETH_ADDRESS.toLowerCase() ? this.nutsPlatformService.web3.utils.toWei(`${amount}`, 'ether') : amount;
+    return instrumentManagerContract.methods.depositToIssuance(issuanceId, tokenAddress, totalAmount).send({ from: this.nutsPlatformService.currentAccount, gas: 6721975 })
       .on('transactionHash', (transactionHash) => {
         console.log(transactionHash);
         // this.nutsPlatformService.transactionSentSubject.next(transactionHash);

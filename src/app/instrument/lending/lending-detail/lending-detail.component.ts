@@ -98,8 +98,9 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
 
   repayIssuance() {
     const totalAmount = this.lendingValue + this.totalInterestValue;
-    if (this.collateralTokenBalance >= totalAmount) {
-      this.instrumentService.repayIssuance('lending', this.issuanceId, this.issuance.lendingTokenAddress,totalAmount).on('transactionHash', transactionHash => {
+    console.log('Total amount: ' + totalAmount + ", balance: " + this.lendingTokenBalance);
+    if (this.lendingTokenBalance >= totalAmount) {
+      this.instrumentService.repayIssuance('lending', this.issuanceId, this.issuance.lendingTokenAddress, totalAmount).on('transactionHash', transactionHash => {
         this.zone.run(() => {
           // Opens Engagement Initiated dialog.
           const transactionInitiatedDialog = this.dialog.open(TransactionInitiatedDialog, {
@@ -107,7 +108,7 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
             data: {
               type: 'repay_issuance',
               issuanceId: this.issuance.issuanceId,
-              totalAmount: this.nutsPlatformService.getTokenValueByAddress(this.issuance.lendingTokenAddress, totalAmount),
+              totalAmount: totalAmount,
               principalTokenName: this.nutsPlatformService.getTokenNameByAddress(this.issuance.lendingTokenAddress),
             },
           });

@@ -139,13 +139,13 @@
 
     <div class="row">
         <div class="col-xs-12 action-row" *ngIf="issuance.state == 3 && issuance.takerAddress == nutsPlatformService.currentAccount">
-            <button mat-raised-button color="primary" [ngClass]="{'repay-button': true, 'valid': collateralTokenBalance >= lendingValue + totalInterestValue}"
+            <button mat-raised-button color="primary" [ngClass]="{'repay-button': true, 'valid': lendingTokenBalance >= lendingValue + totalInterestValue}"
                 (click)="repayIssuance()">Repay</button>
         </div>
     </div>
 
     <div class="row" *ngIf="issuance.state == 3 && issuance.takerAddress == nutsPlatformService.currentAccount">
-        <div [ngClass]="{'col-xs-12': true, 'hidden': lendingTokenBalance == -1 || collateralTokenBalance >= lendingValue + totalInterestValue}">
+        <div [ngClass]="{'col-xs-12': true, 'hidden': lendingTokenBalance == -1 || lendingTokenBalance >= lendingValue + totalInterestValue}">
             <span style="color: red;">Insufficient balance</span>
             (<span style="color: blue;"><app-instrument-escrow-balance [instrument]="'lending'" [selectedToken]="lendingToken"
                 (balanceUpdated)="lendingTokenBalance = $event">
