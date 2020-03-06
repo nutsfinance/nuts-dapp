@@ -21,7 +21,6 @@ import { BorrowingEngageComponent } from './instrument/borrowing/borrowing-engag
 import { BorrowingPositionsComponent } from './instrument/borrowing/borrowing-positions/borrowing-positions.component';
 import { BorrowingComponent } from './instrument/borrowing/borrowing.component';
 import { DashboardAccountBalanceComponent } from './instrument/dashboard/dashboard-account-balance/dashboard-account-balance.component';
-import { DashboardMiningBalanceComponent } from './instrument/dashboard/dashboard-mining-balance/dashboard-mining-balance.component';
 import { DashboardPositionBalanceComponent } from './instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component';
 import { DashboardComponent } from './instrument/dashboard/dashboard.component';
 import { InstrumentComponent, LanguageSelectSheet } from './instrument/instrument.component';
@@ -75,7 +74,6 @@ import { IssuanceNotificationComponent } from './notification/issuance-notificat
     SwapEngageComponent,
     SwapPositionsComponent,
     DashboardAccountBalanceComponent,
-    DashboardMiningBalanceComponent,
     DashboardPositionBalanceComponent,
     AccountBalanceComponent,
     InstrumentEscrowBalanceComponent,
