@@ -8,7 +8,6 @@ import { Subject } from 'rxjs';
 import { LendingMakerParameterModel } from '../model/lending-maker-parameter.model';
 
 const InstrumentManager = require('./abi/InstrumentManagerInterface.json');
-const ParametersUtil = require('./abi/ParametersUtil.json');
 
 const INTEREST_RATE_DECIMALS = 10000;
 const COLLATERAL_RATIO_DECIMALS = 100;
@@ -26,7 +25,7 @@ export class InstrumentService {
     });
   }
 
-  public async createLendingIssuance(principalToken: string, principalAmount: number, collateralToken: string,
+  public createLendingIssuance(principalToken: string, principalAmount: number, collateralToken: string,
     collateralRatio: number, tenor: number, interestRate: number) {
     if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork]) {
       alert(`Network ${this.nutsPlatformService.currentNetwork} is not supported!`);
@@ -44,26 +43,25 @@ export class InstrumentService {
       alert(`Token ${collateralToken} is not supported!`);
       return;
     }
-    const parametersUtilAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform.parametersUtil;
-    const parametersUtilContract = new this.nutsPlatformService.web3.eth.Contract(ParametersUtil, parametersUtilAddress);
 
     const principalTokenAddress = principalToken === 'ETH' ? ETH_ADDRESS : this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].tokens[principalToken];
     const lendingAmount = principalToken === 'ETH' ? this.nutsPlatformService.web3.utils.toWei(principalAmount, 'ether') : principalAmount;
     const collateralTokenAddress = collateralToken === 'ETH' ? ETH_ADDRESS : this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].tokens[collateralToken];
     console.log(collateralTokenAddress, principalTokenAddress, lendingAmount,
       collateralRatio * COLLATERAL_RATIO_DECIMALS, tenor, interestRate * INTEREST_RATE_DECIMALS);
-    const lendingParameters = await parametersUtilContract.methods.getLendingMakerParameters(collateralTokenAddress, principalTokenAddress, lendingAmount,
-      collateralRatio * COLLATERAL_RATIO_DECIMALS, tenor, interestRate * INTEREST_RATE_DECIMALS).call({ from: this.nutsPlatformService.currentAccount });
-    console.log(lendingParameters);
+    // const lendingParameters = await parametersUtilContract.methods.getLendingMakerParameters(collateralTokenAddress, principalTokenAddress, lendingAmount,
+    //   collateralRatio * COLLATERAL_RATIO_DECIMALS, tenor, interestRate * INTEREST_RATE_DECIMALS).call({ from: this.nutsPlatformService.currentAccount });
+    // console.log(lendingParameters);
 
-    // const lendingMakerParametersModel = new LendingMakerParameterModel(collateralTokenAddress, principalTokenAddress, lendingAmount,
-    //   collateralRatio * COLLATERAL_RATIO_DECIMALS, tenor, interestRate * INTEREST_RATE_DECIMALS);
-    // const lendingMakerParameters = Buffer.from(lendingMakerParametersModel.toMessage().serializeBinary()).toString('hex');
-    // console.log(lendingMakerParameters);
+    const lendingMakerParametersModel = new LendingMakerParameterModel(collateralTokenAddress, principalTokenAddress, lendingAmount,
+      collateralRatio * COLLATERAL_RATIO_DECIMALS, tenor, interestRate * INTEREST_RATE_DECIMALS);
+    const message = lendingMakerParametersModel.toMessage().serializeBinary();
+    const lendingMakerParameters = '0x' + Buffer.from(message).toString('hex');
+    console.log(lendingMakerParameters);
 
     const instrumentManagerAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform.lending.instrumentManager;
     const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
-    return instrumentManagerContract.methods.createIssuance(lendingParameters).send({ from: this.nutsPlatformService.currentAccount, gas: 6721975 })
+    return instrumentManagerContract.methods.createIssuance(lendingMakerParameters).send({ from: this.nutsPlatformService.currentAccount, gas: 6721975 })
       .on('transactionHash', (transactionHash) => {
         console.log(transactionHash);
         // this.nutsPlatformService.transactionSentSubject.next(transactionHash);

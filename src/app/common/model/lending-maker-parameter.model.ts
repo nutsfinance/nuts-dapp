@@ -18,11 +18,13 @@ export class LendingMakerParameterModel {
 
     toMessage(): LendingData.LendingMakerParameters {
         const lendingMakerParameters = new LendingData.LendingMakerParameters();
-        lendingMakerParameters.setCollateraltokenaddress(this.collateralTokenAddress);
-        lendingMakerParameters.setLendingtokenaddress(this.lendingTokenAddress);
-        lendingMakerParameters.setLendingamount(this.lendingAmount);
-        lendingMakerParameters.setCollateralratio(this.collateralRatio);
-        lendingMakerParameters.setTenordays(this.tenorDays);
-        lendingMakerParameters.setInterestrate(this.interestRate);
+        lendingMakerParameters.setCollateraltokenaddress(LendingData.address.fromAddress(this.collateralTokenAddress.toLowerCase()));
+        lendingMakerParameters.setLendingtokenaddress(LendingData.address.fromAddress(this.lendingTokenAddress.toLowerCase()));
+        lendingMakerParameters.setLendingamount(LendingData.uint256.fromNumber(this.lendingAmount));
+        lendingMakerParameters.setCollateralratio(LendingData.uint256.fromNumber(this.collateralRatio));
+        lendingMakerParameters.setTenordays(LendingData.uint256.fromNumber(this.tenorDays));
+        lendingMakerParameters.setInterestrate(LendingData.uint256.fromNumber(this.interestRate));
+
+        return lendingMakerParameters;
     }
 }

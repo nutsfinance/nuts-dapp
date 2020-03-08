@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, NgZone } from '@angular/core';
 import { FormControl, FormGroup, NgForm } from '@angular/forms';
-import { MatButtonToggleChange } from '@angular/material';
+import { MatButtonToggleChange, MatDialog } from '@angular/material';
 import { NutsPlatformService } from '../../../common/web3/nuts-platform.service';
 import { PriceOracleService } from '../../../common/web3/price-oracle.service';
 import { InstrumentService } from 'src/app/common/web3/instrument.service';
+import { TransactionInitiatedDialog } from 'src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component';
 
 
 @Component({
@@ -24,7 +25,7 @@ export class LendingCreateComponent implements OnInit {
   private interestValue = 0;
 
   constructor(private nutsPlatformService: NutsPlatformService, private instrumentService: InstrumentService,
-    private priceOracleSercvice: PriceOracleService) { }
+    private priceOracleSercvice: PriceOracleService, private zone: NgZone, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.createFormGroup = new FormGroup({
@@ -81,11 +82,25 @@ export class LendingCreateComponent implements OnInit {
     if (!this.createFormGroup.valid) {
       return;
     }
-    const result = await this.instrumentService.createLendingIssuance(this.principalToken,
+    this.instrumentService.createLendingIssuance(this.principalToken,
       this.createFormGroup.value['principalAmount'], this.collateralToken,
       this.createFormGroup.value['collateralRatio'], this.createFormGroup.value['tenor'],
-      this.createFormGroup.value['interestRate']);
-    console.log(result);
+      this.createFormGroup.value['interestRate']).on('transactionHash', transactionHash => {
+        this.zone.run(() => {
+          // Opens Engagement Initiated dialog.
+          const transactionInitiatedDialog = this.dialog.open(TransactionInitiatedDialog, {
+            width: '90%',
+            data: {
+              type: 'create_issuance',
+              principalAmount: this.createFormGroup.value['principalAmount'],
+              principalTokenName: this.principalToken,
+            },
+          });
+          transactionInitiatedDialog.afterClosed().subscribe(() => {
+            this.resetForm();
+          });
+        });
+      });
   }
 
   resetForm() {
