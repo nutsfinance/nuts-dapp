@@ -3,7 +3,7 @@ import { Location } from '@angular/common';
 import { Subscription } from 'rxjs';
 
 import { NotificationService } from './notification.service';
-import { NotificationModel, NotificationCategory, NotificationStatus } from './notification.model';
+import { NotificationModel, NotificationStatus } from './notification.model';
 
 @Component({
   selector: 'app-notification',
@@ -27,7 +27,7 @@ export class NotificationComponent implements OnInit, OnDestroy {
   }
   
   ngOnDestroy() {
-    this.updateNotifications();
+    this.notificationSubscription.unsubscribe();
   }
 
   navigateBack() {

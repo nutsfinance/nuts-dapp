@@ -21,8 +21,10 @@ export class InstrumentService {
 
   constructor(private nutsPlatformService: NutsPlatformService, private notificationService: NotificationService) {
     this.nutsPlatformService.currentNetworkSubject.subscribe(_ => {
-      this.getLendingIssuances();
+      this.reloadLendingIssuances();
     });
+    // Reloads issuances every 60s.
+    setTimeout(this.reloadLendingIssuances.bind(this), 60000);
   }
 
   public createLendingIssuance(principalToken: string, principalAmount: number, collateralToken: string,
@@ -208,7 +210,8 @@ export class InstrumentService {
       });
   }
 
-  public async getLendingIssuances() {
+  public async reloadLendingIssuances() {
+    console.log('Reloading lending issuances.');
     if (!this.nutsPlatformService.currentAccount || !this.nutsPlatformService.currentNetwork) {
       console.log('Either account or network is not set.');
     }
@@ -264,7 +267,7 @@ export class InstrumentService {
   private reloadIssuances(instrument: string) {
     switch(instrument) {
       case 'lending':
-        this.getLendingIssuances();
+        this.reloadLendingIssuances();
         break;
     }
   }
