@@ -8,6 +8,7 @@ export const FSP_NAME = 'acoconut.nuts.finance';
 export const ETH_ADDRESS = '0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF';
 export const USD_ADDRESS = '0x3EfC5E3c4CFFc638E9C506bb0F040EA0d8d3D094';
 export const CNY_ADDRESS = '0x2D5254e5905c6671b1804eac23Ba3F1C8773Ee46';
+export const CUSTODIAN_ADDRESS = '0xDbE7A2544eeFfec81A7D898Ac08075e0D56FEac6';
 
 declare let require: any;
 declare let window: any;

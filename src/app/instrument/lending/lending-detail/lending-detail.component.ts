@@ -6,7 +6,7 @@ import { LendingIssuanceModel } from 'src/app/common/model/lending-issuance.mode
 import { NutsPlatformService, USD_ADDRESS, CNY_ADDRESS } from 'src/app/common/web3/nuts-platform.service';
 import { PriceOracleService } from 'src/app/common/web3/price-oracle.service';
 import { CurrencyService } from 'src/app/common/currency-select/currency.service';
-import { InstrumentService } from 'src/app/common/web3/instrument.service';
+import { InstrumentService, IssuanceTransaction } from 'src/app/common/web3/instrument.service';
 import { MatDialog } from '@angular/material';
 import { TransactionInitiatedDialog } from 'src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component';
 import { NotificationModel } from 'src/app/notification/notification.model';
@@ -29,6 +29,7 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
   private collateralValue = 0;
   private perDayInterestValue;
   private totalInterestValue;
+  private transactions: IssuanceTransaction[] = [];
 
   private convertedCollateralValue: Promise<number>;
   private convertedLendingValue: Promise<number>;
@@ -162,6 +163,11 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
           this.lendingValue * this.issuance.interestRate, 1000000);
         this.convertedTotalInterestValue = this.priceOracleService.getConvertedValue(targetTokenAddress, this.issuance.lendingTokenAddress,
           this.lendingValue * this.issuance.interestRate * this.issuance.tenorDays, 1000000);
+
+        this.instrumentService.getIssuanceTransactions('lending', this.issuance).then((transactions) => {
+          console.log(transactions);
+          this.transactions = transactions;
+        });
       }
 
       const instrumentId = this.nutsPlatformService.getInstrumentId('lending');

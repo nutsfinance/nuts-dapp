@@ -1,16 +1,26 @@
 import { Injectable } from '@angular/core';
 import { LendingData } from 'nuts-platform-protobuf-messages';
-import { NutsPlatformService, ETH_ADDRESS } from './nuts-platform.service';
+import { NutsPlatformService, ETH_ADDRESS, CUSTODIAN_ADDRESS } from './nuts-platform.service';
 import { NotificationService } from 'src/app/notification/notification.service';
 import { TransactionModel, TransactionType, NotificationRole } from 'src/app/notification/transaction.model';
 import { LendingIssuanceModel } from '../model/lending-issuance.model';
 import { Subject } from 'rxjs';
+import { IssuanceModel } from '../model/issuance.model';
 import { LendingMakerParameterModel } from '../model/lending-maker-parameter.model';
 
 const InstrumentManager = require('./abi/InstrumentManagerInterface.json');
 
 const INTEREST_RATE_DECIMALS = 10000;
 const COLLATERAL_RATIO_DECIMALS = 100;
+
+export interface IssuanceTransaction {
+  action: string,
+  from: string,
+  to: string,
+  token: string,
+  amount: number,
+  blockNumber: number,
+}
 
 @Injectable({
   providedIn: 'root'
@@ -155,7 +165,7 @@ export class InstrumentService {
         // this.nutsPlatformService.transactionSentSubject.next(transactionHash);
 
         // Records the transaction
-        const depositTransaction = new TransactionModel(transactionHash, TransactionType.PAY_OFFER,  NotificationRole.TAKER,
+        const depositTransaction = new TransactionModel(transactionHash, TransactionType.PAY_OFFER, NotificationRole.TAKER,
           this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId('lending'), issuanceId,
           {
             principalTokenName: this.nutsPlatformService.getTokenNameByAddress(tokenAddress),
@@ -249,6 +259,49 @@ export class InstrumentService {
     return this.lendingIssuances.find(issuance => issuance.issuanceId === issuanceId);
   }
 
+  public async getIssuanceTransactions(instrument: string, issuance: IssuanceModel): Promise<IssuanceTransaction[]> {
+    if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork]) {
+      return [];
+    }
+    if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument]) {
+      return [];
+    }
+    const instrumentEscrowAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument].instrumentEscrow;
+    const instrumentManagerAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument].instrumentManager;
+    const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
+    const tokenTransferEvents = await instrumentManagerContract.getPastEvents('TokenTransferred', { fromBlock: 0, toBlock: 'latest' });
+    const transactions: IssuanceTransaction[] = [];
+    console.log(tokenTransferEvents);
+    tokenTransferEvents.forEach((event) => {
+      if (event.returnValues.issuanceId == issuance.issuanceId) {
+        transactions.push({
+          action: '',
+          from: this.getUserRole(event.returnValues.fromAddress, instrumentEscrowAddress, issuance),
+          to: this.getUserRole(event.returnValues.toAddress, instrumentEscrowAddress, issuance),
+          token: this.nutsPlatformService.getTokenNameByAddress(event.returnValues.tokenAddress),
+          amount: this.nutsPlatformService.web3.utils.fromWei(event.returnValues.amount, 'ether'),
+          blockNumber: event.blockNumber,
+        });
+      }
+    });
+    return transactions.sort((e1, e2) => e1.blockNumber - e2.blockNumber);;
+  }
+
+  private getUserRole(userAddress: string, instrumentEscrowAddress: string, issuance: IssuanceModel): string {
+    switch (userAddress.toLowerCase()) {
+      case instrumentEscrowAddress:
+        return 'A/C';
+      case issuance.makerAddress:
+        return 'maker';
+      case issuance.takerAddress:
+        return 'taker';
+      case CUSTODIAN_ADDRESS.toLowerCase():
+        return 'custodian';
+      default:
+        return 'N/A';
+    }
+  }
+
   private makeBatchRequest(calls) {
     let batch = new this.nutsPlatformService.web3.BatchRequest();
 
@@ -267,7 +320,7 @@ export class InstrumentService {
   }
 
   private reloadIssuances(instrument: string) {
-    switch(instrument) {
+    switch (instrument) {
       case 'lending':
         this.reloadLendingIssuances();
         break;
