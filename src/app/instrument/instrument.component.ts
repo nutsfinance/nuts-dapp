@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 
 import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -22,12 +22,15 @@ export class InstrumentComponent implements OnInit, OnDestroy {
   private notificationDialog: MatDialogRef<NotificationDialog>;
 
   constructor(private _bottomSheet: MatBottomSheet, private dialog: MatDialog,
-    private notificationService: NotificationService) { }
+    private zone: NgZone, private notificationService: NotificationService) { }
 
   ngOnInit() {
     this.notificationSubscription = this.notificationService.notificationUpdatedSubject.subscribe(notifications => {
-      this.unreadNotifications = notifications.filter(notification => notification.status === NotificationStatus.NEW)
-        .sort((n1, n2) => n2.creationTimestamp - n1.creationTimestamp);
+      this.zone.run(() => {
+        this.unreadNotifications = notifications
+          .filter(notification => notification.status === NotificationStatus.NEW)
+          .sort((n1, n2) => n2.creationTimestamp - n1.creationTimestamp);
+      });
     });
   }
 
