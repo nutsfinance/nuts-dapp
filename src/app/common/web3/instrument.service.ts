@@ -20,7 +20,9 @@ export class InstrumentService {
   public lendingIssuancesUpdatedSubject = new Subject<LendingIssuanceModel[]>();
 
   constructor(private nutsPlatformService: NutsPlatformService, private notificationService: NotificationService) {
-    this.nutsPlatformService.currentNetworkSubject.subscribe(_ => {
+    this.reloadLendingIssuances();
+    this.nutsPlatformService.currentNetworkSubject.subscribe(currentNetwork => {
+      console.log('Network changed. Reloading lending issuances.', currentNetwork);
       this.reloadLendingIssuances();
     });
     // Reloads issuances every 60s.

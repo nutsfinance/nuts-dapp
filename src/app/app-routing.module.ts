@@ -27,16 +27,17 @@ const routes: Routes = [
     path: 'instrument',
     component: InstrumentComponent,
     children: [
-      {
-        path: '', component: DashboardComponent, pathMatch: 'full',
-      },
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: 'dashboard', component: DashboardComponent},
       {
         path: 'saving', component: SavingComponent, children: [
+          { path: '', redirectTo: 'wallet', pathMatch: 'full' },
           { path: 'wallet', component: WalletComponent, data: { instrument: 'saving' } }
         ]
       },
       {
         path: 'lending', component: LendingComponent, children: [
+          { path: '', redirectTo: 'wallet', pathMatch: 'full' },
           { path: 'wallet', component: WalletComponent, data: { instrument: 'lending' } },
           { path: 'create', component: LendingCreateComponent },
           { path: 'engage', component: LendingEngageComponent },
@@ -46,6 +47,7 @@ const routes: Routes = [
       },
       {
         path: 'borrowing', component: BorrowingComponent, children: [
+          { path: '', redirectTo: 'wallet', pathMatch: 'full' },
           { path: 'wallet', component: WalletComponent, data: { instrument: 'borrowing' } },
           { path: 'create', component: BorrowingCreateComponent },
           { path: 'engage', component: BorrowingEngageComponent },
@@ -54,6 +56,7 @@ const routes: Routes = [
       },
       {
         path: 'swap', component: SwapComponent, children: [
+          { path: '', redirectTo: 'wallet', pathMatch: 'full' },
           { path: 'wallet', component: WalletComponent, data: { instrument: 'swap' } },
           { path: 'create', component: SwapCreateComponent },
           { path: 'engage', component: SwapEngageComponent },
