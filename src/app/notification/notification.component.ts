@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs';
 
@@ -17,7 +17,7 @@ export class NotificationComponent implements OnInit, OnDestroy {
   private notificationSubscription: Subscription;
   private notificationStatusUpdate: {[id: string]: NotificationStatus} = {};
 
-  constructor(private location: Location, private notificationService: NotificationService) { }
+  constructor(private location: Location, private zone: NgZone, private notificationService: NotificationService) { }
 
   ngOnInit() {
     this.updateNotifications();
@@ -58,12 +58,15 @@ export class NotificationComponent implements OnInit, OnDestroy {
   }
 
   private updateNotifications() {
-    if (this.showAll) {
-      this.notifications = this.notificationService.notifications.sort((n1, n2) => n2.creationTimestamp - n1.creationTimestamp);
-    } else {
-      this.notifications = this.notificationService.notifications
-        .filter(notification => notification.status === 'NEW')
-        .sort((n1, n2) => n2.creationTimestamp - n1.creationTimestamp);
-    }
+    this.zone.run(() => {
+      if (this.showAll) {
+        this.notifications = this.notificationService.notifications
+          .sort((n1, n2) => n2.creationTimestamp - n1.creationTimestamp);
+      } else {
+        this.notifications = this.notificationService.notifications
+          .filter(notification => notification.status === 'NEW')
+          .sort((n1, n2) => n2.creationTimestamp - n1.creationTimestamp);
+      }
+    });
   }
 }

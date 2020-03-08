@@ -17,7 +17,9 @@ export class NotificationService {
   constructor(private nutsPlatformService: NutsPlatformService, private http: HttpClient) {
     this.nutsPlatformService.currentAccountSubject.subscribe(currentAddress => {
       if (currentAddress) {
+        console.log('Address updated', currentAddress);
         this.getNotifications().subscribe(notifications => {
+          console.log('Notifications updated', notifications);
           const sortedNotifications = notifications.sort((n1, n2) => n2.creationTimestamp - n1.creationTimestamp);
           this.notifications = sortedNotifications;
           this.notificationUpdatedSubject.next(sortedNotifications);
