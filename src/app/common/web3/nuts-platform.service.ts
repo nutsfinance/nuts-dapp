@@ -78,34 +78,35 @@ export class NutsPlatformService {
     },
     4: {
       tokens: {
-        USDT: '0xc48e183cccC9372951DE2423BF2F30E4eA481748',
-        USDC: '0x47535B02434C1C8E0A1Cc5f3a7d2E19160E4dF48',
-        DAI: '0xb1B522e704B1A50277EEeAC273457Ff90a835301',
-        NUTS: '0xCb5Dff1C09C3e454a9415c82CE141824b64DD62D'
+        USDT: '0x681E4010cB8bEc4C0791efE3cd8995769C2BB834',
+        USDC: '0xF9f5cD9ed0c49DA15ba6AA193135dc43ba5C75A5',
+        DAI: '0x8A241dd06a7705b156c2E2162A458eE1F872b4D7',
+        NUTS: '0x200C7Fa2eFaBeA8948F5FA631ec4261215e03905'
       },
       platform: {
+        saving: {
+          instrumentManager: '0xa784E55eE41EE9d0e42Cb18beFbE8B5E82122348',
+          instrumentEscrow: '0xf190adD83C9699225AE0a5d06f977247189B4D93',
+          instrumentId: 1
+        },
         lending: {
-          instrumentManager: '0xDf48c167569775299b2Ec61ec9FCAdF82e2e95a8',
-          instrumentEscrow: '0xdBDba63369E3aF1f9146BFfb2b468411e6c65F7d',
+          instrumentManager: '0x6750e54508acBE32743e418985081d8926134963',
+          instrumentEscrow: '0x567B1f22f5C55f2c7Ad6FB854C10c20A6A7De84E',
           instrumentId: 2
         },
         borrowing: {
-          instrumentManager: '0xf70df9612df76639f6B1Dcd32A0639a6d065B1fA',
-          instrumentEscrow: '0x509b17396821516685725f1Ff854ABd4a8036a33',
+          instrumentManager: '0x3265A0d5963cCfc385598A4F2D442fee23AB9C7A',
+          instrumentEscrow: '0x67Be51718093A3e3A658CE9ed8AfC6072C39Ee44',
           instrumentId: 3
         },
-        saving: {
-          instrumentManager: '0x861838c70E107494fd89726BdE9C193721aE4D92',
-          instrumentEscrow: '0x193d1beBEdb6F62d89D17f94122325d09ff94C72',
-          instrumentId: 1
-        },
         swap: {
-          instrumentManager: '0x6EAC28537e8721CC5F112C647ea5C95Ff8c2d447',
-          instrumentEscrow: '0x09A754c505cFfd2a6a34a3c841Ac644Cf0941450',
+          instrumentManager: '0x801D85D216949Fe54bD37c0ce467727a6AB0D364',
+          instrumentEscrow: '0xe33a3b552Cc5d9860CDb1a547B513Fc83cAfE772',
           instrumentId: 4
         },
-        parametersUtil: '0x0604C963c1750D2F440Cf79587441012a05385Af',
-        priceOracle: '0x4d3317c4cE37Da043275bb554CC8Cc50FFaaC949'
+        instrumentRegistry: '0xdd76F019147cb81c55e41E94191A23399810814e',
+        parametersUtil: '0xBE5d57b520bC825bEe5a6E04eB52b2fbA7a5BACb',
+        priceOracle: '0xee8452F333b2Bb8610d6C78fEb82FF0D5962BABf'
       }
     },
     42: {
