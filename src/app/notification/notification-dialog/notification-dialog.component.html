@@ -40,13 +40,16 @@
             </div>
             <div class="notification-timestamp">{{notification.creationTimestamp | timeAgo}}</div>
         </div>
-        <div class="col-xs-3 notification-action">
+        <div class="col-xs-3 notification-action" [ngSwitch]="notification.category">
+            <mat-spinner *ngSwitchCase="'TRANSACTION_INITIATED'" [diameter]="25"></mat-spinner>
             <button mat-button color="primary" class="notification-button"
-                *ngIf="notification.category == 'TRANSACTION_FAILED'" 
-                (click)="retryTransaction(notification)">Retry</button>
+                *ngSwitchCase="'TRANSACTION_FAILED'" (click)="retryTransaction(notification)">
+                Retry
+            </button>
             <button mat-button color="primary" class="notification-button"
-                *ngIf="notification.category != 'TRANSACTION_FAILED' && notification.category != 'TRANSACTION_INITIATED'"
-                (click)="onNotificationAction(notification)">{{getNotificationAction(notification)}}</button>
+                *ngSwitchDefault (click)="onNotificationAction(notification)">
+                {{getNotificationAction(notification)}}
+            </button>
         </div>
     </div>
 </div>

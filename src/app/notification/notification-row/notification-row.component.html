@@ -30,13 +30,16 @@
         </div>
     </div>
     <div class="col-xs-3">
-        <div class="notification-action">
+        <div class="notification-action" [ngSwitch]="notification.category">
+            <mat-spinner *ngSwitchCase="'TRANSACTION_INITIATED'" [diameter]="25"></mat-spinner>
             <button mat-button color="primary" class="notification-button"
-                *ngIf="notification.category == 'TRANSACTION_FAILED'" 
-                (click)="retryTransaction()">Retry</button>
+                *ngSwitchCase="'TRANSACTION_FAILED'" (click)="retryTransaction()">
+                Retry
+            </button>
             <button mat-button color="primary" class="notification-button"
-                *ngIf="notification.category != 'TRANSACTION_FAILED' && notification.category != 'TRANSACTION_INITIATED'"
-                (click)="onNotificationAction()">{{getNotificationAction()}}</button>
+                *ngSwitchDefault (click)="onNotificationAction()">
+                {{getNotificationAction()}}
+            </button>
         </div>
     </div>
 </div>

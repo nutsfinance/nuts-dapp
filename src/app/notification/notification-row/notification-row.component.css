@@ -11,6 +11,8 @@
 .notification-action {
   text-align: start;
   margin-top: 35px;
+  display: flex;
+  justify-content: center;
 }
 .icon-image {
   width: 60%;

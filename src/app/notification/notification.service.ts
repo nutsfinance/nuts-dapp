@@ -15,16 +15,21 @@ export class NotificationService {
   public notificationUpdatedSubject: Subject<NotificationModel[]> = new BehaviorSubject<NotificationModel[]>([]);
 
   constructor(private nutsPlatformService: NutsPlatformService, private http: HttpClient) {
+    this.nutsPlatformService.currentNetworkSubject.subscribe(currentNetwork => {
+      this.getNotifications().subscribe(notifications => {
+        console.log('Notifications updated', notifications);
+        const sortedNotifications = notifications.sort((n1, n2) => n2.creationTimestamp - n1.creationTimestamp);
+        this.notifications = sortedNotifications;
+        this.notificationUpdatedSubject.next(sortedNotifications);
+      });
+    });
     this.nutsPlatformService.currentAccountSubject.subscribe(currentAddress => {
-      if (currentAddress) {
-        console.log('Address updated', currentAddress);
-        this.getNotifications().subscribe(notifications => {
-          console.log('Notifications updated', notifications);
-          const sortedNotifications = notifications.sort((n1, n2) => n2.creationTimestamp - n1.creationTimestamp);
-          this.notifications = sortedNotifications;
-          this.notificationUpdatedSubject.next(sortedNotifications);
-        });
-      }
+      this.getNotifications().subscribe(notifications => {
+        console.log('Notifications updated', notifications);
+        const sortedNotifications = notifications.sort((n1, n2) => n2.creationTimestamp - n1.creationTimestamp);
+        this.notifications = sortedNotifications;
+        this.notificationUpdatedSubject.next(sortedNotifications);
+      });
     });
   }
 
@@ -32,7 +37,7 @@ export class NotificationService {
     const currentAddress = this.nutsPlatformService.currentAccount;
     const currentNetwork = this.nutsPlatformService.currentNetwork;
     if (!currentAddress || (currentNetwork !== 1 && currentNetwork !== 4)) {
-      console.log(currentAddress, currentNetwork);
+      console.log('Current address', currentAddress, 'Current network', currentNetwork);
       return of([]);
     }
     return this.http.get<NotificationModel[]>(`${environment.notificationServer}/notifications/${currentAddress}`);
