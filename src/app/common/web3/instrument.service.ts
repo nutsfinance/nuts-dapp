@@ -274,10 +274,12 @@ export class InstrumentService {
     console.log(tokenTransferEvents);
     tokenTransferEvents.forEach((event) => {
       if (event.returnValues.issuanceId == issuance.issuanceId) {
+        const [fromRole, toRole] = this.getTransactionUserRole(instrument, event.returnValues.fromAddress, event.returnValues.toAddress,
+          event.returnValues.transferType, issuance);
         transactions.push({
-          action: '',
-          from: this.getUserRole(event.returnValues.fromAddress, instrumentEscrowAddress, issuance),
-          to: this.getUserRole(event.returnValues.toAddress, instrumentEscrowAddress, issuance),
+          action: this.nutsPlatformService.web3.utils.toAscii(event.returnValues.action),
+          from: fromRole,
+          to: toRole,
           token: this.nutsPlatformService.getTokenNameByAddress(event.returnValues.tokenAddress),
           amount: this.nutsPlatformService.web3.utils.fromWei(event.returnValues.amount, 'ether'),
           blockNumber: event.blockNumber,
@@ -287,16 +289,28 @@ export class InstrumentService {
     return transactions.sort((e1, e2) => e1.blockNumber - e2.blockNumber);;
   }
 
-  private getUserRole(userAddress: string, instrumentEscrowAddress: string, issuance: IssuanceModel): string {
-    switch (userAddress.toLowerCase()) {
-      case instrumentEscrowAddress:
-        return 'A/C';
+  private getTransactionUserRole(instrument: string, fromAddress: string, toAddress: string, transferType: string, issuance: IssuanceModel): [string, string] {
+    const instrumentName = instrument.charAt(0).toUpperCase() + instrument.substring(1);
+    const fromRole = this.getAddressRole(fromAddress, issuance);
+    const toRole = this.getAddressRole(toAddress, issuance);
+    switch (transferType) {
+      case "1":     // Inbound transfer
+        return [`${instrumentName} A/C(${fromRole})`, `${instrumentName} Position(${toRole})`];
+      case "2":     // Outbound transfer
+        return [`${instrumentName} Position(${fromRole})`, `${instrumentName} A/C(${toRole})`];
+      case "3":
+        return [`${instrumentName} Position(${fromRole})`, `${instrumentName} Position(${toRole})`];
+    }
+  }
+
+  private getAddressRole(address: string, issuance: IssuanceModel): string {
+    switch (address.toLowerCase()) {
       case issuance.makerAddress:
-        return 'maker';
+        return "M";
       case issuance.takerAddress:
-        return 'taker';
+        return "T";
       case CUSTODIAN_ADDRESS.toLowerCase():
-        return 'custodian';
+        return "C";
       default:
         return 'N/A';
     }

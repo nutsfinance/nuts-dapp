@@ -29,6 +29,8 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
   private collateralValue = 0;
   private perDayInterestValue;
   private totalInterestValue;
+
+  private columns: string[] = ['action', 'from', 'to', 'amount', 'date'];
   private transactions: IssuanceTransaction[] = [];
 
   private convertedCollateralValue: Promise<number>;
