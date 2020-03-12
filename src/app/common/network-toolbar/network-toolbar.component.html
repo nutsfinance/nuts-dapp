@@ -1,5 +1,5 @@
 <div *ngIf="network > 1" class="network-toolbar">
-    <span class="network-content">
+    <!-- <span class="network-content">
         You are currently connected to the
         <span [ngSwitch]="network">
             <span *ngSwitchCase="3">Ropsten Network.</span>
@@ -8,5 +8,11 @@
             <span *ngSwitchCase="5777">Development Network.</span>
             <span *ngSwitchDefault>Uknown Network.</span>
         </span>
+    </span> -->
+    <span class="network-content" *ngIf="network == 4">
+        You are currently connected to the Rinkeby Network.
+    </span>
+    <span class="network-content" *ngIf="network != 4">
+        Unsupported network. Please connect to Main or Rinkeby.
     </span>
 </div>

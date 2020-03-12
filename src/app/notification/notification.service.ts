@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject, BehaviorSubject } from 'rxjs';
+import { Subject, BehaviorSubject, Observable, of } from 'rxjs';
 
 import { environment } from '../../environments/environment';
 import { NutsPlatformService } from '../common/web3/nuts-platform.service';
@@ -30,6 +30,10 @@ export class NotificationService {
 
   getNotifications() {
     const currentAddress = this.nutsPlatformService.currentAccount;
+    const currentNetwork = this.nutsPlatformService.currentNetwork;
+    if (!currentAddress || (currentNetwork !== 1 && currentNetwork !== 4)) {
+      return of([]);
+    }
     return this.http.get<NotificationModel[]>(`${environment.notificationServer}/notifications/${currentAddress}`);
   }
 
