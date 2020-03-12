@@ -10,20 +10,33 @@ import {NutsPlatformService} from '../web3/nuts-platform.service';
 })
 export class NetworkToolbarComponent implements OnInit {
   private network: number;
+  private account: string;
   private networkSubscription: Subscription;
+  private accountSubscription: Subscription;
 
   constructor(private nutsPlatformService_: NutsPlatformService, private ngZone_: NgZone) {}
 
   ngOnInit() {
     this.network = this.nutsPlatformService_.currentNetwork;
+    this.account = this.nutsPlatformService_.currentAccount;
     this.networkSubscription = this.nutsPlatformService_.currentNetworkSubject.subscribe(network => {
       this.ngZone_.run(() => {
         this.network = network;
+      });
+    });
+    this.accountSubscription = this.nutsPlatformService_.currentAccountSubject.subscribe(account => {
+      this.ngZone_.run(() => {
+        this.account = account;
       });
     });
   }
 
   ngOnDestroy() {
     this.networkSubscription.unsubscribe();
+    this.accountSubscription.unsubscribe();
+  }
+
+  reconnect() {
+    this.nutsPlatformService_.connectToEthereum();
   }
 }

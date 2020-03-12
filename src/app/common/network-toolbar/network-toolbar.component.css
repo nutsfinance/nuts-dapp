@@ -10,6 +10,9 @@
 .warning {
   background-color: #eeb5b5;
 }
+.offline {
+  background-color: #c1c1c2;
+}
 .network-content {
   display: inline-block;
   margin-top: 13px;

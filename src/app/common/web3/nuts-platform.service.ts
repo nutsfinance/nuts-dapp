@@ -280,6 +280,16 @@ export class NutsPlatformService {
     return this.web3.eth.sendTransaction(retryTransaction);
   }
 
+  public async connectToEthereum() {
+    const { ethereum } = window;
+    try {
+      await ethereum.enable();
+    } catch (error) {
+      console.error(error);
+      // Access control error
+    }
+  }
+
   private async bootstrapWeb3() {
     console.log('Bootstrap web3');
     const { ethereum } = window;

@@ -1,4 +1,4 @@
-<div *ngIf="network > 1" [ngClass]="{'network-toolbar': true, 'info': network == 4, 'warning': network != 4}">
+<div *ngIf="account && network > 1" [ngClass]="{'network-toolbar': true, 'info': network == 4, 'warning': network != 4}">
     <!-- <span class="network-content">
         You are currently connected to the
         <span [ngSwitch]="network">
@@ -14,5 +14,11 @@
     </span>
     <span class="network-content" *ngIf="network != 4">
         Unsupported network. Please connect to Main or Rinkeby.
+    </span>
+</div>
+
+<div *ngIf="!account" class="network-toolbar offline">
+    <span class="network-content">
+        You're offline. <a (click)="reconnect()">Connect Metamask wallet.</a>
     </span>
 </div>
