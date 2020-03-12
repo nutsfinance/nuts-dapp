@@ -267,6 +267,7 @@ export class NutsPlatformService {
       throw new Error('Please install MetaMask.')
     }
     this.web3 = new Web3(ethereum);
+    ethereum.autoRefreshOnNetworkChange = false;
     ethereum.on('accountsChanged', this.handleAccountChanged.bind(this));
     ethereum.on('networkChanged', this.handleNetworkChanged.bind(this));
     console.log(ethereum);

@@ -18,6 +18,7 @@ import { SwapPositionsComponent } from './instrument/swap/swap-positions/swap-po
 import { LendingDetailComponent } from './instrument/lending/lending-detail/lending-detail.component';
 import { InstrumentComponent } from './instrument/instrument.component';
 import { NotificationComponent } from './notification/notification.component';
+import { CanActivateInstrument } from './instrument/instrument-routing-guard.service';
 
 
 const routes: Routes = [
@@ -30,13 +31,15 @@ const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent},
       {
-        path: 'saving', component: SavingComponent, children: [
+        path: 'saving', component: SavingComponent, canActivateChild: [ CanActivateInstrument ],
+        children: [
           { path: '', redirectTo: 'wallet', pathMatch: 'full' },
           { path: 'wallet', component: WalletComponent, data: { instrument: 'saving' } }
         ]
       },
       {
-        path: 'lending', component: LendingComponent, children: [
+        path: 'lending', component: LendingComponent, canActivateChild: [ CanActivateInstrument ],
+        children: [
           { path: '', redirectTo: 'wallet', pathMatch: 'full' },
           { path: 'wallet', component: WalletComponent, data: { instrument: 'lending' } },
           { path: 'create', component: LendingCreateComponent },
@@ -46,7 +49,8 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'borrowing', component: BorrowingComponent, children: [
+        path: 'borrowing', component: BorrowingComponent, canActivateChild: [ CanActivateInstrument ],
+        children: [
           { path: '', redirectTo: 'wallet', pathMatch: 'full' },
           { path: 'wallet', component: WalletComponent, data: { instrument: 'borrowing' } },
           { path: 'create', component: BorrowingCreateComponent },
@@ -55,7 +59,8 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'swap', component: SwapComponent, children: [
+        path: 'swap', component: SwapComponent, canActivateChild: [ CanActivateInstrument ],
+        children: [
           { path: '', redirectTo: 'wallet', pathMatch: 'full' },
           { path: 'wallet', component: WalletComponent, data: { instrument: 'swap' } },
           { path: 'create', component: SwapCreateComponent },

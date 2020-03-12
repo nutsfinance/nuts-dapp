@@ -45,6 +45,7 @@ import { NotificationRowComponent } from './notification/notification-row/notifi
 import { NotificationComponent } from './notification/notification.component';
 import { TransactionInitiatedDialog } from './common/transaction-initiated-dialog/transaction-initiated-dialog.component';
 import { IssuanceNotificationComponent } from './notification/issuance-notification/issuance-notification.component';
+import { CanActivateInstrument } from './instrument/instrument-routing-guard.service';
 
 @NgModule({
   declarations: [
@@ -108,7 +109,7 @@ import { IssuanceNotificationComponent } from './notification/issuance-notificat
     HttpClientModule,
     ChartsModule,
   ],
-  providers: [],
+  providers: [CanActivateInstrument],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

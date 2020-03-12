@@ -228,11 +228,11 @@ export class InstrumentService {
       console.log('Either account or network is not set.');
     }
     if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork]) {
-      alert(`Network ${this.nutsPlatformService.currentNetwork} is not supported!`);
+      console.log(`Network ${this.nutsPlatformService.currentNetwork} is not supported!`);
       return;
     }
     if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform.lending) {
-      alert(`Instrument lending is not supported!`);
+      console.log(`Instrument lending is not supported!`);
       return;
     }
     const instrumentManagerAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform.lending.instrumentManager;
