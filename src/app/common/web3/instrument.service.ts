@@ -15,8 +15,10 @@ const COLLATERAL_RATIO_DECIMALS = 100;
 
 export interface IssuanceTransaction {
   action: string,
-  from: string,
-  to: string,
+  fromWallet: string,
+  fromRole: string,
+  toWallet: string,
+  toRole: string,
   token: string,
   amount: number,
   blockNumber: number,
@@ -274,12 +276,13 @@ export class InstrumentService {
     console.log(tokenTransferEvents);
     tokenTransferEvents.forEach((event) => {
       if (event.returnValues.issuanceId == issuance.issuanceId) {
-        const [fromRole, toRole] = this.getTransactionUserRole(instrument, event.returnValues.fromAddress, event.returnValues.toAddress,
-          event.returnValues.transferType, issuance);
+        const [fromWallet, toWallet] = this.getTransactionWallet(event.returnValues.transferType, issuance);
         transactions.push({
           action: this.nutsPlatformService.web3.utils.toAscii(event.returnValues.action),
-          from: fromRole,
-          to: toRole,
+          fromWallet: fromWallet,
+          fromRole: this.getTransactionRole(event.returnValues.fromAddress, issuance),
+          toWallet: toWallet,
+          toRole: this.getTransactionRole(event.returnValues.toAddress, issuance),
           token: this.nutsPlatformService.getTokenNameByAddress(event.returnValues.tokenAddress),
           amount: this.nutsPlatformService.web3.utils.fromWei(event.returnValues.amount, 'ether'),
           blockNumber: event.blockNumber,
@@ -289,28 +292,27 @@ export class InstrumentService {
     return transactions.sort((e1, e2) => e1.blockNumber - e2.blockNumber);;
   }
 
-  private getTransactionUserRole(instrument: string, fromAddress: string, toAddress: string, transferType: string, issuance: IssuanceModel): [string, string] {
-    const instrumentName = instrument.charAt(0).toUpperCase() + instrument.substring(1);
-    const fromRole = this.getAddressRole(fromAddress, issuance);
-    const toRole = this.getAddressRole(toAddress, issuance);
+  private getTransactionWallet(transferType: string, issuance: IssuanceModel): [string, string] {
     switch (transferType) {
       case "1":     // Inbound transfer
-        return [`${instrumentName} A/C(${fromRole})`, `${instrumentName} Position(${toRole})`];
+        return [ "A/C", "Position" ];
       case "2":     // Outbound transfer
-        return [`${instrumentName} Position(${fromRole})`, `${instrumentName} A/C(${toRole})`];
+        return [ "Position", "A/C" ];
       case "3":
-        return [`${instrumentName} Position(${fromRole})`, `${instrumentName} Position(${toRole})`];
+        return [ "Position", "Position" ];
+      default:
+        return [ "Unknown", "Unknown" ];
     }
   }
 
-  private getAddressRole(address: string, issuance: IssuanceModel): string {
+  private getTransactionRole(address: string, issuance: IssuanceModel): string {
     switch (address.toLowerCase()) {
       case issuance.makerAddress:
-        return "M";
+        return "Maker";
       case issuance.takerAddress:
-        return "T";
+        return "Taker";
       case CUSTODIAN_ADDRESS.toLowerCase():
-        return "C";
+        return "Collateral";
       default:
         return 'N/A';
     }
