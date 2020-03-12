@@ -266,6 +266,20 @@ export class NutsPlatformService {
     return block.timestamp;
   }
 
+  public async retryTransaction(transactionHash: string) {
+    const transaction = await this.web3.eth.getTransaction(transactionHash);
+    console.log(transaction);
+    const retryTransaction = {
+      from: transaction.from,
+      to: transaction.to,
+      value: transaction.value,
+      data: transaction.input,
+      gas: transaction.gas,
+      gasPrice: transaction.gasPrice
+    };
+    return this.web3.eth.sendTransaction(retryTransaction);
+  }
+
   private async bootstrapWeb3() {
     console.log('Bootstrap web3');
     const { ethereum } = window;
@@ -274,18 +288,17 @@ export class NutsPlatformService {
     }
     this.web3 = new Web3(ethereum);
     ethereum.autoRefreshOnNetworkChange = false;
-    ethereum.on('accountsChanged', this.handleAccountChanged.bind(this));
     ethereum.on('networkChanged', this.handleNetworkChanged.bind(this));
-    console.log(ethereum);
+    ethereum.on('accountsChanged', this.handleAccountChanged.bind(this));
+
     try {
       await ethereum.enable();
     } catch (error) {
       console.error(error);
       // Access control error
     }
-
-    this.handleAccountChanged([ethereum.selectedAddress]);
     this.handleNetworkChanged(Number(ethereum.networkVersion));
+    this.handleAccountChanged([ethereum.selectedAddress]);
 
     // try {
     //   this.handleNetworkChanged(await ethereum.send('eth_chainId'));

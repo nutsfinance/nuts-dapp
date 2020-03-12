@@ -5,7 +5,9 @@
           <button mat-icon-button (click)="sidenav.close()" color="primary">
             <mat-icon>close</mat-icon>
           </button>
-          <img src="../assets/images/logo.png" alt="logo" class="toolbar-logo">
+          <a routerLink="/instrument/dashboard">
+            <img src="../assets/images/logo.png" alt="logo" class="toolbar-logo">
+          </a>
       </mat-toolbar>
   
       <mat-nav-list class="nav-list">
@@ -62,7 +64,9 @@
           <button mat-icon-button (click)="sidenav.open()" color="primary">
             <mat-icon class="app-toolbar-icon">menu</mat-icon>
           </button>
-          <img src="../assets/images/logo.png" alt="logo" class="toolbar-logo" (click)="openSnackBar(unreadNotifications[0].category)">
+          <a routerLink="/instrument/dashboard">
+            <img src="../assets/images/logo.png" alt="logo" class="toolbar-logo">
+          </a>
         </div>
         <div class="app-toolbar-right">
           <app-currency-select></app-currency-select>

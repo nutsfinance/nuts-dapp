@@ -57,7 +57,7 @@ export class NotificationRowComponent implements OnInit, OnChanges {
   }
 
   retryTransaction() {
-
+    this.nutsPlatformService.retryTransaction(this.notification.transactionHash);
   }
 
   onNotificationAction() {
@@ -88,6 +88,12 @@ export class NotificationRowComponent implements OnInit, OnChanges {
         break;
       case TransactionType.CANCEL_OFFER:
         this.router.navigate([`/instrument/${instrumentName}/positions`], { queryParams: { tab: 'inactive' } });
+        break;
+      case TransactionType.ACCEPT_OFFER:
+        this.router.navigate([`/instrument/${instrumentName}/positions`], { queryParams: { tab: 'engaged' } });
+        break;
+      case TransactionType.PAY_OFFER:
+        this.router.navigate([`/instrument/${instrumentName}/positions`]);
         break;
     }
   }

@@ -1,4 +1,4 @@
-<div *ngIf="network > 1" class="network-toolbar">
+<div *ngIf="network > 1" [ngClass]="{'network-toolbar': true, 'info': network == 4, 'warning': network != 4}">
     <!-- <span class="network-content">
         You are currently connected to the
         <span [ngSwitch]="network">

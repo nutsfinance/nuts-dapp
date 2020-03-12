@@ -32,6 +32,7 @@ export class NotificationService {
     const currentAddress = this.nutsPlatformService.currentAccount;
     const currentNetwork = this.nutsPlatformService.currentNetwork;
     if (!currentAddress || (currentNetwork !== 1 && currentNetwork !== 4)) {
+      console.log(currentAddress, currentNetwork);
       return of([]);
     }
     return this.http.get<NotificationModel[]>(`${environment.notificationServer}/notifications/${currentAddress}`);

@@ -1,9 +1,14 @@
 .network-toolbar {
   height: 50px;
   width: 100%;
-  background-color: #fffaea;
   text-align: center;
   font-size: 14px;
+}
+.info {
+  background-color: #fffaea;
+}
+.warning {
+  background-color: #eeb5b5;
 }
 .network-content {
   display: inline-block;
