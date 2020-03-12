@@ -17,13 +17,13 @@
   <div class="col-xs-6">
     <div class="dashboard-sublabel">
       <span class="position-value">{{currencyService.getCurrencySymbol()}}
-        {{ convertedPayable | async | number: '1.0-4' }}</span> total receivables
+        {{ convertedPayable | async | number: '1.0-4' }}</span> total payables
     </div>
   </div>
   <div class="col-xs-6">
     <div class="dashboard-sublabel">
       <span class="position-value">{{currencyService.getCurrencySymbol()}}
-        {{ convertedReceivable | async | number: '1.0-4' }}</span> total payables
+        {{ convertedReceivable | async | number: '1.0-4' }}</span> total receivables
     </div>
   </div>
 </div>
