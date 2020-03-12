@@ -16,6 +16,15 @@
   font-size: 15px;
   padding-right: 0;
 }
+.card-state {
+  display: flex;
+  justify-content: flex-end;
+}
+.card-state-indicator {
+  font-size: 20px;
+  margin-right: 5px;
+  margin-top: -2px;
+}
 .detail-row {
   margin-top: 22px;
   margin-bottom: 22px;

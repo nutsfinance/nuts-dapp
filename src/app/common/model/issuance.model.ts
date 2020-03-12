@@ -7,8 +7,8 @@ export enum IssuanceState {
     Engaged = 3,
     Unfunded = 4,
     Cancelled = 5,
-    CompleteNotEngaged = 6,
-    CompleteEngaged = 7,
+    Expired = 6,
+    Completed = 7,
     Delinquent = 8,
 }
 

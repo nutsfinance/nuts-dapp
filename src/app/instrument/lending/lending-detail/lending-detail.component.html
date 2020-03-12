@@ -1,7 +1,11 @@
 <mat-card class="detail-card" *ngIf="issuance">
     <div class="row">
-        <div class="col-xs-12 card-title">
+        <div class="col-xs-8 card-title">
             <img src="../../../../assets/images/navigate_back.png" class="navigate-back" (click)="navigateBack()"> Offer Details
+        </div>
+        <div class="col-xs-4 card-state" [ngStyle]="{'color':issuance.state <= 3 ? '#8bc34a' : 'grey'}">
+            <span class="card-state-indicator">&#8226;</span>
+            {{issuance.getIssuanceState()}}
         </div>
     </div>
 
