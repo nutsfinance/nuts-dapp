@@ -2,18 +2,27 @@
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "instrumentId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
         "name": "fspAddress",
         "type": "address"
       },
       {
+        "internalType": "address",
         "name": "instrumentAddress",
         "type": "address"
       },
       {
+        "internalType": "address",
         "name": "instrumentConfigAddress",
         "type": "address"
       },
       {
+        "internalType": "bytes",
         "name": "instrumentParameters",
         "type": "bytes"
       }
@@ -27,21 +36,38 @@
     "inputs": [
       {
         "indexed": true,
+        "internalType": "uint256",
+        "name": "instrumentId",
+        "type": "uint256"
+      }
+    ],
+    "name": "InstrumentDeactivated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
         "name": "issuanceId",
         "type": "uint256"
       },
       {
         "indexed": true,
+        "internalType": "address",
         "name": "makerAddress",
         "type": "address"
       },
       {
         "indexed": false,
+        "internalType": "address",
         "name": "issuanceProxyAddress",
         "type": "address"
       },
       {
         "indexed": false,
+        "internalType": "address",
         "name": "issuanceEscrowAddress",
         "type": "address"
       }
@@ -54,37 +80,67 @@
     "inputs": [
       {
         "indexed": true,
+        "internalType": "uint256",
+        "name": "issuanceId",
+        "type": "uint256"
+      }
+    ],
+    "name": "IssuanceTerminated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
         "name": "issuanceId",
         "type": "uint256"
       },
       {
         "indexed": false,
+        "internalType": "enum Transfer.Type",
         "name": "transferType",
         "type": "uint8"
       },
       {
         "indexed": false,
+        "internalType": "address",
         "name": "fromAddress",
         "type": "address"
       },
       {
         "indexed": false,
+        "internalType": "address",
         "name": "toAddress",
         "type": "address"
       },
       {
         "indexed": false,
+        "internalType": "address",
         "name": "tokenAddress",
         "type": "address"
       },
       {
         "indexed": false,
+        "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "action",
+        "type": "bytes32"
       }
     ],
     "name": "TokenTransferred",
     "type": "event"
+  },
+  {
+    "payable": true,
+    "stateMutability": "payable",
+    "type": "fallback"
   },
   {
     "constant": true,
@@ -92,6 +148,7 @@
     "name": "getInstrumentEscrowAddress",
     "outputs": [
       {
+        "internalType": "address",
         "name": "",
         "type": "address"
       }
@@ -106,6 +163,7 @@
     "name": "getLastIssuanceId",
     "outputs": [
       {
+        "internalType": "uint256",
         "name": "",
         "type": "uint256"
       }
@@ -127,10 +185,12 @@
     "constant": false,
     "inputs": [
       {
+        "internalType": "address",
         "name": "makerAddress",
         "type": "address"
       },
       {
+        "internalType": "bool",
         "name": "allowed",
         "type": "bool"
       }
@@ -145,10 +205,12 @@
     "constant": false,
     "inputs": [
       {
+        "internalType": "address",
         "name": "takerAddress",
         "type": "address"
       },
       {
+        "internalType": "bool",
         "name": "allowed",
         "type": "bool"
       }
@@ -163,6 +225,7 @@
     "constant": false,
     "inputs": [
       {
+        "internalType": "bytes",
         "name": "makerParameters",
         "type": "bytes"
       }
@@ -170,6 +233,7 @@
     "name": "createIssuance",
     "outputs": [
       {
+        "internalType": "uint256",
         "name": "",
         "type": "uint256"
       }
@@ -182,10 +246,12 @@
     "constant": false,
     "inputs": [
       {
+        "internalType": "uint256",
         "name": "issuanceId",
         "type": "uint256"
       },
       {
+        "internalType": "bytes",
         "name": "takerParameters",
         "type": "bytes"
       }
@@ -200,14 +266,17 @@
     "constant": false,
     "inputs": [
       {
+        "internalType": "uint256",
         "name": "issuanceId",
         "type": "uint256"
       },
       {
+        "internalType": "address",
         "name": "tokenAddress",
         "type": "address"
       },
       {
+        "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
       }
@@ -222,14 +291,17 @@
     "constant": false,
     "inputs": [
       {
+        "internalType": "uint256",
         "name": "issuanceId",
         "type": "uint256"
       },
       {
+        "internalType": "address",
         "name": "tokenAddress",
         "type": "address"
       },
       {
+        "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
       }
@@ -244,14 +316,17 @@
     "constant": false,
     "inputs": [
       {
+        "internalType": "uint256",
         "name": "issuanceId",
         "type": "uint256"
       },
       {
+        "internalType": "bytes32",
         "name": "eventName",
         "type": "bytes32"
       },
       {
+        "internalType": "bytes",
         "name": "eventPayload",
         "type": "bytes"
       }
@@ -266,10 +341,12 @@
     "constant": true,
     "inputs": [
       {
+        "internalType": "uint256",
         "name": "issuanceId",
         "type": "uint256"
       },
       {
+        "internalType": "bytes32",
         "name": "dataName",
         "type": "bytes32"
       }
@@ -277,6 +354,7 @@
     "name": "getCustomData",
     "outputs": [
       {
+        "internalType": "bytes",
         "name": "",
         "type": "bytes"
       }
