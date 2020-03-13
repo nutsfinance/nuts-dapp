@@ -35,6 +35,7 @@ export class LendingPositionsComponent implements OnInit, OnDestroy {
     this.selectedTab = this.route.snapshot.queryParams['tab'] || 'all';
     this.routeParamSubscription = this.route.queryParams.subscribe(queryParams => {
       this.selectedTab = queryParams['tab'] || 'all';
+      this.updateLendingIssuances();
     });
   }
 
