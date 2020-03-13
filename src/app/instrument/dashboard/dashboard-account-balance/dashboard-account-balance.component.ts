@@ -11,28 +11,23 @@ import { NutsPlatformService, USD_ADDRESS } from 'src/app/common/web3/nuts-platf
   styleUrls: ['./dashboard-account-balance.component.scss']
 })
 export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
-  private instruments = ['Saving', 'Lending', 'Borrowing', 'Swap'];
+  private instruments = ['Lending', 'Borrowing', 'Swap'];
   private assets = ['ETH', 'USDT', 'USDC', 'NUTS', 'DAI'];
 
   // Instrument Chart
   public instrumentChartLabels: Label[] = this.instruments;;
   public instrumentChartData: MultiDataSet = [
-    [200, 350, 450, 100],
+    [350, 450, 100],
   ];
   public instrumentChartOptions = {
     title: {
       display: true,
-      text: 'Instrument Balance'
+      text: 'Instruments Balance'
     },
     legend: {
       position: 'bottom',
     },
-    aspectRatio: 1.2,
-    elements: {
-      arc: {
-        backgroundColor: '#E0E4D7'
-      }
-    }
+    aspectRatio: 1.2
   };
 
   // Asset Chart
@@ -43,7 +38,7 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
   public assetChartOptions = {
     title: {
       display: true,
-      text: 'Asset Balance'
+      text: 'Assets Balance'
     },
     legend: {
       position: 'bottom',
@@ -70,7 +65,7 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
   }
 
   private async updateUserBalance(userBalance: UserBalance) {
-    const instrumentsValue = [0, 0, 0, 0];
+    const instrumentsValue = [0, 0, 0];
     const assetsValue = [0, 0, 0, 0, 0];
     // For each instrument
     for (let i = 0; i < 4; i++) {
