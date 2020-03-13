@@ -1,4 +1,7 @@
-<app-account-address></app-account-address>
+<div class="instrument-container">
+  <app-account-address></app-account-address>
+  <app-instrument-balance [instrument]="'swap'"></app-instrument-balance>
+</div>
 <div class="tab-group">
   <a class="tab-label" routerLink="/instrument/swap/wallet" routerLinkActive="selected">Funding</a>
   <a class="tab-label" routerLink="/instrument/swap/create" routerLinkActive="selected">Create</a>

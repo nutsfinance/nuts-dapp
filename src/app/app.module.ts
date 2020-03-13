@@ -46,6 +46,7 @@ import { NotificationComponent } from './notification/notification.component';
 import { TransactionInitiatedDialog } from './common/transaction-initiated-dialog/transaction-initiated-dialog.component';
 import { IssuanceNotificationComponent } from './notification/issuance-notification/issuance-notification.component';
 import { CanActivateInstrument } from './instrument/instrument-routing-guard.service';
+import { InstrumentBalanceComponent } from './common/instrument-balance/instrument-balance.component';
 
 @NgModule({
   declarations: [
@@ -90,6 +91,7 @@ import { CanActivateInstrument } from './instrument/instrument-routing-guard.ser
     NotificationDialog,
     TransactionInitiatedDialog,
     IssuanceNotificationComponent,
+    InstrumentBalanceComponent,
   ],
   entryComponents: [
     CurrencySelectSheetComponent,

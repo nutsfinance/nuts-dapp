@@ -17,3 +17,7 @@
   border-bottom: 2px solid #8bc34a;
   text-decoration: none;
 }
+.instrument-container {
+  display: flex;
+  justify-content: space-between;
+}

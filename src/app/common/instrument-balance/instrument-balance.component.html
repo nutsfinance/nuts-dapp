@@ -1,0 +1,3 @@
+<p class="instrument-balance">{{instrumentName}} A/C: 
+    <span style="color: blue;">{{ currencyService.getCurrencySymbol() }} {{instrumentBalance | async | number: '1.0-2' }}</span>
+</p>

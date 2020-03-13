@@ -16,3 +16,7 @@
   color: #8bc34a;
   border-bottom: 2px solid #8bc34a;
 }
+.instrument-container {
+  display: flex;
+  justify-content: space-between;
+}
