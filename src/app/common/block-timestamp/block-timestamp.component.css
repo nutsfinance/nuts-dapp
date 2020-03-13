@@ -1,0 +1,8 @@
+.timestamp-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.timestamp-content {
+  margin: 0;
+}

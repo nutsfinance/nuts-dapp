@@ -9,7 +9,9 @@ import { NutsPlatformService } from '../web3/nuts-platform.service';
 })
 export class BlockTimestampComponent implements OnInit {
   @Input() private blockNumber: string;
+  @Input() private showTimestamp = false;
   private blockDate = '';
+  private blockTimestamp 
 
   constructor(private nutsPlatformService: NutsPlatformService, private zone: NgZone) { }
 
@@ -17,8 +19,10 @@ export class BlockTimestampComponent implements OnInit {
     const blockTimestamp = await this.nutsPlatformService.getBlockTimestamp(this.blockNumber);
     this.zone.run(() => {
       const date = new Date(blockTimestamp * 1000);
-      this.blockDate = ("0" + (date.getUTCMonth()+1)).slice(-2) + "-" + ("0" + date.getUTCDate()).slice(-2) + "-" +
-        date.getUTCFullYear();
+      this.blockDate = ("0" + (date.getUTCMonth()+1)).slice(-2) + "-" + ("0" + date.getUTCDate()).slice(-2) + "-"
+        + date.getUTCFullYear();
+      this.blockTimestamp = ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2) + ":"
+        + ("0" + date.getSeconds()).slice(-2);
     });
   }
 

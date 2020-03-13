@@ -1,1 +1,4 @@
-<span>{{blockDate}}</span>
+<div class="timestamp-container">
+    <p class="timestamp-content">{{blockDate}}</p>
+    <p class="timestamp-content" *ngIf="showTimestamp">{{blockTimestamp}}</p>
+</div>

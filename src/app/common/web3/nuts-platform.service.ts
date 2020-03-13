@@ -185,6 +185,9 @@ export class NutsPlatformService {
   public transactionConfirmedSubject = new Subject<string>();
   public balanceUpdatedSubject = new Subject<string>();
 
+  // Caching the block number -> timestamp mapping
+  private blockTimestampCache = {};
+
   constructor() {
     window.addEventListener('load', () => {
       this.bootstrapWeb3();
@@ -262,7 +265,11 @@ export class NutsPlatformService {
   }
 
   public async getBlockTimestamp(blockNumber: string): Promise<number> {
+    if (this.blockTimestampCache[blockNumber]) {
+      return this.blockTimestampCache[blockNumber];
+    }
     const block = await this.web3.eth.getBlock(blockNumber);
+    this.blockTimestampCache[blockNumber] = block.timestamp;
     return block.timestamp;
   }
 

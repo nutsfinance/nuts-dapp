@@ -315,7 +315,7 @@ export class InstrumentService {
       case issuance.takerAddress:
         return "Taker";
       case CUSTODIAN_ADDRESS.toLowerCase():
-        return "Collateral";
+        return "Custodian";
       default:
         return 'N/A';
     }

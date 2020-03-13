@@ -178,69 +178,61 @@
     </div>
 </mat-card>
 
-<div class="container">
+<div class="container transaction-history-container">
     <div class="row">
         <div class="col-xs-12 transaction-title">
             Transaction History
         </div>
     </div>
-</div>
 
-<table mat-table [dataSource]="transactions" class="transaction-table">
-
-    <!-- Action Column -->
-    <ng-container matColumnDef="action">
-        <th mat-header-cell *matHeaderCellDef class="transaction-header"> Action </th>
-        <td mat-cell *matCellDef="let transaction" class="transaction-content">
-            {{ transaction.action }}
-        </td>
-    </ng-container>
-
-    <!-- From Column -->
-    <ng-container matColumnDef="from">
-        <th mat-header-cell *matHeaderCellDef class="transaction-header"> From </th>
-        <td mat-cell *matCellDef="let transaction" class="transaction-content">
-            <img src="../../../../assets/images/ac.png" alt="A/C" class="transaction-wallet" *ngIf="transaction.fromWallet == 'A/C'">
-            <img src="../../../../assets/images/position.png" alt="A/C" class="transaction-wallet" *ngIf="transaction.fromWallet == 'Position'">
-            ({{transaction.fromRole}}) 
-        </td>
-    </ng-container>
-
-    <!-- To Column -->
-    <ng-container matColumnDef="to">
-        <th mat-header-cell *matHeaderCellDef class="transaction-header"> To </th>
-        <td mat-cell *matCellDef="let transaction" class="transaction-content">
-            <img src="../../../../assets/images/ac.png" alt="A/C" class="transaction-wallet" *ngIf="transaction.toWallet == 'A/C'">
-            <img src="../../../../assets/images/position.png" alt="A/C" class="transaction-wallet" *ngIf="transaction.toWallet == 'Position'">
-            ({{transaction.toRole}})
-        </td>
-    </ng-container>
-
-    <!-- Amount Column -->
-    <ng-container matColumnDef="amount">
-        <th mat-header-cell *matHeaderCellDef class="transaction-header"> Amount </th>
-        <td mat-cell *matCellDef="let transaction" class="transaction-content">
-            {{transaction.amount}} {{transaction.token}}
-        </td>
-    </ng-container>
-
-    <!-- Date Column -->
-    <ng-container matColumnDef="date">
-        <th mat-header-cell *matHeaderCellDef class="transaction-header"> Date </th>
-        <td mat-cell *matCellDef="let transaction" class="transaction-content">
-            <app-block-timestamp [blockNumber]="transaction.blockNumber"></app-block-timestamp>
-        </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="columns"></tr>
-    <tr mat-row *matRowDef="let row; columns: columns;"></tr>
-</table>
-
-<div class="container">
-    <div class="row">
-        <div class="col-xs-12 transaction-notation">
-            <img src="../../../../assets/images/ac.png" alt="A/C" class="transaction-notation-wallet"> Lending A/C
-            <img src="../../../../assets/images/position.png" alt="A/C" class="transaction-notation-wallet"> Lending Position
+    <div *ngFor="let transaction of transactions; let i = index" [ngClass]="{'odd': i % 2 == 0, 'row': true, 'transaction-container': true}">
+        <div class="col-xs-3 transaction-content transaction-action">{{transaction.action}}</div>
+        <div class="col-xs-5 transaction-content transaction-from-to">
+            <div class="transaction-from">
+                <img src="../../../../assets/images/Maker_AC.png" alt="Maker A/C" class="transaction-wallet"
+                    *ngIf="transaction.fromWallet == 'A/C' && transaction.fromRole == 'Maker'">
+                <img src="../../../../assets/images/Maker_Position.png" alt="Maker Position" class="transaction-wallet"
+                    *ngIf="transaction.fromWallet == 'Position' && transaction.fromRole == 'Maker'">
+                <img src="../../../../assets/images/Taker_AC.png" alt="Taker A/C" class="transaction-wallet"
+                    *ngIf="transaction.fromWallet == 'A/C' && transaction.fromRole == 'Taker'">
+                <img src="../../../../assets/images/Taker_Position.png" alt="Maker Position" class="transaction-wallet"
+                    *ngIf="transaction.fromWallet == 'Position' && transaction.fromRole == 'Taker'">
+                <img src="../../../../assets/images/Custodian_AC.png" alt="Custodian A/C" class="transaction-wallet"
+                    *ngIf="transaction.fromWallet == 'A/C' && transaction.fromRole == 'Custodian'">
+                <img src="../../../../assets/images/Custodian_Position.png" alt="Custodian Position" class="transaction-wallet"
+                    *ngIf="transaction.fromWallet == 'Position' && transaction.fromRole == 'Custodian'">
+            </div>
+            <span style="font-size:larger;text-align:center"><abbr title="Transfer">⇒</abbr></span>
+            <div class="transaction-to">
+                <img src="../../../../assets/images/Maker_AC.png" alt="Maker A/C" class="transaction-wallet"
+                    *ngIf="transaction.toWallet == 'A/C' && transaction.toRole == 'Maker'">
+                <img src="../../../../assets/images/Maker_Position.png" alt="Maker Position" class="transaction-wallet"
+                    *ngIf="transaction.toWallet == 'Position' && transaction.toRole == 'Maker'">
+                <img src="../../../../assets/images/Taker_AC.png" alt="Taker A/C" class="transaction-wallet"
+                    *ngIf="transaction.toWallet == 'A/C' && transaction.toRole == 'Taker'">
+                <img src="../../../../assets/images/Taker_Position.png" alt="Maker Position" class="transaction-wallet"
+                    *ngIf="transaction.toWallet == 'Position' && transaction.toRole == 'Taker'">
+                <img src="../../../../assets/images/Custodian_AC.png" alt="Custodian A/C" class="transaction-wallet"
+                    *ngIf="transaction.toWallet == 'A/C' && transaction.toRole == 'Custodian'">
+                <img src="../../../../assets/images/Custodian_Position.png" alt="Custodian Position" class="transaction-wallet"
+                    *ngIf="transaction.toWallet == 'Position' && transaction.toRole == 'Custodian'">
+            </div>
         </div>
+        <div class="col-xs-2 transaction-content transaction-amount">
+            {{transaction.amount}} {{transaction.token}}
+        </div>
+        <div class="col-xs-2 transaction-content transaction-date">
+            <app-block-timestamp [blockNumber]="transaction.blockNumber" [showTimestamp]="true"></app-block-timestamp>
+        </div>
+    </div>
+
+    <hr class="transaction-divider"/>
+
+    <div class="row transaction-notation">
+        <img src="../../../../assets/images/AC.png" alt="A/C" class="transaction-notation-image">
+        <img src="../../../../assets/images/Position.png" alt="Position" class="transaction-notation-image">
+        <img src="../../../../assets/images/Maker.png" alt="Maker" class="transaction-notation-image">
+        <img src="../../../../assets/images/Taker.png" alt="Taker" class="transaction-notation-image">
+        <img src="../../../../assets/images/Custodian.png" alt="Custodian" class="transaction-notation-image">
     </div>
 </div>
