@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject, BehaviorSubject, Observable, of } from 'rxjs';
+import { Subject, BehaviorSubject, of } from 'rxjs';
 
 import { environment } from '../../environments/environment';
 import { NutsPlatformService } from '../common/web3/nuts-platform.service';

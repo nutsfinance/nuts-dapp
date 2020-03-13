@@ -1,8 +1,14 @@
 <div class="row">
     <div class="col-xs-12 balance-container">
         <span class="dashboard-label">Account Balance</span>
-        <canvas baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType"
-            [options]="options">
+        <canvas baseChart [data]="instrumentChartData" 
+            [labels]="instrumentChartLabels" 
+            [chartType]="'doughnut'"
+            [options]="instrumentChartOptions">
+        </canvas>
+        <hr/>
+        <canvas baseChart [data]="assetChartData" [labels]="assetChartLabels" [chartType]="'doughnut'"
+            [options]="assetChartOptions">
         </canvas>
     </div>
 </div>

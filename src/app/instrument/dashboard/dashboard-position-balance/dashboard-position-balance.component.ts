@@ -88,7 +88,7 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
             role: 'taker',
             state: issuance.getIssuanceState(),
             token: this.nutsPlatformService.getTokenNameByAddress(issuance.lendingTokenAddress),
-            amount: this.nutsPlatformService.getTokenValueByAddress(issuance.lendingTokenAddress, issuance.lendingAmount + issuance.interestAmount),
+            amount: this.nutsPlatformService.getTokenValueByAddress(issuance.lendingTokenAddress, issuance.lendingAmount),
             action: 'repay',
             supplementalLineItems: issuance.supplementalLineItems,
           });
