@@ -1,4 +1,4 @@
-<div class="timestamp-container">
+<div [ngClass]="{'timestamp-container': true, 'right': align == 'right'}">
     <p class="timestamp-content">{{blockDate}}</p>
     <p class="timestamp-content" *ngIf="showTimestamp">{{blockTimestamp}}</p>
 </div>

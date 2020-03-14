@@ -1,6 +1,9 @@
 .timestamp-container {
     display: flex;
     flex-direction: column;
+}
+
+.timestamp-container.right {
     align-items: flex-end;
 }
 

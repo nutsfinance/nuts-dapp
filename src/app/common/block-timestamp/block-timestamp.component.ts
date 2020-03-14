@@ -10,6 +10,7 @@ import { NutsPlatformService } from '../web3/nuts-platform.service';
 export class BlockTimestampComponent implements OnInit {
   @Input() private blockNumber: string;
   @Input() private showTimestamp = false;
+  @Input() private align = 'left';
   private blockDate = '';
   private blockTimestamp 
 
