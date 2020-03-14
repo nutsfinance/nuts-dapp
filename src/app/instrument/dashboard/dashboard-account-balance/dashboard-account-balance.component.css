@@ -2,7 +2,12 @@
   font-family: "GillSans", Helvetica, Arial, serif;
   font-size: 16px;
   color: #4a494a;
-  display: inline-block;
+  margin: 10px;
+}
+.dashboard-value {
+  font-family: "GillSans-light", Helvetica, Arial, serif;
+  font-size: 15px;
+  color: #4a494a;
   margin: 10px;
 }
 .balance-container {
