@@ -103,6 +103,11 @@
   display: flex;
   justify-content: space-around;
 }
+.transaction-direction {
+  font-size: larger;
+  text-align: center;
+  padding-top: 5px;
+}
 .transaction-wallet {
   width: 30px;
   margin: 3px auto;
