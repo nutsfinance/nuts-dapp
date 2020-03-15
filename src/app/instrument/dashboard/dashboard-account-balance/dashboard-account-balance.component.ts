@@ -87,6 +87,8 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
     private nutsPlatformService: NutsPlatformService, private currencyService: CurrencyService, private zone: NgZone) { }
 
   ngOnInit() {
+    // Try to read the latest user balance.
+    this.userBalanceService.getUserBalanceOnChain();
     this.userBalanceSubscription = this.userBalanceService.userBalanceSubject.subscribe(userBalance => {
       this.zone.run(() => {
         this.updateUserBalance(userBalance);
