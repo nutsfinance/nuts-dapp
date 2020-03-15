@@ -89,6 +89,18 @@
         </div>
     </div>
 
+    <div class="row detail-row" *ngIf="issuance.makerAddress == nutsPlatformService.currentAccount || issuance.takerAddress == nutsPlatformService.currentAccount">
+        <div class="col-xs-3 card-label">Role</div>
+
+        <div class="col-xs-6">
+            <div class="value-content">
+                {{issuance.makerAddress == nutsPlatformService.currentAccount ? 'maker' : 'taker'}}
+            </div>
+        </div>
+
+        <div class="col-xs-2"></div>
+    </div>
+
     <div class="row detail-row">
         <div class="col-xs-3 card-label">Tenor</div>
 
