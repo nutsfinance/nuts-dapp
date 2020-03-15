@@ -57,7 +57,7 @@ export class InstrumentService {
     }
 
     const principalTokenAddress = principalToken === 'ETH' ? ETH_ADDRESS : this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].tokens[principalToken];
-    const lendingAmount = principalToken === 'ETH' ? this.nutsPlatformService.web3.utils.toWei(principalAmount, 'ether') : principalAmount;
+    const lendingAmount = principalToken === 'ETH' ? this.nutsPlatformService.web3.utils.toWei(`${principalAmount}`, 'ether') : principalAmount;
     const collateralTokenAddress = collateralToken === 'ETH' ? ETH_ADDRESS : this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].tokens[collateralToken];
     console.log(collateralTokenAddress, principalTokenAddress, lendingAmount,
       collateralRatio * COLLATERAL_RATIO_DECIMALS, tenor, interestRate * INTEREST_RATE_DECIMALS);
