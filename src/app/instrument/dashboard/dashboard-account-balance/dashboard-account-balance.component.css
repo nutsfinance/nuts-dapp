@@ -13,3 +13,7 @@
 .balance-container {
   min-height: 500px;
 }
+.divider {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}

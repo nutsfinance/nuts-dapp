@@ -44,13 +44,14 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
       position: 'bottom',
       labels: {
         fontFamily: '"GillSans-light", Helvetica, Arial, serif',
+        padding: 16,
         filter: function(legend, data) {
           // return true;
           return legend.text.indexOf("Placeholder") < 0;  // Don't show placeholder legend!
         }
       }
     },
-    aspectRatio: 1.2,
+    aspectRatio: 1.19,
     tooltips: {
       enabled: true,
       callbacks: {
@@ -81,6 +82,7 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
     },
     legend: {
       position: 'bottom',
+      padding: 16,
       labels: {
         fontFamily: '"GillSans-light", Helvetica, Arial, serif',
         filter: function(legend, data) {
@@ -89,7 +91,7 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
         }
       }
     },
-    aspectRatio: 1.2,
+    aspectRatio: 1.18,
     tooltips: {
       enabled: true,
       callbacks: {
