@@ -189,10 +189,10 @@ export class NutsPlatformService {
   private blockTimestampCache = {};
 
   constructor() {
-    window.addEventListener('load', () => {
-      this.bootstrapWeb3();
-    });
-    // this.bootstrapWeb3();
+    // window.addEventListener('load', () => {
+    //   this.bootstrapWeb3();
+    // });
+    this.bootstrapWeb3();
   }
 
   public isAddressValid(): boolean {

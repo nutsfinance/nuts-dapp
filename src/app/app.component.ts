@@ -19,9 +19,7 @@ export interface NotificationData {
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy {
-  private notificationHandler;
-  private transactionSentSubscription: Subscription;
-  private transactionConfirmedSubscription: Subscription;
+  private newNotificationSubscription: Subscription;
   private accountSubscription: Subscription;
   private networkSubscription: Subscription;
 
@@ -29,15 +27,13 @@ export class AppComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar, private dialog: MatDialog, private zone: NgZone) { }
 
   ngOnInit() {
-    this.transactionSentSubscription = this.nutsPlatformService.transactionSentSubject.subscribe(_ => {
-      console.log('Transaction sent. Reloading notifications....');
-      this.reloadNotifications();
-    });
-    this.transactionConfirmedSubscription = this.nutsPlatformService.transactionConfirmedSubject.subscribe(_ => {
-      // Each time a new transaction receipt is received, we reload the notifications
-      console.log('Receipt received. Reloading notifications....');
-      setTimeout(this.reloadNotifications.bind(this), 2000);
-      // this.reloadNotifications();
+    this.newNotificationSubscription = this.notificationService.newNotificationSubject.subscribe(newNotification => {
+      this.zone.run(() => {
+        // Don't show snack bar if it's a transaction initiated notification.
+        if (newNotification.category !== NotificationCategory.TRANSACTION_INITIATED) {
+          this.openSnackBar(newNotification);
+        }
+      });
     });
     this.accountSubscription = this.nutsPlatformService.currentAccountSubject.subscribe(currentAccount => {
       this.zone.run(() => {
@@ -61,15 +57,12 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       });
     });
-    console.log('Setting interval');
-    this.notificationHandler = setInterval(this.reloadNotifications.bind(this), 20000);
   }
 
   ngOnDestroy() {
-    this.transactionSentSubscription.unsubscribe();
-    this.transactionConfirmedSubscription.unsubscribe();
+    this.newNotificationSubscription.unsubscribe();
+    this.accountSubscription.unsubscribe();
     this.networkSubscription.unsubscribe();
-    clearInterval(this.notificationHandler);
   }
 
   openSnackBar(notification: NotificationModel) {
@@ -109,53 +102,6 @@ export class AppComponent implements OnInit, OnDestroy {
         panelClass: snackBarPanelClass,
         duration: 5000,
       });
-    });
-  }
-
-  private reloadNotifications() {
-    this.notificationService.getNotifications().subscribe(notifications => {
-      const currentNotifications = this.notificationService.notifications.sort((n1, n2) => n2.creationTimestamp - n1.creationTimestamp);
-      const reloadedNotifications = notifications.sort((n1, n2) => n2.creationTimestamp - n1.creationTimestamp);
-
-      // Checks whether the notification list is updated.
-      // If notifications length is not the same, it must be updated.
-      let updated = reloadedNotifications.length !== currentNotifications.length;
-      if (!updated) {
-        for (let i = 0; i < reloadedNotifications.length; i++) {
-          if (reloadedNotifications[i].notificationId !== currentNotifications[i].notificationId) {
-            console.log('Mismatch', i, reloadedNotifications[i].notificationId, currentNotifications[i].notificationId);
-            updated = true;
-            break;
-          }
-        }
-      }
-
-      if (!updated) {
-        console.log('Notifications not updated.');
-        return;
-      }
-
-      console.log('Current notifications', currentNotifications);
-      console.log('Reloaded notifications', reloadedNotifications);
-      for (let i = 0; i < reloadedNotifications.length; i++) {
-        console.log(i, currentNotifications[i], reloadedNotifications[i]);
-      }
-
-      // Check whether are any new unread notifications.
-      for (let i = 0; i < reloadedNotifications.length; i++) {
-        if (reloadedNotifications[i].status === NotificationStatus.NEW) {
-          console.log('New notification', reloadedNotifications[i]);
-          // Don't show snack bar if it's a transaction initiated notification.
-          if (reloadedNotifications[i].category !== NotificationCategory.TRANSACTION_INITIATED) {
-            this.openSnackBar(reloadedNotifications[i]);
-          }
-          break;
-        }
-      }
-
-      // Updates the notification list
-      this.notificationService.notifications = reloadedNotifications;
-      this.notificationService.notificationUpdatedSubject.next(reloadedNotifications);
     });
   }
 
