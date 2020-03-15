@@ -249,7 +249,7 @@ export class InstrumentService {
     for (let i = 1; i <= issuanceCount; i++) {
       batchedRequests.push(instrumentManagerContract.methods.getCustomData(i, this.nutsPlatformService.web3.utils.fromAscii("lending_data")).call);
     }
-    const lendingData = await this.makeBatchRequest(batchedRequests);
+    const lendingData = await this.nutsPlatformService.makeBatchRequest(batchedRequests);
     this.lendingIssuances = lendingData.map((data: string) => {
       const lendingCompleteProperties = LendingData.LendingCompleteProperties.deserializeBinary(Uint8Array.from(Buffer.from(data.substring(2), 'hex')));
       const lendingIssuance = LendingIssuanceModel.fromMessage(lendingCompleteProperties);
@@ -319,23 +319,6 @@ export class InstrumentService {
       default:
         return 'N/A';
     }
-  }
-
-  private makeBatchRequest(calls) {
-    let batch = new this.nutsPlatformService.web3.BatchRequest();
-
-    let promises = calls.map(call => {
-      return new Promise((res, rej) => {
-        let req = call.request({ from: this.nutsPlatformService.currentAccount }, (err, data) => {
-          if (err) rej(err);
-          else res(data)
-        });
-        batch.add(req)
-      })
-    })
-    batch.execute();
-
-    return Promise.all(promises);
   }
 
   private reloadIssuances(instrument: string) {

@@ -112,7 +112,7 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
     // For each instrument
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 5; j++) {
-        const instrument = this.instruments[i];
+        const instrument = this.instruments[i].toLowerCase();
         const asset = this.assets[j];
         if (!userBalance[instrument] || !userBalance[instrument][asset]) continue;
 

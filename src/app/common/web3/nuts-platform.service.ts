@@ -297,6 +297,23 @@ export class NutsPlatformService {
     }
   }
 
+  public makeBatchRequest(calls) {
+    let batch = new this.web3.BatchRequest();
+
+    let promises = calls.map(call => {
+      return new Promise((res, rej) => {
+        let req = call.request({ from: this.currentAccount }, (err, data) => {
+          if (err) rej(err);
+          else res(data)
+        });
+        batch.add(req)
+      })
+    })
+    batch.execute();
+
+    return Promise.all(promises);
+  }
+
   private async bootstrapWeb3() {
     console.log('Bootstrap web3');
     const { ethereum } = window;

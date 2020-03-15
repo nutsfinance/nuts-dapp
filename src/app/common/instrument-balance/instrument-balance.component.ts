@@ -37,17 +37,17 @@ export class InstrumentBalanceComponent implements OnInit, OnDestroy {
 
   private async getInstrumentBalance() {
     const userBalance = this.userBalanceService.userBalance;
-    if (!userBalance[this.instrumentName]) {
-      console.log('Instrument ' + this.instrumentName + '  does not exist');
+    if (!userBalance[this.instrument]) {
+      console.log('Instrument ' + this.instrument + '  does not exist');
       return 0;
     }
     const assets = ["ETH", "USDC", "USDC", "NUTS", "DAI"];
     const targetTokenAddress = this.currencyService.currency === 'USD' ? USD_ADDRESS : CNY_ADDRESS;
     let totalValue = 0;
     for (let i = 0; i < assets.length; i++) {
-      if (!userBalance[this.instrumentName][assets[i]]) continue;
+      if (!userBalance[this.instrument][assets[i]]) continue;
       const assetAddress = this.nutsPlatformSevice.getTokenAddressByName(assets[i]);
-      const assetValue = this.nutsPlatformSevice.getTokenValueByAddress(assetAddress, userBalance[this.instrumentName][assets[i]]);
+      const assetValue = this.nutsPlatformSevice.getTokenValueByAddress(assetAddress, userBalance[this.instrument][assets[i]]);
       totalValue += await this.priceOracleService.getConvertedValue(targetTokenAddress, assetAddress, assetValue);
     }
 
