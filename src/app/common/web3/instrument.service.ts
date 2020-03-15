@@ -43,12 +43,8 @@ export class InstrumentService {
 
   public createLendingIssuance(principalToken: string, principalAmount: number, collateralToken: string,
     collateralRatio: number, tenor: number, interestRate: number) {
-    if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork]) {
-      alert(`Network ${this.nutsPlatformService.currentNetwork} is not supported!`);
-      return;
-    }
-    if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform.lending) {
-      alert(`Instrument lending is not supported!`);
+    if (!this.nutsPlatformService.isFullyLoaded()) {
+      console.log('Either network or account is not loaded.');
       return;
     }
     if (principalToken !== 'ETH' && !this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].tokens[principalToken]) {
@@ -115,12 +111,8 @@ export class InstrumentService {
   }
 
   public engageIssuance(instrument: string, issuanceId: number) {
-    if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork]) {
-      alert(`Network ${this.nutsPlatformService.currentNetwork} is not supported!`);
-      return;
-    }
-    if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument]) {
-      alert(`Instrument ${instrument} is not supported!`);
+    if (!this.nutsPlatformService.isFullyLoaded()) {
+      console.log('Either network or account is not loaded.');
       return;
     }
 
@@ -149,56 +141,48 @@ export class InstrumentService {
   }
 
   public repayIssuance(instrument: string, issuanceId: number, tokenAddress: string, amount: number) {
-    if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork]) {
-      alert(`Network ${this.nutsPlatformService.currentNetwork} is not supported!`);
-      return;
-    }
-    if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument]) {
-      alert(`Instrument ${instrument} is not supported!`);
+    if (!this.nutsPlatformService.isFullyLoaded()) {
+      console.log('Either network or account is not loaded.');
       return;
     }
 
     const instrumentManagerAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument].instrumentManager;
     const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
     const totalAmount = tokenAddress.toLowerCase() === ETH_ADDRESS.toLowerCase() ? this.nutsPlatformService.web3.utils.toWei(`${amount}`, 'ether') : amount;
-    
+
     // return instrumentManagerContract.methods.depositToIssuance(issuanceId, tokenAddress, totalAmount).send({ from: this.nutsPlatformService.currentAccount, gas: 6721975 })
     return instrumentManagerContract.methods.notifyCustomEvent(issuanceId, this.nutsPlatformService.web3.utils.fromAscii("repay_full"),
       this.nutsPlatformService.web3.utils.fromAscii("")).send({ from: this.nutsPlatformService.currentAccount, gas: 6721975 })
-        .on('transactionHash', (transactionHash) => {
-          console.log(transactionHash);
-          // this.nutsPlatformService.transactionSentSubject.next(transactionHash);
+      .on('transactionHash', (transactionHash) => {
+        console.log(transactionHash);
+        // this.nutsPlatformService.transactionSentSubject.next(transactionHash);
 
-          // Records the transaction
-          const depositTransaction = new TransactionModel(transactionHash, TransactionType.PAY_OFFER, NotificationRole.TAKER,
-            this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId('lending'), issuanceId,
-            {
-              principalTokenName: this.nutsPlatformService.getTokenNameByAddress(tokenAddress),
-              principalTokenAddress: tokenAddress,
-              totalAmount: `${totalAmount}`,
-            }
-          );
-          this.notificationService.addTransaction(depositTransaction).subscribe(result => {
-            console.log(result);
-            // Note: Transaction Sent event is not sent until the transaction is recored in notification server!
-            this.nutsPlatformService.transactionSentSubject.next(transactionHash);
-          });
-        })
-        .on('receipt', (receipt) => {
-          console.log(receipt);
-          // Updates the issuance list.
-          this.reloadIssuances(instrument);
-          this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
+        // Records the transaction
+        const depositTransaction = new TransactionModel(transactionHash, TransactionType.PAY_OFFER, NotificationRole.TAKER,
+          this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId('lending'), issuanceId,
+          {
+            principalTokenName: this.nutsPlatformService.getTokenNameByAddress(tokenAddress),
+            principalTokenAddress: tokenAddress,
+            totalAmount: `${totalAmount}`,
+          }
+        );
+        this.notificationService.addTransaction(depositTransaction).subscribe(result => {
+          console.log(result);
+          // Note: Transaction Sent event is not sent until the transaction is recored in notification server!
+          this.nutsPlatformService.transactionSentSubject.next(transactionHash);
         });
+      })
+      .on('receipt', (receipt) => {
+        console.log(receipt);
+        // Updates the issuance list.
+        this.reloadIssuances(instrument);
+        this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
+      });
   }
 
   public cancelIssuance(instrument: string, issuanceId: number) {
-    if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork]) {
-      alert(`Network ${this.nutsPlatformService.currentNetwork} is not supported!`);
-      return;
-    }
-    if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument]) {
-      alert(`Instrument ${instrument} is not supported!`);
+    if (!this.nutsPlatformService.isFullyLoaded()) {
+      console.log('Either network or account is not loaded.');
       return;
     }
 
@@ -229,17 +213,11 @@ export class InstrumentService {
 
   public async reloadLendingIssuances() {
     console.log('Reloading lending issuances.');
-    if (!this.nutsPlatformService.currentAccount || !this.nutsPlatformService.currentNetwork) {
-      console.log('Either account or network is not set.');
-    }
-    if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork]) {
-      console.log(`Network ${this.nutsPlatformService.currentNetwork} is not supported!`);
+    if (!this.nutsPlatformService.isFullyLoaded()) {
+      console.log('Either network or account is not loaded.');
       return;
     }
-    if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform.lending) {
-      console.log(`Instrument lending is not supported!`);
-      return;
-    }
+
     const instrumentManagerAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform.lending.instrumentManager;
     const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
     const issuanceCount = await instrumentManagerContract.methods.getLastIssuanceId().call({ from: this.nutsPlatformService.currentAccount });
@@ -298,13 +276,13 @@ export class InstrumentService {
   private getTransactionWallet(transferType: string, issuance: IssuanceModel): [string, string] {
     switch (transferType) {
       case "1":     // Inbound transfer
-        return [ "A/C", "Position" ];
+        return ["A/C", "Position"];
       case "2":     // Outbound transfer
-        return [ "Position", "A/C" ];
+        return ["Position", "A/C"];
       case "3":
-        return [ "Position", "Position" ];
+        return ["Position", "Position"];
       default:
-        return [ "Unknown", "Unknown" ];
+        return ["Unknown", "Unknown"];
     }
   }
 

@@ -195,6 +195,10 @@ export class NutsPlatformService {
     // this.bootstrapWeb3();
   }
 
+  public isFullyLoaded(): boolean {
+    return this.currentAccount && (this.currentNetwork === 1 || this.currentNetwork === 4);
+  }
+
   public getTokenValueByAddress(tokenAddress: string, value: number): number {
     if (tokenAddress.toLowerCase() === ETH_ADDRESS.toLowerCase()) {
       return +this.web3.utils.fromWei(`${value}`, 'ether');
