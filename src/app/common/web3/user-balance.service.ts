@@ -57,7 +57,9 @@ export class UserBalanceService {
     const currentNetwork = this.nutsPlatformService.currentNetwork;
     console.log('Current address', currentAddress, 'Current network', currentNetwork);
     if (!currentAddress || (currentNetwork !== 1 && currentNetwork !== 4)) {
-      return of([]);
+      this.userBalance = {};
+      this.userBalanceSubject.next({});
+      return;
     }
 
     const batchedRequests = [];

@@ -6,7 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChartsModule } from 'ng2-charts';
 import { TimeAgoPipe } from 'time-ago-pipe';
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent, NotificationSnackBar, IncorrectNetworkDialog } from './app.component';
+import { AppComponent, NotificationSnackBar, IncorrectNetworkDialog, DisconnectedDialog } from './app.component';
 import { AccountAddressComponent } from './common/account-address/account-address.component';
 import { AccountBalanceComponent } from './common/account-balance/account-balance.component';
 import { BlockTimestampComponent } from './common/block-timestamp/block-timestamp.component';
@@ -93,6 +93,7 @@ import { InstrumentBalanceComponent } from './common/instrument-balance/instrume
     IssuanceNotificationComponent,
     InstrumentBalanceComponent,
     IncorrectNetworkDialog,
+    DisconnectedDialog,
   ],
   entryComponents: [
     CurrencySelectSheetComponent,
@@ -102,6 +103,7 @@ import { InstrumentBalanceComponent } from './common/instrument-balance/instrume
     NotificationDialog,
     TransactionInitiatedDialog,
     IncorrectNetworkDialog,
+    DisconnectedDialog,
   ],
   imports: [
     BrowserModule,

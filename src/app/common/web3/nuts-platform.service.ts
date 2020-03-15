@@ -195,8 +195,16 @@ export class NutsPlatformService {
     // this.bootstrapWeb3();
   }
 
+  public isAddressValid(): boolean {
+    return !!this.currentAccount;
+  }
+
+  public isNetworkValid(): boolean {
+    return this.currentNetwork === 1 || this.currentNetwork === 4;
+  }
+
   public isFullyLoaded(): boolean {
-    return this.currentAccount && (this.currentNetwork === 1 || this.currentNetwork === 4);
+    return this.isAddressValid() && this.isNetworkValid();
   }
 
   public getTokenValueByAddress(tokenAddress: string, value: number): number {
@@ -298,6 +306,8 @@ export class NutsPlatformService {
     } catch (error) {
       console.error(error);
       // Access control error
+      this.currentAccount = null;
+      this.currentAccountSubject.next(null);
     }
   }
 
@@ -333,6 +343,8 @@ export class NutsPlatformService {
       await ethereum.enable();
     } catch (error) {
       console.error(error);
+      this.currentAccount = null;
+      this.currentAccountSubject.next(null);
       // Access control error
     }
     this.handleNetworkChanged(Number(ethereum.networkVersion));
@@ -353,14 +365,17 @@ export class NutsPlatformService {
       this.currentAccount = accounts[0];
       this.currentAccountSubject.next(accounts[0]);
       console.log('Account updated', this.currentAccount);
+    } else if (this.currentAccount != null) {
+      this.currentAccount = null;
+      this.currentAccountSubject.next(null);
     }
   }
 
   private handleNetworkChanged(network) {
     console.log('Network changed', network);
-    if (network && network != this.currentNetwork) {
-      this.currentNetwork = network;
-      this.currentNetworkSubject.next(network);
+    if (network != this.currentNetwork) {
+      this.currentNetwork = Number(network);
+      this.currentNetworkSubject.next(Number(network));
       console.log('Network updated', this.currentNetwork);
     }
   }

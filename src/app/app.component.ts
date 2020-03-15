@@ -22,6 +22,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private notificationHandler;
   private transactionSentSubscription: Subscription;
   private transactionConfirmedSubscription: Subscription;
+  private accountSubscription: Subscription;
   private networkSubscription: Subscription;
 
   constructor(private notificationService: NotificationService, private nutsPlatformService: NutsPlatformService,
@@ -38,9 +39,24 @@ export class AppComponent implements OnInit, OnDestroy {
       setTimeout(this.reloadNotifications.bind(this), 2000);
       // this.reloadNotifications();
     });
+    this.accountSubscription = this.nutsPlatformService.currentAccountSubject.subscribe(currentAccount => {
+      this.zone.run(() => {
+        console.log(this.nutsPlatformService.currentAccount, this.nutsPlatformService.currentNetwork);
+        this.dialog.closeAll();
+        // If the account is not set(wallet is disconnected), show the disconnected dialog
+        if (!this.nutsPlatformService.isAddressValid()) {
+          this.dialog.open(DisconnectedDialog, { width: '90%' });
+        } else if (!this.nutsPlatformService.isNetworkValid()) {
+          this.dialog.open(IncorrectNetworkDialog, { width: '90%' });
+        }
+      });
+    });
     this.networkSubscription = this.nutsPlatformService.currentNetworkSubject.subscribe(currentNetwork => {
       this.zone.run(() => {
-        if (currentNetwork != 1 && currentNetwork != 4) {
+        this.dialog.closeAll();
+        console.log(this.nutsPlatformService.currentAccount, this.nutsPlatformService.currentNetwork);
+        // If the account is set(wallet is connected) but the network is not supported, show the incorrect network dialog
+        if (this.nutsPlatformService.isAddressValid() && !this.nutsPlatformService.isNetworkValid()) {
           this.dialog.open(IncorrectNetworkDialog, { width: '90%' });
         }
       });
@@ -180,4 +196,22 @@ export class IncorrectNetworkDialog implements OnInit {
   ngOnInit() {
   }
 
+}
+
+@Component({
+  selector: 'app-disconnected-dialog',
+  templateUrl: './disconnected-dialog.component.html',
+  styleUrls: ['./disconnected-dialog.component.scss']
+})
+export class DisconnectedDialog implements OnInit {
+
+  constructor(public dialogRef: MatDialogRef<DisconnectedDialog>, private nutsPlatformService: NutsPlatformService) { }
+
+  ngOnInit() {
+  }
+
+  connectWallet() {
+    this.dialogRef.close();
+    this.nutsPlatformService.connectToEthereum();
+  }
 }
