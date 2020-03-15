@@ -12,8 +12,8 @@ import { CurrencyService } from 'src/app/common/currency-select/currency.service
   styleUrls: ['./dashboard-account-balance.component.scss']
 })
 export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
-  private instruments = ['Lending', 'Borrowing', 'Swap'];
-  private assets = ['ETH', 'USDT', 'USDC', 'NUTS', 'DAI'];
+  private instruments = ['Lending', 'Borrowing', 'Swap', 'Placeholder'];
+  private assets = ['ETH', 'USDT', 'USDC', 'NUTS', 'DAI', 'Placeholder'];
 
   public totalValue = 0;
   public instrumentValue = [0, 0, 0];
@@ -27,7 +27,8 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
     backgroundColor: [
       '#617835',
       '#82C34D',
-      '#BCA795'
+      '#BCA795',
+      '#E0E4D7',
     ]
   }];
 
@@ -42,11 +43,16 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
     legend: {
       position: 'bottom',
       labels: {
-        fontFamily: '"GillSans-light", Helvetica, Arial, serif'
+        fontFamily: '"GillSans-light", Helvetica, Arial, serif',
+        filter: function(legend, data) {
+          // return true;
+          return legend.text.indexOf("Placeholder") < 0;  // Don't show placeholder legend!
+        }
       }
     },
     aspectRatio: 1.2,
     tooltips: {
+      enabled: true,
       callbacks: {
         label: this.getInstrumentTooltip.bind(this)
       }
@@ -61,7 +67,8 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
       '#53AE94',
       '#2775CA',
       '#80C14D',
-      '#FAB44B'
+      '#FAB44B',
+      '#F1EDEA',
     ]
   }];
   public assetChartData: MultiDataSet = [
@@ -74,9 +81,17 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
     },
     legend: {
       position: 'bottom',
+      labels: {
+        fontFamily: '"GillSans-light", Helvetica, Arial, serif',
+        filter: function(legend, data) {
+          // return true;
+          return legend.text.indexOf("Placeholder") < 0;  // Don't show placeholder legend!
+        }
+      }
     },
     aspectRatio: 1.2,
     tooltips: {
+      enabled: true,
       callbacks: {
         label: this.getAssetTooltip.bind(this)
       }
@@ -110,8 +125,8 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
   }
 
   private async updateUserBalance(userBalance: UserBalance) {
-    const instrumentsValue = [0, 0, 0];
-    const assetsValue = [0, 0, 0, 0, 0];
+    const instrumentsValue = [0, 0, 0, 0];
+    const assetsValue = [0, 0, 0, 0, 0, 0];
     const targetTokenAddress = this.currencyService.currency === 'USD' ? USD_ADDRESS : CNY_ADDRESS;
     let totalValue = 0;
     // For each instrument
@@ -148,20 +163,47 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
       this.assetChartLabels = this.assets.map((value, index) => {
         return `${value}: ${this.assetPercentage[index]}%`;
       });
+
+      // Sets charts data
+      this.instrumentValue = instrumentsValue;
+      this.assetValue = assetsValue;
+    } else {
+      // Update labels
+      this.instrumentChartLabels = this.instruments.map((value, index) => {
+        return `${value}: _ _%`;
+      })
+      this.assetChartLabels = this.assets.map((value, index) => {
+        return `${value}: _ _%`;
+      });
+
+      // Sets charts data
+      this.instrumentValue = [0, 0, 0, 100];
+      this.assetValue = [0, 0, 0, 0, 0, 100];
     }
 
-    this.instrumentValue = instrumentsValue;
-    this.assetValue = assetsValue;
-    this.instrumentChartData = [instrumentsValue];
-    this.assetChartData = [assetsValue];
+    this.instrumentChartData = [this.instrumentValue];
+    this.assetChartData = [this.assetValue];
   }
 
   private getInstrumentTooltip(tooltipItem, data) {
-    return `${this.instruments[tooltipItem.index]}: ${this.currencyService.getCurrencySymbol()} ${this.instrumentValue[tooltipItem.index].toFixed(2)}`;
+    const instrument = this.instruments[tooltipItem.index];
+    const currency = this.currencyService.getCurrencySymbol();
+
+    if (instrument.indexOf("Placeholder") >= 0) {
+      return `${currency} 0`;
+    } else {
+      return `${instrument}: ${currency} ${this.instrumentValue[tooltipItem.index].toFixed(2)}`;
+    }
   }
 
   private getAssetTooltip(tooltipItem, data) {
-    console.log(tooltipItem);
-    return `${this.assets[tooltipItem.index]}: ${this.currencyService.getCurrencySymbol()} ${this.assetValue[tooltipItem.index].toFixed(2)}`;
+    const asset = this.assets[tooltipItem.index];
+    const currency = this.currencyService.getCurrencySymbol();
+
+    if (asset.indexOf("Placeholder") >= 0) {
+      return `${currency} 0`;
+    } else {
+      return `${asset}: ${currency} ${this.assetValue[tooltipItem.index].toFixed(2)}`;
+    }
   }
 }

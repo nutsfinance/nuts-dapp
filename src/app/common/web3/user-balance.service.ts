@@ -55,8 +55,8 @@ export class UserBalanceService {
   async getUserBalanceOnChain() {
     const currentAddress = this.nutsPlatformService.currentAccount;
     const currentNetwork = this.nutsPlatformService.currentNetwork;
+    console.log('Current address', currentAddress, 'Current network', currentNetwork);
     if (!currentAddress || (currentNetwork !== 1 && currentNetwork !== 4)) {
-      console.log('Current address', currentAddress, 'Current network', currentNetwork);
       return of([]);
     }
 
