@@ -361,10 +361,13 @@ export class NutsPlatformService {
 
   private handleAccountChanged(accounts) {
     console.log('Account changed', accounts);
-    if (accounts && accounts.length > 0 && accounts[0] != this.currentAccount) {
-      this.currentAccount = accounts[0];
-      this.currentAccountSubject.next(accounts[0]);
-      console.log('Account updated', this.currentAccount);
+    // If we have received the account addresses
+    if (accounts && accounts.length > 0) {
+      if (accounts[0] != this.currentAccount) {
+        this.currentAccount = accounts[0];
+        this.currentAccountSubject.next(accounts[0]);
+        console.log('Account updated', this.currentAccount);
+      }
     } else if (this.currentAccount != null) {
       this.currentAccount = null;
       this.currentAccountSubject.next(null);
