@@ -9,8 +9,8 @@ import {NutsPlatformService} from '../web3/nuts-platform.service';
   styleUrls: ['./network-toolbar.component.scss']
 })
 export class NetworkToolbarComponent implements OnInit {
-  private network: number;
-  private account: string;
+  private network: number = 1;
+  private account: string = '';
   private networkSubscription: Subscription;
   private accountSubscription: Subscription;
 

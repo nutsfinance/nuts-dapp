@@ -8,7 +8,9 @@
   background-color: #fffaea;
 }
 .warning {
-  background-color: #eeb5b5;
+  background-color: #f5ad38;
+  color: white;
+  font-family: "GillSans", Helvetica, Arial, serif;
 }
 .offline {
   background-color: #c1c1c2;

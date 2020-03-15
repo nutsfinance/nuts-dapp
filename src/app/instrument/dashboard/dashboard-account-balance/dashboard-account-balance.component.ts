@@ -37,10 +37,13 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
   public instrumentChartOptions = {
     title: {
       display: true,
-      text: 'Instruments Balance'
+      text: 'Instruments Balance',
     },
     legend: {
       position: 'bottom',
+      labels: {
+        fontFamily: '"GillSans-light", Helvetica, Arial, serif'
+      }
     },
     aspectRatio: 1.2,
     tooltips: {

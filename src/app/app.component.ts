@@ -6,6 +6,7 @@ import { NotificationCategory, NotificationModel, NotificationStatus } from './n
 import { NotificationService } from './notification/notification.service';
 import { Subscription } from 'rxjs';
 import { NutsPlatformService } from './common/web3/nuts-platform.service';
+import { MatDialogRef, MatDialog } from '@angular/material';
 
 export interface NotificationData {
   category: NotificationCategory,
@@ -21,12 +22,13 @@ export class AppComponent implements OnInit, OnDestroy {
   private notificationHandler;
   private transactionSentSubscription: Subscription;
   private transactionConfirmedSubscription: Subscription;
+  private networkSubscription: Subscription;
 
   constructor(private notificationService: NotificationService, private nutsPlatformService: NutsPlatformService,
-    private snackBar: MatSnackBar, private zone: NgZone) { }
+    private snackBar: MatSnackBar, private dialog: MatDialog, private zone: NgZone) { }
 
   ngOnInit() {
-    this.transactionConfirmedSubscription = this.nutsPlatformService.transactionSentSubject.subscribe(_ => {
+    this.transactionSentSubscription = this.nutsPlatformService.transactionSentSubject.subscribe(_ => {
       console.log('Transaction sent. Reloading notifications....');
       this.reloadNotifications();
     });
@@ -36,12 +38,21 @@ export class AppComponent implements OnInit, OnDestroy {
       setTimeout(this.reloadNotifications.bind(this), 2000);
       // this.reloadNotifications();
     });
+    this.networkSubscription = this.nutsPlatformService.currentNetworkSubject.subscribe(currentNetwork => {
+      this.zone.run(() => {
+        if (currentNetwork != 1 && currentNetwork != 4) {
+          this.dialog.open(IncorrectNetworkDialog, { width: '90%' });
+        }
+      });
+    });
     console.log('Setting interval');
     this.notificationHandler = setInterval(this.reloadNotifications.bind(this), 20000);
   }
 
   ngOnDestroy() {
+    this.transactionSentSubscription.unsubscribe();
     this.transactionConfirmedSubscription.unsubscribe();
+    this.networkSubscription.unsubscribe();
     clearInterval(this.notificationHandler);
   }
 
@@ -134,7 +145,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
 }
 
-
 @Component({
   selector: 'notification-snack-bar',
   templateUrl: 'notification-snack-bar.html',
@@ -155,4 +165,19 @@ export class NotificationSnackBar {
       this.router.navigate(['/notification']);
     });
   }
+}
+
+
+@Component({
+  selector: 'app-incorrect-network-dialog',
+  templateUrl: './incorrect-network-dialog.component.html',
+  styleUrls: ['./incorrect-network-dialog.component.scss']
+})
+export class IncorrectNetworkDialog implements OnInit {
+
+  constructor(public dialogRef: MatDialogRef<IncorrectNetworkDialog>) { }
+
+  ngOnInit() {
+  }
+
 }
