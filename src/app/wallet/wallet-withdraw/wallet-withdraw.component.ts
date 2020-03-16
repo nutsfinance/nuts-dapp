@@ -44,7 +44,7 @@ export class WalletWithdrawComponent implements OnInit {
     let withdrawPromise;
     if (this.selectedToken === 'ETH') {
       withdrawPromise = this.instrumentEscrowService.withdrawETH(this.instrument, this.amountControl.value);
-        
+
     } else {
       withdrawPromise = this.instrumentEscrowService.withdrawToken(this.instrument, this.selectedToken, this.amountControl.value);
     }
@@ -52,7 +52,7 @@ export class WalletWithdrawComponent implements OnInit {
     withdrawPromise.on('transactionHash', transactionHash => {
       this.zone.run(() => {
         // Opens Withdraw Initiated dialog.
-        this.dialog.open(TransactionInitiatedDialog, {
+        const transactionInitiatedDialog = this.dialog.open(TransactionInitiatedDialog, {
           width: '90%',
           data: {
             type: 'withdraw',
@@ -62,8 +62,24 @@ export class WalletWithdrawComponent implements OnInit {
           },
         });
 
-        this.form.resetForm();
+        transactionInitiatedDialog.afterClosed().subscribe(() => {
+          this.form.resetForm();
+          // Scroll to top
+          document.body.scrollTop = document.documentElement.scrollTop = 0;
+        });
       });
+
+      // Monitoring transaction status(work around for Metamask mobile)
+      const interval = setInterval(async () => {
+        const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
+        if (!receipt) return;
+
+        console.log(receipt);
+        // Update account balance
+        this.nutsPlatformService.balanceUpdatedSubject.next(this.selectedToken);
+        this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
+        clearInterval(interval);
+      }, 2000);
     });
 
   }

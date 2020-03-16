@@ -78,8 +78,9 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
   }
 
   engageIssuance() {
-    if (this.collateralTokenBalance >= this.collateralValue) {
-      this.instrumentService.engageIssuance('lending', this.issuanceId).on('transactionHash', transactionHash => {
+    if (this.collateralTokenBalance < this.collateralValue) return;
+    this.instrumentService.engageIssuance('lending', this.issuanceId)
+      .on('transactionHash', transactionHash => {
         this.zone.run(() => {
           // Opens Engagement Initiated dialog.
           const transactionInitiatedDialog = this.dialog.open(TransactionInitiatedDialog, {
@@ -95,15 +96,26 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
             this.location.back();
           });
         });
+
+        // Monitoring transaction status(work around for Metamask mobile)
+        const interval = setInterval(async () => {
+          const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
+          if (!receipt) return;
+
+          console.log(receipt);
+          this.instrumentService.reloadLendingIssuances();
+          this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
+          clearInterval(interval);
+        }, 2000);
       });
-    }
   }
 
   repayIssuance() {
     const totalAmount = this.lendingValue + this.totalInterestValue;
     console.log('Total amount: ' + totalAmount + ", balance: " + this.lendingTokenBalance);
-    if (this.lendingTokenBalance >= totalAmount) {
-      this.instrumentService.repayIssuance('lending', this.issuanceId, this.issuance.lendingTokenAddress, totalAmount).on('transactionHash', transactionHash => {
+    if (this.lendingTokenBalance < totalAmount) return;
+    this.instrumentService.repayIssuance('lending', this.issuanceId, this.issuance.lendingTokenAddress, totalAmount)
+      .on('transactionHash', transactionHash => {
         this.zone.run(() => {
           // Opens Engagement Initiated dialog.
           const transactionInitiatedDialog = this.dialog.open(TransactionInitiatedDialog, {
@@ -119,26 +131,48 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
             this.location.back();
           });
         });
+
+        // Monitoring transaction status(work around for Metamask mobile)
+        const interval = setInterval(async () => {
+          const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
+          if (!receipt) return;
+
+          console.log(receipt);
+          this.instrumentService.reloadLendingIssuances();
+          this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
+          clearInterval(interval);
+        }, 2000);
       });
-    }
   }
 
   cancelIssuance() {
-    this.instrumentService.cancelIssuance('lending', this.issuanceId).on('transactionHash', transactionHash => {
-      this.zone.run(() => {
-        // Opens Cancel Initiated dialog.
-        const transactionInitiatedDialog = this.dialog.open(TransactionInitiatedDialog, {
-          width: '90%',
-          data: {
-            type: 'cancel_issuance',
-            issuanceId: this.issuance.issuanceId,
-          },
+    this.instrumentService.cancelIssuance('lending', this.issuanceId)
+      .on('transactionHash', transactionHash => {
+        this.zone.run(() => {
+          // Opens Cancel Initiated dialog.
+          const transactionInitiatedDialog = this.dialog.open(TransactionInitiatedDialog, {
+            width: '90%',
+            data: {
+              type: 'cancel_issuance',
+              issuanceId: this.issuance.issuanceId,
+            },
+          });
+          transactionInitiatedDialog.afterClosed().subscribe(() => {
+            this.location.back();
+          });
         });
-        transactionInitiatedDialog.afterClosed().subscribe(() => {
-          this.location.back();
-        });
+
+        // Monitoring transaction status(work around for Metamask mobile)
+        const interval = setInterval(async () => {
+          const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
+          if (!receipt) return;
+
+          console.log(receipt);
+          this.instrumentService.reloadLendingIssuances();
+          this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
+          clearInterval(interval);
+        }, 2000);
       });
-    });
   }
 
   private updateLendingIssuance() {

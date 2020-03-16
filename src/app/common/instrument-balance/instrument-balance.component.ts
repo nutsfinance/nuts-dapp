@@ -27,6 +27,7 @@ export class InstrumentBalanceComponent implements OnInit, OnDestroy {
       this.instrumentBalance = this.getInstrumentBalance();
     });
     this.userBalanceSubscription = this.userBalanceService.userBalanceSubject.subscribe(_ => {
+      console.log('User balance updated');
       this.instrumentBalance = this.getInstrumentBalance();
     });
   }
@@ -51,6 +52,7 @@ export class InstrumentBalanceComponent implements OnInit, OnDestroy {
       totalValue += await this.priceOracleService.getConvertedValue(targetTokenAddress, assetAddress, assetValue);
     }
 
+    console.log('Total value', totalValue);
     return totalValue;
   }
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { NotificationService } from '../../notification/notification.service';
 import { TransactionModel, TransactionType, NotificationRole } from '../../notification/transaction.model';
 import { ETH_ADDRESS, NutsPlatformService } from './nuts-platform.service';
+import { NotificationCategory } from 'src/app/notification/notification.model';
 
 
 const ERC20 = require('./abi/IERC20.json');
@@ -21,7 +22,20 @@ export interface WalletTransaction {
 })
 export class InstrumentEscrowService {
 
-  constructor(private nutsPlatformService: NutsPlatformService, private notificationService: NotificationService) { }
+  constructor(private nutsPlatformService: NutsPlatformService, private notificationService: NotificationService) {
+    // // Updates balance information if it's 
+    // this.notificationService.newNotificationSubject.subscribe(newNotification => {
+    //   if (newNotification.category === NotificationCategory.TRANSACTION_CONFIRMED) {
+    //     console.log('New notification', newNotification);
+    //     switch(newNotification.type) {
+    //       case TransactionType.DEPOSIT:
+    //       case TransactionType.WITHDRAW:
+    //         this.nutsPlatformService.balanceUpdatedSubject.next(newNotification.metadata['tokenName']);
+    //         return;
+    //     }
+    //   }
+    // });
+  }
 
   public async getWalletBalance(instrument: string, token: string): Promise<number> {
     if (!this.nutsPlatformService.web3 || !this.nutsPlatformService.currentAccount) {
@@ -86,10 +100,6 @@ export class InstrumentEscrowService {
           // Note: Transaction Sent event is not sent until the transaction is recored in notification server!
           this.nutsPlatformService.transactionSentSubject.next(transactionHash);
         });
-      })
-      .on('receipt', (receipt) => {
-        console.log(receipt);
-        this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
       });
   }
 
@@ -123,13 +133,6 @@ export class InstrumentEscrowService {
           // Note: Transaction Sent event is not sent until the transaction is recored in notification server!
           this.nutsPlatformService.transactionSentSubject.next(transactionHash);
         });
-      })
-      .on('receipt', (receipt) => {
-        console.log(receipt);
-        this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
-
-        // Update account balance
-        this.nutsPlatformService.balanceUpdatedSubject.next('ETH');
       });
   }
 
@@ -167,13 +170,6 @@ export class InstrumentEscrowService {
           // Note: Transaction Sent event is not sent until the transaction is recored in notification server!
           this.nutsPlatformService.transactionSentSubject.next(transactionHash);
         });
-      })
-      .on('receipt', (receipt) => {
-        console.log(receipt);
-        this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
-
-        // Update account balance
-        this.nutsPlatformService.balanceUpdatedSubject.next(token);
       });
   }
 

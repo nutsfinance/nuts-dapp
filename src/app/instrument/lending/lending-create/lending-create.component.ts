@@ -82,10 +82,11 @@ export class LendingCreateComponent implements OnInit {
     if (!this.createFormGroup.valid) {
       return;
     }
-    this.instrumentService.createLendingIssuance(this.principalToken,
-      this.createFormGroup.value['principalAmount'], this.collateralToken,
-      this.createFormGroup.value['collateralRatio'], this.createFormGroup.value['tenor'],
-      this.createFormGroup.value['interestRate']).on('transactionHash', transactionHash => {
+    this.instrumentService.createLendingIssuance(this.principalToken, this.createFormGroup.value['principalAmount'],
+      this.collateralToken, this.createFormGroup.value['collateralRatio'], this.createFormGroup.value['tenor'],
+      this.createFormGroup.value['interestRate'])
+      .on('transactionHash', transactionHash => {
+        // Show Transaction Initiated dialog
         this.zone.run(() => {
           // Opens Engagement Initiated dialog.
           const transactionInitiatedDialog = this.dialog.open(TransactionInitiatedDialog, {
@@ -98,8 +99,21 @@ export class LendingCreateComponent implements OnInit {
           });
           transactionInitiatedDialog.afterClosed().subscribe(() => {
             this.resetForm();
+            // Scroll to top
+            document.body.scrollTop = document.documentElement.scrollTop = 0;
           });
         });
+
+        // Monitoring transaction status(work around for Metamask mobile)
+        const interval = setInterval(async () => {
+          const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
+          if (!receipt) return;
+
+          console.log(receipt);
+          this.instrumentService.reloadLendingIssuances();
+          this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
+          clearInterval(interval);
+        }, 2000);
       });
   }
 

@@ -35,7 +35,7 @@ export class NotificationService {
     // Incrementally read new notification each time a new receipt is received
     this.nutsPlatformService.transactionConfirmedSubject.subscribe(_ => {
       console.log('Receipt received. Reloading notifications....');
-      setTimeout(this.incrementalGetNotification.bind(this), 2000);
+      setTimeout(this.incrementalGetNotification.bind(this), 1000);
     });
 
     // Incrementally read new notification every 20s

@@ -7,6 +7,7 @@ import { LendingIssuanceModel } from '../model/lending-issuance.model';
 import { Subject } from 'rxjs';
 import { IssuanceModel } from '../model/issuance.model';
 import { LendingMakerParameterModel } from '../model/lending-maker-parameter.model';
+import { NotificationCategory } from 'src/app/notification/notification.model';
 
 const InstrumentManager = require('./abi/InstrumentManagerInterface.json');
 
@@ -37,6 +38,7 @@ export class InstrumentService {
       console.log('Network changed. Reloading lending issuances.', currentNetwork);
       this.reloadLendingIssuances();
     });
+
     // Reloads issuances every 60s.
     setTimeout(this.reloadLendingIssuances.bind(this), 60000);
   }
@@ -101,12 +103,6 @@ export class InstrumentService {
           // Note: Transaction Sent event is not sent until the transaction is recored in notification server!
           this.nutsPlatformService.transactionSentSubject.next(transactionHash);
         });
-
-      })
-      .on('receipt', (receipt) => {
-        console.log(receipt);
-        this.reloadIssuances('lending');
-        this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
       });
   }
 
@@ -131,12 +127,6 @@ export class InstrumentService {
           // Note: Transaction Sent event is not sent until the transaction is recored in notification server!
           this.nutsPlatformService.transactionSentSubject.next(transactionHash);
         });
-      })
-      .on('receipt', (receipt) => {
-        console.log(receipt);
-        // Updates the issuance list.
-        this.reloadIssuances(instrument);
-        this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
       });
   }
 
@@ -171,12 +161,6 @@ export class InstrumentService {
           // Note: Transaction Sent event is not sent until the transaction is recored in notification server!
           this.nutsPlatformService.transactionSentSubject.next(transactionHash);
         });
-      })
-      .on('receipt', (receipt) => {
-        console.log(receipt);
-        // Updates the issuance list.
-        this.reloadIssuances(instrument);
-        this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
       });
   }
 
@@ -202,12 +186,6 @@ export class InstrumentService {
           // Note: Transaction Sent event is not sent until the transaction is recored in notification server!
           this.nutsPlatformService.transactionSentSubject.next(transactionHash);
         });
-      })
-      .on('receipt', (receipt) => {
-        console.log(receipt);
-        // Updates the issuance list.
-        this.reloadIssuances(instrument);
-        this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
       });
   }
 
@@ -221,7 +199,7 @@ export class InstrumentService {
     const instrumentManagerAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform.lending.instrumentManager;
     const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
     const issuanceCount = await instrumentManagerContract.methods.getLastIssuanceId().call({ from: this.nutsPlatformService.currentAccount });
-    console.log(issuanceCount);
+    console.log('Issuance count', issuanceCount);
 
     const batchedRequests = [];
     for (let i = 1; i <= issuanceCount; i++) {
@@ -296,14 +274,6 @@ export class InstrumentService {
         return "Custodian";
       default:
         return 'N/A';
-    }
-  }
-
-  private reloadIssuances(instrument: string) {
-    switch (instrument) {
-      case 'lending':
-        this.reloadLendingIssuances();
-        break;
     }
   }
 }

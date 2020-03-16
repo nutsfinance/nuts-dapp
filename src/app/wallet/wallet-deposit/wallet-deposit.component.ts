@@ -41,9 +41,6 @@ export class WalletDepositComponent implements OnInit {
   }
 
   submit() {
-    console.log(this.amountControl);
-    console.log(this.depositFormGroup);
-
     if (!this.depositFormGroup.valid) {
       return;
     }
@@ -52,7 +49,7 @@ export class WalletDepositComponent implements OnInit {
         .on('transactionHash', transactionHash => {
           this.zone.run(() => {
             // Opens Approval Initiated dialog.
-            this.dialog.open(TransactionInitiatedDialog, {
+            const transactionInitiatedDialog = this.dialog.open(TransactionInitiatedDialog, {
               width: '90%',
               data: {
                 type: 'approve',
@@ -61,7 +58,23 @@ export class WalletDepositComponent implements OnInit {
                 amount: this.amountControl.value,
               },
             });
+
+            transactionInitiatedDialog.afterClosed().subscribe(() => {
+              this.form.resetForm();
+              // Scroll to top
+              document.body.scrollTop = document.documentElement.scrollTop = 0;
+            });
           });
+
+          // Monitoring transaction status(work around for Metamask mobile)
+          const interval = setInterval(async () => {
+            const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
+            if (!receipt) return;
+
+            console.log(receipt);
+            this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
+            clearInterval(interval);
+          }, 2000);
         });
     } else {
       if (this.selectedToken === 'ETH') {
@@ -70,7 +83,7 @@ export class WalletDepositComponent implements OnInit {
 
             this.zone.run(() => {
               // Opens Deposit Initiated dialog.
-              this.dialog.open(TransactionInitiatedDialog, {
+              const transactionInitiatedDialog = this.dialog.open(TransactionInitiatedDialog, {
                 width: '90%',
                 data: {
                   type: 'deposit',
@@ -79,9 +92,24 @@ export class WalletDepositComponent implements OnInit {
                   amount: this.amountControl.value,
                 },
               });
-              this.form.resetForm();
+              transactionInitiatedDialog.afterClosed().subscribe(() => {
+                this.form.resetForm();
+                // Scroll to top
+                document.body.scrollTop = document.documentElement.scrollTop = 0;
+              });
             });
 
+            // Monitoring transaction status(work around for Metamask mobile)
+            const interval = setInterval(async () => {
+              const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
+              if (!receipt) return;
+
+              console.log(receipt);
+              // Update account balance
+              this.nutsPlatformService.balanceUpdatedSubject.next('ETH');
+              this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
+              clearInterval(interval);
+            }, 2000);
           })
           .on('error', console.error);
       } else {
@@ -90,7 +118,7 @@ export class WalletDepositComponent implements OnInit {
 
             this.zone.run(() => {
               // Opens Deposit Initiated dialog.
-              this.dialog.open(TransactionInitiatedDialog, {
+              const transactionInitiatedDialog = this.dialog.open(TransactionInitiatedDialog, {
                 width: '90%',
                 data: {
                   type: 'deposit',
@@ -99,9 +127,24 @@ export class WalletDepositComponent implements OnInit {
                   amount: this.amountControl.value,
                 },
               });
-              this.form.resetForm();
+              transactionInitiatedDialog.afterClosed().subscribe(() => {
+                this.form.resetForm();
+                // Scroll to top
+                document.body.scrollTop = document.documentElement.scrollTop = 0;
+              });
             });
 
+            // Monitoring transaction status(work around for Metamask mobile)
+            const interval = setInterval(async () => {
+              const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
+              if (!receipt) return;
+
+              console.log(receipt);
+              // Update account balance
+              this.nutsPlatformService.balanceUpdatedSubject.next(this.selectedToken);
+              this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
+              clearInterval(interval);
+            }, 2000);
           });
       }
     }

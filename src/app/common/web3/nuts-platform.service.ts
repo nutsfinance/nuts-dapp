@@ -331,8 +331,8 @@ export class NutsPlatformService {
   private async bootstrapWeb3() {
     console.log('Bootstrap web3');
     const { ethereum } = window;
-    if (!ethereum || !ethereum.isMetaMask) {
-      throw new Error('Please install MetaMask.')
+    if (!ethereum) {
+      alert('Please install MetaMask.')
     }
     this.web3 = new Web3(ethereum);
     ethereum.autoRefreshOnNetworkChange = false;
