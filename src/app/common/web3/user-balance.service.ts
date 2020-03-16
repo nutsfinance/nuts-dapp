@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 
 import { NutsPlatformService } from './nuts-platform.service';
-import { Subject, BehaviorSubject, of } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 
 const InstrumentEscrow = require('./abi/InstrumentEscrowInterface.json');
 
@@ -27,8 +26,8 @@ export class UserBalanceService {
   public userBalance: UserBalance = {};
   public userBalanceSubject: Subject<UserBalance> = new BehaviorSubject({});
 
-  constructor(private nutsPlatformService: NutsPlatformService, private http: HttpClient) {
-    // this.getUserBalance();
+  constructor(private nutsPlatformService: NutsPlatformService) {
+    this.getUserBalanceOnChain();
     this.nutsPlatformService.currentNetworkSubject.subscribe(_ => {
       this.getUserBalanceOnChain();
       // this.getUserBalance();
