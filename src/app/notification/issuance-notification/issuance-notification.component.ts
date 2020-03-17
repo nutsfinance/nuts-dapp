@@ -9,9 +9,10 @@ import { NotificationService } from '../notification.service';
   styleUrls: ['./issuance-notification.component.scss']
 })
 export class IssuanceNotificationComponent implements OnInit {
-  @Input() notifications: NotificationModel[] = [];
+  @Input() public notifications: NotificationModel[] = [];
+  public showSelect = false;
+  
   private notificationStatusUpdate: {[id: string]: NotificationStatus} = {};
-  private showSelect = false;
 
   constructor(private notificationService: NotificationService) { }
 

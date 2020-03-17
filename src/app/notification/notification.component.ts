@@ -11,9 +11,10 @@ import { NotificationModel, NotificationStatus } from './notification.model';
   styleUrls: ['./notification.component.scss']
 })
 export class NotificationComponent implements OnInit, OnDestroy {
-  private showAll = false;
-  private showSelect = false;
-  private notifications: NotificationModel[] = [];
+  public showAll = false;
+  public showSelect = false;
+  public notifications: NotificationModel[] = [];
+  
   private notificationSubscription: Subscription;
   private notificationStatusUpdate: {[id: string]: NotificationStatus} = {};
 

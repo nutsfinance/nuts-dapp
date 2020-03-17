@@ -13,16 +13,17 @@ import { TransactionInitiatedDialog } from 'src/app/common/transaction-initiated
   styleUrls: ['./lending-create.component.scss']
 })
 export class LendingCreateComponent implements OnInit {
+  public createFormGroup: FormGroup;
+  public showAlternativeTenor = false;
+  public showAlternativeColleral = false;
+  public showAlternativeInterest = false;
+  public principalToken = 'ETH';
+  public principalTokenBalance: number;
+  public collateralToken = 'ETH';
+  public collateralValue: Promise<number> = Promise.resolve(0);
+  public interestValue = 0;
+
   @ViewChild('form', { static: true }) private form: NgForm;
-  private createFormGroup: FormGroup;
-  private showAlternativeTenor = false;
-  private showAlternativeColleral = false;
-  private showAlternativeInterest = false;
-  private principalToken = 'ETH';
-  private principalTokenBalance: number;
-  private collateralToken = 'ETH';
-  private collateralValue: Promise<number> = Promise.resolve(0);
-  private interestValue = 0;
 
   constructor(private nutsPlatformService: NutsPlatformService, private instrumentService: InstrumentService,
     private priceOracleSercvice: PriceOracleService, private zone: NgZone, private dialog: MatDialog) { }

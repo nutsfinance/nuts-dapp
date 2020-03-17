@@ -104,7 +104,7 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
   private currencySubscription: Subscription;
 
   constructor(private userBalanceService: UserBalanceService, private priceOracleService: PriceOracleService,
-    private nutsPlatformService: NutsPlatformService, private currencyService: CurrencyService, private zone: NgZone) { }
+    private nutsPlatformService: NutsPlatformService, public currencyService: CurrencyService, private zone: NgZone) { }
 
   ngOnInit() {
     // Try to read the latest user balance.

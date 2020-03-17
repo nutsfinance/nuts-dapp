@@ -7,14 +7,14 @@ import { MatButtonToggleChange } from '@angular/material';
   styleUrls: ['./borrowing-create.component.scss']
 })
 export class BorrowingCreateComponent implements OnInit {
-  private showAlternativeTenor = false;
-  private showAlternativeColleral = false;
-  private showAlternativeInterest = false;
-  private principalToken = 'ETH';
-  private collateralToken = 'ETH';
-  private tenor: number;
-  private collateralRatio: number;
-  private interestRate: number;
+  public showAlternativeTenor = false;
+  public showAlternativeColleral = false;
+  public showAlternativeInterest = false;
+  public principalToken = 'ETH';
+  public collateralToken = 'ETH';
+  public tenor: number;
+  public collateralRatio: number;
+  public interestRate: number;
 
   constructor() { }
 

@@ -10,10 +10,11 @@ import { InstrumentEscrowService } from '../web3/instrument-escrow.service';
   styleUrls: ['./instrument-escrow-balance.component.scss']
 })
 export class InstrumentEscrowBalanceComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() private selectedToken: string;
-  @Input() private instrument: string;
-  @Output() private balanceUpdated = new EventEmitter<number>();
-  private tokenBalance: number;
+  @Input() public selectedToken: string;
+  @Input() public instrument: string;
+  @Output() public balanceUpdated = new EventEmitter<number>();
+  public tokenBalance: number;
+  
   private networkSubscription: Subscription;
   private accountSubscription: Subscription;
   private balanceSubscription: Subscription;

@@ -18,34 +18,34 @@ import { NotificationService } from 'src/app/notification/notification.service';
   styleUrls: ['./lending-detail.component.scss']
 })
 export class LendingDetailComponent implements OnInit, OnDestroy {
-  private issuanceId: number;
-  private issuance: LendingIssuanceModel;
-  private notifications: NotificationModel[] = [];
-  private lendingToken: string;
-  private lendingValue: number;
-  private collateralToken: string;
-  private lendingTokenBalance: number = -1;
-  private collateralTokenBalance: number = -1;
-  private collateralValue = 0;
-  private perDayInterestValue;
-  private totalInterestValue;
+  public issuanceId: number;
+  public issuance: LendingIssuanceModel;
+  public notifications: NotificationModel[] = [];
+  public lendingToken: string;
+  public lendingValue: number;
+  public collateralToken: string;
+  public lendingTokenBalance: number = -1;
+  public collateralTokenBalance: number = -1;
+  public collateralValue = 0;
+  public perDayInterestValue;
+  public totalInterestValue;
 
-  private columns: string[] = ['action', 'from', 'to', 'amount', 'date'];
-  private transactions: IssuanceTransaction[] = [];
+  public columns: string[] = ['action', 'from', 'to', 'amount', 'date'];
+  public transactions: IssuanceTransaction[] = [];
 
-  private convertedCollateralValue: Promise<number>;
-  private convertedLendingValue: Promise<number>;
-  private convertedPerDayInterestValue: Promise<number>;
-  private convertedTotalInterestValue: Promise<number>;
+  public convertedCollateralValue: Promise<number>;
+  public convertedLendingValue: Promise<number>;
+  public convertedPerDayInterestValue: Promise<number>;
+  public convertedTotalInterestValue: Promise<number>;
 
   private accountUpdatedSubscription: Subscription;
   private issuanceIdSubscription: Subscription;
   private lendingUpdatedSubscription: Subscription;
   private currencyUpdatedSubscription: Subscription;
 
-  constructor(private nutsPlatformService: NutsPlatformService, private instrumentService: InstrumentService,
+  constructor(public nutsPlatformService: NutsPlatformService, private instrumentService: InstrumentService,
     private notificationService: NotificationService, private priceOracleService: PriceOracleService,
-    private currencyService: CurrencyService, private route: ActivatedRoute, private zone: NgZone,
+    public currencyService: CurrencyService, private route: ActivatedRoute, private zone: NgZone,
     private location: Location, private dialog: MatDialog) { }
 
   ngOnInit() {

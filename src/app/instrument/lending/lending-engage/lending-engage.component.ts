@@ -10,8 +10,9 @@ import { InstrumentService } from 'src/app/common/web3/instrument.service';
   styleUrls: ['./lending-engage.component.scss']
 })
 export class LendingEngageComponent implements OnInit, OnDestroy {
-  private currentAccount: string;
-  private issuances: LendingIssuanceModel[] = [];
+  public currentAccount: string;
+  public issuances: LendingIssuanceModel[] = [];
+  
   private accountUpdatedSubscription: Subscription;
   private lendingIssuancesUpdatedSubscription: Subscription;
 

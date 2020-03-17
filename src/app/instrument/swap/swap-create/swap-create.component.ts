@@ -7,11 +7,12 @@ import { MatButtonToggleChange } from '@angular/material';
   styleUrls: ['./swap-create.component.scss']
 })
 export class SwapCreateComponent implements OnInit {
-  private inputToken = 'ETH';
-  private outputToken = 'ETH';
-  private inputAmount: number;
-  private outputAmount: number;
-  private tenor: number;
+  public inputToken = 'ETH';
+  public outputToken = 'ETH';
+  public inputAmount: number;
+  public outputAmount: number;
+  public tenor: number;
+  public showAlternativeTenor = false;
 
   constructor() { }
 

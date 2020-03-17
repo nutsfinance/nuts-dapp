@@ -10,10 +10,12 @@ import { InstrumentEscrowService, WalletTransaction } from '../../common/web3/in
   styleUrls: ['./wallet-transaction.component.scss']
 })
 export class WalletTransactionComponent implements OnInit, OnDestroy {
+  public columns: string[] = ['date', 'action', 'amount'];
+  public walletTransactions: WalletTransaction[] = [];
+
   @Input() private instrument: string;
   @Output() private updatePanel = new EventEmitter<string>();
-  private columns: string[] = ['date', 'action', 'amount'];
-  private walletTransactions: WalletTransaction[] = [];
+
   private networkSubscription: Subscription;
   private accountSubscription: Subscription;
   private balanceSubscription: Subscription;

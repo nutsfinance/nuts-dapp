@@ -12,13 +12,14 @@ import { Subscription } from 'rxjs';
 })
 export class InstrumentBalanceComponent implements OnInit, OnDestroy {
   @Input() instrument = '';
-  private instrumentName = '';
-  private instrumentBalance: Promise<Number>;
+  public instrumentName = '';
+  public instrumentBalance: Promise<Number>;
+
   private userBalanceSubscription: Subscription;
   private currencySubscription: Subscription;
 
   constructor(private nutsPlatformSevice: NutsPlatformService, private userBalanceService: UserBalanceService,
-    private currencyService: CurrencyService, private priceOracleService: PriceOracleService) { }
+    public currencyService: CurrencyService, private priceOracleService: PriceOracleService) { }
 
   ngOnInit() {
     this.instrumentName = this.instrument.charAt(0).toUpperCase() + this.instrument.substring(1);
@@ -33,6 +34,7 @@ export class InstrumentBalanceComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.userBalanceSubscription.unsubscribe();
     this.currencySubscription.unsubscribe();
   }
 

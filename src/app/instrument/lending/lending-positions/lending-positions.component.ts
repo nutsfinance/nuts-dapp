@@ -11,9 +11,10 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./lending-positions.component.scss']
 })
 export class LendingPositionsComponent implements OnInit, OnDestroy {
-  private selectedTab = 'all';
-  private currentAccount: string;
-  private issuances: LendingIssuanceModel[] = [];
+  public selectedTab = 'all';
+  public currentAccount: string;
+  public issuances: LendingIssuanceModel[] = [];
+  
   private accountUpdatedSubscription: Subscription;
   private lendingIssuancesUpdatedSubscription: Subscription;
   private routeParamSubscription: Subscription;

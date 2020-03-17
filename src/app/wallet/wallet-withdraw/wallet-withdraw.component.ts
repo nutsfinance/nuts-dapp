@@ -11,12 +11,14 @@ import { TransactionInitiatedDialog } from 'src/app/common/transaction-initiated
   styleUrls: ['./wallet-withdraw.component.scss']
 })
 export class WalletWithdrawComponent implements OnInit {
-  @Input() private instrument: string;
+  @Input() public instrument: string;
+
+  public selectedToken = 'ETH';
+  public instrumentEscrowBalance: number;
+  public amountControl: FormControl;
+  public withdrawForm: FormGroup;
+
   @ViewChild('form', { static: true }) private form: NgForm;
-  private selectedToken = 'ETH';
-  private instrumentEscrowBalance: number;
-  private amountControl: FormControl;
-  private withdrawForm: FormGroup;
 
   constructor(private dialog: MatDialog, private zone: NgZone,
     private nutsPlatformService: NutsPlatformService,

@@ -11,16 +11,17 @@ import { TransactionInitiatedDialog } from 'src/app/common/transaction-initiated
   styleUrls: ['./wallet-deposit.component.scss']
 })
 export class WalletDepositComponent implements OnInit {
-  @Input() private instrument: string;
-  @Input() private selectedToken = 'ETH';
-  @Input() private amount: string;
-  @Input() private showApprove = false;
+  @Input() public instrument: string;
+  @Input() public selectedToken = 'ETH';
+  @Input() public amount: string;
+  @Input() public showApprove = false;
+
+  public accountBalance: number;
+  public amountControl: FormControl;
+  public depositFormGroup: FormGroup;
 
   @ViewChild('form', { static: true }) private form: NgForm;
-  private accountBalance: number;
-  private amountControl: FormControl;
-  private depositFormGroup: FormGroup;
-
+  
   constructor(private dialog: MatDialog, private zone: NgZone,
     private nutsPlatformService: NutsPlatformService,
     private instrumentEscrowService: InstrumentEscrowService) { }

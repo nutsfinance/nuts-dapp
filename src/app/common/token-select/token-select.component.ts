@@ -9,7 +9,7 @@ import { TokenSelectSheetComponent } from './token-select-sheet.component';
   styleUrls: ['./token-select.component.scss']
 })
 export class TokenSelectComponent implements OnInit {
-  @Input() private selectedToken;
+  @Input() public selectedToken;
   @Output() tokenSelected = new EventEmitter<string>();
 
   constructor(private _bottomSheet: MatBottomSheet) { }

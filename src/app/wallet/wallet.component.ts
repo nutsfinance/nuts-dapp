@@ -8,12 +8,13 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./wallet.component.scss']
 })
 export class WalletComponent implements OnInit, OnDestroy {
-  private instrument: string;
+  public instrument: string;
+  public panel = 'deposit';
+  public token = 'ETH';
+  public amount = '';
+  public showApprove = false;
+
   private routeDataSubscription: Subscription;
-  private panel = 'deposit';
-  private token = 'ETH';
-  private amount = '';
-  private showApprove = false;
   private routeParamSubscription: Subscription;
 
   constructor(private route: ActivatedRoute, private zone: NgZone) { }

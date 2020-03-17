@@ -9,9 +9,10 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./account-balance.component.scss']
 })
 export class AccountBalanceComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() private selectedToken: string;
-  @Output() private balanceUpdated = new EventEmitter<number>();
-  private tokenBalance: number;
+  @Input() public selectedToken: string;
+  @Output() public balanceUpdated = new EventEmitter<number>();
+  public tokenBalance: number;
+  
   private networkSubscription: Subscription;
   private accountSubscription: Subscription;
   private balanceSubscription: Subscription;

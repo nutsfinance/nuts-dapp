@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 
 import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
 
@@ -15,11 +15,10 @@ import { NotificationDialog } from '../notification/notification-dialog/notifica
   styleUrls: ['./instrument.component.scss']
 })
 export class InstrumentComponent implements OnInit, OnDestroy {
-  private language: string = 'English';
+  public language: string = 'English';
+  public unreadNotifications: NotificationModel[] = [];
 
-  private unreadNotifications: NotificationModel[] = [];
   private notificationSubscription: Subscription;
-  private notificationDialog: MatDialogRef<NotificationDialog>;
 
   constructor(private _bottomSheet: MatBottomSheet, private dialog: MatDialog,
     private zone: NgZone, private notificationService: NotificationService) { }

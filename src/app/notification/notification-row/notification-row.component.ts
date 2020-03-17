@@ -13,10 +13,10 @@ import { NotificationService } from '../notification.service';
   styleUrls: ['./notification-row.component.scss']
 })
 export class NotificationRowComponent implements OnInit, OnChanges {
-  @Input() notification: NotificationModel;
-  @Input() showSelect: boolean;
-  @Output() statusUpdated = new EventEmitter<{ id: string, status: NotificationStatus }>();
-  private notificationStatus: NotificationStatus;
+  @Input() public notification: NotificationModel;
+  @Input() public showSelect: boolean;
+  @Output() public statusUpdated = new EventEmitter<{ id: string, status: NotificationStatus }>();
+  public notificationStatus: NotificationStatus;
 
   constructor(private nutsPlatformService: NutsPlatformService, private notificationService: NotificationService,
     private router: Router) { }

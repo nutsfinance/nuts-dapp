@@ -26,7 +26,7 @@
                 <span *ngSwitchCase="'DUE'" class="due">{{notification.title}}</span>
             </div>
             <div class="notification-message">{{notification.message}} <a [href]="getEtherscanLink()" *ngIf="notification.transactionHash">{{getTransactionShortHash()}}</a></div>
-            <div class="notification-timestamp">{{notification.creationTimestamp | timeAgo}}</div>
+            <div class="notification-timestamp">{{notification.creationTimestamp | number | timeAgo}}</div>
         </div>
     </div>
     <div class="col-xs-3">

@@ -10,7 +10,7 @@ import { CurrencyService } from './currency.service';
   styleUrls: ['./currency-select.component.scss']
 })
 export class CurrencySelectComponent implements OnInit {
-  private currency = 'USD';
+  public currency = 'USD';
 
   constructor(private _bottomSheet: MatBottomSheet, private currencyService: CurrencyService) {}
 

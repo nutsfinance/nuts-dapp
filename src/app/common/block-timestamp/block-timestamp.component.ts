@@ -8,11 +8,11 @@ import { NutsPlatformService } from '../web3/nuts-platform.service';
   styleUrls: ['./block-timestamp.component.scss']
 })
 export class BlockTimestampComponent implements OnInit {
-  @Input() private blockNumber: string;
-  @Input() private showTimestamp = false;
-  @Input() private align = 'left';
-  private blockDate = '';
-  private blockTimestamp 
+  @Input() public blockNumber: string;
+  @Input() public showTimestamp = false;
+  @Input() public align = 'left';
+  public blockDate = '';
+  public blockTimestamp = '';
 
   constructor(private nutsPlatformService: NutsPlatformService, private zone: NgZone) { }
 

@@ -25,17 +25,17 @@ interface Position {
   styleUrls: ['./dashboard-position-balance.component.scss']
 })
 export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
-  private activePositions: Position[] = [];
-  private convertedPayable: Promise<number>;
-  private convertedReceivable: Promise<number>;
+  public activePositions: Position[] = [];
+  public convertedPayable: Promise<number>;
+  public convertedReceivable: Promise<number>;
+  public positionDataSource: PositionDataSource;
 
   private lendingIssuanceSubscription: Subscription;
   private currentAccountSubscription: Subscription;
   private currencySubscription: Subscription;
-  private positionDataSource: PositionDataSource;
 
   constructor(private nutsPlatformService: NutsPlatformService, private instrumentService: InstrumentService,
-    private priceOracleService: PriceOracleService, private currencyService: CurrencyService, private zone: NgZone) { }
+    private priceOracleService: PriceOracleService, public currencyService: CurrencyService, private zone: NgZone) { }
 
   ngOnInit() {
     this.positionDataSource = new PositionDataSource(this.nutsPlatformService);

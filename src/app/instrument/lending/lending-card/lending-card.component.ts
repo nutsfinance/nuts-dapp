@@ -11,24 +11,24 @@ import { CurrencyService } from 'src/app/common/currency-select/currency.service
   styleUrls: ['./lending-card.component.scss']
 })
 export class LendingCardComponent implements OnInit, OnDestroy {
-  @Input() private issuance: LendingIssuanceModel;
-  private currentAccount: string;
-  private lendingToken: string;
-  private lendingValue: number;
-  private collateralToken: string;
-  private collateralValue: Promise<number>;
+  @Input() public issuance: LendingIssuanceModel;
+  public currentAccount: string;
+  public lendingToken: string;
+  public lendingValue: number;
+  public collateralToken: string;
+  public collateralValue: Promise<number>;
 
-  private convertedLendingValue: Promise<number>;
-  private convertedCollateralValue: Promise<number>;
-  private convertedPerDayInterestValue: Promise<number>;
-  private convertedTotalInterestValue: Promise<number>;
+  public convertedLendingValue: Promise<number>;
+  public convertedCollateralValue: Promise<number>;
+  public convertedPerDayInterestValue: Promise<number>;
+  public convertedTotalInterestValue: Promise<number>;
+  public showMore = false;
 
-  private showMore = false;
   private currentAccountSubscription: Subscription;
   private currencyUpdatedSubscription: Subscription;
 
-  constructor(private nutsPlatformService: NutsPlatformService, private priceOracleService: PriceOracleService,
-              private currencyService: CurrencyService, private zone: NgZone) { }
+  constructor(public nutsPlatformService: NutsPlatformService, private priceOracleService: PriceOracleService,
+              public currencyService: CurrencyService, private zone: NgZone) { }
 
   ngOnInit() {
     this.currentAccount = this.nutsPlatformService.currentAccount;
