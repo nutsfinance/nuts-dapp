@@ -16,30 +16,36 @@ export class NotificationService {
   public newNotificationSubject: Subject<NotificationModel> = new Subject<NotificationModel>();
 
   constructor(private nutsPlatformService: NutsPlatformService, private http: HttpClient) {
-    // Reload notifications when the network changes
-    this.nutsPlatformService.currentNetworkSubject.subscribe(currentNetwork => {
-      this.getAllNotifications();
-    });
+    this.nutsPlatformService.platformInitializedSubject.subscribe(initialized => {
+      if (initialized) {
+        this.getAllNotifications();
 
-    // Reload notifications when the account changes
-    this.nutsPlatformService.currentAccountSubject.subscribe(currentAddress => {
-      this.getAllNotifications();
-    });
+        // Reload notifications when the network changes
+        this.nutsPlatformService.currentNetworkSubject.subscribe(currentNetwork => {
+          this.getAllNotifications();
+        });
 
-    // Reload notifications each time a new transaction is sent to receive the TRANSACTION INITIATED notification
-    this.nutsPlatformService.transactionSentSubject.subscribe(_ => {
-      console.log('Transaction sent. Reloading notifications....');
-      this.getAllNotifications();
-    });
+        // Reload notifications when the account changes
+        this.nutsPlatformService.currentAccountSubject.subscribe(currentAddress => {
+          this.getAllNotifications();
+        });
 
-    // Incrementally read new notification each time a new receipt is received
-    this.nutsPlatformService.transactionConfirmedSubject.subscribe(_ => {
-      console.log('Receipt received. Reloading notifications....');
-      setTimeout(this.incrementalGetNotification.bind(this), 1000);
-    });
+        // Reload notifications each time a new transaction is sent to receive the TRANSACTION INITIATED notification
+        this.nutsPlatformService.transactionSentSubject.subscribe(_ => {
+          console.log('Transaction sent. Reloading notifications....');
+          this.getAllNotifications();
+        });
 
-    // Incrementally read new notification every 20s
-    setInterval(this.incrementalGetNotification.bind(this), 20000);
+        // Incrementally read new notification each time a new receipt is received
+        this.nutsPlatformService.transactionConfirmedSubject.subscribe(_ => {
+          console.log('Receipt received. Reloading notifications....');
+          setTimeout(this.incrementalGetNotification.bind(this), 1000);
+        });
+
+        // Incrementally read new notification every 20s
+        setInterval(this.incrementalGetNotification.bind(this), 20000);
+      }
+    });
   }
 
   getAllNotifications() {

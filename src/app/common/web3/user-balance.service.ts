@@ -27,14 +27,17 @@ export class UserBalanceService {
   public userBalanceSubject: Subject<UserBalance> = new BehaviorSubject({});
 
   constructor(private nutsPlatformService: NutsPlatformService) {
-    this.getUserBalanceOnChain();
-    this.nutsPlatformService.currentNetworkSubject.subscribe(_ => {
-      this.getUserBalanceOnChain();
-      // this.getUserBalance();
-    });
-    this.nutsPlatformService.currentAccountSubject.subscribe(_ => {
-      this.getUserBalanceOnChain();
-      // this.getUserBalance();
+    // We don't initialize the user balance until the platform is initialized!
+    this.nutsPlatformService.platformInitializedSubject.subscribe(initialized => {
+      if (initialized) {
+        this.getUserBalanceOnChain();
+        this.nutsPlatformService.currentNetworkSubject.subscribe(_ => {
+          this.getUserBalanceOnChain();
+        });
+        this.nutsPlatformService.currentAccountSubject.subscribe(_ => {
+          this.getUserBalanceOnChain();
+        });
+      }
     });
   }
 

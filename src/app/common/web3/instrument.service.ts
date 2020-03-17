@@ -33,18 +33,19 @@ export class InstrumentService {
   public lendingIssuancesUpdatedSubject = new Subject<LendingIssuanceModel[]>();
 
   constructor(private nutsPlatformService: NutsPlatformService, private notificationService: NotificationService) {
-    this.reloadLendingIssuances();
-    this.nutsPlatformService.currentNetworkSubject.subscribe(currentNetwork => {
-      console.log('Network changed. Reloading lending issuances.', currentNetwork);
-      this.reloadLendingIssuances();
+    // We don't initialize the lending issuance list until the platform is initialized!
+    this.nutsPlatformService.platformInitializedSubject.subscribe(initialized => {
+      if (initialized) {
+        this.reloadLendingIssuances();
+        this.nutsPlatformService.currentNetworkSubject.subscribe(currentNetwork => {
+          console.log('Network changed. Reloading lending issuances.', currentNetwork);
+          this.reloadLendingIssuances();
+        });
+    
+        // Reloads issuances every 60s.
+        setTimeout(this.reloadLendingIssuances.bind(this), 60000);
+      }
     });
-    this.nutsPlatformService.currentAccountSubject.subscribe(currentAccount => {
-      console.log('Account changed. Reloading lending issuance.', currentAccount);
-      this.reloadLendingIssuances();
-    });
-
-    // Reloads issuances every 60s.
-    setTimeout(this.reloadLendingIssuances.bind(this), 60000);
   }
 
   public createLendingIssuance(principalToken: string, principalAmount: number, collateralToken: string,

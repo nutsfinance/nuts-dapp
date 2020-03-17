@@ -180,6 +180,7 @@ export class NutsPlatformService {
   public currentAccountSubject = new Subject<string>();
   public currentNetwork: number;
   public currentNetworkSubject = new Subject<number>();
+  public platformInitializedSubject = new Subject<boolean>();
 
   public transactionSentSubject = new Subject<string>();
   public transactionConfirmedSubject = new Subject<string>();
@@ -299,18 +300,6 @@ export class NutsPlatformService {
     return this.web3.eth.sendTransaction(retryTransaction);
   }
 
-  public async connectToEthereum() {
-    const { ethereum } = window;
-    try {
-      await ethereum.enable();
-    } catch (error) {
-      console.error(error);
-      // Access control error
-      this.currentAccount = null;
-      this.currentAccountSubject.next(null);
-    }
-  }
-
   public makeBatchRequest(calls) {
     let batch = new this.web3.BatchRequest();
 
@@ -328,11 +317,29 @@ export class NutsPlatformService {
     return Promise.all(promises);
   }
 
+  public async connectToEthereum() {
+    const { ethereum } = window;
+    try {
+      await ethereum.enable();
+    } catch (error) {
+      console.error(error);
+      // Access control error
+      this.currentAccount = null;
+      this.currentAccountSubject.next(null);
+    }
+
+    // Important! Let other components handle the initialization result first!
+    this.handleAccountChanged([ethereum.selectedAddress]);
+    this.handleNetworkChanged(Number(ethereum.networkVersion));
+    this.platformInitializedSubject.next(true);
+  }
+
   private async bootstrapWeb3() {
     console.log('Bootstrap web3');
     const { ethereum } = window;
     if (!ethereum) {
-      alert('Please install MetaMask.')
+      alert('Please install MetaMask.');
+      return;
     }
     this.web3 = new Web3(ethereum);
     ethereum.autoRefreshOnNetworkChange = false;
@@ -347,8 +354,11 @@ export class NutsPlatformService {
       this.currentAccountSubject.next(null);
       // Access control error
     }
-    this.handleNetworkChanged(Number(ethereum.networkVersion));
+
+    // Important! Let other components handle the initialization result first!
     this.handleAccountChanged([ethereum.selectedAddress]);
+    this.handleNetworkChanged(Number(ethereum.networkVersion));
+    this.platformInitializedSubject.next(true);
 
     // try {
     //   this.handleNetworkChanged(await ethereum.send('eth_chainId'));
