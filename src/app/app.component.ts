@@ -7,6 +7,8 @@ import { NotificationService } from './notification/notification.service';
 import { Subscription } from 'rxjs';
 import { NutsPlatformService } from './common/web3/nuts-platform.service';
 import { MatDialogRef, MatDialog } from '@angular/material';
+import { InstrumentService } from './common/web3/instrument.service';
+import { UserBalanceService } from './common/web3/user-balance.service';
 
 export interface NotificationData {
   category: NotificationCategory,
@@ -24,6 +26,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private networkSubscription: Subscription;
 
   constructor(private notificationService: NotificationService, private nutsPlatformService: NutsPlatformService,
+    private instrumentService: InstrumentService, private userBalanceService: UserBalanceService,
     private snackBar: MatSnackBar, private dialog: MatDialog, private zone: NgZone) { }
 
   ngOnInit() {

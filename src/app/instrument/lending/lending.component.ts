@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { InstrumentService } from 'src/app/common/web3/instrument.service';
+import { UserBalanceService } from 'src/app/common/web3/user-balance.service';
 
 @Component({
   selector: 'app-lending',
@@ -7,8 +9,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LendingComponent implements OnInit {
 
-  constructor() { }
+  constructor(private instrumentService: InstrumentService, private userBalanceService: UserBalanceService) { }
 
   ngOnInit() {
+    this.instrumentService.reloadLendingIssuances();
+    this.userBalanceService.getUserBalanceOnChain();
   }
 }

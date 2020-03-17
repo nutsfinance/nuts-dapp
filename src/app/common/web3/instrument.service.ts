@@ -38,6 +38,10 @@ export class InstrumentService {
       console.log('Network changed. Reloading lending issuances.', currentNetwork);
       this.reloadLendingIssuances();
     });
+    this.nutsPlatformService.currentAccountSubject.subscribe(currentAccount => {
+      console.log('Account changed. Reloading lending issuance.', currentAccount);
+      this.reloadLendingIssuances();
+    });
 
     // Reloads issuances every 60s.
     setTimeout(this.reloadLendingIssuances.bind(this), 60000);
