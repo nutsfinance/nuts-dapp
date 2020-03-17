@@ -21,25 +21,14 @@ export class NotificationService {
     this.nutsPlatformService.platformInitializedSubject.subscribe(initialized => {
       if (initialized) {
         console.log('Notification initialized', initialized);
+        // Updates the API server first
+        this.updateApiServerHost(this.nutsPlatformService.currentNetwork);
         this.getAllNotifications();
 
         // Reload notifications when the network changes
         this.nutsPlatformService.currentNetworkSubject.subscribe(currentNetwork => {
           // Updates the API server first
-          switch(currentNetwork) {
-            case 1:
-              this.apiServerHost = 'https://main-api.dapp.finance';
-              break;
-            case 4:
-              this.apiServerHost = 'https://rinkeby-api.dapp.finance';
-              break;
-            case 42:
-              this.apiServerHost = 'https://kovan-api.dapp.finance';
-              break;
-            default:
-              this.apiServerHost = '';
-              break;
-          }
+          this.updateApiServerHost(currentNetwork);
           this.getAllNotifications();
         });
 
@@ -107,6 +96,28 @@ export class NotificationService {
 
       this.notificationUpdatedSubject.next(this.notifications);
     });
+  }
+
+  /**
+   * Updates the API server host name.
+   * @param currentNetwork 
+   */
+  private updateApiServerHost(currentNetwork) {
+    switch(currentNetwork) {
+      case 1:
+        this.apiServerHost = 'https://main-api.dapp.finance';
+        break;
+      case 4:
+        this.apiServerHost = 'https://rinkeby-api.dapp.finance';
+        break;
+      case 42:
+        this.apiServerHost = 'https://kovan-api.dapp.finance';
+        break;
+      default:
+        this.apiServerHost = '';
+        break;
+    }
+    console.log('Network updated', currentNetwork, "New API server host", this.apiServerHost);
   }
 
   /**
