@@ -4,7 +4,6 @@
 
 export const environment = {
   production: false,
-  notificationServer: 'https://rinkeby-api.dapp.finance',
 };
 
 /*

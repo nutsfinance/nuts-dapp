@@ -16,6 +16,6 @@
   background-color: #c1c1c2;
 }
 .network-content {
-  display: inline-block;
-  margin-top: 13px;
+  padding-top: 13px;
+  padding-bottom: 13px;
 }

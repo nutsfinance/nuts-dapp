@@ -36,6 +36,7 @@ export class InstrumentService {
     // We don't initialize the lending issuance list until the platform is initialized!
     this.nutsPlatformService.platformInitializedSubject.subscribe(initialized => {
       if (initialized) {
+        console.log('Instrument initialized', initialized);
         this.reloadLendingIssuances();
         this.nutsPlatformService.currentNetworkSubject.subscribe(currentNetwork => {
           console.log('Network changed. Reloading lending issuances.', currentNetwork);
@@ -214,7 +215,6 @@ export class InstrumentService {
     this.lendingIssuances = lendingData.map((data: string) => {
       const lendingCompleteProperties = LendingData.LendingCompleteProperties.deserializeBinary(Uint8Array.from(Buffer.from(data.substring(2), 'hex')));
       const lendingIssuance = LendingIssuanceModel.fromMessage(lendingCompleteProperties);
-      console.log(lendingIssuance);
       return lendingIssuance;
     });
     this.lendingIssuancesUpdatedSubject.next(this.lendingIssuances);

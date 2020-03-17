@@ -15,13 +15,31 @@ export class NotificationService {
   public notificationUpdatedSubject: Subject<NotificationModel[]> = new BehaviorSubject<NotificationModel[]>([]);
   public newNotificationSubject: Subject<NotificationModel> = new Subject<NotificationModel>();
 
+  private apiServerHost = '';
+
   constructor(private nutsPlatformService: NutsPlatformService, private http: HttpClient) {
     this.nutsPlatformService.platformInitializedSubject.subscribe(initialized => {
       if (initialized) {
+        console.log('Notification initialized', initialized);
         this.getAllNotifications();
 
         // Reload notifications when the network changes
         this.nutsPlatformService.currentNetworkSubject.subscribe(currentNetwork => {
+          // Updates the API server first
+          switch(currentNetwork) {
+            case 1:
+              this.apiServerHost = 'https://main-api.dapp.finance';
+              break;
+            case 4:
+              this.apiServerHost = 'https://rinkeby-api.dapp.finance';
+              break;
+            case 42:
+              this.apiServerHost = 'https://kovan-api.dapp.finance';
+              break;
+            default:
+              this.apiServerHost = '';
+              break;
+          }
           this.getAllNotifications();
         });
 
@@ -49,6 +67,7 @@ export class NotificationService {
   }
 
   getAllNotifications() {
+    console.log('Get all notifications');
     this.getNotificationFromBackend().subscribe(notifications => {
       console.log('Notifications updated', notifications);
       const sortedNotifications = notifications.sort((n1, n2) => n2.creationTimestamp - n1.creationTimestamp);
@@ -58,12 +77,12 @@ export class NotificationService {
   }
 
   addTransaction(transaction: TransactionModel) {
-    console.log(`${environment.notificationServer}/transactions`);
-    return this.http.post(`${environment.notificationServer}/transactions`, transaction);
+    console.log(`${this.apiServerHost}/transactions`);
+    return this.http.post(`${this.apiServerHost}/transactions`, transaction);
   }
 
   updateNotification(notification: NotificationModel) {
-    this.http.put<NotificationModel>(`${environment.notificationServer}/notifications/${notification.notificationId}`, notification).subscribe(updatedNotification => {
+    this.http.put<NotificationModel>(`${this.apiServerHost}/notifications/${notification.notificationId}`, notification).subscribe(updatedNotification => {
       for (let i = 0; i < this.notifications.length; i++) {
         if (this.notifications[i].notificationId === updatedNotification.notificationId) {
           this.notifications[i] = updatedNotification;
@@ -76,7 +95,7 @@ export class NotificationService {
   }
 
   updateNotifications(notifications: NotificationModel[]) {
-    this.http.put<NotificationModel[]>(`${environment.notificationServer}/notifications`, notifications).subscribe(updatedNotifications => {
+    this.http.put<NotificationModel[]>(`${this.apiServerHost}/notifications`, notifications).subscribe(updatedNotifications => {
       for (let notification of notifications) {
         for (let i = 0; i < this.notifications.length; i++) {
           if (this.notifications[i].notificationId === notification.notificationId) {
@@ -97,10 +116,10 @@ export class NotificationService {
     const currentAddress = this.nutsPlatformService.currentAccount;
     const currentNetwork = this.nutsPlatformService.currentNetwork;
     if (!this.nutsPlatformService.isFullyLoaded()) {
-      console.log('Current address', currentAddress, 'Current network', currentNetwork);
+      console.log('Notification not initialized: Current address', currentAddress, 'Current network', currentNetwork);
       return of([]);
     }
-    return this.http.get<NotificationModel[]>(`${environment.notificationServer}/notifications/${currentAddress}`);
+    return this.http.get<NotificationModel[]>(`${this.apiServerHost}/notifications/${currentAddress}`);
   }
 
   /**
@@ -110,6 +129,7 @@ export class NotificationService {
    * but incrementalGetNotification() does.
    */
   private incrementalGetNotification() {
+    console.log('Get incremental notifications.');
     this.getNotificationFromBackend().subscribe(notifications => {
       const reloadedNotifications = notifications.sort((n1, n2) => n2.creationTimestamp - n1.creationTimestamp);
 

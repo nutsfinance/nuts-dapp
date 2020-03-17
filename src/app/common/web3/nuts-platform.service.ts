@@ -117,30 +117,36 @@ export class NutsPlatformService {
     },
     42: {
       tokens: {
-        USDT: '',
-        USDC: '',
-        DAI: '',
-        NUTS: '',
+        USDT: '0xeDcbE736ABf08e7c409198cf959c9f65297cE5F1',
+        USDC: '0x3F1DBd56C7f03278a62113BBd2E5c45822145001',
+        DAI: '0xD65d0e295f213e28C3f1d44953B1C2264F262792',
+        NUTS: '0xbDB15b5E88698c2DCfb6bFB7eb65fDEA36238055'
       },
       platform: {
+        saving: {
+          instrumentManager: '0x0B96c019A0920Dd2873309C6622F19429b2ED194',
+          instrumentEscrow: '0xa2D09eE8d606b37209A4Ca8B0f738E3267B23f29',
+          instrumentId: 1
+        },
         lending: {
-          instrumentManager: '',
-          instrumentEscrow: '',
+          instrumentManager: '0x22e892ee3a8D5B2b78554c8930C6E6c978311bd3',
+          instrumentEscrow: '0x965114f3B17871F2c65CeE249DE4eC85777222d2',
+          instrumentId: 2
         },
         borrowing: {
-          instrumentManager: '',
-          instrumentEscrow: '',
-        },
-        saving: {
-          instrumentManager: '',
-          instrumentEscrow: '',
+          instrumentManager: '0x545Af9e5bbf9ABEb56093a7F0E6F7cD8322d1Eac',
+          instrumentEscrow: '0x2D8532250544234e32D8F40b34cB953bd0302161',
+          instrumentId: 3
         },
         swap: {
-          instrumentManager: '',
-          instrumentEscrow: '',
+          instrumentManager: '0x552be121Ef08CD551FADf07aA38b0bbDF7af2C22',
+          instrumentEscrow: '0x71B30be5F7A3F5FDB32cc2a67e884a9DA9E851cC',
+          instrumentId: 4
         },
-        parametersUtil: '',
-      },
+        instrumentRegistry: '0x697A2A87517795DD6C01aab3dd0f716Bb0eabdA4',
+        parametersUtil: '0xcB6EAD646878f84dC603E76605f970b83b9272b1',
+        priceOracle: '0x9c925B9675F717F1893a321c991f0f0433E6C5E0'
+      }
     },
     5777: {
       tokens: {
@@ -201,7 +207,7 @@ export class NutsPlatformService {
   }
 
   public isNetworkValid(): boolean {
-    return this.currentNetwork === 1 || this.currentNetwork === 4;
+    return this.currentNetwork === 1 || this.currentNetwork === 4 || this.currentNetwork === 42;
   }
 
   public isFullyLoaded(): boolean {
@@ -326,6 +332,7 @@ export class NutsPlatformService {
       // Access control error
       this.currentAccount = null;
       this.currentAccountSubject.next(null);
+      return;
     }
 
     // Important! Let other components handle the initialization result first!
@@ -341,20 +348,28 @@ export class NutsPlatformService {
       alert('Please install MetaMask.');
       return;
     }
+    console.log(ethereum);
     this.web3 = new Web3(ethereum);
     ethereum.autoRefreshOnNetworkChange = false;
-    ethereum.on('networkChanged', this.handleNetworkChanged.bind(this));
-    ethereum.on('accountsChanged', this.handleAccountChanged.bind(this));
+    try {
+      ethereum.on('networkChanged', this.handleNetworkChanged.bind(this));
+      ethereum.on('accountsChanged', this.handleAccountChanged.bind(this));
+    } catch (error) {
+      console.error(error);
+    }
 
     try {
       await ethereum.enable();
     } catch (error) {
+      // Access control error
       console.error(error);
       this.currentAccount = null;
       this.currentAccountSubject.next(null);
-      // Access control error
+
+      return;
     }
 
+    console.log(ethereum);
     // Important! Let other components handle the initialization result first!
     this.handleAccountChanged([ethereum.selectedAddress]);
     this.handleNetworkChanged(Number(ethereum.networkVersion));
@@ -378,7 +393,7 @@ export class NutsPlatformService {
         this.currentAccountSubject.next(accounts[0]);
         console.log('Account updated', this.currentAccount);
       }
-    } else if (this.currentAccount != null) {
+    } else if (!this.currentAccount) {
       this.currentAccount = null;
       this.currentAccountSubject.next(null);
     }

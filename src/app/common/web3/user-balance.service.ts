@@ -29,6 +29,7 @@ export class UserBalanceService {
   constructor(private nutsPlatformService: NutsPlatformService) {
     // We don't initialize the user balance until the platform is initialized!
     this.nutsPlatformService.platformInitializedSubject.subscribe(initialized => {
+      console.log('User balance initialized', initialized);
       if (initialized) {
         this.getUserBalanceOnChain();
         this.nutsPlatformService.currentNetworkSubject.subscribe(_ => {
@@ -57,7 +58,7 @@ export class UserBalanceService {
   async getUserBalanceOnChain() {
     const currentAddress = this.nutsPlatformService.currentAccount;
     const currentNetwork = this.nutsPlatformService.currentNetwork;
-    console.log('Current address', currentAddress, 'Current network', currentNetwork);
+    console.log('User balance: Current address', currentAddress, 'Current network', currentNetwork);
     if (!currentAddress || (currentNetwork !== 1 && currentNetwork !== 4)) {
       this.userBalance = {};
       this.userBalanceSubject.next({});

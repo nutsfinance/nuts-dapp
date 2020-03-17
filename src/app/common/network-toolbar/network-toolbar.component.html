@@ -1,24 +1,17 @@
-<div *ngIf="account && network > 1" [ngClass]="{'network-toolbar': true, 'info': network == 4, 'warning': network != 4}">
-    <!-- <span class="network-content">
-        You are currently connected to the
-        <span [ngSwitch]="network">
-            <span *ngSwitchCase="3">Ropsten Network.</span>
-            <span *ngSwitchCase="4">Rinkeby Network.</span>
-            <span *ngSwitchCase="42">Kovan Network.</span>
-            <span *ngSwitchCase="5777">Development Network.</span>
-            <span *ngSwitchDefault>Uknown Network.</span>
-        </span>
-    </span> -->
-    <span class="network-content" *ngIf="network == 4">
+<div *ngIf="account && network > 1" class="network-toolbar" [ngSwitch]="network">
+    <div class="network-content info" *ngSwitchCase="4">
         You are currently connected to the Rinkeby Network.
-    </span>
-    <span class="network-content" *ngIf="network != 4">
+    </div>
+    <div class="network-content info" *ngSwitchCase="42">
+        You are currently connected to the Kovan Network.
+    </div>
+    <div class="network-content warning" *ngSwitchDefault>
         You are connected to an unsupported network.
-    </span>
+    </div>
 </div>
 
 <div *ngIf="!account" class="network-toolbar offline">
-    <span class="network-content">
+    <div class="network-content">
         You're offline. <a (click)="reconnect()">Connect Metamask wallet.</a>
-    </span>
+    </div>
 </div>
