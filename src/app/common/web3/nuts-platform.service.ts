@@ -186,6 +186,7 @@ export class NutsPlatformService {
   public currentAccountSubject = new Subject<string>();
   public currentNetwork: number;
   public currentNetworkSubject = new Subject<number>();
+  public currentNetworkRaw;
   public platformInitializedSubject = new Subject<boolean>();
 
   public transactionSentSubject = new Subject<string>();
@@ -308,12 +309,17 @@ export class NutsPlatformService {
 
   public makeBatchRequest(calls) {
     let batch = new this.web3.BatchRequest();
+    console.log('Batch request', this.currentAccount);
 
     let promises = calls.map(call => {
       return new Promise((res, rej) => {
         let req = call.request({ from: this.currentAccount }, (err, data) => {
-          if (err) rej(err);
-          else res(data)
+          if (err) {
+            rej(err);
+          }
+          else {
+            res(data);
+          }
         });
         batch.add(req)
       })
@@ -331,7 +337,7 @@ export class NutsPlatformService {
       console.error(error);
       // Access control error
       this.currentAccount = null;
-      this.currentAccountSubject.next(null);
+      this.platformInitializedSubject.next(false);
       return;
     }
 
@@ -364,7 +370,7 @@ export class NutsPlatformService {
       // Access control error
       console.error(error);
       this.currentAccount = null;
-      this.currentAccountSubject.next(null);
+      this.platformInitializedSubject.next(false);
 
       return;
     }
@@ -372,7 +378,7 @@ export class NutsPlatformService {
     console.log(ethereum);
     // Important! Let other components handle the initialization result first!
     this.handleAccountChanged([ethereum.selectedAddress]);
-    this.handleNetworkChanged(Number(ethereum.networkVersion));
+    this.handleNetworkChanged(ethereum.networkVersion);
     this.platformInitializedSubject.next(true);
 
     // try {
@@ -401,6 +407,7 @@ export class NutsPlatformService {
 
   private handleNetworkChanged(network) {
     console.log('Network changed', network);
+    this.currentNetworkRaw = network;
     if (network != this.currentNetwork) {
       this.currentNetwork = Number(network);
       this.currentNetworkSubject.next(Number(network));

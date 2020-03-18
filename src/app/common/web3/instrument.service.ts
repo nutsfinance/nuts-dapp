@@ -205,20 +205,17 @@ export class InstrumentService {
     const instrumentManagerAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform.lending.instrumentManager;
     const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
     const issuanceCount = await instrumentManagerContract.methods.getLastIssuanceId().call({ from: this.nutsPlatformService.currentAccount });
-    console.log('Issuance count', issuanceCount);
+    console.log('Lending issuance count', issuanceCount);
 
-    const batchedRequests = [];
+    this.lendingIssuances = [];
     for (let i = 1; i <= issuanceCount; i++) {
-      batchedRequests.push(instrumentManagerContract.methods.getCustomData(i, this.nutsPlatformService.web3.utils.fromAscii("lending_data")).call);
+      const lendingDate = await instrumentManagerContract.methods.getCustomData(i, this.nutsPlatformService.web3.utils.fromAscii("lending_data")).call();
+      const lendingCompleteProperties = LendingData.LendingCompleteProperties.deserializeBinary(Uint8Array.from(Buffer.from(lendingDate.substring(2), 'hex')));
+      this.lendingIssuances.push(LendingIssuanceModel.fromMessage(lendingCompleteProperties));
     }
-    const lendingData = await this.nutsPlatformService.makeBatchRequest(batchedRequests);
-    this.lendingIssuances = lendingData.map((data: string) => {
-      const lendingCompleteProperties = LendingData.LendingCompleteProperties.deserializeBinary(Uint8Array.from(Buffer.from(data.substring(2), 'hex')));
-      const lendingIssuance = LendingIssuanceModel.fromMessage(lendingCompleteProperties);
-      return lendingIssuance;
-    });
+
     this.lendingIssuancesUpdatedSubject.next(this.lendingIssuances);
-    console.log(this.lendingIssuances);
+    console.log('Lending issuance updated', this.lendingIssuances);
   }
 
   public getLendingIssuance(issuanceId: number): LendingIssuanceModel {

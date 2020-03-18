@@ -59,34 +59,25 @@ export class UserBalanceService {
     const currentAddress = this.nutsPlatformService.currentAccount;
     const currentNetwork = this.nutsPlatformService.currentNetwork;
     console.log('User balance: Current address', currentAddress, 'Current network', currentNetwork);
-    if (!currentAddress || (currentNetwork !== 1 && currentNetwork !== 4)) {
-      this.userBalance = {};
-      this.userBalanceSubject.next({});
+    if (!this.nutsPlatformService.isFullyLoaded()) {
+      console.log('Either network or account is not loaded.');
       return;
     }
 
-    const batchedRequests = [];
     const instruments = ['lending', 'borrowing', 'swap'];
     const assets = ['ETH', 'USDT', 'USDC', 'NUTS', 'DAI'];
+    this.userBalance = {};
 
     for (let instrument of instruments) {
       const instrumentEscrowAddres = this.nutsPlatformService.contractAddresses[currentNetwork].platform[instrument].instrumentEscrow;
       const instrumentEscrowContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentEscrow, instrumentEscrowAddres);
+      this.userBalance[instrument] = {};
+      
       for (let asset of assets) {
         const assetAddress = this.nutsPlatformService.getTokenAddressByName(asset);
-        batchedRequests.push(instrumentEscrowContract.methods.getTokenBalance(currentAddress, assetAddress).call);
-      }
-    }
-    const instrumentBalances = await this.nutsPlatformService.makeBatchRequest(batchedRequests);
-    console.log(instrumentBalances);
-    this.userBalance = {};
-    let index = 0;
-    for (let instrument of instruments) {
-      for (let asset of assets) {
-        if (!this.userBalance[instrument]) {
-          this.userBalance[instrument] = {};
-        }
-        this.userBalance[instrument][asset] = instrumentBalances[index++];
+        const balance = await instrumentEscrowContract.methods.getTokenBalance(currentAddress, assetAddress).call();
+        // console.log('Balance for instrument', instrument, 'asset', asset, balance);
+        this.userBalance[instrument][asset] = balance;
       }
     }
 

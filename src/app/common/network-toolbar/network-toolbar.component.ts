@@ -15,7 +15,7 @@ export class NetworkToolbarComponent implements OnInit {
   private networkSubscription: Subscription;
   private accountSubscription: Subscription;
 
-  constructor(private nutsPlatformService_: NutsPlatformService, private ngZone_: NgZone) {}
+  constructor(public nutsPlatformService_: NutsPlatformService, private ngZone_: NgZone) {}
 
   ngOnInit() {
     this.network = this.nutsPlatformService_.currentNetwork;

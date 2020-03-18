@@ -57,6 +57,10 @@ export class NotificationService {
 
   getAllNotifications() {
     console.log('Get all notifications');
+    if (!this.nutsPlatformService.isFullyLoaded()) {
+      console.log('Either network or account is not loaded.');
+      return;
+    }
     this.getNotificationFromBackend().subscribe(notifications => {
       console.log('Notifications updated', notifications);
       const sortedNotifications = notifications.sort((n1, n2) => n2.creationTimestamp - n1.creationTimestamp);

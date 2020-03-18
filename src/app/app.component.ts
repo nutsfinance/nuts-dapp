@@ -22,7 +22,7 @@ export interface NotificationData {
 })
 export class AppComponent implements OnInit, OnDestroy {
   private newNotificationSubscription: Subscription;
-  private accountSubscription: Subscription;
+  private platformInitializedSubscription: Subscription;
   private networkSubscription: Subscription;
 
   constructor(private notificationService: NotificationService, private nutsPlatformService: NutsPlatformService,
@@ -38,33 +38,31 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       });
     });
-    this.accountSubscription = this.nutsPlatformService.currentAccountSubject.subscribe(currentAccount => {
-      this.zone.run(() => {
-        console.log(this.nutsPlatformService.currentAccount, this.nutsPlatformService.currentNetwork);
-        this.dialog.closeAll();
-        // If the account is not set(wallet is disconnected), show the disconnected dialog
-        if (!this.nutsPlatformService.isAddressValid()) {
-          this.dialog.open(DisconnectedDialog, { width: '90%' });
-        } else if (!this.nutsPlatformService.isNetworkValid()) {
-          this.dialog.open(IncorrectNetworkDialog, { width: '90%' });
-        }
-      });
+
+    // Wait until the platform is intialized
+    this.platformInitializedSubscription = this.nutsPlatformService.platformInitializedSubject.subscribe(initialized => {
+      if (!initialized) {
+        console.log('Platform not initialized.');
+        this.zone.run(() => this.dialog.open(DisconnectedDialog, { width: '90%' }));
+      } else {
+        this.networkSubscription = this.nutsPlatformService.currentNetworkSubject.subscribe(currentNetwork => {
+          this.zone.run(() => {
+            this.dialog.closeAll();
+            console.log('App network changed', this.nutsPlatformService.currentAccount, this.nutsPlatformService.currentNetwork);
+            // If the account is set(wallet is connected) but the network is not supported, show the incorrect network dialog
+            if (!this.nutsPlatformService.isNetworkValid()) {
+              this.dialog.open(IncorrectNetworkDialog, { width: '90%' });
+            }
+          });
+        });
+      }
     });
-    this.networkSubscription = this.nutsPlatformService.currentNetworkSubject.subscribe(currentNetwork => {
-      this.zone.run(() => {
-        this.dialog.closeAll();
-        console.log(this.nutsPlatformService.currentAccount, this.nutsPlatformService.currentNetwork);
-        // If the account is set(wallet is connected) but the network is not supported, show the incorrect network dialog
-        if (this.nutsPlatformService.isAddressValid() && !this.nutsPlatformService.isNetworkValid()) {
-          this.dialog.open(IncorrectNetworkDialog, { width: '90%' });
-        }
-      });
-    });
+    
   }
 
   ngOnDestroy() {
     this.newNotificationSubscription.unsubscribe();
-    this.accountSubscription.unsubscribe();
+    this.platformInitializedSubscription.unsubscribe();
     this.networkSubscription.unsubscribe();
   }
 
@@ -140,7 +138,7 @@ export class NotificationSnackBar {
 })
 export class IncorrectNetworkDialog implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<IncorrectNetworkDialog>) { }
+  constructor(public dialogRef: MatDialogRef<IncorrectNetworkDialog>, public nutsPlatformService: NutsPlatformService) { }
 
   ngOnInit() {
   }
