@@ -63,7 +63,7 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
       const positions = [];
       this.instrumentService.lendingIssuances.forEach(issuance => {
         // If the current user is maker and the issuance is engageable.
-        if (issuance.makerAddress === this.nutsPlatformService.currentAccount
+        if (issuance.makerAddress.toLowerCase() === this.nutsPlatformService.currentAccount.toLowerCase()
           && issuance.state === 2) {
           positions.push({
             instrument: 'lending',
@@ -79,7 +79,7 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
         }
 
         // If the current user is taker and the issuance is engaged.
-        if (issuance.takerAddress === this.nutsPlatformService.currentAccount
+        if (issuance.takerAddress.toLowerCase() === this.nutsPlatformService.currentAccount.toLowerCase()
           && issuance.state == 3) {
           positions.push({
             instrument: 'lending',
@@ -110,7 +110,7 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
       for (let item of position.supplementalLineItems) {
         if (item.type !== SupplementalLineItemType.Payable
           || item.state !== SupplementalLineItemState.Unpaid
-          || item.obligatorAddress !== this.nutsPlatformService.currentAccount) continue;
+          || item.obligatorAddress.toLowerCase() !== this.nutsPlatformService.currentAccount.toLowerCase()) continue;
 
         const amount = this.nutsPlatformService.getTokenValueByAddress(item.tokenAddress, item.amount);
         totalPayable += await this.priceOracleService.getConvertedValue(targetTokenAddress, item.tokenAddress, amount);
@@ -128,7 +128,7 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
       for (let item of position.supplementalLineItems) {
         if (item.type !== SupplementalLineItemType.Payable
           || item.state !== SupplementalLineItemState.Unpaid
-          || item.claimorAddress !== this.nutsPlatformService.currentAccount) continue;
+          || item.claimorAddress.toLowerCase() !== this.nutsPlatformService.currentAccount.toLowerCase()) continue;
 
         const amount = this.nutsPlatformService.getTokenValueByAddress(item.tokenAddress, item.amount);
         totalReceivable += await this.priceOracleService.getConvertedValue(targetTokenAddress, item.tokenAddress, amount);

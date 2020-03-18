@@ -89,12 +89,12 @@
         </div>
     </div>
 
-    <div class="row detail-row" *ngIf="issuance.makerAddress == nutsPlatformService.currentAccount || issuance.takerAddress == nutsPlatformService.currentAccount">
+    <div class="row detail-row" *ngIf="issuance.makerAddress.toLowerCase() == nutsPlatformService.currentAccount.toLowerCase() || issuance.takerAddress.toLowerCase() == nutsPlatformService.currentAccount.toLowerCase()">
         <div class="col-xs-3 card-label">Role</div>
 
         <div class="col-xs-6">
             <div class="value-content">
-                {{issuance.makerAddress == nutsPlatformService.currentAccount ? 'maker' : 'taker'}}
+                {{issuance.makerAddress.toLowerCase() == nutsPlatformService.currentAccount.toLowerCase() ? 'maker' : 'taker'}}
             </div>
         </div>
 
@@ -137,14 +137,14 @@
         <div class="col-xs-2"></div>
     </div>
 
-    <div class="row" *ngIf="issuance.state == 2 && issuance.makerAddress != nutsPlatformService.currentAccount">
+    <div class="row" *ngIf="issuance.state == 2 && issuance.makerAddress.toLowerCase() != nutsPlatformService.currentAccount.toLowerCase()">
         <div class="col-xs-12 action-row">
             <button mat-raised-button color="primary"
                 [ngClass]="{'engage-button': true, 'valid': collateralTokenBalance >= collateralValue}"
                 (click)="engageIssuance()">Engage</button>
         </div>
     </div>
-    <div class="row" *ngIf="issuance.state == 2 && issuance.makerAddress != nutsPlatformService.currentAccount">
+    <div class="row" *ngIf="issuance.state == 2 && issuance.makerAddress.toLowerCase() != nutsPlatformService.currentAccount.toLowerCase()">
         <div
             [ngClass]="{'col-xs-12': true, 'hidden': collateralTokenBalance == -1 || collateralTokenBalance >= collateralValue}">
             <span style="color: red;">Insufficient balance</span>
@@ -160,14 +160,14 @@
 
     <div class="row">
         <div class="col-xs-12 action-row"
-            *ngIf="issuance.state == 3 && issuance.takerAddress == nutsPlatformService.currentAccount">
+            *ngIf="issuance.state == 3 && issuance.takerAddress.toLowerCase() == nutsPlatformService.currentAccount.toLowerCase()">
             <button mat-raised-button color="primary"
                 [ngClass]="{'repay-button': true, 'valid': lendingTokenBalance >= lendingValue + totalInterestValue}"
                 (click)="repayIssuance()">Repay</button>
         </div>
     </div>
 
-    <div class="row" *ngIf="issuance.state == 3 && issuance.takerAddress == nutsPlatformService.currentAccount">
+    <div class="row" *ngIf="issuance.state == 3 && issuance.takerAddress.toLowerCase() == nutsPlatformService.currentAccount.toLowerCase()">
         <div
             [ngClass]="{'col-xs-12': true, 'hidden': lendingTokenBalance == -1 || lendingTokenBalance >= lendingValue + totalInterestValue}">
             <span style="color: red;">Insufficient balance</span>
@@ -183,7 +183,7 @@
 
     <div class="row">
         <div class="col-xs-12 action-row"
-            *ngIf="issuance.state == 2 && issuance.makerAddress == nutsPlatformService.currentAccount">
+            *ngIf="issuance.state == 2 && issuance.makerAddress.toLowerCase() == nutsPlatformService.currentAccount.toLowerCase()">
             <button mat-stroked-button color="primary" class="close-button" (click)="cancelIssuance()">Close
                 Position</button>
         </div>

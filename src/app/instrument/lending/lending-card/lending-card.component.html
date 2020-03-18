@@ -7,12 +7,12 @@
         </div>
     </div>
     <div class="issuance-card-subtitle">
-        <div class="subtitle-container" *ngIf="issuance.makerAddress == currentAccount || issuance.takerAddress == currentAccount">
+        <div class="subtitle-container" *ngIf="issuance.makerAddress.toLowerCase() == currentAccount.toLowerCase() || issuance.takerAddress.toLowerCase() == currentAccount.toLowerCase()">
             <div class="subtitle-icon">
                 <img src="../../../../assets/images/role.png" alt="role" class="subtitle-icon-image">
                 role
             </div>
-            {{ issuance.makerAddress == currentAccount ? 'maker' : 'taker' }}
+            {{ issuance.makerAddress.toLowerCase() == currentAccount.toLowerCase() ? 'maker' : 'taker' }}
         </div>
 
         <div class="subtitle-container">
@@ -77,22 +77,22 @@
         <button mat-button color="secondary" class="issuance-action-button" (click)="showMore = !showMore">{{ showMore ? 'Hide' : 'Expand' }}</button>
         <a mat-raised-button color="primary" class="issuance-action-button engage-button" 
             routerLink="/instrument/lending/{{issuance.issuanceId}}"
-            *ngIf="issuance.state == 2 && issuance.makerAddress != currentAccount">
+            *ngIf="issuance.state == 2 && issuance.makerAddress.toLowerCase() != currentAccount.toLowerCase()">
             Engage
         </a>
         <a mat-stroked-button color="primary" class="issuance-action-button close-button" 
             routerLink="/instrument/lending/{{issuance.issuanceId}}"
-            *ngIf="issuance.state == 2 && issuance.makerAddress == currentAccount">
+            *ngIf="issuance.state == 2 && issuance.makerAddress.toLowerCase() == currentAccount.toLowerCase()">
             Close Position
         </a>
         <a mat-raised-button color="primary" class="issuance-action-button engage-button" 
             routerLink="/instrument/lending/{{issuance.issuanceId}}"
-            *ngIf="issuance.state == 3 && issuance.takerAddress == currentAccount">
+            *ngIf="issuance.state == 3 && issuance.takerAddress.toLowerCase() == currentAccount.toLowerCase()">
             Repay
         </a>
         <a mat-stroked-button color="primary" class="issuance-action-button close-button" 
             routerLink="/instrument/lending/{{issuance.issuanceId}}"
-            *ngIf="issuance.state != 2 && !(issuance.state == 3 && issuance.takerAddress == currentAccount)">
+            *ngIf="issuance.state != 2 && !(issuance.state == 3 && issuance.takerAddress.toLowerCase() == currentAccount.toLowerCase())">
             View Position
         </a>
     </div>
