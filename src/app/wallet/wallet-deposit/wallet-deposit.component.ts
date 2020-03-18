@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material';
 import { InstrumentEscrowService } from '../../common/web3/instrument-escrow.service';
 import { FSP_NAME, NutsPlatformService } from '../../common/web3/nuts-platform.service';
 import { TransactionInitiatedDialog } from 'src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component';
+import { UserBalanceService } from 'src/app/common/web3/user-balance.service';
 
 @Component({
   selector: 'app-wallet-deposit',
@@ -23,7 +24,7 @@ export class WalletDepositComponent implements OnInit {
   @ViewChild('form', { static: true }) private form: NgForm;
   
   constructor(private dialog: MatDialog, private zone: NgZone,
-    private nutsPlatformService: NutsPlatformService,
+    private nutsPlatformService: NutsPlatformService, private userBalanceService: UserBalanceService,
     private instrumentEscrowService: InstrumentEscrowService) { }
 
   ngOnInit() {
@@ -108,6 +109,8 @@ export class WalletDepositComponent implements OnInit {
               console.log(receipt);
               // Update account balance
               this.nutsPlatformService.balanceUpdatedSubject.next('ETH');
+              // Update instrument balance
+              this.userBalanceService.updateInstrumentBalance(this.instrument, 'ETH');
               this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
               clearInterval(interval);
             }, 2000);
@@ -143,6 +146,8 @@ export class WalletDepositComponent implements OnInit {
               console.log(receipt);
               // Update account balance
               this.nutsPlatformService.balanceUpdatedSubject.next(this.selectedToken);
+              // Update instrument balance
+              this.userBalanceService.updateInstrumentBalance(this.instrument, this.selectedToken);
               this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
               clearInterval(interval);
             }, 2000);

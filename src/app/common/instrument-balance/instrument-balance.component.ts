@@ -27,8 +27,8 @@ export class InstrumentBalanceComponent implements OnInit, OnDestroy {
     this.currencySubscription = this.currencyService.currencyUpdatedSubject.subscribe(_ => {
       this.instrumentBalance = this.getInstrumentBalance();
     });
-    this.userBalanceSubscription = this.userBalanceService.userBalanceSubject.subscribe(_ => {
-      console.log('User balance updated');
+    this.userBalanceSubscription = this.userBalanceService.userBalanceSubject.subscribe(userBalance => {
+      console.log('Instrument balance: User balance updated', userBalance);
       this.instrumentBalance = this.getInstrumentBalance();
     });
   }

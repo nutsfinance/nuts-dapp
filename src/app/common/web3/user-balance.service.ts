@@ -83,4 +83,23 @@ export class UserBalanceService {
 
     this.userBalanceSubject.next(this.userBalance);
   }
+
+  /**
+   * Update the instrument balance on the asset specified
+   */
+  async updateInstrumentBalance(instrument: string, asset: string) {
+    console.log('Update balance for instrument', instrument, 'asset', asset);
+    const currentAddress = this.nutsPlatformService.currentAccount;
+    const currentNetwork = this.nutsPlatformService.currentNetwork;
+
+    const instrumentEscrowAddres = this.nutsPlatformService.contractAddresses[currentNetwork].platform[instrument].instrumentEscrow;
+    const instrumentEscrowContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentEscrow, instrumentEscrowAddres);
+    const assetAddress = this.nutsPlatformService.getTokenAddressByName(asset);
+    const balance = await instrumentEscrowContract.methods.getTokenBalance(currentAddress, assetAddress).call();
+
+    if (this.userBalance[instrument][asset] !== balance) {
+      this.userBalance[instrument][asset] = balance;
+      this.userBalanceSubject.next(this.userBalance);
+    }
+  }
 }
