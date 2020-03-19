@@ -5,11 +5,11 @@ import { Subscription } from 'rxjs';
 import { UserBalanceService } from '../web3/user-balance.service';
 
 @Component({
-  selector: 'app-account-balance',
-  templateUrl: './account-balance.component.html',
-  styleUrls: ['./account-balance.component.scss']
+  selector: 'app-wallet-balance',
+  templateUrl: './wallet-balance.component.html',
+  styleUrls: ['./wallet-balance.component.scss']
 })
-export class AccountBalanceComponent implements OnInit, OnDestroy, OnChanges {
+export class WalletBalanceComponent implements OnInit, OnDestroy, OnChanges {
   @Input() public selectedToken: string;
   @Output() public balanceUpdated = new EventEmitter<number>();
   public tokenBalance: number;

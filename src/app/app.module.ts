@@ -8,7 +8,7 @@ import { TimeAgoPipe } from 'time-ago-pipe';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent, NotificationSnackBar, IncorrectNetworkDialog, DisconnectedDialog } from './app.component';
 import { WalletAddressComponent } from './common/wallet-address/wallet-address.component';
-import { AccountBalanceComponent } from './common/account-balance/account-balance.component';
+import { WalletBalanceComponent } from './common/wallet-balance/wallet-balance.component';
 import { BlockTimestampComponent } from './common/block-timestamp/block-timestamp.component';
 import { CurrencySelectSheetComponent } from './common/currency-select/currency-select-sheet.component';
 import { CurrencySelectComponent } from './common/currency-select/currency-select.component';
@@ -75,7 +75,7 @@ import { InstrumentBalanceComponent } from './common/instrument-balance/instrume
     SwapPositionsComponent,
     DashboardAccountBalanceComponent,
     DashboardPositionBalanceComponent,
-    AccountBalanceComponent,
+    WalletBalanceComponent,
     InstrumentEscrowBalanceComponent,
     LanguageSelectSheet,
     NotificationSnackBar,
