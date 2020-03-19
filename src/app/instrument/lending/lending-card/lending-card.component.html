@@ -76,22 +76,22 @@
     <div class="issuance-card-actions">
         <button mat-button color="secondary" class="issuance-action-button" (click)="showMore = !showMore">{{ showMore ? 'Hide' : 'Expand' }}</button>
         <a mat-raised-button color="primary" class="issuance-action-button engage-button" 
-            routerLink="/instrument/lending/{{issuance.issuanceId}}"
+            routerLink="/instrument/lending/positions/{{issuance.issuanceId}}"
             *ngIf="issuance.state == 2 && issuance.makerAddress.toLowerCase() != currentAccount.toLowerCase()">
             Engage
         </a>
         <a mat-stroked-button color="primary" class="issuance-action-button close-button" 
-            routerLink="/instrument/lending/{{issuance.issuanceId}}"
+            routerLink="/instrument/lending/positions/{{issuance.issuanceId}}"
             *ngIf="issuance.state == 2 && issuance.makerAddress.toLowerCase() == currentAccount.toLowerCase()">
             Close Position
         </a>
         <a mat-raised-button color="primary" class="issuance-action-button engage-button" 
-            routerLink="/instrument/lending/{{issuance.issuanceId}}"
+            routerLink="/instrument/lending/positions/{{issuance.issuanceId}}"
             *ngIf="issuance.state == 3 && issuance.takerAddress.toLowerCase() == currentAccount.toLowerCase()">
             Repay
         </a>
         <a mat-stroked-button color="primary" class="issuance-action-button close-button" 
-            routerLink="/instrument/lending/{{issuance.issuanceId}}"
+            routerLink="/instrument/lending/positions/{{issuance.issuanceId}}"
             *ngIf="issuance.state != 2 && !(issuance.state == 3 && issuance.takerAddress.toLowerCase() == currentAccount.toLowerCase())">
             View Position
         </a>

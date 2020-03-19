@@ -234,7 +234,6 @@ export class InstrumentService {
     const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
     const tokenTransferEvents = await instrumentManagerContract.getPastEvents('TokenTransferred', { fromBlock: 0, toBlock: 'latest' });
     const transactions: IssuanceTransaction[] = [];
-    console.log(tokenTransferEvents);
     tokenTransferEvents.forEach((event) => {
       if (event.returnValues.issuanceId == issuance.issuanceId) {
         const [fromWallet, toWallet] = this.getTransactionWallet(event.returnValues.transferType, issuance);

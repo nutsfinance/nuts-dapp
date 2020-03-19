@@ -37,7 +37,7 @@ const routes: Routes = [
           { path: 'create', component: LendingCreateComponent },
           { path: 'engage', component: LendingEngageComponent },
           { path: 'positions', component: LendingPositionsComponent },
-          { path: ':id', component: LendingDetailComponent }
+          { path: 'positions/:id', component: LendingDetailComponent }
         ]
       },
       {

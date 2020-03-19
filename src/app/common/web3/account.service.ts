@@ -44,7 +44,6 @@ export class AccountService {
       if (token === 'ETH') {
         const weiBalance = await instrumentEscrow.methods.getBalance(this.nutsPlatformService.currentAccount).call();
         // const weiBalance = await instrumentEscrow.methods.getTokenBalance(this.nutsPlatformService.currentAccount, ETH_ADDRESS).call();
-        console.log(weiBalance);
         return +this.nutsPlatformService.web3.utils.fromWei(weiBalance, 'ether');
       } else if (this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].tokens[token]) {
         const tokenAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].tokens[token];

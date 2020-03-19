@@ -2,7 +2,7 @@ import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
-import { NotificationModel, NotificationStatus } from '../notification.model';
+import { NotificationModel, NotificationStatus, NotificationCategory } from '../notification.model';
 import { NutsPlatformService } from 'src/app/common/web3/nuts-platform.service';
 import { TransactionType } from '../transaction.model';
 import { NotificationService } from '../notification.service';
@@ -67,7 +67,16 @@ export class NotificationDialog implements OnInit, OnDestroy {
     notification.status = NotificationStatus.READ;
     this.notificationService.updateNotification(notification);
     const instrumentName = this.nutsPlatformService.getInstrumentById(+notification.instrumentId);
-    console.log(instrumentName);
+    
+    // Note:
+    // 1. Transaction initiated has no action
+    // 2. Transaction failed is handled by retryTransaction()
+    // 3. Transaction confirmed should redirect to issuance page
+    // 4. All others should redirect to issuance page
+    if (notification.category !== NotificationCategory.TRANSACTION_CONFIRMED) {
+      this.router.navigate([`/instrument/${instrumentName}/positions/${notification.issuanceId}`]);
+      return;
+    }
 
     switch (notification.type) {
       case TransactionType.APPROVE:

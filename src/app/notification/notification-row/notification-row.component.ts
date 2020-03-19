@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { NotificationModel, NotificationStatus } from '../notification.model';
+import { NotificationModel, NotificationStatus, NotificationCategory } from '../notification.model';
 import { MatCheckboxChange } from '@angular/material';
 import { NutsPlatformService } from 'src/app/common/web3/nuts-platform.service';
 import { TransactionType } from '../transaction.model';
@@ -66,7 +66,16 @@ export class NotificationRowComponent implements OnInit, OnChanges {
     this.notification.status = NotificationStatus.READ;
     this.notificationService.updateNotification(this.notification);
     const instrumentName = this.nutsPlatformService.getInstrumentById(+this.notification.instrumentId);
-    console.log(instrumentName);
+
+    // Note:
+    // 1. Transaction initiated has no action
+    // 2. Transaction failed is handled by retryTransaction()
+    // 3. Transaction confirmed should redirect to issuance page
+    // 4. All others should redirect to issuance page
+    if (this.notification.category !== NotificationCategory.TRANSACTION_CONFIRMED) {
+      this.router.navigate([`/instrument/${instrumentName}/positions/${this.notification.issuanceId}`]);
+      return;
+    }
 
     switch (this.notification.type) {
       case TransactionType.APPROVE:
