@@ -4,11 +4,11 @@ import { NutsPlatformService } from '../web3/nuts-platform.service';
 
 
 @Component({
-  selector: 'app-account-address',
-  templateUrl: './account-address.component.html',
-  styleUrls: ['./account-address.component.scss']
+  selector: 'app-wallet-address',
+  templateUrl: './wallet-address.component.html',
+  styleUrls: ['./wallet-address.component.scss']
 })
-export class AccountAddressComponent implements OnInit {
+export class WalletAddressComponent implements OnInit {
 
   private currentAccountSubscription_: Subscription;
   private currentAccount_: string;

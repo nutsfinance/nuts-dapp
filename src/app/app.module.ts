@@ -7,7 +7,7 @@ import { ChartsModule } from 'ng2-charts';
 import { TimeAgoPipe } from 'time-ago-pipe';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent, NotificationSnackBar, IncorrectNetworkDialog, DisconnectedDialog } from './app.component';
-import { AccountAddressComponent } from './common/account-address/account-address.component';
+import { WalletAddressComponent } from './common/wallet-address/wallet-address.component';
 import { AccountBalanceComponent } from './common/account-balance/account-balance.component';
 import { BlockTimestampComponent } from './common/block-timestamp/block-timestamp.component';
 import { CurrencySelectSheetComponent } from './common/currency-select/currency-select-sheet.component';
@@ -30,7 +30,6 @@ import { LendingDetailComponent } from './instrument/lending/lending-detail/lend
 import { LendingEngageComponent } from './instrument/lending/lending-engage/lending-engage.component';
 import { LendingPositionsComponent } from './instrument/lending/lending-positions/lending-positions.component';
 import { LendingComponent } from './instrument/lending/lending.component';
-import { SavingComponent } from './instrument/saving/saving.component';
 import { SwapCreateComponent } from './instrument/swap/swap-create/swap-create.component';
 import { SwapEngageComponent } from './instrument/swap/swap-engage/swap-engage.component';
 import { SwapPositionsComponent } from './instrument/swap/swap-positions/swap-positions.component';
@@ -52,11 +51,10 @@ import { InstrumentBalanceComponent } from './common/instrument-balance/instrume
   declarations: [
     AppComponent,
     DashboardComponent,
-    SavingComponent,
     LendingComponent,
     BorrowingComponent,
     SwapComponent,
-    AccountAddressComponent,
+    WalletAddressComponent,
     AccountComponent,
     AccountDepositComponent,
     AccountWithdrawComponent,

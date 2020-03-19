@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './instrument/dashboard/dashboard.component';
 import { BorrowingComponent } from './instrument/borrowing/borrowing.component';
 import { LendingComponent } from './instrument/lending/lending.component';
-import { SavingComponent } from './instrument/saving/saving.component';
 import { SwapComponent } from './instrument/swap/swap.component';
 import { AccountComponent } from './account/account.component';
 import { LendingCreateComponent } from './instrument/lending/lending-create/lending-create.component';
@@ -30,13 +29,6 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent},
-      {
-        path: 'saving', component: SavingComponent, canActivateChild: [ CanActivateInstrument ],
-        children: [
-          { path: '', redirectTo: 'account', pathMatch: 'full' },
-          { path: 'account', component: AccountComponent, data: { instrument: 'saving' } }
-        ]
-      },
       {
         path: 'lending', component: LendingComponent, canActivateChild: [ CanActivateInstrument ],
         children: [
