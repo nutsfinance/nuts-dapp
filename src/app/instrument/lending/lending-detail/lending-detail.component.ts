@@ -102,7 +102,7 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
           const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
           if (!receipt) return;
 
-          console.log(receipt);
+          console.log('Engage receipt', receipt);
           this.instrumentService.reloadLendingIssuances();
           this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
           clearInterval(interval);
@@ -137,7 +137,7 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
           const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
           if (!receipt) return;
 
-          console.log(receipt);
+          console.log('Repay receipt', receipt);
           this.instrumentService.reloadLendingIssuances();
           this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
           clearInterval(interval);
@@ -167,7 +167,7 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
           const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
           if (!receipt) return;
 
-          console.log(receipt);
+          console.log('Cancel receipt', receipt);
           this.instrumentService.reloadLendingIssuances();
           this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
           clearInterval(interval);
@@ -178,10 +178,8 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
   private updateLendingIssuance() {
     this.zone.run(() => {
       this.issuance = this.instrumentService.getLendingIssuance(this.issuanceId);
-      console.log(this.issuance);
-      console.log(this.currencyService.currency);
       if (this.issuance) {
-        console.log(this.issuance.makerAddress, this.nutsPlatformService.currentAccount);
+        console.log(this.issuance);
         this.lendingToken = this.nutsPlatformService.getTokenNameByAddress(this.issuance.lendingTokenAddress);
         this.lendingValue = this.nutsPlatformService.getTokenValueByAddress(this.issuance.lendingTokenAddress, this.issuance.lendingAmount);
         this.collateralToken = this.nutsPlatformService.getTokenNameByAddress(this.issuance.collateralTokenAddress);

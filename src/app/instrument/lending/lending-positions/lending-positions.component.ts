@@ -67,6 +67,7 @@ export class LendingPositionsComponent implements OnInit, OnDestroy {
           issuance.takerAddress.toLowerCase() === this.currentAccount.toLowerCase();
         return inState && inPosition;
       });
+      console.log('Filtered issuance', lendingIssuances);
       this.issuances = lendingIssuances;
     });
   }

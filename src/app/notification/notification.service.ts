@@ -164,12 +164,11 @@ export class NotificationService {
         return;
       }
 
-      console.log('Current notifications', this.notifications);
-      console.log('Reloaded notifications', reloadedNotifications);
-
       // Check whether are any new unread notifications.
       for (let i = 0; i < reloadedNotifications.length; i++) {
         if (reloadedNotifications[i].status === NotificationStatus.NEW) {
+          console.log('Current notifications', this.notifications);
+          console.log('Reloaded notifications', reloadedNotifications);
           console.log('New notification', reloadedNotifications[i]);
           this.newNotificationSubject.next(reloadedNotifications[i]);
           break;

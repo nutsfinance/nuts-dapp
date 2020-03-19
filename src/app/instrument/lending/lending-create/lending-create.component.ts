@@ -110,7 +110,7 @@ export class LendingCreateComponent implements OnInit {
           const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
           if (!receipt) return;
 
-          console.log(receipt);
+          console.log('Create receipt', receipt);
           this.instrumentService.reloadLendingIssuances();
           this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
           clearInterval(interval);
