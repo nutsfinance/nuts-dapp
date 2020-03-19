@@ -96,7 +96,7 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
         // Monitoring transaction status(work around for Metamask mobile)
         const interval = setInterval(async () => {
           const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
-          if (!receipt) return;
+          if (!receipt || !receipt.blockNumber) return;
 
           console.log('Engage receipt', receipt);
           this.instrumentService.reloadLendingIssuances();
@@ -131,7 +131,7 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
         // Monitoring transaction status(work around for Metamask mobile)
         const interval = setInterval(async () => {
           const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
-          if (!receipt) return;
+          if (!receipt || !receipt.blockNumber) return;
 
           console.log('Repay receipt', receipt);
           this.instrumentService.reloadLendingIssuances();
@@ -161,7 +161,7 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
         // Monitoring transaction status(work around for Metamask mobile)
         const interval = setInterval(async () => {
           const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
-          if (!receipt) return;
+          if (!receipt || !receipt.blockNumber) return;
 
           console.log('Cancel receipt', receipt);
           this.instrumentService.reloadLendingIssuances();

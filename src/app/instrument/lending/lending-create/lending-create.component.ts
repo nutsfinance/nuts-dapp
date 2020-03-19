@@ -108,7 +108,7 @@ export class LendingCreateComponent implements OnInit {
         // Monitoring transaction status(work around for Metamask mobile)
         const interval = setInterval(async () => {
           const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
-          if (!receipt) return;
+          if (!receipt || !receipt.blockNumber) return;
 
           console.log('Create receipt', receipt);
           this.instrumentService.reloadLendingIssuances();

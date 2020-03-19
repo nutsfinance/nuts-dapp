@@ -71,7 +71,7 @@ export class AccountDepositComponent implements OnInit {
           // Monitoring transaction status(work around for Metamask mobile)
           const interval = setInterval(async () => {
             const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
-            if (!receipt) return;
+            if (!receipt || !receipt.blockNumber) return;
 
             console.log(receipt);
             this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
@@ -104,7 +104,7 @@ export class AccountDepositComponent implements OnInit {
             // Monitoring transaction status(work around for Metamask mobile)
             const interval = setInterval(async () => {
               const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
-              if (!receipt) return;
+              if (!receipt || !receipt.blockNumber) return;
               console.log(receipt);
 
               // Update instrument balance
@@ -139,7 +139,7 @@ export class AccountDepositComponent implements OnInit {
             // Monitoring transaction status(work around for Metamask mobile)
             const interval = setInterval(async () => {
               const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
-              if (!receipt) return;
+              if (!receipt || !receipt.blockNumber) return;
               console.log(receipt);
 
               // Update instrument balance
