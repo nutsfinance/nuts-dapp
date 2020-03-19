@@ -9,8 +9,6 @@ import { CurrencyService } from 'src/app/common/currency-select/currency.service
 import { InstrumentService, IssuanceTransaction } from 'src/app/common/web3/instrument.service';
 import { MatDialog } from '@angular/material';
 import { TransactionInitiatedDialog } from 'src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component';
-import { NotificationModel } from 'src/app/notification/notification.model';
-import { NotificationService } from 'src/app/notification/notification.service';
 
 @Component({
   selector: 'app-lending-detail',
@@ -20,7 +18,6 @@ import { NotificationService } from 'src/app/notification/notification.service';
 export class LendingDetailComponent implements OnInit, OnDestroy {
   public issuanceId: number;
   public issuance: LendingIssuanceModel;
-  public notifications: NotificationModel[] = [];
   public lendingToken: string;
   public lendingValue: number;
   public collateralToken: string;
@@ -44,9 +41,8 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
   private currencyUpdatedSubscription: Subscription;
 
   constructor(public nutsPlatformService: NutsPlatformService, private instrumentService: InstrumentService,
-    private notificationService: NotificationService, private priceOracleService: PriceOracleService,
-    public currencyService: CurrencyService, private route: ActivatedRoute, private zone: NgZone,
-    private location: Location, private dialog: MatDialog) { }
+    private priceOracleService: PriceOracleService, public currencyService: CurrencyService, private route: ActivatedRoute,
+    private zone: NgZone, private location: Location, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.issuanceId = this.route.snapshot.params['id'];
@@ -179,7 +175,7 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
     this.zone.run(() => {
       this.issuance = this.instrumentService.getLendingIssuance(this.issuanceId);
       if (this.issuance) {
-        console.log(this.issuance);
+        console.log('Issuance detail', this.issuance);
         this.lendingToken = this.nutsPlatformService.getTokenNameByAddress(this.issuance.lendingTokenAddress);
         this.lendingValue = this.nutsPlatformService.getTokenValueByAddress(this.issuance.lendingTokenAddress, this.issuance.lendingAmount);
         this.collateralToken = this.nutsPlatformService.getTokenNameByAddress(this.issuance.collateralTokenAddress);
@@ -199,17 +195,9 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
           this.lendingValue * this.issuance.interestRate * this.issuance.tenorDays, 1000000);
 
         this.instrumentService.getIssuanceTransactions('lending', this.issuance).then((transactions) => {
-          console.log(transactions);
           this.transactions = transactions;
         });
       }
-
-      const instrumentId = this.nutsPlatformService.getInstrumentId('lending');
-      console.log(this.notificationService.notifications);
-      this.notifications = this.notificationService.notifications.filter(notification => {
-        return notification.instrumentId == instrumentId && notification.issuanceId == this.issuanceId;
-      });
-      console.log(this.notifications);
     });
   }
 }

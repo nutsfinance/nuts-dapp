@@ -43,7 +43,6 @@ import { NotificationDialog } from './notification/notification-dialog/notificat
 import { NotificationRowComponent } from './notification/notification-row/notification-row.component';
 import { NotificationComponent } from './notification/notification.component';
 import { TransactionInitiatedDialog } from './common/transaction-initiated-dialog/transaction-initiated-dialog.component';
-import { IssuanceNotificationComponent } from './notification/issuance-notification/issuance-notification.component';
 import { CanActivateInstrument } from './instrument/instrument-routing-guard.service';
 import { AccountTotalBalanceComponent } from './common/account-total-balance/account-total-balance.component';
 
@@ -88,7 +87,6 @@ import { AccountTotalBalanceComponent } from './common/account-total-balance/acc
     TimeAgoPipe,
     NotificationDialog,
     TransactionInitiatedDialog,
-    IssuanceNotificationComponent,
     AccountTotalBalanceComponent,
     IncorrectNetworkDialog,
     DisconnectedDialog,
