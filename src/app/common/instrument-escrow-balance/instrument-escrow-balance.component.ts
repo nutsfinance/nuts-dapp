@@ -31,7 +31,8 @@ export class InstrumentEscrowBalanceComponent implements OnInit, OnChanges, OnDe
     this.accountSubscription = this.nutsPlatformService_.currentAccountSubject.subscribe(() => {
       this.updateTokenBalance();
     });
-    this.userBalanceSubscription = this.userBalanceService.userBalanceSubject.subscribe(() => {
+    this.userBalanceSubscription = this.userBalanceService.userBalanceSubject.subscribe(userBalance => {
+      console.log('Instrument escrow balance: User balance updated', userBalance);
       this.updateTokenBalance();
     });
   }

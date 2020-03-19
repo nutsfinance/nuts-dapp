@@ -30,7 +30,8 @@ export class AccountBalanceComponent implements OnInit, OnDestroy, OnChanges {
       this.updateTokenBalance();
     });
     // When user balance changes, it's likely that user balance is changed as well!
-    this.userBalanceSubscription = this.userBalanceService.userBalanceSubject.subscribe(_ => {
+    this.userBalanceSubscription = this.userBalanceService.userBalanceSubject.subscribe(userBalance => {
+      console.log('Account balance: User balance updated', userBalance);
       this.updateTokenBalance();
     });
   }

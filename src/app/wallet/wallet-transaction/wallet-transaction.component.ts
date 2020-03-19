@@ -36,7 +36,8 @@ export class WalletTransactionComponent implements OnInit, OnDestroy {
     });
 
     // If the user balance is updated, it's likely that a new transaction has confirmed!
-    this.userBalanceSubscription = this.userBalanceService.userBalanceSubject.subscribe(() => {
+    this.userBalanceSubscription = this.userBalanceService.userBalanceSubject.subscribe(userBalance => {
+      console.log('Wallet transaction: User balance updated', userBalance);
       this.updateWalletTransactions();
     });
   }
