@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild, NgZone } from '@angular/core';
 import { FormControl, FormGroup, NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material';
-import { InstrumentEscrowService } from '../../common/web3/instrument-escrow.service';
+import { AccountService } from '../../common/web3/account.service';
 import { FSP_NAME, NutsPlatformService } from '../../common/web3/nuts-platform.service';
 import { TransactionInitiatedDialog } from 'src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component';
 import { AccountBalanceService } from 'src/app/common/web3/account-balance.service';
@@ -25,7 +25,7 @@ export class AccountDepositComponent implements OnInit {
   
   constructor(private dialog: MatDialog, private zone: NgZone,
     private nutsPlatformService: NutsPlatformService, private userBalanceService: AccountBalanceService,
-    private instrumentEscrowService: InstrumentEscrowService) { }
+    private instrumentEscrowService: AccountService) { }
 
   ngOnInit() {
     this.amountControl = new FormControl(this.amount, this.validBalance.bind(this));

@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, OnChanges, S
 import { Subscription } from 'rxjs';
 
 import { NutsPlatformService } from '../web3/nuts-platform.service';
-import { InstrumentEscrowService } from '../web3/instrument-escrow.service';
+import { AccountService } from '../web3/account.service';
 import { AccountBalanceService } from '../web3/account-balance.service';
 
 @Component({
@@ -18,9 +18,9 @@ export class AccountBalanceComponent implements OnInit, OnChanges, OnDestroy {
   
   private networkSubscription: Subscription;
   private accountSubscription: Subscription;
-  private userBalanceSubscription: Subscription;
+  private accountBalancesSubscription: Subscription;
 
-  constructor(private nutsPlatformService_: NutsPlatformService, private instrumentEscrowService: InstrumentEscrowService,
+  constructor(private nutsPlatformService_: NutsPlatformService, private instrumentEscrowService: AccountService,
     private userBalanceService: AccountBalanceService, private zone: NgZone) { }
 
   ngOnInit() {
@@ -31,8 +31,8 @@ export class AccountBalanceComponent implements OnInit, OnChanges, OnDestroy {
     this.accountSubscription = this.nutsPlatformService_.currentAccountSubject.subscribe(() => {
       this.updateTokenBalance();
     });
-    this.userBalanceSubscription = this.userBalanceService.userBalanceSubject.subscribe(userBalance => {
-      console.log('Instrument escrow balance: User balance updated', userBalance);
+    this.accountBalancesSubscription = this.userBalanceService.accountBalancesSubject.subscribe(userBalance => {
+      console.log('Account balance: Account balances updated', userBalance);
       this.updateTokenBalance();
     });
   }
@@ -40,7 +40,7 @@ export class AccountBalanceComponent implements OnInit, OnChanges, OnDestroy {
   ngOnDestroy() {
     this.networkSubscription.unsubscribe();
     this.accountSubscription.unsubscribe();
-    this.userBalanceSubscription.unsubscribe();
+    this.accountBalancesSubscription.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges) {

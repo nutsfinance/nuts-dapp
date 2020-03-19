@@ -2,14 +2,11 @@ import { Injectable } from '@angular/core';
 import { NotificationService } from '../../notification/notification.service';
 import { TransactionModel, TransactionType, NotificationRole } from '../../notification/transaction.model';
 import { ETH_ADDRESS, NutsPlatformService } from './nuts-platform.service';
-import { NotificationCategory } from 'src/app/notification/notification.model';
-
 
 const ERC20 = require('./abi/IERC20.json');
 const InstrumentEscrow = require('./abi/InstrumentEscrowInterface.json');
-const IssuanceEscrow = require('./abi/IssuanceEscrowInterface.json');
 
-export interface WalletTransaction {
+export interface AccountTransaction {
   deposit: boolean,
   token: string,
   amount: number,
@@ -20,7 +17,7 @@ export interface WalletTransaction {
 @Injectable({
   providedIn: 'root'
 })
-export class InstrumentEscrowService {
+export class AccountService {
 
   constructor(private nutsPlatformService: NutsPlatformService, private notificationService: NotificationService) {
     // // Updates balance information if it's 
@@ -251,7 +248,7 @@ export class InstrumentEscrowService {
       });
   }
 
-  public async getWalletTransactions(instrument: string): Promise<WalletTransaction[]> {
+public async getAccountTransactions(instrument: string): Promise<AccountTransaction[]> {
     if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork]) {
       return [];
     }
@@ -261,7 +258,7 @@ export class InstrumentEscrowService {
     const instrumentEscrowAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument].instrumentEscrow;
     const instrumentEscrowContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentEscrow, instrumentEscrowAddress);
     const instrumentEscrowEvents = await instrumentEscrowContract.getPastEvents('allEvents', { fromBlock: 0, toBlock: 'latest' });
-    const transactions: WalletTransaction[] = [];
+    const transactions: AccountTransaction[] = [];
     instrumentEscrowEvents.forEach((escrowEvent) => {
       if (escrowEvent.event === 'Deposited' && escrowEvent.returnValues.depositer.toLowerCase() === this.nutsPlatformService.currentAccount.toLowerCase()) {
         transactions.push({

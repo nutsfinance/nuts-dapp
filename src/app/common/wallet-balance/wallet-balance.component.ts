@@ -16,7 +16,7 @@ export class WalletBalanceComponent implements OnInit, OnDestroy, OnChanges {
   
   private networkSubscription: Subscription;
   private accountSubscription: Subscription;
-  private userBalanceSubscription: Subscription;
+  private accountBalancesSubscription: Subscription;
 
   constructor(private nutsPlatformService_: NutsPlatformService, private userBalanceService: AccountBalanceService,
     private zone: NgZone) { }
@@ -30,8 +30,8 @@ export class WalletBalanceComponent implements OnInit, OnDestroy, OnChanges {
       this.updateTokenBalance();
     });
     // When user balance changes, it's likely that user balance is changed as well!
-    this.userBalanceSubscription = this.userBalanceService.userBalanceSubject.subscribe(userBalance => {
-      console.log('Account balance: User balance updated', userBalance);
+    this.accountBalancesSubscription = this.userBalanceService.accountBalancesSubject.subscribe(accountBalances => {
+      console.log('Wallet balance: Account balances updated', accountBalances);
       this.updateTokenBalance();
     });
   }
@@ -39,7 +39,7 @@ export class WalletBalanceComponent implements OnInit, OnDestroy, OnChanges {
   ngOnDestroy() {
     this.networkSubscription.unsubscribe();
     this.accountSubscription.unsubscribe();
-    this.userBalanceSubscription.unsubscribe();
+    this.accountBalancesSubscription.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges) {

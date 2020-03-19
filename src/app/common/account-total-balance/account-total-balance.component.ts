@@ -15,31 +15,31 @@ export class AccountTotalBalanceComponent implements OnInit, OnDestroy {
   public instrumentName = '';
   public instrumentBalance: Promise<Number>;
 
-  private userBalanceSubscription: Subscription;
+  private accountBalancesSubscription: Subscription;
   private currencySubscription: Subscription;
 
-  constructor(private nutsPlatformSevice: NutsPlatformService, private userBalanceService: AccountBalanceService,
+  constructor(private nutsPlatformSevice: NutsPlatformService, private accountBalanceService: AccountBalanceService,
     public currencyService: CurrencyService, private priceOracleService: PriceOracleService, private zone: NgZone) { }
 
   ngOnInit() {
     this.instrumentName = this.instrument.charAt(0).toUpperCase() + this.instrument.substring(1);
-    this.instrumentBalance = this.getInstrumentBalance();
+    this.instrumentBalance = this.getInstrumentAccountBalance();
     this.currencySubscription = this.currencyService.currencyUpdatedSubject.subscribe(_ => {
-      this.instrumentBalance = this.getInstrumentBalance();
+      this.instrumentBalance = this.getInstrumentAccountBalance();
     });
-    this.userBalanceSubscription = this.userBalanceService.userBalanceSubject.subscribe(userBalance => {
-      console.log('Instrument balance: User balance updated', userBalance);
-      this.zone.run(() => this.instrumentBalance = this.getInstrumentBalance());
+    this.accountBalancesSubscription = this.accountBalanceService.accountBalancesSubject.subscribe(accountBalances => {
+      console.log('Account total balance: Account balances updated', accountBalances);
+      this.zone.run(() => this.instrumentBalance = this.getInstrumentAccountBalance());
     });
   }
 
   ngOnDestroy() {
-    this.userBalanceSubscription.unsubscribe();
+    this.accountBalancesSubscription.unsubscribe();
     this.currencySubscription.unsubscribe();
   }
 
-  private async getInstrumentBalance() {
-    const userBalance = this.userBalanceService.userBalance;
+  private async getInstrumentAccountBalance() {
+    const userBalance = this.accountBalanceService.accountBalances;
     if (!userBalance[this.instrument]) {
       console.log('Instrument ' + this.instrument + '  does not exist');
       return 0;

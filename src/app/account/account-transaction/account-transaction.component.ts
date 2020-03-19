@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, NgZone } fro
 import { Subscription } from 'rxjs';
 
 import { NutsPlatformService } from '../../common/web3/nuts-platform.service';
-import { InstrumentEscrowService, WalletTransaction } from '../../common/web3/instrument-escrow.service';
+import { AccountService, AccountTransaction } from '../../common/web3/account.service';
 import { AccountBalanceService } from 'src/app/common/web3/account-balance.service';
 
 @Component({
@@ -12,51 +12,50 @@ import { AccountBalanceService } from 'src/app/common/web3/account-balance.servi
 })
 export class AccountTransactionComponent implements OnInit, OnDestroy {
   public columns: string[] = ['date', 'action', 'amount'];
-  public walletTransactions: WalletTransaction[] = [];
+  public accountTransactions: AccountTransaction[] = [];
 
   @Input() private instrument: string;
   @Output() private updatePanel = new EventEmitter<string>();
 
   private networkSubscription: Subscription;
   private accountSubscription: Subscription;
-  private userBalanceSubscription: Subscription;
+  private accountBalancesSubscription: Subscription;
 
-  constructor(private nutsPlatformService: NutsPlatformService, private instrumentEscrowService: InstrumentEscrowService,
-      private userBalanceService: AccountBalanceService, private zone: NgZone) { }
+  constructor(private nutsPlatformService: NutsPlatformService, private accountService: AccountService,
+      private accountBalanceService: AccountBalanceService, private zone: NgZone) { }
 
   ngOnInit() {
-    this.instrumentEscrowService.getWalletTransactions(this.instrument).then((transactions) => {
-      this.walletTransactions = transactions;
-    });
+    this.updateAccountTransactions();
     this.networkSubscription = this.nutsPlatformService.currentNetworkSubject.subscribe(() => {
-      this.updateWalletTransactions();
+      this.updateAccountTransactions();
     });
     this.accountSubscription = this.nutsPlatformService.currentAccountSubject.subscribe(() => {
-      this.updateWalletTransactions();
+      this.updateAccountTransactions();
     });
 
     // If the user balance is updated, it's likely that a new transaction has confirmed!
-    this.userBalanceSubscription = this.userBalanceService.userBalanceSubject.subscribe(userBalance => {
-      console.log('Wallet transaction: User balance updated', userBalance);
-      this.updateWalletTransactions();
+    this.accountBalancesSubscription = this.accountBalanceService.accountBalancesSubject.subscribe(userBalance => {
+      console.log('Wallet transaction: Account balance updated', userBalance);
+      this.updateAccountTransactions();
     });
   }
 
   ngOnDestroy() {
     this.networkSubscription.unsubscribe();
     this.accountSubscription.unsubscribe();
-    this.userBalanceSubscription.unsubscribe();
+    this.accountBalancesSubscription.unsubscribe();
   }
 
   deposit() {
     this.updatePanel.emit('deposit');
   }
 
-  private async updateWalletTransactions() {
-    const transactions = await this.instrumentEscrowService.getWalletTransactions(this.instrument);
+  private async updateAccountTransactions() {
+    const transactions = await this.accountService.getAccountTransactions(this.instrument);
+    console.log('Transactions', transactions);
     this.zone.run(() => {
-      this.walletTransactions = transactions;
+      this.accountTransactions = transactions;
     });
-    console.log(transactions);
+    console.log('Account transactions updated', transactions);
   }
 }

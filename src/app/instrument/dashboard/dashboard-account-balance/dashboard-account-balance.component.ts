@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { MultiDataSet, Label } from 'ng2-charts';
-import { AccountBalanceService, UserBalance } from 'src/app/common/web3/account-balance.service';
+import { AccountBalanceService, AccountBalances } from 'src/app/common/web3/account-balance.service';
 import { Subscription } from 'rxjs';
 import { PriceOracleService } from 'src/app/common/web3/price-oracle.service';
 import { NutsPlatformService, USD_ADDRESS, CNY_ADDRESS } from 'src/app/common/web3/nuts-platform.service';
@@ -100,33 +100,33 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
     }
   }
 
-  private userBalanceSubscription: Subscription;
+  private accountBalancesSubscription: Subscription;
   private currencySubscription: Subscription;
 
   constructor(private userBalanceService: AccountBalanceService, private priceOracleService: PriceOracleService,
     private nutsPlatformService: NutsPlatformService, public currencyService: CurrencyService, private zone: NgZone) { }
 
   ngOnInit() {
-    this.updateUserBalance(this.userBalanceService.userBalance);
-    this.userBalanceSubscription = this.userBalanceService.userBalanceSubject.subscribe(userBalance => {
+    this.updateAccountBalances(this.userBalanceService.accountBalances);
+    this.accountBalancesSubscription = this.userBalanceService.accountBalancesSubject.subscribe(accountBalances => {
       this.zone.run(() => {
-        console.log('Dashboard: User balance updated', userBalance);
-        this.updateUserBalance(userBalance);
+        console.log('Dashboard: Account balances updated', accountBalances);
+        this.updateAccountBalances(accountBalances);
       });
     });
     this.currencySubscription = this.currencyService.currencyUpdatedSubject.subscribe(_ => {
       this.zone.run(() => {
-        this.updateUserBalance(this.userBalanceService.userBalance);
+        this.updateAccountBalances(this.userBalanceService.accountBalances);
       });
     });
   }
 
   ngOnDestroy() {
-    this.userBalanceSubscription.unsubscribe();
+    this.accountBalancesSubscription.unsubscribe();
     this.currencySubscription.unsubscribe();
   }
 
-  private async updateUserBalance(userBalance: UserBalance) {
+  private async updateAccountBalances(userBalance: AccountBalances) {
     const instrumentsValue = [0, 0, 0, 0];
     const assetsValue = [0, 0, 0, 0, 0, 0];
     const targetTokenAddress = this.currencyService.currency === 'USD' ? USD_ADDRESS : CNY_ADDRESS;

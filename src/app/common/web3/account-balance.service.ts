@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
 
 import { NutsPlatformService } from './nuts-platform.service';
-import { Subject, BehaviorSubject } from 'rxjs';
+import { Subject } from 'rxjs';
 
 const InstrumentEscrow = require('./abi/InstrumentEscrowInterface.json');
 
-export interface UserBalance {
-  lending?: InstrumentBalance,
-  borrowing?: InstrumentBalance,
-  swap?: InstrumentBalance,
+export interface AccountBalances {
+  lending?: AccountBalance,
+  borrowing?: AccountBalance,
+  swap?: AccountBalance,
 }
 
-export interface InstrumentBalance {
+export interface AccountBalance {
   ETH?: number,
   USDT?: number,
   USDC?: number,
@@ -23,8 +23,8 @@ export interface InstrumentBalance {
   providedIn: 'root'
 })
 export class AccountBalanceService {
-  public userBalance: UserBalance = {};
-  public userBalanceSubject: Subject<UserBalance> = new Subject();
+  public accountBalances: AccountBalances = {};
+  public accountBalancesSubject: Subject<AccountBalances> = new Subject();
 
   constructor(private nutsPlatformService: NutsPlatformService) {
     // We don't initialize the user balance until the platform is initialized!
@@ -66,22 +66,22 @@ export class AccountBalanceService {
 
     const instruments = ['lending', 'borrowing', 'swap'];
     const assets = ['ETH', 'USDT', 'USDC', 'NUTS', 'DAI'];
-    this.userBalance = {};
+    this.accountBalances = {};
 
     for (let instrument of instruments) {
       const instrumentEscrowAddres = this.nutsPlatformService.contractAddresses[currentNetwork].platform[instrument].instrumentEscrow;
       const instrumentEscrowContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentEscrow, instrumentEscrowAddres);
-      this.userBalance[instrument] = {};
+      this.accountBalances[instrument] = {};
       
       for (let asset of assets) {
         const assetAddress = this.nutsPlatformService.getTokenAddressByName(asset);
-        const balance = await instrumentEscrowContract.methods.getTokenBalance(currentAddress, assetAddress).call();
+        const balance = Number(await instrumentEscrowContract.methods.getTokenBalance(currentAddress, assetAddress).call());
         // console.log('Balance for instrument', instrument, 'asset', asset, balance);
-        this.userBalance[instrument][asset] = balance;
+        this.accountBalances[instrument][asset] = balance;
       }
     }
 
-    this.userBalanceSubject.next(this.userBalance);
+    this.accountBalancesSubject.next(this.accountBalances);
   }
 
   /**
@@ -95,12 +95,12 @@ export class AccountBalanceService {
     const instrumentEscrowAddres = this.nutsPlatformService.contractAddresses[currentNetwork].platform[instrument].instrumentEscrow;
     const instrumentEscrowContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentEscrow, instrumentEscrowAddres);
     const assetAddress = this.nutsPlatformService.getTokenAddressByName(asset);
-    const balance = await instrumentEscrowContract.methods.getTokenBalance(currentAddress, assetAddress).call();
-    console.log('Current balance', this.userBalance[instrument][asset], 'new balance', balance);
+    const balance = Number(await instrumentEscrowContract.methods.getTokenBalance(currentAddress, assetAddress).call());
+    console.log('Current balance', this.accountBalances[instrument][asset], 'new balance', balance);
 
-    if (this.userBalance[instrument][asset] !== balance) {
-      this.userBalance[instrument][asset] = balance;
-      this.userBalanceSubject.next(this.userBalance);
+    if (this.accountBalances[instrument][asset] !== balance) {
+      this.accountBalances[instrument][asset] = balance;
+      this.accountBalancesSubject.next(this.accountBalances);
     }
   }
 }
