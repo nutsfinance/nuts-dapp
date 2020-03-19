@@ -9,6 +9,7 @@ import { CurrencyService } from 'src/app/common/currency-select/currency.service
 import { InstrumentService, IssuanceTransaction } from 'src/app/common/web3/instrument.service';
 import { MatDialog } from '@angular/material';
 import { TransactionInitiatedDialog } from 'src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component';
+import { AccountBalanceService } from 'src/app/common/web3/account-balance.service';
 
 @Component({
   selector: 'app-lending-detail',
@@ -41,8 +42,8 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
   private currencyUpdatedSubscription: Subscription;
 
   constructor(public nutsPlatformService: NutsPlatformService, private instrumentService: InstrumentService,
-    private priceOracleService: PriceOracleService, public currencyService: CurrencyService, private route: ActivatedRoute,
-    private zone: NgZone, private location: Location, private dialog: MatDialog) { }
+    private priceOracleService: PriceOracleService, public currencyService: CurrencyService, private accountBalanceService: AccountBalanceService,
+    private route: ActivatedRoute, private zone: NgZone, private location: Location, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.issuanceId = this.route.snapshot.params['id'];
@@ -99,7 +100,10 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
           if (!receipt || !receipt.blockNumber) return;
 
           console.log('Engage receipt', receipt);
+          // Engagement success. Need to update lending issuance list.
           this.instrumentService.reloadLendingIssuances();
+          // Engagement success. Need to update account balance as well.
+          this.accountBalanceService.updateAccountBalance('lending');
           this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
           clearInterval(interval);
         }, 2000);
@@ -134,7 +138,10 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
           if (!receipt || !receipt.blockNumber) return;
 
           console.log('Repay receipt', receipt);
+          // Repay successful. Need to update the lending issuance list
           this.instrumentService.reloadLendingIssuances();
+          // Repay successful. Need to update the lending account balance as well
+          this.accountBalanceService.updateAccountBalance('lending');
           this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
           clearInterval(interval);
         }, 2000);
@@ -164,7 +171,10 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
           if (!receipt || !receipt.blockNumber) return;
 
           console.log('Cancel receipt', receipt);
+          // Cancel successful. Need to update the lending issuance list
           this.instrumentService.reloadLendingIssuances();
+          // Cancel successful. Need to update the lending account as well
+          this.accountBalanceService.updateAssetBalance('lending', this.lendingToken);
           this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
           clearInterval(interval);
         }, 2000);

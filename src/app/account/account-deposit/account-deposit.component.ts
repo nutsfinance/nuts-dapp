@@ -108,7 +108,7 @@ export class AccountDepositComponent implements OnInit {
               console.log(receipt);
 
               // Update instrument balance
-              this.userBalanceService.updateInstrumentBalance(this.instrument, 'ETH');
+              this.userBalanceService.updateAssetBalance(this.instrument, 'ETH');
               this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
               clearInterval(interval);
             }, 2000);
@@ -143,7 +143,7 @@ export class AccountDepositComponent implements OnInit {
               console.log(receipt);
 
               // Update instrument balance
-              this.userBalanceService.updateInstrumentBalance(this.instrument, this.selectedToken);
+              this.userBalanceService.updateAssetBalance(this.instrument, this.selectedToken);
               this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
               clearInterval(interval);
             }, 2000);

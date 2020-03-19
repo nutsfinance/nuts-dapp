@@ -72,7 +72,7 @@ export class AccountBalanceService {
       const instrumentEscrowAddres = this.nutsPlatformService.contractAddresses[currentNetwork].platform[instrument].instrumentEscrow;
       const instrumentEscrowContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentEscrow, instrumentEscrowAddres);
       this.accountBalances[instrument] = {};
-      
+
       for (let asset of assets) {
         const assetAddress = this.nutsPlatformService.getTokenAddressByName(asset);
         const balance = Number(await instrumentEscrowContract.methods.getTokenBalance(currentAddress, assetAddress).call());
@@ -85,9 +85,9 @@ export class AccountBalanceService {
   }
 
   /**
-   * Update the instrument balance on the asset specified
+   * Update the account balance on the instrument and asset specified
    */
-  async updateInstrumentBalance(instrument: string, asset: string) {
+  async updateAssetBalance(instrument: string, asset: string) {
     console.log('Update balance for instrument', instrument, 'asset', asset);
     const currentAddress = this.nutsPlatformService.currentAccount;
     const currentNetwork = this.nutsPlatformService.currentNetwork;
@@ -102,5 +102,34 @@ export class AccountBalanceService {
       this.accountBalances[instrument][asset] = balance;
       this.accountBalancesSubject.next(this.accountBalances);
     }
+  }
+
+  /**
+   * Update the account balance on the instrument specified
+   */
+  async updateAccountBalance(instrument: string) {
+    const currentAddress = this.nutsPlatformService.currentAccount;
+    const currentNetwork = this.nutsPlatformService.currentNetwork;
+    console.log('User balance: Current address', currentAddress, 'Current network', currentNetwork);
+    if (!this.nutsPlatformService.isFullyLoaded()) {
+      console.log('Either network or account is not loaded.');
+      return;
+    }
+
+    const assets = ['ETH', 'USDT', 'USDC', 'NUTS', 'DAI'];
+    this.accountBalances = {};
+
+    const instrumentEscrowAddres = this.nutsPlatformService.contractAddresses[currentNetwork].platform[instrument].instrumentEscrow;
+    const instrumentEscrowContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentEscrow, instrumentEscrowAddres);
+    this.accountBalances[instrument] = {};
+
+    for (let asset of assets) {
+      const assetAddress = this.nutsPlatformService.getTokenAddressByName(asset);
+      const balance = Number(await instrumentEscrowContract.methods.getTokenBalance(currentAddress, assetAddress).call());
+      // console.log('Balance for instrument', instrument, 'asset', asset, balance);
+      this.accountBalances[instrument][asset] = balance;
+    }
+
+    this.accountBalancesSubject.next(this.accountBalances);
   }
 }

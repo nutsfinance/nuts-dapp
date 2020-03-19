@@ -5,6 +5,7 @@ import { NutsPlatformService } from '../../../common/web3/nuts-platform.service'
 import { PriceOracleService } from '../../../common/web3/price-oracle.service';
 import { InstrumentService } from 'src/app/common/web3/instrument.service';
 import { TransactionInitiatedDialog } from 'src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component';
+import { AccountBalanceService } from 'src/app/common/web3/account-balance.service';
 
 
 @Component({
@@ -27,7 +28,8 @@ export class LendingCreateComponent implements OnInit {
   public interestValue = 0;
 
   constructor(private nutsPlatformService: NutsPlatformService, private instrumentService: InstrumentService,
-    private priceOracleSercvice: PriceOracleService, private zone: NgZone, private dialog: MatDialog) { }
+    private priceOracleSercvice: PriceOracleService, private accountBalanceService: AccountBalanceService,
+    private zone: NgZone, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.createFormGroup = new FormGroup({
@@ -115,7 +117,10 @@ export class LendingCreateComponent implements OnInit {
           if (!receipt || !receipt.blockNumber) return;
 
           console.log('Create receipt', receipt);
+          // New lending issuance created. Need to refresh the lending issuance list.
           this.instrumentService.reloadLendingIssuances();
+          // New lending issuance created. Need to update the principal balance as well.
+          this.accountBalanceService.updateAssetBalance('lending', this.principalToken);
           this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
           clearInterval(interval);
         }, 2000);
