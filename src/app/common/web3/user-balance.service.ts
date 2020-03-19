@@ -96,6 +96,7 @@ export class UserBalanceService {
     const instrumentEscrowContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentEscrow, instrumentEscrowAddres);
     const assetAddress = this.nutsPlatformService.getTokenAddressByName(asset);
     const balance = await instrumentEscrowContract.methods.getTokenBalance(currentAddress, assetAddress).call();
+    console.log('Current balance', this.userBalance[instrument][asset], 'new balance', balance);
 
     if (this.userBalance[instrument][asset] !== balance) {
       this.userBalance[instrument][asset] = balance;

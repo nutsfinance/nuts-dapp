@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, NgZone } from '@angular/core';
 import { UserBalanceService } from '../web3/user-balance.service';
 import { CurrencyService } from '../currency-select/currency.service';
 import { PriceOracleService } from '../web3/price-oracle.service';
@@ -19,7 +19,7 @@ export class InstrumentBalanceComponent implements OnInit, OnDestroy {
   private currencySubscription: Subscription;
 
   constructor(private nutsPlatformSevice: NutsPlatformService, private userBalanceService: UserBalanceService,
-    public currencyService: CurrencyService, private priceOracleService: PriceOracleService) { }
+    public currencyService: CurrencyService, private priceOracleService: PriceOracleService, private zone: NgZone) { }
 
   ngOnInit() {
     this.instrumentName = this.instrument.charAt(0).toUpperCase() + this.instrument.substring(1);
@@ -29,7 +29,7 @@ export class InstrumentBalanceComponent implements OnInit, OnDestroy {
     });
     this.userBalanceSubscription = this.userBalanceService.userBalanceSubject.subscribe(userBalance => {
       console.log('Instrument balance: User balance updated', userBalance);
-      this.instrumentBalance = this.getInstrumentBalance();
+      this.zone.run(() => this.instrumentBalance = this.getInstrumentBalance());
     });
   }
 
@@ -44,7 +44,7 @@ export class InstrumentBalanceComponent implements OnInit, OnDestroy {
       console.log('Instrument ' + this.instrument + '  does not exist');
       return 0;
     }
-    const assets = ["ETH", "USDC", "USDC", "NUTS", "DAI"];
+    const assets = ["ETH", "USDC", "USDT", "NUTS", "DAI"];
     const targetTokenAddress = this.currencyService.currency === 'USD' ? USD_ADDRESS : CNY_ADDRESS;
     let totalValue = 0;
     for (let i = 0; i < assets.length; i++) {

@@ -191,7 +191,6 @@ export class NutsPlatformService {
 
   public transactionSentSubject = new Subject<string>();
   public transactionConfirmedSubject = new Subject<string>();
-  public balanceUpdatedSubject = new Subject<string>();
 
   // Caching the block number -> timestamp mapping
   private blockTimestampCache = {};

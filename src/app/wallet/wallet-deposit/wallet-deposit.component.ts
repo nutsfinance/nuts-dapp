@@ -105,10 +105,8 @@ export class WalletDepositComponent implements OnInit {
             const interval = setInterval(async () => {
               const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
               if (!receipt) return;
-
               console.log(receipt);
-              // Update account balance
-              this.nutsPlatformService.balanceUpdatedSubject.next('ETH');
+
               // Update instrument balance
               this.userBalanceService.updateInstrumentBalance(this.instrument, 'ETH');
               this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
@@ -142,10 +140,8 @@ export class WalletDepositComponent implements OnInit {
             const interval = setInterval(async () => {
               const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
               if (!receipt) return;
-
               console.log(receipt);
-              // Update account balance
-              this.nutsPlatformService.balanceUpdatedSubject.next(this.selectedToken);
+
               // Update instrument balance
               this.userBalanceService.updateInstrumentBalance(this.instrument, this.selectedToken);
               this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);

@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, OnChanges, S
 import { NutsPlatformService } from '../web3/nuts-platform.service';
 
 import { Subscription } from 'rxjs';
+import { UserBalanceService } from '../web3/user-balance.service';
 
 @Component({
   selector: 'app-account-balance',
@@ -15,9 +16,10 @@ export class AccountBalanceComponent implements OnInit, OnDestroy, OnChanges {
   
   private networkSubscription: Subscription;
   private accountSubscription: Subscription;
-  private balanceSubscription: Subscription;
+  private userBalanceSubscription: Subscription;
 
-  constructor(private nutsPlatformService_: NutsPlatformService, private zone: NgZone) { }
+  constructor(private nutsPlatformService_: NutsPlatformService, private userBalanceService: UserBalanceService,
+    private zone: NgZone) { }
 
   ngOnInit() {
     this.updateTokenBalance();
@@ -27,17 +29,16 @@ export class AccountBalanceComponent implements OnInit, OnDestroy, OnChanges {
     this.accountSubscription = this.nutsPlatformService_.currentAccountSubject.subscribe(() => {
       this.updateTokenBalance();
     });
-    this.balanceSubscription = this.nutsPlatformService_.balanceUpdatedSubject.subscribe((token) => {
-      if (token === this.selectedToken) {
-        this.updateTokenBalance();
-      }
+    // When user balance changes, it's likely that user balance is changed as well!
+    this.userBalanceSubscription = this.userBalanceService.userBalanceSubject.subscribe(_ => {
+      this.updateTokenBalance();
     });
   }
 
   ngOnDestroy() {
     this.networkSubscription.unsubscribe();
     this.accountSubscription.unsubscribe();
-    this.balanceSubscription.unsubscribe();
+    this.userBalanceSubscription.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges) {

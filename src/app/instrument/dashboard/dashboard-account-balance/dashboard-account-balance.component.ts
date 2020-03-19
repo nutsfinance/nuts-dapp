@@ -110,6 +110,7 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
     this.updateUserBalance(this.userBalanceService.userBalance);
     this.userBalanceSubscription = this.userBalanceService.userBalanceSubject.subscribe(userBalance => {
       this.zone.run(() => {
+        console.log('Dashboard: User balance updated', userBalance);
         this.updateUserBalance(userBalance);
       });
     });

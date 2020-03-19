@@ -144,7 +144,6 @@ export class NotificationService {
    * but incrementalGetNotification() does.
    */
   private incrementalGetNotification() {
-    console.log('Get incremental notifications.');
     this.getNotificationFromBackend().subscribe(notifications => {
       const reloadedNotifications = notifications.sort((n1, n2) => n2.creationTimestamp - n1.creationTimestamp);
 
@@ -162,7 +161,6 @@ export class NotificationService {
       }
 
       if (!updated) {
-        console.log('Notifications not updated.');
         return;
       }
 

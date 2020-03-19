@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 
 import { NutsPlatformService } from '../../common/web3/nuts-platform.service';
 import { InstrumentEscrowService, WalletTransaction } from '../../common/web3/instrument-escrow.service';
+import { UserBalanceService } from 'src/app/common/web3/user-balance.service';
 
 @Component({
   selector: 'app-wallet-transaction',
@@ -18,10 +19,10 @@ export class WalletTransactionComponent implements OnInit, OnDestroy {
 
   private networkSubscription: Subscription;
   private accountSubscription: Subscription;
-  private balanceSubscription: Subscription;
+  private userBalanceSubscription: Subscription;
 
   constructor(private nutsPlatformService: NutsPlatformService, private instrumentEscrowService: InstrumentEscrowService,
-              private zone: NgZone) { }
+      private userBalanceService: UserBalanceService, private zone: NgZone) { }
 
   ngOnInit() {
     this.instrumentEscrowService.getWalletTransactions(this.instrument).then((transactions) => {
@@ -33,7 +34,9 @@ export class WalletTransactionComponent implements OnInit, OnDestroy {
     this.accountSubscription = this.nutsPlatformService.currentAccountSubject.subscribe(() => {
       this.updateWalletTransactions();
     });
-    this.balanceSubscription = this.nutsPlatformService.balanceUpdatedSubject.subscribe((token) => {
+
+    // If the user balance is updated, it's likely that a new transaction has confirmed!
+    this.userBalanceSubscription = this.userBalanceService.userBalanceSubject.subscribe(() => {
       this.updateWalletTransactions();
     });
   }
@@ -41,7 +44,7 @@ export class WalletTransactionComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.networkSubscription.unsubscribe();
     this.accountSubscription.unsubscribe();
-    this.balanceSubscription.unsubscribe();
+    this.userBalanceSubscription.unsubscribe();
   }
 
   deposit() {
