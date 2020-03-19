@@ -10,15 +10,19 @@ import { TokenSelectSheetComponent } from './token-select-sheet.component';
 })
 export class TokenSelectComponent implements OnInit {
   @Input() public selectedToken;
+  @Input() public excludedTokens = [];
   @Output() tokenSelected = new EventEmitter<string>();
 
   constructor(private _bottomSheet: MatBottomSheet) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   openBottomSheet() {
-    const bottomSheetRef = this._bottomSheet.open(TokenSelectSheetComponent);
+    const bottomSheetRef = this._bottomSheet.open(TokenSelectSheetComponent, {
+      data: {
+        excludedTokens: this.excludedTokens
+      }
+    });
     bottomSheetRef.afterDismissed().subscribe(token => {
       // Ignore if the bottom sheet is closed by clicking empty spaces.
       if (token) {

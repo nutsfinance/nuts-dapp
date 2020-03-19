@@ -103,7 +103,7 @@
         </mat-button-toggle-group>
       </div>
       <div class="col-xs-4">
-        <app-token-select [selectedToken]="collateralToken" (tokenSelected)="onCollateralTokenSelected($event)">
+        <app-token-select [selectedToken]="collateralToken" [excludedTokens]="[principalToken]" (tokenSelected)="onCollateralTokenSelected($event)">
         </app-token-select>
       </div>
     </div>

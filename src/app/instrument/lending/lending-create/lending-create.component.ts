@@ -13,17 +13,18 @@ import { TransactionInitiatedDialog } from 'src/app/common/transaction-initiated
   styleUrls: ['./lending-create.component.scss']
 })
 export class LendingCreateComponent implements OnInit {
+  private tokens = ["ETH", "USDC", "USDT", "DAI", "NUTS"];
+  @ViewChild('form', { static: true }) private form: NgForm;
+
   public createFormGroup: FormGroup;
   public showAlternativeTenor = false;
   public showAlternativeColleral = false;
   public showAlternativeInterest = false;
-  public principalToken = 'ETH';
+  public principalToken = this.tokens[0];
   public principalTokenBalance: number;
-  public collateralToken = 'ETH';
+  public collateralToken = this.tokens[1];
   public collateralValue: Promise<number> = Promise.resolve(0);
   public interestValue = 0;
-
-  @ViewChild('form', { static: true }) private form: NgForm;
 
   constructor(private nutsPlatformService: NutsPlatformService, private instrumentService: InstrumentService,
     private priceOracleSercvice: PriceOracleService, private zone: NgZone, private dialog: MatDialog) { }
@@ -43,8 +44,11 @@ export class LendingCreateComponent implements OnInit {
   }
 
   onPrincipalTokenSelected(token: string) {
+    // Update principals
     this.principalToken = token;
     this.createFormGroup.controls['principalAmount'].reset();
+    // Update collaterals
+    this.collateralToken = token === this.tokens[0] ? this.tokens[1] : this.tokens[0];
     this.collateralValue = this.getCollateralValue();
   }
 
