@@ -68,13 +68,13 @@ export class InstrumentService {
     const lendingAmount = principalToken === 'ETH' ? this.nutsPlatformService.web3.utils.toWei(`${principalAmount}`, 'ether') : principalAmount;
     const collateralTokenAddress = collateralToken === 'ETH' ? ETH_ADDRESS : this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].tokens[collateralToken];
     console.log(collateralTokenAddress, principalTokenAddress, lendingAmount,
-      collateralRatio * COLLATERAL_RATIO_DECIMALS, tenor, interestRate * INTEREST_RATE_DECIMALS);
+      Math.floor(collateralRatio * COLLATERAL_RATIO_DECIMALS), tenor, Math.floor(interestRate * INTEREST_RATE_DECIMALS));
     // const lendingParameters = await parametersUtilContract.methods.getLendingMakerParameters(collateralTokenAddress, principalTokenAddress, lendingAmount,
     //   collateralRatio * COLLATERAL_RATIO_DECIMALS, tenor, interestRate * INTEREST_RATE_DECIMALS).call({ from: this.nutsPlatformService.currentAccount });
     // console.log(lendingParameters);
 
     const lendingMakerParametersModel = new LendingMakerParameterModel(collateralTokenAddress, principalTokenAddress, lendingAmount,
-      collateralRatio * COLLATERAL_RATIO_DECIMALS, tenor, interestRate * INTEREST_RATE_DECIMALS);
+      Math.floor(collateralRatio * COLLATERAL_RATIO_DECIMALS), tenor, Math.floor(interestRate * INTEREST_RATE_DECIMALS));
     const message = lendingMakerParametersModel.toMessage().serializeBinary();
     const lendingMakerParameters = '0x' + Buffer.from(message).toString('hex');
     console.log(lendingMakerParameters);

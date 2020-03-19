@@ -78,7 +78,7 @@ export class LendingCreateComponent implements OnInit {
     const principalTokenAddress = this.nutsPlatformService.getTokenAddressByName(this.principalToken);
     const collateralTokenAddress = this.nutsPlatformService.getTokenAddressByName(this.collateralToken);
     const result = await this.priceOracleSercvice.getPrice(collateralTokenAddress, principalTokenAddress);
-    console.log(result);
+    console.log('Collateral rate', result);
     return this.createFormGroup.value['principalAmount'] * this.createFormGroup.value['collateralRatio'] * result[1] / (result[0] * 100);
   }
 
@@ -123,14 +123,14 @@ export class LendingCreateComponent implements OnInit {
   }
 
   resetForm() {
-    this.principalToken = 'ETH';
-    this.collateralToken = 'ETH';
+    this.principalToken = this.tokens[0];
+    this.collateralToken = this.tokens[1];
     this.form.resetForm();
   }
 
   getInterestValue(): number {
-    const principalAmount = this.createFormGroup.value['principalAmount'] * 10000;
-    const interestRate = this.createFormGroup.value['interestRate'] * 10000;
+    const principalAmount = Math.floor(this.createFormGroup.value['principalAmount'] * 10000);
+    const interestRate = Math.floor(this.createFormGroup.value['interestRate'] * 10000);
     const tenor = this.createFormGroup.value['tenor'];
     const interest = principalAmount * interestRate * tenor / 10000000000;
     console.log(principalAmount, interestRate, tenor, interest);
