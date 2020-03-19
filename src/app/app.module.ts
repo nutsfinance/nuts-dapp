@@ -35,10 +35,10 @@ import { SwapCreateComponent } from './instrument/swap/swap-create/swap-create.c
 import { SwapEngageComponent } from './instrument/swap/swap-engage/swap-engage.component';
 import { SwapPositionsComponent } from './instrument/swap/swap-positions/swap-positions.component';
 import { SwapComponent } from './instrument/swap/swap.component';
-import { WalletDepositComponent } from './wallet/wallet-deposit/wallet-deposit.component';
-import { WalletTransactionComponent } from './wallet/wallet-transaction/wallet-transaction.component';
-import { WalletWithdrawComponent } from './wallet/wallet-withdraw/wallet-withdraw.component';
-import { WalletComponent } from './wallet/wallet.component';
+import { AccountDepositComponent } from './account/account-deposit/account-deposit.component';
+import { AccountTransactionComponent } from './account/account-transaction/account-transaction.component';
+import { AccountWithdrawComponent } from './account/account-withdraw/account-withdraw.component';
+import { AccountComponent } from './account/account.component';
 import { MaterialModule } from './material/material-module';
 import { NotificationDialog } from './notification/notification-dialog/notification-dialog.component';
 import { NotificationRowComponent } from './notification/notification-row/notification-row.component';
@@ -57,10 +57,10 @@ import { InstrumentBalanceComponent } from './common/instrument-balance/instrume
     BorrowingComponent,
     SwapComponent,
     AccountAddressComponent,
-    WalletComponent,
-    WalletDepositComponent,
-    WalletWithdrawComponent,
-    WalletTransactionComponent,
+    AccountComponent,
+    AccountDepositComponent,
+    AccountWithdrawComponent,
+    AccountTransactionComponent,
     LendingCreateComponent,
     LendingEngageComponent,
     LendingPositionsComponent,

@@ -7,11 +7,11 @@ import { TransactionInitiatedDialog } from 'src/app/common/transaction-initiated
 import { UserBalanceService } from 'src/app/common/web3/user-balance.service';
 
 @Component({
-  selector: 'app-wallet-withdraw',
-  templateUrl: './wallet-withdraw.component.html',
-  styleUrls: ['./wallet-withdraw.component.scss']
+  selector: 'app-account-withdraw',
+  templateUrl: './account-withdraw.component.html',
+  styleUrls: ['./account-withdraw.component.scss']
 })
-export class WalletWithdrawComponent implements OnInit {
+export class AccountWithdrawComponent implements OnInit {
   @Input() public instrument: string;
 
   public selectedToken = 'ETH';

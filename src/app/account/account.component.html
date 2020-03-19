@@ -8,11 +8,11 @@
       </div>
     </mat-expansion-panel-header>
 
-    <app-wallet-deposit [instrument]="instrument"
+    <app-account-deposit [instrument]="instrument"
       [selectedToken]="token"
       [amount]="amount"
       [showApprove]="showApprove">
-    </app-wallet-deposit>
+    </app-account-deposit>
 
   </mat-expansion-panel>
 
@@ -24,7 +24,7 @@
       </div>
     </mat-expansion-panel-header>
 
-    <app-wallet-withdraw [instrument]="instrument"></app-wallet-withdraw>
+    <app-account-withdraw [instrument]="instrument"></app-account-withdraw>
 
   </mat-expansion-panel>
 
@@ -36,9 +36,9 @@
       </div>
     </mat-expansion-panel-header>
 
-    <app-wallet-transaction [instrument]="instrument"
+    <app-account-transaction [instrument]="instrument"
       (updatePanel)="panel = $event">
-    </app-wallet-transaction>
+    </app-account-transaction>
 
   </mat-expansion-panel>
 

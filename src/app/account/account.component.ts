@@ -3,11 +3,11 @@ import { ActivatedRoute, Data } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-wallet',
-  templateUrl: './wallet.component.html',
-  styleUrls: ['./wallet.component.scss']
+  selector: 'app-account',
+  templateUrl: './account.component.html',
+  styleUrls: ['./account.component.scss']
 })
-export class WalletComponent implements OnInit, OnDestroy {
+export class AccountComponent implements OnInit, OnDestroy {
   public instrument: string;
   public panel = 'deposit';
   public token = 'ETH';

@@ -5,7 +5,7 @@ import { BorrowingComponent } from './instrument/borrowing/borrowing.component';
 import { LendingComponent } from './instrument/lending/lending.component';
 import { SavingComponent } from './instrument/saving/saving.component';
 import { SwapComponent } from './instrument/swap/swap.component';
-import { WalletComponent } from './wallet/wallet.component';
+import { AccountComponent } from './account/account.component';
 import { LendingCreateComponent } from './instrument/lending/lending-create/lending-create.component';
 import { LendingPositionsComponent } from './instrument/lending/lending-positions/lending-positions.component';
 import { BorrowingCreateComponent } from './instrument/borrowing/borrowing-create/borrowing-create.component';
@@ -33,15 +33,15 @@ const routes: Routes = [
       {
         path: 'saving', component: SavingComponent, canActivateChild: [ CanActivateInstrument ],
         children: [
-          { path: '', redirectTo: 'wallet', pathMatch: 'full' },
-          { path: 'wallet', component: WalletComponent, data: { instrument: 'saving' } }
+          { path: '', redirectTo: 'account', pathMatch: 'full' },
+          { path: 'account', component: AccountComponent, data: { instrument: 'saving' } }
         ]
       },
       {
         path: 'lending', component: LendingComponent, canActivateChild: [ CanActivateInstrument ],
         children: [
-          { path: '', redirectTo: 'wallet', pathMatch: 'full' },
-          { path: 'wallet', component: WalletComponent, data: { instrument: 'lending' } },
+          { path: '', redirectTo: 'account', pathMatch: 'full' },
+          { path: 'account', component: AccountComponent, data: { instrument: 'lending' } },
           { path: 'create', component: LendingCreateComponent },
           { path: 'engage', component: LendingEngageComponent },
           { path: 'positions', component: LendingPositionsComponent },
@@ -51,8 +51,8 @@ const routes: Routes = [
       {
         path: 'borrowing', component: BorrowingComponent, canActivateChild: [ CanActivateInstrument ],
         children: [
-          { path: '', redirectTo: 'wallet', pathMatch: 'full' },
-          { path: 'wallet', component: WalletComponent, data: { instrument: 'borrowing' } },
+          { path: '', redirectTo: 'account', pathMatch: 'full' },
+          { path: 'account', component: AccountComponent, data: { instrument: 'borrowing' } },
           { path: 'create', component: BorrowingCreateComponent },
           { path: 'engage', component: BorrowingEngageComponent },
           { path: 'positions', component: BorrowingPositionsComponent }
@@ -61,8 +61,8 @@ const routes: Routes = [
       {
         path: 'swap', component: SwapComponent, canActivateChild: [ CanActivateInstrument ],
         children: [
-          { path: '', redirectTo: 'wallet', pathMatch: 'full' },
-          { path: 'wallet', component: WalletComponent, data: { instrument: 'swap' } },
+          { path: '', redirectTo: 'account', pathMatch: 'full' },
+          { path: 'account', component: AccountComponent, data: { instrument: 'swap' } },
           { path: 'create', component: SwapCreateComponent },
           { path: 'engage', component: SwapEngageComponent },
           { path: 'positions', component: SwapPositionsComponent }

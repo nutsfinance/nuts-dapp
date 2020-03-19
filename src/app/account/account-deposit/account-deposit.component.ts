@@ -7,11 +7,11 @@ import { TransactionInitiatedDialog } from 'src/app/common/transaction-initiated
 import { UserBalanceService } from 'src/app/common/web3/user-balance.service';
 
 @Component({
-  selector: 'app-wallet-deposit',
-  templateUrl: './wallet-deposit.component.html',
-  styleUrls: ['./wallet-deposit.component.scss']
+  selector: 'app-account-deposit',
+  templateUrl: './account-deposit.component.html',
+  styleUrls: ['./account-deposit.component.scss']
 })
-export class WalletDepositComponent implements OnInit {
+export class AccountDepositComponent implements OnInit {
   @Input() public instrument: string;
   @Input() public selectedToken = 'ETH';
   @Input() public amount: string;

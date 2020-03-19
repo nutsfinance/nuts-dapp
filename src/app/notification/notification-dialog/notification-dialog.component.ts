@@ -71,7 +71,7 @@ export class NotificationDialog implements OnInit, OnDestroy {
 
     switch (notification.type) {
       case TransactionType.APPROVE:
-        this.router.navigate([`/instrument/${instrumentName}/wallet`], {
+        this.router.navigate([`/instrument/${instrumentName}/account`], {
           queryParams: {
             panel: 'deposit',
             token: notification.metadata['tokenName'],
@@ -82,7 +82,7 @@ export class NotificationDialog implements OnInit, OnDestroy {
         break;
       case TransactionType.DEPOSIT:
       case TransactionType.WITHDRAW:
-        this.router.navigate([`/instrument/${instrumentName}/wallet`], { queryParams: { panel: 'transactions' } });
+        this.router.navigate([`/instrument/${instrumentName}/account`], { queryParams: { panel: 'transactions' } });
         break;
       case TransactionType.CREATE_OFFER:
         this.router.navigate([`/instrument/${instrumentName}/positions`], { queryParams: { tab: 'engageable' } });

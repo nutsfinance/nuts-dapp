@@ -6,11 +6,11 @@ import { InstrumentEscrowService, WalletTransaction } from '../../common/web3/in
 import { UserBalanceService } from 'src/app/common/web3/user-balance.service';
 
 @Component({
-  selector: 'app-wallet-transaction',
-  templateUrl: './wallet-transaction.component.html',
-  styleUrls: ['./wallet-transaction.component.scss']
+  selector: 'app-account-transaction',
+  templateUrl: './account-transaction.component.html',
+  styleUrls: ['./account-transaction.component.scss']
 })
-export class WalletTransactionComponent implements OnInit, OnDestroy {
+export class AccountTransactionComponent implements OnInit, OnDestroy {
   public columns: string[] = ['date', 'action', 'amount'];
   public walletTransactions: WalletTransaction[] = [];
 
