@@ -24,7 +24,6 @@ export class AccountBalanceComponent implements OnInit, OnChanges, OnDestroy {
     private userBalanceService: AccountBalanceService, private zone: NgZone) { }
 
   ngOnInit() {
-    this.updateTokenBalance();
     this.networkSubscription = this.nutsPlatformService_.currentNetworkSubject.subscribe(() => {
       // console.log('Account balance: network updated');
       this.updateTokenBalance();
@@ -46,10 +45,7 @@ export class AccountBalanceComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.selectedToken !== changes.selectedToken.currentValue) {
-      this.selectedToken = changes.selectedToken.currentValue;
-      this.updateTokenBalance();
-    }
+    this.updateTokenBalance();
   }
 
   private updateTokenBalance() {
