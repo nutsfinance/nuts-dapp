@@ -6,11 +6,11 @@ import { InstrumentEscrowService } from '../web3/instrument-escrow.service';
 import { UserBalanceService } from '../web3/user-balance.service';
 
 @Component({
-  selector: 'app-instrument-escrow-balance',
-  templateUrl: './instrument-escrow-balance.component.html',
-  styleUrls: ['./instrument-escrow-balance.component.scss']
+  selector: 'app-account-balance',
+  templateUrl: './account-balance.component.html',
+  styleUrls: ['./account-balance.component.scss']
 })
-export class InstrumentEscrowBalanceComponent implements OnInit, OnChanges, OnDestroy {
+export class AccountBalanceComponent implements OnInit, OnChanges, OnDestroy {
   @Input() public selectedToken: string;
   @Input() public instrument: string;
   @Output() public balanceUpdated = new EventEmitter<number>();

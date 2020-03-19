@@ -149,9 +149,9 @@
             [ngClass]="{'col-xs-12': true, 'hidden': collateralTokenBalance == -1 || collateralTokenBalance >= collateralValue}">
             <span style="color: red;">Insufficient balance</span>
             (<span style="color: blue;">
-                <app-instrument-escrow-balance [instrument]="'lending'" [selectedToken]="collateralToken"
+                <app-account-balance [instrument]="'lending'" [selectedToken]="collateralToken"
                     (balanceUpdated)="collateralTokenBalance = $event">
-                </app-instrument-escrow-balance>
+                </app-account-balance>
                 {{collateralToken}}
             </span> available)
             <a class="deposit-button" routerLink="/instrument/lending/wallet">Deposit</a>
@@ -172,9 +172,9 @@
             [ngClass]="{'col-xs-12': true, 'hidden': lendingTokenBalance == -1 || lendingTokenBalance >= lendingValue + totalInterestValue}">
             <span style="color: red;">Insufficient balance</span>
             (<span style="color: blue;">
-                <app-instrument-escrow-balance [instrument]="'lending'" [selectedToken]="lendingToken"
+                <app-account-balance [instrument]="'lending'" [selectedToken]="lendingToken"
                     (balanceUpdated)="lendingTokenBalance = $event">
-                </app-instrument-escrow-balance>
+                </app-account-balance>
                 {{lendingToken}}
             </span> available)
             <a class="deposit-button" routerLink="/instrument/lending/wallet">Deposit</a>

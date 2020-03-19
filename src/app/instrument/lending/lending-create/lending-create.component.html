@@ -40,9 +40,9 @@
         </div>
         <div class="balance-content">
           Lending Account Balance:
-          <app-instrument-escrow-balance [instrument]="'lending'" [selectedToken]="principalToken"
+          <app-account-balance [instrument]="'lending'" [selectedToken]="principalToken"
             (balanceUpdated)="principalTokenBalance = $event">
-          </app-instrument-escrow-balance>
+          </app-account-balance>
           {{principalToken}}
         </div>
       </div>

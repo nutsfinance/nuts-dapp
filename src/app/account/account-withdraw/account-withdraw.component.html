@@ -34,8 +34,8 @@
         <img src="../../../../assets/images/account-balance.png" class="balance-icon">
         <span class="balance-content">
           Account Balance:
-          <app-instrument-escrow-balance [instrument]="instrument" [selectedToken]="selectedToken"
-            (balanceUpdated)="instrumentEscrowBalance = $event"></app-instrument-escrow-balance>
+          <app-account-balance [instrument]="instrument" [selectedToken]="selectedToken"
+            (balanceUpdated)="instrumentEscrowBalance = $event"></app-account-balance>
           {{selectedToken}}
         </span>
       </div>

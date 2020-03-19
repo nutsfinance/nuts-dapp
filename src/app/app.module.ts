@@ -12,7 +12,7 @@ import { WalletBalanceComponent } from './common/wallet-balance/wallet-balance.c
 import { BlockTimestampComponent } from './common/block-timestamp/block-timestamp.component';
 import { CurrencySelectSheetComponent } from './common/currency-select/currency-select-sheet.component';
 import { CurrencySelectComponent } from './common/currency-select/currency-select.component';
-import { InstrumentEscrowBalanceComponent } from './common/instrument-escrow-balance/instrument-escrow-balance.component';
+import { AccountBalanceComponent } from './common/account-balance/account-balance.component';
 import { NetworkToolbarComponent } from './common/network-toolbar/network-toolbar.component';
 import { TokenSelectSheetComponent } from './common/token-select/token-select-sheet.component';
 import { TokenSelectComponent } from './common/token-select/token-select.component';
@@ -76,7 +76,7 @@ import { InstrumentBalanceComponent } from './common/instrument-balance/instrume
     DashboardAccountBalanceComponent,
     DashboardPositionBalanceComponent,
     WalletBalanceComponent,
-    InstrumentEscrowBalanceComponent,
+    AccountBalanceComponent,
     LanguageSelectSheet,
     NotificationSnackBar,
     BlockTimestampComponent,
