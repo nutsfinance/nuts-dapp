@@ -4,6 +4,8 @@ import { CurrencyService } from '../currency-select/currency.service';
 import { PriceOracleService } from '../web3/price-oracle.service';
 import { USD_ADDRESS, CNY_ADDRESS, NutsPlatformService } from '../web3/nuts-platform.service';
 import { Subscription } from 'rxjs';
+import { MatDialog } from '@angular/material';
+import { AccountBalanceDialog } from './account-balance-doalog.component';
 
 @Component({
   selector: 'app-account-total-balance',
@@ -19,7 +21,8 @@ export class AccountTotalBalanceComponent implements OnInit, OnDestroy {
   private currencySubscription: Subscription;
 
   constructor(private nutsPlatformSevice: NutsPlatformService, private accountBalanceService: AccountBalanceService,
-    public currencyService: CurrencyService, private priceOracleService: PriceOracleService, private zone: NgZone) { }
+    public currencyService: CurrencyService, private priceOracleService: PriceOracleService, private zone: NgZone,
+    private dialog: MatDialog) { }
 
   ngOnInit() {
     this.instrumentName = this.instrument.charAt(0).toUpperCase() + this.instrument.substring(1);
@@ -36,6 +39,15 @@ export class AccountTotalBalanceComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.accountBalancesSubscription.unsubscribe();
     this.currencySubscription.unsubscribe();
+  }
+
+  openDialog() {
+    this.dialog.open(AccountBalanceDialog, {
+      width: '90%',
+      data: {
+        instrument: this.instrument
+      }
+    });
   }
 
   private async getInstrumentAccountBalance() {

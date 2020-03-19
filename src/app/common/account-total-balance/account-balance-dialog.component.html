@@ -1,0 +1,22 @@
+<div class="row">
+    <div class="col-xs-9">
+        <p class="dashboard-label">{{instrumentName}} Account Balance</p>
+        <p class="dashboard-value">{{ currencyService.getCurrencySymbol() }} {{totalValue | number: '1.0-2' }}</p>
+    </div>
+    <div class="col-xs-3 dialog-action">
+        <button mat-icon-button aria-label="Close notification dialog" mat-dialog-close>
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <canvas baseChart 
+            [data]="assetChartData" 
+            [labels]="assetChartLabels" 
+            [chartType]="'doughnut'"
+            [options]="assetChartOptions"
+            [colors]="assetChartColors">
+        </canvas>
+    </div>
+</div>

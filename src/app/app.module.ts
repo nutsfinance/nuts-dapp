@@ -45,6 +45,8 @@ import { NotificationComponent } from './notification/notification.component';
 import { TransactionInitiatedDialog } from './common/transaction-initiated-dialog/transaction-initiated-dialog.component';
 import { CanActivateInstrument } from './instrument/instrument-routing-guard.service';
 import { AccountTotalBalanceComponent } from './common/account-total-balance/account-total-balance.component';
+import { AccountBalanceDialog } from './common/account-total-balance/account-balance-doalog.component';
+
 
 @NgModule({
   declarations: [
@@ -88,6 +90,7 @@ import { AccountTotalBalanceComponent } from './common/account-total-balance/acc
     NotificationDialog,
     TransactionInitiatedDialog,
     AccountTotalBalanceComponent,
+    AccountBalanceDialog,
     IncorrectNetworkDialog,
     DisconnectedDialog,
   ],
@@ -100,6 +103,7 @@ import { AccountTotalBalanceComponent } from './common/account-total-balance/acc
     TransactionInitiatedDialog,
     IncorrectNetworkDialog,
     DisconnectedDialog,
+    AccountBalanceDialog,
   ],
   imports: [
     BrowserModule,

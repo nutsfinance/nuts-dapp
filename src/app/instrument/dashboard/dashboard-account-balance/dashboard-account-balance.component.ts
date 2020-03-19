@@ -103,12 +103,12 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
   private accountBalancesSubscription: Subscription;
   private currencySubscription: Subscription;
 
-  constructor(private userBalanceService: AccountBalanceService, private priceOracleService: PriceOracleService,
+  constructor(private accountBalanceService: AccountBalanceService, private priceOracleService: PriceOracleService,
     private nutsPlatformService: NutsPlatformService, public currencyService: CurrencyService, private zone: NgZone) { }
 
   ngOnInit() {
-    this.updateAccountBalances(this.userBalanceService.accountBalances);
-    this.accountBalancesSubscription = this.userBalanceService.accountBalancesSubject.subscribe(accountBalances => {
+    this.updateAccountBalances(this.accountBalanceService.accountBalances);
+    this.accountBalancesSubscription = this.accountBalanceService.accountBalancesSubject.subscribe(accountBalances => {
       this.zone.run(() => {
         console.log('Dashboard: Account balances updated', accountBalances);
         this.updateAccountBalances(accountBalances);
@@ -116,7 +116,7 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
     });
     this.currencySubscription = this.currencyService.currencyUpdatedSubject.subscribe(_ => {
       this.zone.run(() => {
-        this.updateAccountBalances(this.userBalanceService.accountBalances);
+        this.updateAccountBalances(this.accountBalanceService.accountBalances);
       });
     });
   }
