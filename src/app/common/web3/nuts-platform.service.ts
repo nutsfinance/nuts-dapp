@@ -184,9 +184,8 @@ export class NutsPlatformService {
   public web3: any;
   public currentAccount: string;
   public currentAccountSubject = new Subject<string>();
-  public currentNetwork: number;
-  public currentNetworkSubject = new Subject<number>();
-  public currentNetworkRaw;
+  public currentNetwork: string;
+  public currentNetworkSubject = new Subject<string>();
   public platformInitializedSubject = new Subject<boolean>();
 
   public transactionSentSubject = new Subject<string>();
@@ -207,7 +206,7 @@ export class NutsPlatformService {
   }
 
   public isNetworkValid(): boolean {
-    return this.currentNetwork === 1 || this.currentNetwork === 4 || this.currentNetwork === 42;
+    return this.currentNetwork === '1' || this.currentNetwork === '4' || this.currentNetwork === '42';
   }
 
   public isFullyLoaded(): boolean {
@@ -381,8 +380,21 @@ export class NutsPlatformService {
     this.platformInitializedSubject.next(true);
 
     // try {
-    //   this.handleNetworkChanged(await ethereum.send('eth_chainId'));
-    //   this.handleAccountChanged(await ethereum.send('eth_accounts'));
+    //   console.log(await ethereum.send('eth_chainId'));
+    // } catch (error) {
+    //   console.error(error);
+    //   // Access control error
+    // }
+
+    // try {
+    //   console.log(await ethereum.send('eth_requestAccounts'));
+    // } catch (error) {
+    //   console.error(error);
+    //   // Access control error
+    // }
+
+    // try {
+    //   console.log(await ethereum.send('eth_accounts'));
     // } catch (error) {
     //   console.error(error);
     //   // Access control error
@@ -406,10 +418,9 @@ export class NutsPlatformService {
 
   private handleNetworkChanged(network) {
     console.log('Network changed', network);
-    this.currentNetworkRaw = network;
-    if (network != this.currentNetwork) {
-      this.currentNetwork = Number(network);
-      this.currentNetworkSubject.next(Number(network));
+    if (network !== this.currentNetwork) {
+      this.currentNetwork = network;
+      this.currentNetworkSubject.next(network);
       console.log('Network updated', this.currentNetwork);
     }
   }

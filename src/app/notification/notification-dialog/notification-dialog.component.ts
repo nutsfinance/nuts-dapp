@@ -40,13 +40,13 @@ export class NotificationDialog implements OnInit, OnDestroy {
 
   getEtherscanLink(transactionHash: string): string {
     switch(this.nutsPlatformService.currentNetwork) {
-      case 1:
+      case '1':
         return `https://etherscan.io/tx/${transactionHash}`;
-      case 3:
+      case '3':
         return `https://ropsten.etherscan.io/tx/${transactionHash}`;
-      case 4:
+      case '4':
         return `https://rinkeby.etherscan.io/tx/${transactionHash}`;
-      case 42:
+      case '42':
         return `https://kovan.etherscan.io/tx/${transactionHash}`;
       default:
         return '';

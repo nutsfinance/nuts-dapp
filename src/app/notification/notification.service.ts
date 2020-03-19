@@ -108,13 +108,13 @@ export class NotificationService {
    */
   private updateApiServerHost(currentNetwork) {
     switch(currentNetwork) {
-      case 1:
+      case '1':
         this.apiServerHost = 'https://main-api.dapp.finance';
         break;
-      case 4:
+      case '4':
         this.apiServerHost = 'https://rinkeby-api.dapp.finance';
         break;
-      case 42:
+      case '42':
         this.apiServerHost = 'https://kovan-api.dapp.finance';
         break;
       default:

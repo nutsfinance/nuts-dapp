@@ -1,12 +1,12 @@
-<div *ngIf="account && network > 1" class="network-toolbar" [ngSwitch]="network">
-    <div class="network-content info" *ngSwitchCase="4">
+<div *ngIf="account && network != '1'" class="network-toolbar" [ngSwitch]="network">
+    <div class="network-content info" *ngSwitchCase="'4'">
         You are currently connected to the Rinkeby Network.
     </div>
-    <div class="network-content info" *ngSwitchCase="42">
+    <div class="network-content info" *ngSwitchCase="'42'">
         You are currently connected to the Kovan Network.
     </div>
     <div class="network-content warning" *ngSwitchDefault>
-        You are connected to an unsupported network.
+        You are connected to an unsupported network({{network}}).
     </div>
 </div>
 <div *ngIf="!account" class="network-toolbar offline">
