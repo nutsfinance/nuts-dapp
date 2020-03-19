@@ -15,11 +15,11 @@
 }
 .position-header {
   font-family: "GillSans", Helvetica, Arial, serif;
-  font-size: 16px;
+  font-size: 14px;
 }
 .position-content {
   font-family: "GillSans-Light", Helvetica, Arial, serif;
-  font-size: 12px;
+  font-size: 11px;
 }
 .position-status {
   word-break: break-all;
@@ -29,9 +29,13 @@
   font-size: 18px;
   padding-right: 2px;
 }
+.close-button,
+.repay-button {
+  font-size: 12px;
+  margin-left: 10px;
+}
 .repay-button {
   color: white;
-  margin-left: 10px;
 }
 .no-position-container {
   text-align: center;
