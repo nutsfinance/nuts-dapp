@@ -6,11 +6,11 @@ import { USD_ADDRESS, CNY_ADDRESS, NutsPlatformService } from '../web3/nuts-plat
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-instrument-balance',
-  templateUrl: './instrument-balance.component.html',
-  styleUrls: ['./instrument-balance.component.scss']
+  selector: 'app-account-total-balance',
+  templateUrl: './account-total-balance.component.html',
+  styleUrls: ['./account-total-balance.component.scss']
 })
-export class InstrumentBalanceComponent implements OnInit, OnDestroy {
+export class AccountTotalBalanceComponent implements OnInit, OnDestroy {
   @Input() instrument = '';
   public instrumentName = '';
   public instrumentBalance: Promise<Number>;
