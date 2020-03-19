@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Input, NgZone } from '@angular/core';
-import { UserBalanceService } from '../web3/user-balance.service';
+import { AccountBalanceService } from '../web3/account-balance.service';
 import { CurrencyService } from '../currency-select/currency.service';
 import { PriceOracleService } from '../web3/price-oracle.service';
 import { USD_ADDRESS, CNY_ADDRESS, NutsPlatformService } from '../web3/nuts-platform.service';
@@ -18,7 +18,7 @@ export class AccountTotalBalanceComponent implements OnInit, OnDestroy {
   private userBalanceSubscription: Subscription;
   private currencySubscription: Subscription;
 
-  constructor(private nutsPlatformSevice: NutsPlatformService, private userBalanceService: UserBalanceService,
+  constructor(private nutsPlatformSevice: NutsPlatformService, private userBalanceService: AccountBalanceService,
     public currencyService: CurrencyService, private priceOracleService: PriceOracleService, private zone: NgZone) { }
 
   ngOnInit() {

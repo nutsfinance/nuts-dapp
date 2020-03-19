@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 
 import { NutsPlatformService } from '../../common/web3/nuts-platform.service';
 import { InstrumentEscrowService, WalletTransaction } from '../../common/web3/instrument-escrow.service';
-import { UserBalanceService } from 'src/app/common/web3/user-balance.service';
+import { AccountBalanceService } from 'src/app/common/web3/account-balance.service';
 
 @Component({
   selector: 'app-account-transaction',
@@ -22,7 +22,7 @@ export class AccountTransactionComponent implements OnInit, OnDestroy {
   private userBalanceSubscription: Subscription;
 
   constructor(private nutsPlatformService: NutsPlatformService, private instrumentEscrowService: InstrumentEscrowService,
-      private userBalanceService: UserBalanceService, private zone: NgZone) { }
+      private userBalanceService: AccountBalanceService, private zone: NgZone) { }
 
   ngOnInit() {
     this.instrumentEscrowService.getWalletTransactions(this.instrument).then((transactions) => {

@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material';
 import { InstrumentEscrowService } from '../../common/web3/instrument-escrow.service';
 import { FSP_NAME, NutsPlatformService } from '../../common/web3/nuts-platform.service';
 import { TransactionInitiatedDialog } from 'src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component';
-import { UserBalanceService } from 'src/app/common/web3/user-balance.service';
+import { AccountBalanceService } from 'src/app/common/web3/account-balance.service';
 
 @Component({
   selector: 'app-account-deposit',
@@ -24,7 +24,7 @@ export class AccountDepositComponent implements OnInit {
   @ViewChild('form', { static: true }) private form: NgForm;
   
   constructor(private dialog: MatDialog, private zone: NgZone,
-    private nutsPlatformService: NutsPlatformService, private userBalanceService: UserBalanceService,
+    private nutsPlatformService: NutsPlatformService, private userBalanceService: AccountBalanceService,
     private instrumentEscrowService: InstrumentEscrowService) { }
 
   ngOnInit() {

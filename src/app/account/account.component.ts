@@ -30,7 +30,6 @@ export class AccountComponent implements OnInit, OnDestroy {
       this.instrument = data['instrument'];
     });
     this.routeParamSubscription = this.route.queryParams.subscribe(queryParams => {
-      console.log(queryParams);
       this.panel = queryParams['panel'] || 'deposit';
       this.token = queryParams['token'] || 'ETH';
       this.amount = queryParams['amount'] || '';

@@ -22,9 +22,9 @@ export interface InstrumentBalance {
 @Injectable({
   providedIn: 'root'
 })
-export class UserBalanceService {
+export class AccountBalanceService {
   public userBalance: UserBalance = {};
-  public userBalanceSubject: Subject<UserBalance> = new BehaviorSubject({});
+  public userBalanceSubject: Subject<UserBalance> = new Subject();
 
   constructor(private nutsPlatformService: NutsPlatformService) {
     // We don't initialize the user balance until the platform is initialized!

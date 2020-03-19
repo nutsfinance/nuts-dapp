@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { MultiDataSet, Label } from 'ng2-charts';
-import { UserBalanceService, UserBalance } from 'src/app/common/web3/user-balance.service';
+import { AccountBalanceService, UserBalance } from 'src/app/common/web3/account-balance.service';
 import { Subscription } from 'rxjs';
 import { PriceOracleService } from 'src/app/common/web3/price-oracle.service';
 import { NutsPlatformService, USD_ADDRESS, CNY_ADDRESS } from 'src/app/common/web3/nuts-platform.service';
@@ -103,7 +103,7 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
   private userBalanceSubscription: Subscription;
   private currencySubscription: Subscription;
 
-  constructor(private userBalanceService: UserBalanceService, private priceOracleService: PriceOracleService,
+  constructor(private userBalanceService: AccountBalanceService, private priceOracleService: PriceOracleService,
     private nutsPlatformService: NutsPlatformService, public currencyService: CurrencyService, private zone: NgZone) { }
 
   ngOnInit() {

@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, OnChanges, S
 import { NutsPlatformService } from '../web3/nuts-platform.service';
 
 import { Subscription } from 'rxjs';
-import { UserBalanceService } from '../web3/user-balance.service';
+import { AccountBalanceService } from '../web3/account-balance.service';
 
 @Component({
   selector: 'app-wallet-balance',
@@ -18,7 +18,7 @@ export class WalletBalanceComponent implements OnInit, OnDestroy, OnChanges {
   private accountSubscription: Subscription;
   private userBalanceSubscription: Subscription;
 
-  constructor(private nutsPlatformService_: NutsPlatformService, private userBalanceService: UserBalanceService,
+  constructor(private nutsPlatformService_: NutsPlatformService, private userBalanceService: AccountBalanceService,
     private zone: NgZone) { }
 
   ngOnInit() {
