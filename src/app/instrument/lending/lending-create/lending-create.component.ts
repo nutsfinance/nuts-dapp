@@ -38,11 +38,10 @@ export class LendingCreateComponent implements OnInit {
       'collateralRatio': new FormControl('', this.validCollateralRatio),
       'interestRate': new FormControl('', this.validInterestRate),
     });
-  }
-
-  onPrincipalAmountUpdated() {
-    this.collateralValue = this.getCollateralValue();
-    this.interestValue = this.getInterestValue();
+    this.createFormGroup.valueChanges.subscribe(_ => {
+      this.collateralValue = this.getCollateralValue();
+      this.interestValue = this.getInterestValue();
+    });
   }
 
   onPrincipalTokenSelected(token: string) {
@@ -51,36 +50,35 @@ export class LendingCreateComponent implements OnInit {
     this.createFormGroup.controls['principalAmount'].reset();
     // Update collaterals
     this.collateralToken = token === this.tokens[0] ? this.tokens[1] : this.tokens[0];
-    this.collateralValue = this.getCollateralValue();
+    // this.collateralValue = this.getCollateralValue();
   }
 
   onTenorChange(tenorChange: MatButtonToggleChange) {
     this.createFormGroup.patchValue({ 'tenor': tenorChange.value });
-    this.interestValue = this.getInterestValue();
+    // this.interestValue = this.getInterestValue();
   }
 
   onCollateralTokenSelected(token: string) {
     this.collateralToken = token;
     this.createFormGroup.controls['collateralRatio'].reset();
-    this.collateralValue = this.getCollateralValue();
+    // this.collateralValue = this.getCollateralValue();
   }
 
   onCollateralRatioChange(collateralRatioChange: MatButtonToggleChange) {
     this.createFormGroup.patchValue({ 'collateralRatio': collateralRatioChange.value });
-    this.collateralValue = this.getCollateralValue();
+    // this.collateralValue = this.getCollateralValue();
   }
 
   onInterestRateChange(interestRateChange: MatButtonToggleChange) {
     this.createFormGroup.patchValue({ 'interestRate': interestRateChange.value });
-    this.interestValue = this.getInterestValue();
-    console.log(this.interestValue);
+    // this.interestValue = this.getInterestValue();
+    // console.log(this.interestValue);
   }
 
   async getCollateralValue() {
     const principalTokenAddress = this.nutsPlatformService.getTokenAddressByName(this.principalToken);
     const collateralTokenAddress = this.nutsPlatformService.getTokenAddressByName(this.collateralToken);
     const result = await this.priceOracleSercvice.getPrice(collateralTokenAddress, principalTokenAddress);
-    console.log('Collateral rate', result);
     return this.createFormGroup.value['principalAmount'] * this.createFormGroup.value['collateralRatio'] * result[1] / (result[0] * 100);
   }
 
