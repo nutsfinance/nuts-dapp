@@ -4,6 +4,12 @@ $input-height: 48px;
   padding-top: 10px;
 }
 
+.field-row {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
 .input-label {
   font-family: "GillSans", Helvetica, Arial, serif;
   font-size: 16.0px;
@@ -13,7 +19,7 @@ $input-height: 48px;
 }
 
 .amount-input {
-  width: 100%;
+  width: 60%;
   height: 60px;
 }
 
@@ -28,32 +34,29 @@ $input-height: 48px;
   font-weight: 600;
 }
 
-.balance-content {
+.balance-content,
+.alternative-content,
+.hint-content {
   font-family: "GillSans-Light", Helvetica, Arial, serif;
-  font-size: 16px;
+  font-size: 15px;
+  font-weight: 300;
   color: rgba(155, 154, 155, 1.0);
 }
 
-.tenor-input {
+.toggle-input {
   margin-top: 6px;
   margin-bottom: 10px;
   height: $input-height;
 }
 
 .alternative-content {
-  font-family: "GillSans-Light", Helvetica, Arial, serif;
-  font-size: 16px;
-  color: rgba(155, 154, 155, 1.0);
   text-decoration: underline;
   cursor: pointer;
 }
 
 .hint-content {
-  font-family: "GillSans-Light", Helvetica, Arial, serif;
-  font-size: 16px;
-  color: rgba(155, 154, 155, 1.0);
   display: inline-block;
-  margin-left: 15px;
+  margin-left: 10px;
 }
 
 .create-button-wrapper {

@@ -1,6 +1,11 @@
 .create-card {
   padding-top: 10px;
 }
+.field-row {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
 .input-label {
   font-family: "GillSans", Helvetica, Arial, serif;
   font-size: 16px;
@@ -9,7 +14,7 @@
   margin-top: 20px;
 }
 .amount-input {
-  width: 100%;
+  width: 60%;
   height: 60px;
 }
 .error-content {
@@ -21,29 +26,26 @@
   text-decoration: underline;
   font-weight: 600;
 }
-.balance-content {
+.balance-content,
+.alternative-content,
+.hint-content {
   font-family: "GillSans-Light", Helvetica, Arial, serif;
-  font-size: 16px;
+  font-size: 15px;
+  font-weight: 300;
   color: #9b9a9b;
 }
-.tenor-input {
+.toggle-input {
   margin-top: 6px;
   margin-bottom: 10px;
   height: 48px;
 }
 .alternative-content {
-  font-family: "GillSans-Light", Helvetica, Arial, serif;
-  font-size: 16px;
-  color: #9b9a9b;
   text-decoration: underline;
   cursor: pointer;
 }
 .hint-content {
-  font-family: "GillSans-Light", Helvetica, Arial, serif;
-  font-size: 16px;
-  color: #9b9a9b;
   display: inline-block;
-  margin-left: 15px;
+  margin-left: 10px;
 }
 .create-button-wrapper {
   width: 100%;

@@ -10,12 +10,10 @@
     </div>
 
     <div class="row">
-      <div class="col-xs-8">
+      <div class="col-xs-12 field-row">
         <mat-form-field appearance="outline" class="amount-input">
           <input matInput type="number" placeholder="Amount" formControlName="principalAmount">
         </mat-form-field>
-      </div>
-      <div class="col-xs-4">
         <app-token-select [selectedToken]="principalToken" (tokenSelected)="onPrincipalTokenSelected($event)">
         </app-token-select>
       </div>
@@ -56,7 +54,7 @@
 
     <div class="row">
       <div class="col-xs-8">
-        <mat-button-toggle-group class="tenor-input" [value]="createFormGroup.value['tenor']" (change)="onTenorChange($event)">
+        <mat-button-toggle-group class="toggle-input" [value]="createFormGroup.value['tenor']" (change)="onTenorChange($event)">
           <mat-button-toggle value="15">15D</mat-button-toggle>
           <mat-button-toggle value="30">30D</mat-button-toggle>
           <mat-button-toggle value="45">45D</mat-button-toggle>
@@ -71,7 +69,7 @@
           Enter a different amount.
         </span>
         <mat-form-field appearance="outline" class="amount-input" *ngIf="showAlternativeTenor">
-          <input matInput placeholder="2 ~ 90 Days" formControlName="tenor">
+          <input matInput type="number" placeholder="2 ~ 90 Days" formControlName="tenor">
         </mat-form-field>
       </div>
     </div>
@@ -93,28 +91,26 @@
     </div>
 
     <div class="row">
-      <div class="col-xs-8">
-        <mat-button-toggle-group class="tenor-input" [value]="createFormGroup.value['collateralRatio']"
+      <div class="col-xs-12 field-row">
+        <mat-button-toggle-group class="toggle-input" [value]="createFormGroup.value['collateralRatio']"
           (change)="onCollateralRatioChange($event)">
           <mat-button-toggle value="50">50%</mat-button-toggle>
           <mat-button-toggle value="100">100%</mat-button-toggle>
           <mat-button-toggle value="150">150%</mat-button-toggle>
           <mat-button-toggle value="200">200%</mat-button-toggle>
         </mat-button-toggle-group>
-      </div>
-      <div class="col-xs-4">
         <app-token-select [selectedToken]="collateralToken" [excludedTokens]="[principalToken]" (tokenSelected)="onCollateralTokenSelected($event)">
         </app-token-select>
       </div>
     </div>
 
     <div class="row">
-      <div class="col-xs-8">
+      <div class="col-xs-12">
         <span class="alternative-content" *ngIf="!showAlternativeColleral" (click)="showAlternativeColleral = true">
           Enter a different amount.
         </span>
         <mat-form-field appearance="outline" class="amount-input" *ngIf="showAlternativeColleral">
-          <input matInput placeholder="50 ~ 200" formControlName="collateralRatio">
+          <input matInput step="10" placeholder="50 ~ 200" formControlName="collateralRatio">
           <span matSuffix>%</span>
         </mat-form-field>
       </div>
@@ -146,14 +142,14 @@
 
     <div class="row">
       <div class="col-xs-12">
-        <mat-button-toggle-group class="tenor-input" [value]="createFormGroup.value['interestRate']" (change)="onInterestRateChange($event)">
-          <mat-button-toggle value="0.010">0.010</mat-button-toggle>
-          <mat-button-toggle value="0.020">0.020</mat-button-toggle>
-          <mat-button-toggle value="0.030">0.030</mat-button-toggle>
-          <mat-button-toggle value="0.040">0.040</mat-button-toggle>
+        <mat-button-toggle-group class="toggle-input" [value]="createFormGroup.value['interestRate']" (change)="onInterestRateChange($event)">
+          <mat-button-toggle value="0.010">0.010%</mat-button-toggle>
+          <mat-button-toggle value="0.020">0.020%</mat-button-toggle>
+          <mat-button-toggle value="0.030">0.030%</mat-button-toggle>
+          <mat-button-toggle value="0.040">0.040%</mat-button-toggle>
         </mat-button-toggle-group>
         <span class="hint-content">
-          % per day.
+          per day
         </span>
       </div>
     </div>
@@ -165,6 +161,7 @@
         </span>
         <mat-form-field appearance="outline" class="amount-input" *ngIf="showAlternativeInterest">
           <input matInput placeholder="0.010 ~ 5.000" formControlName="interestRate">
+          <span matSuffix>%</span>
         </mat-form-field>
       </div>
     </div>

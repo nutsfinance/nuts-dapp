@@ -65,7 +65,7 @@
   <!-- Action Column -->
   <ng-container matColumnDef="action">
     <mat-header-cell *matHeaderCellDef class="position-header"> </mat-header-cell>
-    <mat-cell *matCellDef="let position" class="position-content">
+    <mat-cell *matCellDef="let position" class="position-content position-action">
       <a mat-stroked-button color="primary" class="close-button"
         routerLink="/instrument/lending/{{position.issuanceId}}" *ngIf="position.action == 'close'">Close</a>
       <a mat-raised-button color="primary" class="repay-button" routerLink="/instrument/lending/{{position.issuanceId}}"
