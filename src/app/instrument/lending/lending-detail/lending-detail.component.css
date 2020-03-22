@@ -99,9 +99,15 @@
 .transaction-content {
   padding: 0 5px;
 }
+.transaction-action {
+  font-size: 12px;
+}
 .transaction-from-to {
   display: flex;
   justify-content: space-around;
+}
+.transaction-amount {
+  font-size: 11px;
 }
 .transaction-direction {
   font-size: larger;

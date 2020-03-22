@@ -205,6 +205,7 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
           this.lendingValue * this.issuance.interestRate * this.issuance.tenorDays, 1000000);
 
         this.instrumentService.getIssuanceTransactions('lending', this.issuance).then((transactions) => {
+          console.log('Transactions', transactions);
           this.transactions = transactions;
         });
       }

@@ -236,6 +236,7 @@ export class InstrumentService {
     const transactions: IssuanceTransaction[] = [];
     tokenTransferEvents.forEach((event) => {
       if (event.returnValues.issuanceId == issuance.issuanceId) {
+        console.log(event);
         const [fromWallet, toWallet] = this.getTransactionWallet(event.returnValues.transferType, issuance);
         transactions.push({
           action: this.nutsPlatformService.web3.utils.toAscii(event.returnValues.action),
@@ -244,7 +245,7 @@ export class InstrumentService {
           toWallet: toWallet,
           toRole: this.getTransactionRole(event.returnValues.toAddress, issuance),
           token: this.nutsPlatformService.getTokenNameByAddress(event.returnValues.tokenAddress),
-          amount: this.nutsPlatformService.web3.utils.fromWei(event.returnValues.amount, 'ether'),
+          amount: this.nutsPlatformService.getTokenValueByAddress(event.returnValues.tokenAddress, event.returnValues.amount),
           blockNumber: event.blockNumber,
         });
       }
