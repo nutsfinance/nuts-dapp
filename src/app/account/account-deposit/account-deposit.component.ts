@@ -17,6 +17,7 @@ export class AccountDepositComponent implements OnInit {
   @Input() public amount: string;
   @Input() public showApprove = false;
 
+  public instrumentName = '';
   public accountBalance: number;
   public amountControl: FormControl;
   public depositFormGroup: FormGroup;
@@ -28,6 +29,7 @@ export class AccountDepositComponent implements OnInit {
     private instrumentEscrowService: AccountService) { }
 
   ngOnInit() {
+    this.instrumentName = this.instrument.charAt(0).toUpperCase() + this.instrument.substring(1);
     this.amountControl = new FormControl(this.amount, this.validBalance.bind(this));
     this.depositFormGroup = new FormGroup({ amount: this.amountControl });
   }

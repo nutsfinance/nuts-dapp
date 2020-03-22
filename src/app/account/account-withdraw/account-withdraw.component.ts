@@ -14,6 +14,7 @@ import { AccountBalanceService } from 'src/app/common/web3/account-balance.servi
 export class AccountWithdrawComponent implements OnInit {
   @Input() public instrument: string;
 
+  public instrumentName = '';
   public selectedToken = 'ETH';
   public instrumentEscrowBalance: number;
   public amountControl: FormControl;
@@ -26,6 +27,7 @@ export class AccountWithdrawComponent implements OnInit {
     private instrumentEscrowService: AccountService) { }
 
   ngOnInit() {
+    this.instrumentName = this.instrument.charAt(0).toUpperCase() + this.instrument.substring(1);
     this.amountControl = new FormControl('', this.validBalance.bind(this));
     this.withdrawForm = new FormGroup({ amount: this.amountControl });
   }
