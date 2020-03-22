@@ -1,9 +1,10 @@
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, NgZone } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, NgZone, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { NutsPlatformService } from '../../common/web3/nuts-platform.service';
 import { AccountService, AccountTransaction } from '../../common/web3/account.service';
 import { AccountBalanceService } from 'src/app/common/web3/account-balance.service';
+import { MatPaginator, MatTableDataSource } from '@angular/material';
 
 @Component({
   selector: 'app-account-transaction',
@@ -13,9 +14,11 @@ import { AccountBalanceService } from 'src/app/common/web3/account-balance.servi
 export class AccountTransactionComponent implements OnInit, OnDestroy {
   public columns: string[] = ['date', 'action', 'amount'];
   public accountTransactions: AccountTransaction[] = [];
+  public dataSource = new MatTableDataSource<AccountTransaction>([]);
 
   @Input() private instrument: string;
   @Output() private updatePanel = new EventEmitter<string>();
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
   private networkSubscription: Subscription;
   private accountSubscription: Subscription;
@@ -25,6 +28,7 @@ export class AccountTransactionComponent implements OnInit, OnDestroy {
       private accountBalanceService: AccountBalanceService, private zone: NgZone) { }
 
   ngOnInit() {
+    this.dataSource.paginator = this.paginator;
     this.updateAccountTransactions();
     this.networkSubscription = this.nutsPlatformService.currentNetworkSubject.subscribe(() => {
       this.updateAccountTransactions();
@@ -54,7 +58,9 @@ export class AccountTransactionComponent implements OnInit, OnDestroy {
     const transactions = await this.accountService.getAccountTransactions(this.instrument);
     console.log('Transactions', transactions);
     this.zone.run(() => {
-      this.accountTransactions = transactions;
+      this.accountTransactions = transactions.sort((t1, t2) => t2.blockNumber - t1.blockNumber);;
+      this.dataSource = new MatTableDataSource<AccountTransaction>(this.accountTransactions);
+      this.dataSource.paginator = this.paginator;
     });
     console.log('Account transactions updated', transactions);
   }

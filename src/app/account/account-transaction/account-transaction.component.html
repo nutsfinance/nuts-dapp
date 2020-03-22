@@ -1,4 +1,4 @@
-<table mat-table [dataSource]="accountTransactions" class="transaction-table" *ngIf="accountTransactions.length > 0">
+<table mat-table [dataSource]="dataSource" class="transaction-table" *ngIf="accountTransactions.length > 0">
 
     <!--- Note that these columns can be defined in any order.
           The actual rendered columns are set as a property on the row definition" -->
@@ -23,7 +23,10 @@
   
     <tr mat-header-row *matHeaderRowDef="columns"></tr>
     <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+
   </table>
+
+  <mat-paginator [pageSize]="10" hidePageSize></mat-paginator>
 
   <div class="no-transaction-container" *ngIf="accountTransactions.length == 0">
     <p class="no-transaction-title">There is currently no transaction history.</p>
