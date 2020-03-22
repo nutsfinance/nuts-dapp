@@ -35,7 +35,7 @@
         <div class="content-container">
             <div class="content-label">Principal</div>
             <div class="content-sublabel">lending</div>
-            <div class="content-value">{{lendingValue}} {{lendingToken}}</div>
+            <div class="content-value">{{lendingValue | number: '1.0-4'}} {{lendingToken}}</div>
         </div>
         <div class="content-container">
             <div class="content-label">Collateral</div>
@@ -47,9 +47,9 @@
         <div class="content-container">
             <div class="content-label">Interest</div>
             <div class="content-sublabel">per day</div>
-            <div class="content-value">{{ lendingValue * issuance.interestRate / 1000000 }} {{lendingToken}}</div>
+            <div class="content-value">{{ (lendingValue * issuance.interestRate / 1000000) | number: '1.0-6' }} {{lendingToken}}</div>
             <div class="content-sublabel">total</div>
-            <div class="content-value">{{ lendingValue * issuance.interestRate * issuance.tenorDays / 1000000 }} {{lendingToken}}</div>
+            <div class="content-value">{{ (lendingValue * issuance.interestRate * issuance.tenorDays / 1000000)  | number: '1.0-4' }} {{lendingToken}}</div>
         </div>
     </div>
     <div class="issuance-card-more-content"  *ngIf="showMore">
@@ -61,15 +61,15 @@
             </div>
             <div class="content-container">
                 <div class="content-sublabel">required</div>
-                <div class="content-value">{{currencyService.getCurrencySymbol()}} {{ convertedCollateralValue | async | number: '1.0-4' }}</div>
+                <div class="content-value">{{currencyService.getCurrencySymbol()}} {{ convertedCollateralValue | async | number: '1.0-2' }}</div>
                 <div class="content-sublabel">ratio</div>
                 <div class="content-value">{{ issuance.collateralRatio / 100 }} %</div>
             </div>
             <div class="content-container">
                 <div class="content-sublabel">per day</div>
-                <div class="content-value">{{currencyService.getCurrencySymbol()}} {{ convertedPerDayInterestValue | async | number: '1.0-4' }}</div>
+                <div class="content-value">{{currencyService.getCurrencySymbol()}} {{ convertedPerDayInterestValue | async | number: '1.0-2' }}</div>
                 <div class="content-sublabel">total</div>
-                <div class="content-value">{{currencyService.getCurrencySymbol()}} {{ convertedTotalInterestValue | async | number: '1.0-4' }}</div>
+                <div class="content-value">{{currencyService.getCurrencySymbol()}} {{ convertedTotalInterestValue | async | number: '1.0-2' }}</div>
             </div>
         </div>
     </div>
