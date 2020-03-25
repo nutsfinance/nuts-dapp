@@ -41,7 +41,7 @@ export class AccountBalanceDialog implements OnInit, OnDestroy {
     ];
     public assetChartOptions = {
         title: {
-            display: true,
+            display: false,
             text: 'Assets Balance'
         },
         legend: {
