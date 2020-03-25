@@ -54,19 +54,23 @@ export class LendingPositionsComponent implements OnInit, OnDestroy {
   updateLendingIssuances() {
     console.log('Lending issuance updated', this.instrumentService.lendingIssuances);
     this.zone.run(() => {
-      const lendingIssuances = this.instrumentService.lendingIssuances.filter(issuance => {
-        let inState = true;
-        if (this.selectedTab === 'engageable') {
-          inState = issuance.state === 2;
-        } else if (this.selectedTab === 'engaged') {
-          inState = issuance.state === 3;
-        } else if (this.selectedTab === 'inactive') {
-          inState = issuance.state > 3;
-        }
-        const inPosition = issuance.makerAddress.toLowerCase() === this.currentAccount.toLowerCase() ||
-          issuance.takerAddress.toLowerCase() === this.currentAccount.toLowerCase();
-        return inState && inPosition;
-      });
+      const lendingIssuances = this.instrumentService.lendingIssuances
+        .filter(issuance => {
+          let inState = true;
+          if (this.selectedTab === 'engageable') {
+            inState = issuance.state === 2;
+          } else if (this.selectedTab === 'engaged') {
+            inState = issuance.state === 3;
+          } else if (this.selectedTab === 'inactive') {
+            inState = issuance.state > 3;
+          }
+          const inPosition = issuance.makerAddress.toLowerCase() === this.currentAccount.toLowerCase() ||
+            issuance.takerAddress.toLowerCase() === this.currentAccount.toLowerCase();
+          return inState && inPosition;
+        })
+        .sort((l1, l2) => {
+          return l1.state === l2.state ? l2.creationTimestamp - l1.creationTimestamp : l1.state - l2.state;
+        });
       console.log('Filtered issuance', lendingIssuances);
       this.issuances = lendingIssuances;
     });
