@@ -100,7 +100,7 @@
   padding: 0 5px;
 }
 .transaction-action {
-  font-size: 12px;
+  font-size: 11px;
 }
 .transaction-from-to {
   display: flex;
@@ -124,7 +124,7 @@
   font-family: "GillSans", Helvetica, Arial, serif;
 }
 .transaction-date {
-  font-size: 9px;
+  font-size: 8px;
 }
 .transaction-divider {
   margin-top: 10px;
