@@ -58,10 +58,9 @@ export class AppComponent implements OnInit, OnDestroy {
         });
       }
     });
-    
-
-    this.openSnackBar(new NotificationModel('', '', '', 0, 0, 0, NotificationCategory.TRANSACTION_CONFIRMED, NotificationStatus.NEW,
-      'Offer Creation Successful', '', TransactionType.CREATE_OFFER, {}));
+  
+    // this.openSnackBar(new NotificationModel('', '', '', 0, 0, 0, NotificationCategory.TRANSACTION_CONFIRMED, NotificationStatus.NEW,
+    //   'Offer Creation Successful', '', TransactionType.CREATE_OFFER, {}));
   }
 
   ngOnDestroy() {
