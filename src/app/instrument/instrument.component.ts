@@ -52,7 +52,8 @@ export class InstrumentComponent implements OnInit, OnDestroy {
 
   openNotificationDialog() {
     this.dialog.open(NotificationDialog, {
-      width: '90%',
+      width: '85%',
+      maxWidth: '85%',
       data: this.unreadNotifications,
       position: {
         top: '100px'

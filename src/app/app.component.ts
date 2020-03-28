@@ -9,6 +9,7 @@ import { NutsPlatformService } from './common/web3/nuts-platform.service';
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { InstrumentService } from './common/web3/instrument.service';
 import { AccountBalanceService } from './common/web3/account-balance.service';
+import { TransactionType } from './notification/transaction.model';
 
 export interface NotificationData {
   category: NotificationCategory,
@@ -58,6 +59,9 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     });
     
+
+    this.openSnackBar(new NotificationModel('', '', '', 0, 0, 0, NotificationCategory.TRANSACTION_CONFIRMED, NotificationStatus.NEW,
+      'Offer Creation Successful', '', TransactionType.CREATE_OFFER, {}));
   }
 
   ngOnDestroy() {
@@ -101,7 +105,7 @@ export class AppComponent implements OnInit, OnDestroy {
           content: `${notification.title}!`,
         },
         panelClass: snackBarPanelClass,
-        duration: 5000,
+        duration: 50000,
       });
     });
   }

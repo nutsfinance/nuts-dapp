@@ -11,7 +11,8 @@
 
 .notifications-title {
     display: inline-block;
-    font: 500 20px/32px "GillSans", Helvetica, Arial, serif;
+    font-family: "GillSans", Helvetica, Arial, serif;
+    font-size: 18px;
     margin: 0;
 }
 
@@ -21,7 +22,7 @@
 }
 
 .notification-row {
-    padding-bottom: 10px;
+    padding-bottom: 5px;
 }
 
 .notification-content {
@@ -30,7 +31,7 @@
 
 .notification-action {
     text-align: start;
-    margin-top: 35px;
+    margin-top: 25px;
     padding: 0;
     display: flex;
     justify-content: center;
@@ -46,7 +47,7 @@
 }
 
 .notification-title {
-    font-size: 14px;
+    font-size: 13px;
     padding: 10px 0 7px 0;
     font-family: "GillSans", Helvetica, Arial, serif;
 }
@@ -76,11 +77,11 @@
 }
 
 .notification-message {
-    font-size: 13px;
+    font-size: 12px;
 }
 
 .notification-timestamp {
-    font-size: 14px;
+    font-size: 13px;
     color: #AEAEB2;
 }
 
