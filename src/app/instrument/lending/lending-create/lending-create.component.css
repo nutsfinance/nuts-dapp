@@ -8,7 +8,7 @@
 }
 .input-label {
   font-family: "GillSans", Helvetica, Arial, serif;
-  font-size: 16px;
+  font-size: 15px;
   color: #4a494a;
   display: inline-block;
   margin-top: 20px;
@@ -30,7 +30,7 @@
 .alternative-content,
 .hint-content {
   font-family: "GillSans-Light", Helvetica, Arial, serif;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 300;
   color: #9b9a9b;
 }
@@ -66,7 +66,7 @@
 }
 .reset-button {
   font-family: "GillSans", Helvetica, Arial, serif;
-  font-size: 16px;
+  font-size: 14px;
   color: #8bc34a;
   display: inline-block;
   margin: 10px 10px 20px 0;

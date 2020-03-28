@@ -3,12 +3,10 @@
   width: 100%;
   padding: 10px;
 }
-
 mat-sidenav {
   width: 100%;
   background-color: white;
 }
-
 .app-toolbar {
   height: 70px;
   width: 100%;
@@ -17,29 +15,23 @@ mat-sidenav {
   justify-content: space-between;
   align-items: center;
 }
-
 .app-toolbar-left,
 .app-toolbar-right {
   display: flex;
   align-items: center;
 }
-
 .toolbar-logo {
   height: 28px;
 }
-
 .sidenav-toolbar {
   padding: 90px 16px;
 }
-
 .sidenav-logo {
   height: 38px;
 }
-
 .nav-list {
   margin: 15px;
 }
-
 .nav-list-item {
   padding-left: 15px;
   width: 100%;
@@ -48,18 +40,15 @@ mat-sidenav {
   font-family: "GillSans", Helvetica, Arial, serif;
   font-size: 18px;
 }
-
 .active {
   color: #8bc34a;
 }
-
 a.nav-sublist-item {
   padding-left: 35px;
   width: 100%;
   font-family: "GillSans-Light", Helvetica, Arial, serif;
   font-size: 18px;
 }
-
 div.nav-language {
   display: flex;
   justify-content: space-between;
@@ -67,13 +56,11 @@ div.nav-language {
   font-family: "GillSans-Light", Helvetica, Arial, serif;
   font-size: 18px;
 }
-
 .transaction-content {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-
 .transaction-complete-image {
   min-width: 100px;
   margin-bottom: 30px;
