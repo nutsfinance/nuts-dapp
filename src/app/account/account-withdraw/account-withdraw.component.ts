@@ -81,10 +81,13 @@ export class AccountWithdrawComponent implements OnInit {
         console.log(receipt);
 
         // Update instrument balance
-        this.userBalanceService.updateAssetBalance(this.instrument, this.selectedToken);
+        setTimeout(() => {
+          this.userBalanceService.updateAssetBalance(this.instrument, this.selectedToken);
+        }, 2000);
+        
         this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
         clearInterval(interval);
-      }, 2000);
+      }, 4000);
     });
 
   }

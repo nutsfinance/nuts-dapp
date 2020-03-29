@@ -3,3 +3,7 @@
   margin: 5px 0;
   padding: 0 10px;
 }
+
+.select-token-button[disabled] {
+  border-color: rgba(0, 0, 0, 0.06);
+}

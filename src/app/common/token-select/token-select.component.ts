@@ -11,6 +11,7 @@ import { TokenSelectSheetComponent } from './token-select-sheet.component';
 export class TokenSelectComponent implements OnInit {
   @Input() public selectedToken;
   @Input() public excludedTokens = [];
+  @Input() public disabled = false;
   @Output() tokenSelected = new EventEmitter<string>();
 
   constructor(private _bottomSheet: MatBottomSheet) { }
@@ -18,6 +19,7 @@ export class TokenSelectComponent implements OnInit {
   ngOnInit() {}
 
   openBottomSheet() {
+    if (this.disabled)  return;
     const bottomSheetRef = this._bottomSheet.open(TokenSelectSheetComponent, {
       data: {
         excludedTokens: this.excludedTokens

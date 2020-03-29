@@ -1,4 +1,4 @@
-<button type="button" mat-stroked-button class="select-token-button" (click)="openBottomSheet()">
+<button type="button" mat-stroked-button [disabled]="disabled" class="select-token-button" (click)="openBottomSheet()">
   {{selectedToken}}
-  <mat-icon class="currency-selec-icon" color="primary">expand_more</mat-icon>
+  <mat-icon class="currency-select-icon" color="primary">expand_more</mat-icon>
 </button>

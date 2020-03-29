@@ -104,7 +104,7 @@ export class AppComponent implements OnInit, OnDestroy {
           content: `${notification.title}!`,
         },
         panelClass: snackBarPanelClass,
-        duration: 50000,
+        duration: 5000,
       });
     });
   }

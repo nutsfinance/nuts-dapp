@@ -49,8 +49,9 @@ export class AccountBalanceComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private updateTokenBalance() {
-    this.instrumentEscrowService.getWalletBalance(this.instrument, this.selectedToken).then(balance => {
+    this.instrumentEscrowService.getBalance(this.instrument, this.selectedToken).then(balance => {
       this.zone.run(() => {
+        console.log('Account balance updated', this.selectedToken, balance);
         this.tokenBalance = balance;
         this.balanceUpdated.next(balance);
       });

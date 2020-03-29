@@ -11,7 +11,7 @@
       </mat-form-field>
     </div>
     <div class="col-xs-4">
-      <app-token-select [selectedToken]="selectedToken" (tokenSelected)="onTokenSelected($event)"></app-token-select>
+      <app-token-select [selectedToken]="selectedToken" [disabled]="!tokenSelectEnabled" (tokenSelected)="onTokenSelected($event)"></app-token-select>
     </div>
   </div>
 
@@ -46,7 +46,7 @@
   <div class="row">
     <div class="col-xs-12">
       <div class="deposit-button-wrapper">
-        <button mat-raised-button color="primary" [ngClass]="{'deposit-button': true, 'valid': depositFormGroup.valid}">
+        <button mat-raised-button color="primary" [ngClass]="{'deposit-button': true, 'valid': !depositFormGroup.invalid && submitEnabled}">
           {{showApprove ? 'Approve' : 'Deposit'}}
         </button>
       </div>

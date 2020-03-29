@@ -34,7 +34,7 @@ export class AccountService {
     // });
   }
 
-  public async getWalletBalance(instrument: string, token: string): Promise<number> {
+  public async getBalance(instrument: string, token: string): Promise<number> {
     if (!this.nutsPlatformService.web3 || !this.nutsPlatformService.currentAccount) {
       return Promise.resolve(0);
     }
