@@ -24,7 +24,7 @@ export class LendingCreateComponent implements OnInit {
   public principalToken = this.tokens[0];
   public principalTokenBalance: number;
   public collateralToken = this.tokens[1];
-  public collateralValue: Promise<number> = Promise.resolve(0);
+  public collateralValue = 0;
   public interestValue = 0;
 
   constructor(private nutsPlatformService: NutsPlatformService, private instrumentService: InstrumentService,
@@ -39,8 +39,8 @@ export class LendingCreateComponent implements OnInit {
       'interestRate': new FormControl('', this.validInterestRate),
     });
     this.createFormGroup.valueChanges.subscribe(_ => {
-      this.collateralValue = this.getCollateralValue();
-      this.interestValue = this.getInterestValue();
+      this.computeCollateralValue();
+      this.computeInterestValue();
     });
   }
 
@@ -75,11 +75,22 @@ export class LendingCreateComponent implements OnInit {
     // console.log(this.interestValue);
   }
 
-  async getCollateralValue() {
+  computeCollateralValue() {
     const principalTokenAddress = this.nutsPlatformService.getTokenAddressByName(this.principalToken);
     const collateralTokenAddress = this.nutsPlatformService.getTokenAddressByName(this.collateralToken);
-    const result = await this.priceOracleSercvice.getPrice(collateralTokenAddress, principalTokenAddress);
-    return this.createFormGroup.value['principalAmount'] * this.createFormGroup.value['collateralRatio'] * result[1] / (result[0] * 100);
+    if (!this.createFormGroup.value['principalAmount']) {
+      this.collateralValue = 0;
+      return;
+    }
+    const lendingAmount = this.principalToken === 'ETH' ?
+      this.nutsPlatformService.web3.utils.toWei(`${this.createFormGroup.value['principalAmount']}`, 'ether') :
+      this.createFormGroup.value['principalAmount'];
+
+    this.priceOracleSercvice.getConvertedValue(collateralTokenAddress, principalTokenAddress,
+      lendingAmount * this.createFormGroup.value['collateralRatio'], 100).then(value => {
+        this.collateralValue = value;
+        console.log(value);
+      });
   }
 
   async createLendingIssuance() {
@@ -131,14 +142,14 @@ export class LendingCreateComponent implements OnInit {
     this.form.resetForm();
   }
 
-  getInterestValue(): number {
+  computeInterestValue() {
     const principalAmount = Math.floor(this.createFormGroup.value['principalAmount'] * 10000);
     const interestRate = Math.floor(this.createFormGroup.value['interestRate'] * 10000);
     const tenor = this.createFormGroup.value['tenor'];
     const interest = principalAmount * interestRate * tenor / 10000000000;
     console.log(principalAmount, interestRate, tenor, interest);
 
-    return interest;
+    this.interestValue = interest;
   }
 
   /**

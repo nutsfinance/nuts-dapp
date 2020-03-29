@@ -140,17 +140,17 @@
     <div class="row" *ngIf="issuance.state == 2 && issuance.makerAddress.toLowerCase() != nutsPlatformService.currentAccount.toLowerCase()">
         <div class="col-xs-12 action-row">
             <button mat-raised-button color="primary"
-                [ngClass]="{'engage-button': true, 'valid': collateralTokenBalance >= collateralValue}"
+                [ngClass]="{'engage-button': true, 'valid': collateralSufficient}"
                 (click)="engageIssuance()">Engage</button>
         </div>
     </div>
     <div class="row" *ngIf="issuance.state == 2 && issuance.makerAddress.toLowerCase() != nutsPlatformService.currentAccount.toLowerCase()">
         <div
-            [ngClass]="{'col-xs-12': true, 'hidden': collateralTokenBalance == -1 || collateralTokenBalance >= collateralValue}">
+            [ngClass]="{'col-xs-12': true, 'hidden': collateralSufficient}">
             <span style="color: red;">Insufficient balance</span>
             (<span style="color: blue;">
                 <app-account-balance [instrument]="'lending'" [selectedToken]="collateralToken"
-                    (balanceUpdated)="collateralTokenBalance = $event">
+                    (balanceUpdated)="onCollateralTokenBalanceUpdated($event)">
                 </app-account-balance>
                 {{collateralToken}}
             </span> available)
@@ -162,18 +162,18 @@
         <div class="col-xs-12 action-row"
             *ngIf="issuance.state == 3 && issuance.takerAddress.toLowerCase() == nutsPlatformService.currentAccount.toLowerCase()">
             <button mat-raised-button color="primary"
-                [ngClass]="{'repay-button': true, 'valid': lendingTokenBalance >= issuance.lendingAmount + issuance.lendingAmount * issuance.interestRate * issuance.tenorDays / 1000000}"
+                [ngClass]="{'repay-button': true, 'valid': principalSufficient}"
                 (click)="repayIssuance()">Repay</button>
         </div>
     </div>
 
     <div class="row" *ngIf="issuance.state == 3 && issuance.takerAddress.toLowerCase() == nutsPlatformService.currentAccount.toLowerCase()">
         <div
-            [ngClass]="{'col-xs-12': true, 'hidden': lendingTokenBalance == -1 || lendingTokenBalance >= issuance.lendingAmount + issuance.lendingAmount * issuance.interestRate * issuance.tenorDays / 1000000}">
+            [ngClass]="{'col-xs-12': true, 'hidden': principalSufficient}">
             <span style="color: red;">Insufficient balance</span>
             (<span style="color: blue;">
                 <app-account-balance [instrument]="'lending'" [selectedToken]="lendingToken"
-                    (balanceUpdated)="lendingTokenBalance = $event">
+                    (balanceUpdated)="onPrincipalTokenBalanceUpdated($event)">
                 </app-account-balance>
                 {{lendingToken}}
             </span> available)

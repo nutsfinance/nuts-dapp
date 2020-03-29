@@ -4,12 +4,15 @@
   padding: 22px 22px 10px;
   margin-bottom: 20px;
 }
-.issuance-card-title {
+.issuance-title-container {
   display: flex;
   justify-content: space-between;
   font-size: 14px;
   align-items: baseline;
   margin-bottom: 12px;
+}
+.issuance-state {
+  font-size: 13px;
 }
 .issuance-card-subtitle {
   display: flex;
@@ -49,6 +52,7 @@
 }
 .content-value {
   font-family: "GillSans", Helvetica, Arial, serif;
+  font-size: 13px;
   margin-bottom: 3px;
 }
 .more-content-title {

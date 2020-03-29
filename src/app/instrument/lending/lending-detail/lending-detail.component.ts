@@ -21,17 +21,19 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
   public issuance: LendingIssuanceModel;
   public lendingToken: string;
   public collateralToken: string;
-  public lendingTokenBalance: number = -1;
-  public collateralTokenBalance: number = -1;
+  public lendingTokenBalance = -1;
+  public collateralTokenBalance = -1;
   public collateralValue = 0;
-
-  public columns: string[] = ['action', 'from', 'to', 'amount', 'date'];
-  public transactions: IssuanceTransaction[] = [];
+  public principalSufficient = true;
+  public collateralSufficient = true;
 
   public convertedCollateralValue: Promise<number>;
   public convertedLendingValue: Promise<number>;
   public convertedPerDayInterestValue: Promise<number>;
   public convertedTotalInterestValue: Promise<number>;
+
+  public columns: string[] = ['action', 'from', 'to', 'amount', 'date'];
+  public transactions: IssuanceTransaction[] = [];
 
   private accountUpdatedSubscription: Subscription;
   private issuanceIdSubscription: Subscription;
@@ -69,6 +71,22 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
 
   navigateBack() {
     this.location.back();
+  }
+
+  onPrincipalTokenBalanceUpdated(balance) {
+    this.lendingTokenBalance = balance;
+    setTimeout(() => {
+      const repayAmount = this.issuance.lendingAmount + this.issuance.lendingAmount * this.issuance.interestRate * this.issuance.tenorDays / 1000000;
+      this.principalSufficient = this.lendingTokenBalance >= repayAmount;
+    });
+  }
+
+  onCollateralTokenBalanceUpdated(balance) {
+    this.collateralTokenBalance = balance;
+    setTimeout(() => {
+      this.collateralSufficient = this.collateralTokenBalance >= this.collateralValue;
+      console.log(this.collateralTokenBalance, this.collateralValue, this.collateralSufficient);
+    });
   }
 
   engageIssuance() {
@@ -189,9 +207,11 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
         // If the collateral value is already set
         if (this.issuance.collateralAmount) {
           this.collateralValue = this.issuance.collateralAmount;
+          this.collateralSufficient = this.collateralTokenBalance === -1 || this.collateralTokenBalance >= this.collateralValue;
         } else {
           this.priceOracleService.getConvertedValue(this.issuance.collateralTokenAddress, this.issuance.lendingTokenAddress, this.issuance.lendingAmount * this.issuance.collateralRatio, 10000).then(value => {
             this.collateralValue = value;
+            this.collateralSufficient = this.collateralTokenBalance === -1 || this.collateralTokenBalance >= this.collateralValue;
           });
         }
 

@@ -129,7 +129,7 @@
     <div class="row">
       <div class="col-xs-12">
         <span class="balance-content">
-          Projected collateral cost: {{ collateralValue | async | number: '1.0-4' }} {{collateralToken}}
+          Projected collateral cost: {{ collateralValue | tokenValue:collateralToken | number: '1.0-4' }} {{collateralToken}}
         </span>
       </div>
     </div>

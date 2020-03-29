@@ -7,7 +7,6 @@ import { LendingIssuanceModel } from '../model/lending-issuance.model';
 import { Subject } from 'rxjs';
 import { IssuanceModel } from '../model/issuance.model';
 import { LendingMakerParameterModel } from '../model/lending-maker-parameter.model';
-import { NotificationCategory } from 'src/app/notification/notification.model';
 
 const InstrumentManager = require('./abi/InstrumentManagerInterface.json');
 
@@ -215,7 +214,7 @@ export class InstrumentService {
     }
 
     this.lendingIssuancesUpdatedSubject.next(this.lendingIssuances);
-    console.log('Lending issuance updated', this.lendingIssuances);
+    console.log('Lending issuance updated', 'request', issuanceCount, 'response', this.lendingIssuances.length);
   }
 
   public getLendingIssuance(issuanceId: number): LendingIssuanceModel {

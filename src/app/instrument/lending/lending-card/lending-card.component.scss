@@ -5,12 +5,16 @@
     margin-bottom: 20px;
 }
 
-.issuance-card-title {
+.issuance-title-container {
     display: flex;
     justify-content: space-between;
     font-size: 14.0px;
     align-items: baseline;
     margin-bottom: 12px;
+}
+
+.issuance-state {
+    font-size: 13px;
 }
 
 .issuance-card-subtitle {
@@ -59,6 +63,7 @@
 
 .content-value {
     font-family: "GillSans", Helvetica, Arial, serif;
+    font-size: 13px;
     margin-bottom: 3px;
 }
 
