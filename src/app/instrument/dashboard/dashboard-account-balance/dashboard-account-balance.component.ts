@@ -139,8 +139,8 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
         if (!userBalance[instrument] || !userBalance[instrument][asset]) continue;
 
         const assetAddress = this.nutsPlatformService.getTokenAddressByName(asset);
-        const assetValue = this.nutsPlatformService.getTokenValueByAddress(assetAddress, userBalance[instrument][asset]);
-        const assetConvertedValue = await this.priceOracleService.getConvertedValue(targetTokenAddress, assetAddress, assetValue);
+        const assetConvertedValue = await this.priceOracleService.getConvertedValue(targetTokenAddress,
+          assetAddress, userBalance[instrument][asset]);
 
         instrumentsValue[i] += assetConvertedValue;
         assetsValue[j] += assetConvertedValue;

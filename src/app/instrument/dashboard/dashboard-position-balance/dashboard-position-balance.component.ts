@@ -38,7 +38,7 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
     private priceOracleService: PriceOracleService, public currencyService: CurrencyService, private zone: NgZone) { }
 
   ngOnInit() {
-    this.positionDataSource = new PositionDataSource(this.nutsPlatformService);
+    this.positionDataSource = new PositionDataSource();
     this.updatePositions();
     this.lendingIssuanceSubscription = this.instrumentService.lendingIssuancesUpdatedSubject.subscribe(_ => {
       this.updatePositions();
@@ -72,7 +72,7 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
             role: 'maker',
             state: issuance.getIssuanceState(),
             token: this.nutsPlatformService.getTokenNameByAddress(issuance.lendingTokenAddress),
-            amount: this.nutsPlatformService.getTokenValueByAddress(issuance.lendingTokenAddress, issuance.lendingAmount),
+            amount: issuance.lendingAmount,
             action: 'close',
             supplementalLineItems: issuance.supplementalLineItems,
           });
@@ -88,7 +88,7 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
             role: 'taker',
             state: issuance.getIssuanceState(),
             token: this.nutsPlatformService.getTokenNameByAddress(issuance.lendingTokenAddress),
-            amount: this.nutsPlatformService.getTokenValueByAddress(issuance.lendingTokenAddress, issuance.lendingAmount),
+            amount: issuance.lendingAmount,
             action: 'repay',
             supplementalLineItems: issuance.supplementalLineItems,
           });
@@ -111,9 +111,7 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
         if (item.type !== SupplementalLineItemType.Payable
           || item.state !== SupplementalLineItemState.Unpaid
           || item.obligatorAddress.toLowerCase() !== this.nutsPlatformService.currentAccount.toLowerCase()) continue;
-
-        const amount = this.nutsPlatformService.getTokenValueByAddress(item.tokenAddress, item.amount);
-        totalPayable += await this.priceOracleService.getConvertedValue(targetTokenAddress, item.tokenAddress, amount);
+        totalPayable += await this.priceOracleService.getConvertedValue(targetTokenAddress, item.tokenAddress, item.amount);
       }
     }
 
@@ -129,9 +127,7 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
         if (item.type !== SupplementalLineItemType.Payable
           || item.state !== SupplementalLineItemState.Unpaid
           || item.claimorAddress.toLowerCase() !== this.nutsPlatformService.currentAccount.toLowerCase()) continue;
-
-        const amount = this.nutsPlatformService.getTokenValueByAddress(item.tokenAddress, item.amount);
-        totalReceivable += await this.priceOracleService.getConvertedValue(targetTokenAddress, item.tokenAddress, amount);
+        totalReceivable += await this.priceOracleService.getConvertedValue(targetTokenAddress, item.tokenAddress, item.amount);
       }
     }
 
@@ -140,8 +136,6 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
 }
 
 class PositionDataSource implements DataSource<Position> {
-
-  constructor(private nutsPlatformService: NutsPlatformService) { }
 
   private positionSubject = new BehaviorSubject<Position[]>([]);
 

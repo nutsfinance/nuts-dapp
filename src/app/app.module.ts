@@ -46,6 +46,7 @@ import { TransactionInitiatedDialog } from './common/transaction-initiated-dialo
 import { CanActivateInstrument } from './instrument/instrument-routing-guard.service';
 import { AccountTotalBalanceComponent } from './common/account-total-balance/account-total-balance.component';
 import { AccountBalanceDialog } from './common/account-total-balance/account-balance-doalog.component';
+import { TokenValuePipe } from './common/web3/token-value.pipe';
 
 
 @NgModule({
@@ -93,6 +94,7 @@ import { AccountBalanceDialog } from './common/account-total-balance/account-bal
     AccountBalanceDialog,
     IncorrectNetworkDialog,
     DisconnectedDialog,
+    TokenValuePipe,
   ],
   entryComponents: [
     CurrencySelectSheetComponent,

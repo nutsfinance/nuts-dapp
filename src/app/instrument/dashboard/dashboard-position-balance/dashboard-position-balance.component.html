@@ -58,7 +58,7 @@
   <ng-container matColumnDef="amount">
     <mat-header-cell *matHeaderCellDef class="position-header position-amount"> Amount </mat-header-cell>
     <mat-cell *matCellDef="let position" class="position-content position-amount">
-      {{position.amount}} {{position.token}}
+      {{position.amount | tokenValue:(position.token)}} {{position.token}}
     </mat-cell>
   </ng-container>
 

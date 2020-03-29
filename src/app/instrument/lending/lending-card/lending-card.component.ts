@@ -14,9 +14,8 @@ export class LendingCardComponent implements OnInit, OnDestroy {
   @Input() public issuance: LendingIssuanceModel;
   public currentAccount: string;
   public lendingToken: string;
-  public lendingValue: number;
   public collateralToken: string;
-  public collateralValue: Promise<number>;
+  public collateralValue = 0;
 
   public convertedLendingValue: Promise<number>;
   public convertedCollateralValue: Promise<number>;
@@ -38,10 +37,17 @@ export class LendingCardComponent implements OnInit, OnDestroy {
       });
     });
     this.lendingToken = this.nutsPlatformService.getTokenNameByAddress(this.issuance.lendingTokenAddress);
-    this.lendingValue = this.nutsPlatformService.getTokenValueByAddress(this.issuance.lendingTokenAddress, this.issuance.lendingAmount);
     this.collateralToken = this.nutsPlatformService.getTokenNameByAddress(this.issuance.collateralTokenAddress);
-    this.collateralValue = this.issuance.collateralAmount ? Promise.resolve(this.nutsPlatformService.getTokenValueByAddress(this.issuance.lendingTokenAddress, this.issuance.collateralAmount)) :
-      this.priceOracleService.getConvertedValue(this.issuance.collateralTokenAddress, this.issuance.lendingTokenAddress, this.lendingValue * this.issuance.collateralRatio, 10000);
+    // If the collateral value is already set
+    if (this.issuance.collateralAmount) {
+      this.collateralValue = this.issuance.collateralAmount;
+    } else {
+      this.priceOracleService.getConvertedValue(this.issuance.collateralTokenAddress, this.issuance.lendingTokenAddress, this.issuance.lendingAmount * this.issuance.collateralRatio, 10000).then(value => {
+        this.collateralValue = value;
+      });
+    }
+
+    // Compute issuance converted token values
     this.updateConvertedValues();
     this.currencyUpdatedSubscription = this.currencyService.currencyUpdatedSubject.subscribe(_ => {
       this.updateConvertedValues();
@@ -56,11 +62,12 @@ export class LendingCardComponent implements OnInit, OnDestroy {
   private updateConvertedValues() {
     const targetTokenAddress = this.currencyService.currency === 'USD' ? USD_ADDRESS : CNY_ADDRESS;
     this.convertedCollateralValue = this.priceOracleService.getConvertedValue(targetTokenAddress,
-      this.issuance.lendingTokenAddress, this.lendingValue * this.issuance.collateralRatio, 10000);
-    this.convertedLendingValue = this.priceOracleService.getConvertedValue(targetTokenAddress, this.issuance.lendingTokenAddress, this.lendingValue);
-    this.convertedPerDayInterestValue = this.priceOracleService.getConvertedValue(targetTokenAddress, this.issuance.lendingTokenAddress,
-      this.lendingValue * this.issuance.interestRate, 1000000);
-    this.convertedTotalInterestValue = this.priceOracleService.getConvertedValue(targetTokenAddress, this.issuance.lendingTokenAddress,
-      this.lendingValue * this.issuance.interestRate * this.issuance.tenorDays, 1000000);
+      this.issuance.lendingTokenAddress, this.issuance.lendingAmount * this.issuance.collateralRatio, 10000);
+    this.convertedLendingValue = this.priceOracleService.getConvertedValue(targetTokenAddress,
+      this.issuance.lendingTokenAddress, this.issuance.lendingAmount);
+    this.convertedPerDayInterestValue = this.priceOracleService.getConvertedValue(targetTokenAddress,
+      this.issuance.lendingTokenAddress, this.issuance.lendingAmount * this.issuance.interestRate, 1000000);
+    this.convertedTotalInterestValue = this.priceOracleService.getConvertedValue(targetTokenAddress,
+      this.issuance.lendingTokenAddress, this.issuance.lendingAmount * this.issuance.interestRate * this.issuance.tenorDays, 1000000);
   }
 }

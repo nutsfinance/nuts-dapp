@@ -221,6 +221,14 @@ export class NutsPlatformService {
     }
   }
 
+  public getTokenValueByName(tokenName: string, value: number): number {
+    if (tokenName === 'ETH') {
+      return +this.web3.utils.fromWei(`${value}`, 'ether');
+    } else {
+      return value;
+    }
+  }
+
   public getTokenNameByAddress(tokenAddress: string): string {
     if (tokenAddress.toLowerCase() === ETH_ADDRESS.toLowerCase()) return 'ETH';
     const tokens = this.contractAddresses[this.currentNetwork].tokens;
@@ -270,8 +278,7 @@ export class NutsPlatformService {
     }
 
     if (token === 'ETH') {
-      const weiBalance = await this.web3.eth.getBalance(this.currentAccount);
-      return +this.web3.utils.fromWei(weiBalance, 'ether');
+      return await this.web3.eth.getBalance(this.currentAccount);
     } else if (token && this.contractAddresses[this.currentNetwork]
       && this.contractAddresses[this.currentNetwork].tokens[token]) {
       const tokenAddress = this.contractAddresses[this.currentNetwork].tokens[token];

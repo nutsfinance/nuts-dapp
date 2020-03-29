@@ -62,8 +62,7 @@ export class AccountTotalBalanceComponent implements OnInit, OnDestroy {
     for (let i = 0; i < assets.length; i++) {
       if (!userBalance[this.instrument][assets[i]]) continue;
       const assetAddress = this.nutsPlatformSevice.getTokenAddressByName(assets[i]);
-      const assetValue = this.nutsPlatformSevice.getTokenValueByAddress(assetAddress, userBalance[this.instrument][assets[i]]);
-      totalValue += await this.priceOracleService.getConvertedValue(targetTokenAddress, assetAddress, assetValue);
+      totalValue += await this.priceOracleService.getConvertedValue(targetTokenAddress, assetAddress, userBalance[this.instrument][assets[i]]);
     }
 
     console.log('Total value', totalValue);

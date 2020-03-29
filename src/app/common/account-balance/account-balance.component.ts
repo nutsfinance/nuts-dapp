@@ -16,46 +16,25 @@ export class AccountBalanceComponent implements OnInit, OnChanges, OnDestroy {
   @Output() public balanceUpdated = new EventEmitter<number>();
   public tokenBalance: number;
   
-  private networkSubscription: Subscription;
-  private accountSubscription: Subscription;
   private accountBalancesSubscription: Subscription;
 
   constructor(private nutsPlatformService_: NutsPlatformService, private instrumentEscrowService: AccountService,
-    private userBalanceService: AccountBalanceService, private zone: NgZone) { }
+    private accountBalanceService: AccountBalanceService, private zone: NgZone) { }
 
   ngOnInit() {
-    this.networkSubscription = this.nutsPlatformService_.currentNetworkSubject.subscribe(() => {
-      // console.log('Account balance: network updated');
-      this.updateTokenBalance();
-    });
-    this.accountSubscription = this.nutsPlatformService_.currentAccountSubject.subscribe(() => {
-      // console.log('Account balance: account updated');
-      this.updateTokenBalance();
-    });
-    this.accountBalancesSubscription = this.userBalanceService.accountBalancesSubject.subscribe(userBalance => {
-      console.log('Account balance: Account balances updated', userBalance);
-      this.updateTokenBalance();
+    this.accountBalancesSubscription = this.accountBalanceService.accountBalancesSubject.subscribe(accountBalances => {
+      console.log('Account balance: Account balances updated', accountBalances);
+      this.tokenBalance = accountBalances[this.instrument][this.selectedToken];
+      this.balanceUpdated.next(this.tokenBalance);
     });
   }
 
   ngOnDestroy() {
-    this.networkSubscription.unsubscribe();
-    this.accountSubscription.unsubscribe();
     this.accountBalancesSubscription.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.updateTokenBalance();
+    this.tokenBalance = this.accountBalanceService.accountBalances[this.instrument][this.selectedToken];
+    this.balanceUpdated.next(this.tokenBalance);
   }
-
-  private updateTokenBalance() {
-    this.instrumentEscrowService.getBalance(this.instrument, this.selectedToken).then(balance => {
-      this.zone.run(() => {
-        console.log('Account balance updated', this.selectedToken, balance);
-        this.tokenBalance = balance;
-        this.balanceUpdated.next(balance);
-      });
-    });
-  }
-
 }

@@ -99,8 +99,8 @@ export class AccountBalanceDialog implements OnInit, OnDestroy {
             if (!userBalance[this.data.instrument] || !userBalance[this.data.instrument][this.assets[i]]) continue;
 
             const assetAddress = this.nutsPlatformService.getTokenAddressByName(this.assets[i]);
-            const assetValue = this.nutsPlatformService.getTokenValueByAddress(assetAddress, userBalance[this.data.instrument][this.assets[i]]);
-            const assetConvertedValue = await this.priceOracleService.getConvertedValue(targetTokenAddress, assetAddress, assetValue);
+            const assetConvertedValue = await this.priceOracleService.getConvertedValue(targetTokenAddress,
+                assetAddress, userBalance[this.data.instrument][this.assets[i]]);
 
             assetsValue[i] += assetConvertedValue;
             totalValue += assetConvertedValue;

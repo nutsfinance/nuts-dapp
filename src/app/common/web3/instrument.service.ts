@@ -245,7 +245,7 @@ export class InstrumentService {
           toWallet: toWallet,
           toRole: this.getTransactionRole(event.returnValues.toAddress, issuance),
           token: this.nutsPlatformService.getTokenNameByAddress(event.returnValues.tokenAddress),
-          amount: this.nutsPlatformService.getTokenValueByAddress(event.returnValues.tokenAddress, event.returnValues.amount),
+          amount: event.returnValues.amount,
           blockNumber: event.blockNumber,
         });
       }

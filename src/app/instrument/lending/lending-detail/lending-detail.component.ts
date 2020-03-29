@@ -20,13 +20,10 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
   public issuanceId: number;
   public issuance: LendingIssuanceModel;
   public lendingToken: string;
-  public lendingValue: number;
   public collateralToken: string;
   public lendingTokenBalance: number = -1;
   public collateralTokenBalance: number = -1;
   public collateralValue = 0;
-  public perDayInterestValue;
-  public totalInterestValue;
 
   public columns: string[] = ['action', 'from', 'to', 'amount', 'date'];
   public transactions: IssuanceTransaction[] = [];
@@ -111,7 +108,7 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
   }
 
   repayIssuance() {
-    const totalAmount = this.lendingValue + this.totalInterestValue;
+    const totalAmount = this.issuance.lendingAmount + this.issuance.lendingAmount * this.issuance.interestRate * this.issuance.tenorDays / 1000000;
     console.log('Total amount: ' + totalAmount + ", balance: " + this.lendingTokenBalance);
     if (this.lendingTokenBalance < totalAmount) return;
     this.instrumentService.repayIssuance('lending', this.issuanceId, this.issuance.lendingTokenAddress, totalAmount)
@@ -186,24 +183,30 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
       this.issuance = this.instrumentService.getLendingIssuance(this.issuanceId);
       if (this.issuance) {
         console.log('Issuance detail', this.issuance);
+        // Compute issuance token values
         this.lendingToken = this.nutsPlatformService.getTokenNameByAddress(this.issuance.lendingTokenAddress);
-        this.lendingValue = this.nutsPlatformService.getTokenValueByAddress(this.issuance.lendingTokenAddress, this.issuance.lendingAmount);
         this.collateralToken = this.nutsPlatformService.getTokenNameByAddress(this.issuance.collateralTokenAddress);
-        this.perDayInterestValue = this.lendingValue * this.issuance.interestRate / 1000000;
-        this.totalInterestValue = this.lendingValue * this.issuance.interestRate * this.issuance.tenorDays / 1000000;
-        this.priceOracleService.getConvertedValue(this.issuance.collateralTokenAddress, this.issuance.lendingTokenAddress, this.lendingValue * this.issuance.collateralRatio, 10000).then(value => {
-          this.collateralValue = value;
-        });
+        // If the collateral value is already set
+        if (this.issuance.collateralAmount) {
+          this.collateralValue = this.issuance.collateralAmount;
+        } else {
+          this.priceOracleService.getConvertedValue(this.issuance.collateralTokenAddress, this.issuance.lendingTokenAddress, this.issuance.lendingAmount * this.issuance.collateralRatio, 10000).then(value => {
+            this.collateralValue = value;
+          });
+        }
 
+        // Compute converted issuance token values
         const targetTokenAddress = this.currencyService.currency === 'USD' ? USD_ADDRESS : CNY_ADDRESS;
         this.convertedCollateralValue = this.priceOracleService.getConvertedValue(targetTokenAddress,
-          this.issuance.lendingTokenAddress, this.lendingValue * this.issuance.collateralRatio, 10000);
-        this.convertedLendingValue = this.priceOracleService.getConvertedValue(targetTokenAddress, this.issuance.lendingTokenAddress, this.lendingValue);
-        this.convertedPerDayInterestValue = this.priceOracleService.getConvertedValue(targetTokenAddress, this.issuance.lendingTokenAddress,
-          this.lendingValue * this.issuance.interestRate, 1000000);
-        this.convertedTotalInterestValue = this.priceOracleService.getConvertedValue(targetTokenAddress, this.issuance.lendingTokenAddress,
-          this.lendingValue * this.issuance.interestRate * this.issuance.tenorDays, 1000000);
+          this.issuance.lendingTokenAddress, this.issuance.lendingAmount * this.issuance.collateralRatio, 10000);
+        this.convertedLendingValue = this.priceOracleService.getConvertedValue(targetTokenAddress,
+          this.issuance.lendingTokenAddress, this.issuance.lendingAmount);
+        this.convertedPerDayInterestValue = this.priceOracleService.getConvertedValue(targetTokenAddress,
+          this.issuance.lendingTokenAddress, this.issuance.lendingAmount * this.issuance.interestRate, 1000000);
+        this.convertedTotalInterestValue = this.priceOracleService.getConvertedValue(targetTokenAddress,
+          this.issuance.lendingTokenAddress, this.issuance.lendingAmount * this.issuance.interestRate * this.issuance.tenorDays, 1000000);
 
+        // Retrieve issuance transactions
         this.instrumentService.getIssuanceTransactions('lending', this.issuance).then((transactions) => {
           console.log('Transactions', transactions);
           this.transactions = transactions;

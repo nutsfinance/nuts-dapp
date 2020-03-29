@@ -19,42 +19,7 @@ export interface AccountTransaction {
 })
 export class AccountService {
 
-  constructor(private nutsPlatformService: NutsPlatformService, private notificationService: NotificationService) {
-    // // Updates balance information if it's 
-    // this.notificationService.newNotificationSubject.subscribe(newNotification => {
-    //   if (newNotification.category === NotificationCategory.TRANSACTION_CONFIRMED) {
-    //     console.log('New notification', newNotification);
-    //     switch(newNotification.type) {
-    //       case TransactionType.DEPOSIT:
-    //       case TransactionType.WITHDRAW:
-    //         this.nutsPlatformService.balanceUpdatedSubject.next(newNotification.metadata['tokenName']);
-    //         return;
-    //     }
-    //   }
-    // });
-  }
-
-  public async getBalance(instrument: string, token: string): Promise<number> {
-    if (!this.nutsPlatformService.web3 || !this.nutsPlatformService.currentAccount) {
-      return Promise.resolve(0);
-    }
-    if (this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork] && this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument]) {
-      const instrumentEscrowAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument].instrumentEscrow;
-      const instrumentEscrow = new this.nutsPlatformService.web3.eth.Contract(InstrumentEscrow, instrumentEscrowAddress);
-      if (token === 'ETH') {
-        const weiBalance = await instrumentEscrow.methods.getBalance(this.nutsPlatformService.currentAccount).call();
-        // const weiBalance = await instrumentEscrow.methods.getTokenBalance(this.nutsPlatformService.currentAccount, ETH_ADDRESS).call();
-        return +this.nutsPlatformService.web3.utils.fromWei(weiBalance, 'ether');
-      } else if (this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].tokens[token]) {
-        const tokenAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].tokens[token];
-        return instrumentEscrow.methods.getTokenBalance(this.nutsPlatformService.currentAccount, tokenAddress).call();
-      } else {
-        return Promise.resolve(0);
-      }
-    } else {
-      return Promise.resolve(0);
-    }
-  }
+  constructor(private nutsPlatformService: NutsPlatformService, private notificationService: NotificationService) {}
 
   public approve(instrument: string, token: string, amount: number) {
     if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork]) {
@@ -263,7 +228,7 @@ public async getAccountTransactions(instrument: string): Promise<AccountTransact
         transactions.push({
           deposit: true,
           token: 'ETH',
-          amount: this.nutsPlatformService.web3.utils.fromWei(escrowEvent.returnValues.amount, 'ether'),
+          amount: escrowEvent.returnValues.amount,
           transactionHash: escrowEvent.transactionHash,
           blockNumber: escrowEvent.blockNumber,
         });
@@ -271,7 +236,7 @@ public async getAccountTransactions(instrument: string): Promise<AccountTransact
         transactions.push({
           deposit: false,
           token: 'ETH',
-          amount: this.nutsPlatformService.web3.utils.fromWei(escrowEvent.returnValues.amount, 'ether'),
+          amount: escrowEvent.returnValues.amount,
           transactionHash: escrowEvent.transactionHash,
           blockNumber: escrowEvent.blockNumber,
         });
