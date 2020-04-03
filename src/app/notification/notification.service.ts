@@ -146,6 +146,7 @@ export class NotificationService {
   private incrementalGetNotification() {
     this.getNotificationFromBackend().subscribe(notifications => {
       const reloadedNotifications = notifications.sort((n1, n2) => n2.creationTimestamp - n1.creationTimestamp);
+      console.log('Reloaded notifications', reloadedNotifications);
 
       // Checks whether the notification list is updated.
       // If notifications length is not the same, it must be updated.
