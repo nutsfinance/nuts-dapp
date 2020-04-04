@@ -34,7 +34,8 @@ export class AccountBalanceComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.tokenBalance = this.accountBalanceService.accountBalances[this.instrument][this.selectedToken];
+    this.tokenBalance = this.accountBalanceService.accountBalances[this.instrument] ?
+      this.accountBalanceService.accountBalances[this.instrument][this.selectedToken] : 0;
     this.balanceUpdated.next(this.tokenBalance);
   }
 }

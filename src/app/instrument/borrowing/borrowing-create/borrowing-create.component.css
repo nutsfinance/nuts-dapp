@@ -1,40 +1,51 @@
 .create-card {
-  padding-top: 0;
+  padding-top: 10px;
+}
+.field-row {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 .input-label {
   font-family: "GillSans", Helvetica, Arial, serif;
-  font-size: 16px;
+  font-size: 15px;
   color: #4a494a;
   display: inline-block;
   margin-top: 20px;
 }
 .amount-input {
-  width: 100%;
+  width: 60%;
   height: 60px;
 }
-.balance-content {
+.error-content {
   font-family: "GillSans-Light", Helvetica, Arial, serif;
-  font-size: 16px;
+  font-size: 14px;
+  color: #f44336;
+}
+.deposit-button {
+  text-decoration: underline;
+  font-weight: 600;
+}
+.balance-content,
+.alternative-content,
+.hint-content {
+  font-family: "GillSans-Light", Helvetica, Arial, serif;
+  font-size: 14px;
+  font-weight: 300;
   color: #9b9a9b;
 }
-.tenor-input {
+.toggle-input {
   margin-top: 6px;
   margin-bottom: 10px;
   height: 48px;
 }
 .alternative-content {
-  font-family: "GillSans-Light", Helvetica, Arial, serif;
-  font-size: 16px;
-  color: #9b9a9b;
   text-decoration: underline;
   cursor: pointer;
 }
 .hint-content {
-  font-family: "GillSans-Light", Helvetica, Arial, serif;
-  font-size: 16px;
-  color: #9b9a9b;
   display: inline-block;
-  margin-left: 15px;
+  margin-left: 10px;
 }
 .create-button-wrapper {
   width: 100%;
@@ -45,4 +56,19 @@
 .create-button {
   width: 150px;
   color: white;
+}
+.create-button:not(.valid) {
+  background-color: #9b9b9b;
+}
+.form-reset {
+  display: flex;
+  justify-content: flex-end;
+}
+.reset-button {
+  font-family: "GillSans", Helvetica, Arial, serif;
+  font-size: 14px;
+  color: #8bc34a;
+  display: inline-block;
+  margin: 10px 10px 20px 0;
+  cursor: pointer;
 }

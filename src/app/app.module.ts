@@ -47,6 +47,8 @@ import { CanActivateInstrument } from './instrument/instrument-routing-guard.ser
 import { AccountTotalBalanceComponent } from './common/account-total-balance/account-total-balance.component';
 import { AccountBalanceDialog } from './common/account-total-balance/account-balance-doalog.component';
 import { TokenValuePipe } from './common/web3/token-value.pipe';
+import { BorrowingCardComponent } from './instrument/borrowing/borrowing-card/borrowing-card.component';
+import { BorrowingDetailComponent } from './instrument/borrowing/borrowing-detail/borrowing-detail.component';
 
 
 @NgModule({
@@ -95,6 +97,8 @@ import { TokenValuePipe } from './common/web3/token-value.pipe';
     IncorrectNetworkDialog,
     DisconnectedDialog,
     TokenValuePipe,
+    BorrowingCardComponent,
+    BorrowingDetailComponent,
   ],
   entryComponents: [
     CurrencySelectSheetComponent,

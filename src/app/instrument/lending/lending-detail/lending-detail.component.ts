@@ -198,7 +198,7 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
 
   private updateLendingIssuance() {
     this.zone.run(() => {
-      this.issuance = this.instrumentService.getLendingIssuance(this.issuanceId);
+      this.issuance = this.instrumentService.getLendingIssuanceById(this.issuanceId);
       if (this.issuance) {
         console.log('Issuance detail', this.issuance);
         // Compute issuance token values

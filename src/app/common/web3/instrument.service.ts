@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LendingData } from 'nuts-platform-protobuf-messages';
+import { LendingData, BorrowingData } from 'nuts-platform-protobuf-messages';
 import { NutsPlatformService, ETH_ADDRESS, CUSTODIAN_ADDRESS } from './nuts-platform.service';
 import { NotificationService } from 'src/app/notification/notification.service';
 import { TransactionModel, TransactionType, NotificationRole } from 'src/app/notification/transaction.model';
@@ -7,6 +7,8 @@ import { LendingIssuanceModel } from '../model/lending-issuance.model';
 import { Subject } from 'rxjs';
 import { IssuanceModel } from '../model/issuance.model';
 import { LendingMakerParameterModel } from '../model/lending-maker-parameter.model';
+import { BorrowingMakerParameterModel } from '../model/borrowing-maker-parameter.model';
+import { BorrowingIssuanceModel } from '../model/borrowing-issuance.model';
 
 const InstrumentManager = require('./abi/InstrumentManagerInterface.json');
 
@@ -30,6 +32,8 @@ export interface IssuanceTransaction {
 export class InstrumentService {
   public lendingIssuances: LendingIssuanceModel[] = [];
   public lendingIssuancesUpdatedSubject = new Subject<LendingIssuanceModel[]>();
+  public borrowingIssuances: BorrowingIssuanceModel[] = [];
+  public borrowingIssuancesUpdatedSubject = new Subject<BorrowingIssuanceModel[]>();
 
   constructor(private nutsPlatformService: NutsPlatformService, private notificationService: NotificationService) {
     // We don't initialize the lending issuance list until the platform is initialized!
@@ -50,27 +54,12 @@ export class InstrumentService {
 
   public createLendingIssuance(principalToken: string, principalAmount: number, collateralToken: string,
     collateralRatio: number, tenor: number, interestRate: number) {
-    if (!this.nutsPlatformService.isFullyLoaded()) {
-      console.log('Either network or account is not loaded.');
-      return;
-    }
-    if (principalToken !== 'ETH' && !this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].tokens[principalToken]) {
-      alert(`Token ${principalToken} is not supported!`);
-      return;
-    }
-    if (collateralToken !== 'ETH' && !this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].tokens[collateralToken]) {
-      alert(`Token ${collateralToken} is not supported!`);
-      return;
-    }
 
     const principalTokenAddress = principalToken === 'ETH' ? ETH_ADDRESS : this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].tokens[principalToken];
     const lendingAmount = principalToken === 'ETH' ? this.nutsPlatformService.web3.utils.toWei(`${principalAmount}`, 'ether') : principalAmount;
     const collateralTokenAddress = collateralToken === 'ETH' ? ETH_ADDRESS : this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].tokens[collateralToken];
     console.log(collateralTokenAddress, principalTokenAddress, lendingAmount,
       Math.floor(collateralRatio * COLLATERAL_RATIO_DECIMALS), tenor, Math.floor(interestRate * INTEREST_RATE_DECIMALS));
-    // const lendingParameters = await parametersUtilContract.methods.getLendingMakerParameters(collateralTokenAddress, principalTokenAddress, lendingAmount,
-    //   collateralRatio * COLLATERAL_RATIO_DECIMALS, tenor, interestRate * INTEREST_RATE_DECIMALS).call({ from: this.nutsPlatformService.currentAccount });
-    // console.log(lendingParameters);
 
     const lendingMakerParametersModel = new LendingMakerParameterModel(collateralTokenAddress, principalTokenAddress, lendingAmount,
       Math.floor(collateralRatio * COLLATERAL_RATIO_DECIMALS), tenor, Math.floor(interestRate * INTEREST_RATE_DECIMALS));
@@ -111,11 +100,55 @@ export class InstrumentService {
       });
   }
 
+  public createBorrowingIssuance(principalToken: string, principalAmount: number, collateralToken: string,
+    collateralRatio: number, tenor: number, interestRate: number) {
+
+    const principalTokenAddress = principalToken === 'ETH' ? ETH_ADDRESS : this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].tokens[principalToken];
+    const lendingAmount = principalToken === 'ETH' ? this.nutsPlatformService.web3.utils.toWei(`${principalAmount}`, 'ether') : principalAmount;
+    const collateralTokenAddress = collateralToken === 'ETH' ? ETH_ADDRESS : this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].tokens[collateralToken];
+    console.log(collateralTokenAddress, principalTokenAddress, lendingAmount,
+      Math.floor(collateralRatio * COLLATERAL_RATIO_DECIMALS), tenor, Math.floor(interestRate * INTEREST_RATE_DECIMALS));
+
+    const borrowingMakerParametersModel = new BorrowingMakerParameterModel(collateralTokenAddress, principalTokenAddress, lendingAmount,
+      Math.floor(collateralRatio * COLLATERAL_RATIO_DECIMALS), tenor, Math.floor(interestRate * INTEREST_RATE_DECIMALS));
+    const message = borrowingMakerParametersModel.toMessage().serializeBinary();
+    const borrowingMakerParameters = '0x' + Buffer.from(message).toString('hex');
+    console.log(borrowingMakerParameters);
+
+    const instrumentManagerAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform.borrowing.instrumentManager;
+    const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
+    return instrumentManagerContract.methods.createIssuance(borrowingMakerParameters).send({ from: this.nutsPlatformService.currentAccount, gas: 6721975 })
+      .on('transactionHash', (transactionHash) => {
+        console.log(transactionHash);
+        // this.nutsPlatformService.transactionSentSubject.next(transactionHash);
+        // Records the transaction
+        const depositTransaction = new TransactionModel(transactionHash, TransactionType.CREATE_OFFER, NotificationRole.MAKER,
+          this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId('borrowing'), 0,
+          {
+            principalTokenName: principalToken,
+            principalTokenAddress,
+            principalAmount: `${lendingAmount}`,
+            collateralTokenName: collateralToken,
+            collateralTokenAddress,
+            collateralRatio: `${collateralRatio}`,
+            tenor: `${tenor}`,
+            interestRate: `${interestRate}`,
+
+            // instrumentName: instrument,
+            // tokenName: token,
+            // tokenAddress,
+            // amount: `${amount}`,
+          }
+        );
+        this.notificationService.addTransaction(depositTransaction).subscribe(result => {
+          console.log(result);
+          // Note: Transaction Sent event is not sent until the transaction is recored in notification server!
+          this.nutsPlatformService.transactionSentSubject.next(transactionHash);
+        });
+      });
+  }
+
   public engageIssuance(instrument: string, issuanceId: number) {
-    if (!this.nutsPlatformService.isFullyLoaded()) {
-      console.log('Either network or account is not loaded.');
-      return;
-    }
 
     const instrumentManagerAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument].instrumentManager;
     const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
@@ -136,10 +169,6 @@ export class InstrumentService {
   }
 
   public repayIssuance(instrument: string, issuanceId: number, tokenAddress: string, amount: number) {
-    if (!this.nutsPlatformService.isFullyLoaded()) {
-      console.log('Either network or account is not loaded.');
-      return;
-    }
 
     const instrumentManagerAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument].instrumentManager;
     const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
@@ -170,10 +199,6 @@ export class InstrumentService {
   }
 
   public cancelIssuance(instrument: string, issuanceId: number) {
-    if (!this.nutsPlatformService.isFullyLoaded()) {
-      console.log('Either network or account is not loaded.');
-      return;
-    }
 
     const instrumentManagerAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument].instrumentManager;
     const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
@@ -196,10 +221,6 @@ export class InstrumentService {
 
   public async reloadLendingIssuances() {
     console.log('Reloading lending issuances.');
-    if (!this.nutsPlatformService.isFullyLoaded()) {
-      console.log('Either network or account is not loaded.');
-      return;
-    }
 
     const instrumentManagerAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform.lending.instrumentManager;
     const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
@@ -217,18 +238,39 @@ export class InstrumentService {
     console.log('Lending issuance updated', 'request', issuanceCount, 'response', this.lendingIssuances.length);
   }
 
-  public getLendingIssuance(issuanceId: number): LendingIssuanceModel {
+  public async reloadBorrowingIssuances() {
+    console.log('Reloading borrowing issuances.');
+
+    const instrumentManagerAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform.borrowing.instrumentManager;
+    const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
+    const issuanceCount = await instrumentManagerContract.methods.getLastIssuanceId().call({ from: this.nutsPlatformService.currentAccount });
+    console.log('Borrowing issuance count', issuanceCount);
+
+    this.borrowingIssuances = [];
+    for (let i = 1; i <= issuanceCount; i++) {
+      const borrowingData = await instrumentManagerContract.methods.getCustomData(i, this.nutsPlatformService.web3.utils.fromAscii("borrowing_data")).call();
+      const borrowingCompleteProperties = BorrowingData.BorrowingCompleteProperties.deserializeBinary(Uint8Array.from(Buffer.from(borrowingData.substring(2), 'hex')));
+      this.borrowingIssuances.push(BorrowingIssuanceModel.fromMessage(borrowingCompleteProperties));
+    }
+
+    this.borrowingIssuancesUpdatedSubject.next(this.borrowingIssuances);
+    console.log('Borrowing issuance updated', 'request', issuanceCount, 'response', this.borrowingIssuances.length);
+  }
+
+  public async reloadIssuances() {
+    await this.reloadLendingIssuances();
+    await this.reloadBorrowingIssuances();
+  }
+
+  public getLendingIssuanceById(issuanceId: number): LendingIssuanceModel {
     return this.lendingIssuances.find(issuance => issuance.issuanceId === issuanceId);
   }
 
+  public getBorrowingIssuanceById(issuanceId: number): BorrowingIssuanceModel {
+    return this.borrowingIssuances.find(issuance => issuance.issuanceId === issuanceId);
+  }
+
   public async getIssuanceTransactions(instrument: string, issuance: IssuanceModel): Promise<IssuanceTransaction[]> {
-    if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork]) {
-      return [];
-    }
-    if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument]) {
-      return [];
-    }
-    const instrumentEscrowAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument].instrumentEscrow;
     const instrumentManagerAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument].instrumentManager;
     const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
     const tokenTransferEvents = await instrumentManagerContract.getPastEvents('TokenTransferred', { fromBlock: 0, toBlock: 'latest' });
