@@ -19,6 +19,7 @@ import { InstrumentComponent } from './instrument/instrument.component';
 import { NotificationComponent } from './notification/notification.component';
 import { CanActivateInstrument } from './instrument/instrument-routing-guard.service';
 import { BorrowingDetailComponent } from './instrument/borrowing/borrowing-detail/borrowing-detail.component';
+import { SwapDetailComponent } from './instrument/swap/swap-detail/swap-detail.component';
 
 
 const routes: Routes = [
@@ -59,7 +60,8 @@ const routes: Routes = [
           { path: 'account', component: AccountComponent, data: { instrument: 'swap' } },
           { path: 'create', component: SwapCreateComponent },
           { path: 'engage', component: SwapEngageComponent },
-          { path: 'positions', component: SwapPositionsComponent }
+          { path: 'positions', component: SwapPositionsComponent },
+          { path: 'positions/:id', component: SwapDetailComponent }
         ]
       },
     ]

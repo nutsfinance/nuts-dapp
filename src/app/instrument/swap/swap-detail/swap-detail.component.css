@@ -1,0 +1,141 @@
+.detail-card {
+  font-family: "GillSans", Helvetica, Arial, serif;
+  color: #4a494a;
+  margin: 10px;
+  padding: 30px 20px;
+}
+.navigate-back {
+  height: 20px;
+  margin-right: 15px;
+  cursor: pointer;
+}
+.card-title {
+  font-size: 16px;
+}
+.card-label {
+  font-size: 15px;
+  padding-right: 0;
+}
+.card-state {
+  display: flex;
+  justify-content: flex-end;
+}
+.card-state-indicator {
+  font-size: 20px;
+  margin-right: 5px;
+  margin-top: -2px;
+}
+.detail-row {
+  margin-top: 22px;
+  margin-bottom: 22px;
+}
+.detail-label {
+  margin-bottom: -10px;
+  margin-top: 10px;
+}
+.detail-value {
+  text-align: right;
+  font-family: "GillSans-Light", Helvetica, Arial, serif;
+  font-size: 12px;
+  color: #9b9a9b;
+  padding-left: 0;
+}
+.value-row {
+  display: flex;
+}
+.value-notation {
+  display: inline-block;
+  width: 40%;
+  text-align: right;
+  padding-right: 8px;
+  color: #9b9a9b;
+  font-size: 11px;
+}
+.value-content {
+  display: inline-block;
+  width: 60%;
+  text-align: left;
+  position: absolute;
+  right: 0;
+  font-size: 12px;
+}
+.action-row {
+  display: flex;
+  justify-content: center;
+}
+.engage-button,
+.repay-button {
+  width: 180px;
+  color: white;
+}
+.engage-button:not(.valid),
+.repay-button:not(.valid) {
+  background-color: #9b9b9b;
+}
+.close-button {
+  width: 180px;
+}
+.deposit-button {
+  float: right;
+  text-decoration: underline;
+}
+.transaction-history-container {
+  margin-bottom: 60px;
+}
+.transaction-title {
+  font-family: "GillSans", Helvetica, Arial, serif;
+  font-size: 16px;
+  margin: 20px 0 15px;
+}
+.transaction-container {
+  font-family: "GillSans-light", Helvetica, Arial, serif;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+}
+.transaction-container.odd {
+  background-color: #f2f2f2;
+}
+.transaction-content {
+  padding: 0 5px;
+}
+.transaction-action {
+  font-size: 11px;
+}
+.transaction-from-to {
+  display: flex;
+  justify-content: space-around;
+}
+.transaction-amount {
+  font-size: 11px;
+}
+.transaction-direction {
+  font-size: larger;
+  text-align: center;
+  padding-top: 5px;
+}
+.transaction-wallet {
+  width: 30px;
+  margin: 3px auto;
+  display: block;
+}
+.transaction-amount {
+  color: blue;
+  font-family: "GillSans", Helvetica, Arial, serif;
+}
+.transaction-date {
+  font-size: 8px;
+}
+.transaction-divider {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.transaction-notation {
+  display: flex;
+  justify-content: flex-end;
+}
+.transaction-notation-image {
+  height: 15px;
+  margin: 2px 2px 2px 15px;
+  display: inline-block;
+}
