@@ -1,0 +1,71 @@
+.issuance-table {
+    width: 100%;
+}
+
+.issuance-header {
+    font-family: "GillSans", Helvetica, Arial, serif;
+    font-size: 16px;
+    justify-content: center;
+}
+
+.issuance-content-row {
+    border-width: 0px;
+    padding-top: 12px;
+}
+
+.issuance-action-row {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.issuance-content {
+    font-family: "GillSans-Light", Helvetica, Arial, serif;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+.issuance-action {
+    flex-direction: row;
+    justify-content: flex-end;
+    padding: 10px 0;
+}
+
+.issuance-detail-button,
+.issuance-engage-button {
+    margin: 0 10px;
+    font-weight: 400;
+}
+
+.issuance-engage-button {
+    color: white;
+}
+
+.no-issuance-container {
+    text-align: center;
+}
+
+.no-issuance-image {
+    width: 50%;
+    margin-top: 60px;
+}
+
+.no-issuance-title {
+    font-family: "GillSans", Helvetica, Arial, serif;
+    font-size: 16px;
+    margin-top: 30px;
+}
+
+.no-issuance-content {
+    font-family: "GillSans-light", Helvetica, Arial, serif;
+    font-size: 14px;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.no-issuance-button {
+    display: inline-block;
+    width: 180px;
+    color: white;
+    margin-bottom: 20px;
+}
