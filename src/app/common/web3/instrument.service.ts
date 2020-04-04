@@ -10,6 +10,7 @@ import { LendingMakerParameterModel } from '../model/lending-maker-parameter.mod
 import { BorrowingMakerParameterModel } from '../model/borrowing-maker-parameter.model';
 import { BorrowingIssuanceModel } from '../model/borrowing-issuance.model';
 import { SwapMakerParameterModel } from '../model/swap-maker-parameter.model';
+import { SwapIssuanceModel } from '../model/swap-issuance.model';
 
 const InstrumentManager = require('./abi/InstrumentManagerInterface.json');
 
@@ -35,6 +36,8 @@ export class InstrumentService {
   public lendingIssuancesUpdatedSubject = new Subject<LendingIssuanceModel[]>();
   public borrowingIssuances: BorrowingIssuanceModel[] = [];
   public borrowingIssuancesUpdatedSubject = new Subject<BorrowingIssuanceModel[]>();
+  public swapIssuances: SwapIssuanceModel[] = [];
+  public swapIssuancesUpdatedSubject = new Subject<SwapIssuanceModel[]>();
 
   constructor(private nutsPlatformService: NutsPlatformService, private notificationService: NotificationService) {
     // We don't initialize the lending issuance list until the platform is initialized!
@@ -147,7 +150,7 @@ export class InstrumentService {
       });
   }
 
-  public createSwapIssuance(inputToken: string, inputAmount: number, outputToken: string, outputAmount: number,
+  public createSwapIssuance(inputToken: string, outputToken: string, inputAmount: number, outputAmount: number,
     duration: number) {
 
     const inputTokenAddress = this.nutsPlatformService.getTokenAddressByName(inputToken);
@@ -264,7 +267,7 @@ export class InstrumentService {
   public async reloadLendingIssuances() {
     console.log('Reloading lending issuances.');
 
-    const instrumentManagerAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform.lending.instrumentManager;
+    const instrumentManagerAddress = this.nutsPlatformService.getInstrumentManager('lending');
     const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
     const issuanceCount = await instrumentManagerContract.methods.getLastIssuanceId().call({ from: this.nutsPlatformService.currentAccount });
     console.log('Lending issuance count', issuanceCount);
@@ -283,7 +286,7 @@ export class InstrumentService {
   public async reloadBorrowingIssuances() {
     console.log('Reloading borrowing issuances.');
 
-    const instrumentManagerAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform.borrowing.instrumentManager;
+    const instrumentManagerAddress = this.nutsPlatformService.getInstrumentManager('borrowing');
     const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
     const issuanceCount = await instrumentManagerContract.methods.getLastIssuanceId().call({ from: this.nutsPlatformService.currentAccount });
     console.log('Borrowing issuance count', issuanceCount);
@@ -299,9 +302,29 @@ export class InstrumentService {
     console.log('Borrowing issuance updated', 'request', issuanceCount, 'response', this.borrowingIssuances.length);
   }
 
+  public async reloadSwapIssuances() {
+    console.log('Reloading swap issuances.');
+
+    const instrumentManagerAddress = this.nutsPlatformService.getInstrumentManager('swap');
+    const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
+    const issuanceCount = await instrumentManagerContract.methods.getLastIssuanceId().call({ from: this.nutsPlatformService.currentAccount });
+    console.log('Swap issuance count', issuanceCount);
+
+    this.swapIssuances = [];
+    for (let i = 1; i <= issuanceCount; i++) {
+      const swapData = await instrumentManagerContract.methods.getCustomData(i, this.nutsPlatformService.web3.utils.fromAscii("swap_data")).call();
+      const swapCompleteProperties = swapData.SwapCompleteProperties.deserializeBinary(Uint8Array.from(Buffer.from(swapData.substring(2), 'hex')));
+      this.swapIssuances.push(SwapIssuanceModel.fromMessage(swapCompleteProperties));
+    }
+
+    this.swapIssuancesUpdatedSubject.next(this.swapIssuances);
+    console.log('Swap issuance updated', 'request', issuanceCount, 'response', this.swapIssuances.length);
+  }
+
   public async reloadIssuances() {
     await this.reloadLendingIssuances();
     await this.reloadBorrowingIssuances();
+    await this.reloadSwapIssuances();
   }
 
   public getLendingIssuanceById(issuanceId: number): LendingIssuanceModel {
@@ -310,6 +333,10 @@ export class InstrumentService {
 
   public getBorrowingIssuanceById(issuanceId: number): BorrowingIssuanceModel {
     return this.borrowingIssuances.find(issuance => issuance.issuanceId === issuanceId);
+  }
+
+  public getSwapIssuanceById(issuanceId: number): SwapIssuanceModel {
+    return this.swapIssuances.find(issuance => issuance.issuanceId === issuanceId);
   }
 
   public async getIssuanceTransactions(instrument: string, issuance: IssuanceModel): Promise<IssuanceTransaction[]> {

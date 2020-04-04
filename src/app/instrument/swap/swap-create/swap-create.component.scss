@@ -1,20 +1,32 @@
 $input-height: 48px;
 
 .create-card {
-  padding-top: 0;
+  padding-top: 10px;
+}
+
+.field-row {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .input-label {
   font-family: "GillSans", Helvetica, Arial, serif;
-  font-size: 16.0px;
+  font-size: 15px;
   color: rgba(74, 73, 74, 1.0);
   display: inline-block;
   margin-top: 20px;
 }
 
 .amount-input {
-  width: 100%;
+  width: 60%;
   height: 60px;
+}
+
+.error-content {
+  font-family: "GillSans-Light", Helvetica, Arial, serif;
+  font-size: 14px;
+  color: #f44336;
 }
 
 .balance-content {
@@ -29,20 +41,23 @@ $input-height: 48px;
   height: $input-height;
 }
 
-.alternative-content {
+.balance-content,
+.alternative-content,
+.hint-content {
   font-family: "GillSans-Light", Helvetica, Arial, serif;
-  font-size: 16px;
+  font-size: 14px;
+  font-weight: 300;
   color: rgba(155, 154, 155, 1.0);
+}
+
+.alternative-content {
   text-decoration: underline;
   cursor: pointer;
 }
 
 .hint-content {
-  font-family: "GillSans-Light", Helvetica, Arial, serif;
-  font-size: 16px;
-  color: rgba(155, 154, 155, 1.0);
   display: inline-block;
-  margin-left: 15px;
+  margin-left: 10px;
 }
 
 .create-button-wrapper {
@@ -55,4 +70,22 @@ $input-height: 48px;
 .create-button {
   width: 150px;
   color: white;
+}
+
+.create-button:not(.valid) {
+  background-color: #9B9B9B;
+}
+
+.form-reset {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.reset-button {
+  font-family: "GillSans", Helvetica, Arial, serif;
+  font-size: 14px;
+  color: #8bc34a;
+  display: inline-block;
+  margin: 10px 10px 20px 0;
+  cursor: pointer;
 }

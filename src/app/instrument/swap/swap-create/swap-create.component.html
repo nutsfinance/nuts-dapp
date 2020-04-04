@@ -1,81 +1,126 @@
 <mat-card class="create-card">
-    <div class="row">
-        <div class="col-xs-12">
-            <span class="input-label">From</span>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-xs-8">
-            <mat-form-field appearance="outline" class="amount-input">
-                <input matInput placeholder="Amount">
-            </mat-form-field>
-        </div>
-        <div class="col-xs-4">
-            <app-token-select (tokenSelected)="onInputTokenSelected($event)"></app-token-select>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-xs-12">
-            <span class="balance-content">
-                Swap Account Balance:
-                <app-account-balance [instrument]="'swap'" [selectedToken]="inputToken"></app-account-balance>
-                {{inputToken}}
-            </span>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-xs-12">
-            <span class="input-label">To</span>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-xs-8">
-            <mat-form-field appearance="outline" class="amount-input">
-                <input matInput placeholder="Amount">
-            </mat-form-field>
-        </div>
-        <div class="col-xs-4">
-            <app-token-select (tokenSelected)="onOutputTokenSelected($event)"></app-token-select>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-xs-12">
-            <span class="input-label">Pending Engagement Valid for</span>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-xs-8">
-            <mat-button-toggle-group class="tenor-input" (change)="onTenorChange($event)">
-                <mat-button-toggle value="15">15D</mat-button-toggle>
-                <mat-button-toggle value="30">30D</mat-button-toggle>
-                <mat-button-toggle value="45">45D</mat-button-toggle>
-                <mat-button-toggle value="60">60D</mat-button-toggle>
-            </mat-button-toggle-group>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-xs-8">
-            <span class="alternative-content" *ngIf="!showAlternativeTenor" (click)="showAlternativeTenor = true">
-                Enter a custom value
-            </span>
-            <mat-form-field appearance="outline" class="amount-input" *ngIf="showAlternativeTenor">
-                <input matInput placeholder="2 ~ 90 Days" [(ngModel)]="tenor">
-            </mat-form-field>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="create-button-wrapper">
-                <button mat-raised-button color="primary" class="create-button">Create</button>
+    <form #form="ngForm" [formGroup]="createFormGroup" (ngSubmit)="createSwapIssuance()">
+        <div class="row">
+            <div class="col-xs-6">
+                <span class="input-label">From</span>
+            </div>
+            <div class="col-xs-6 form-reset">
+                <span class="reset-button" (click)="resetForm()">Reset</span>
             </div>
         </div>
-    </div>
+
+        <div class="row">
+            <div class="col-xs-12 field-row">
+                <mat-form-field appearance="outline" class="amount-input">
+                    <input matInput placeholder="Amount" formControlName="inputAmount">
+                </mat-form-field>
+                <app-token-select [selectedToken]="inputToken" (tokenSelected)="onInputTokenSelected($event)"></app-token-select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+              <div class="error-content" *ngIf="shouldShowErrorMessage('inputAmount')">
+                <div *ngIf="createFormGroup.controls['inputAmount'].errors.required">
+                  Please enter amount.
+                </div>
+                <div *ngIf="createFormGroup.controls['inputAmount'].errors.insufficientBalance">
+                  Insufficient balance.
+                  <a class="deposit-button" routerLink="/instrument/swap/account" [queryParams]="{ token: inputToken}">Deposit</a>
+                </div>
+                <div *ngIf="createFormGroup.controls['inputAmount'].errors.nonPositiveAmount">
+                  The amount must be positive number.
+                </div>
+                <div *ngIf="createFormGroup.controls['inputAmount'].errors.nonIntegerAmount">
+                  The amount must be integer.
+                </div>
+              </div>
+              <div class="balance-content">
+                Swap Account Balance:
+                <app-account-balance [instrument]="'swap'" [selectedToken]="inputToken"
+                  (balanceUpdated)="inputTokenBalance = $event">
+                </app-account-balance>
+                {{inputToken}}
+              </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <span class="input-label">To</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 field-row">
+                <mat-form-field appearance="outline" class="amount-input">
+                    <input matInput placeholder="Amount" formControlName="outputAmount">
+                </mat-form-field>
+                <app-token-select [selectedToken]="outputToken" (tokenSelected)="onOutputTokenSelected($event)"></app-token-select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+              <div class="error-content" *ngIf="shouldShowErrorMessage('outputAmount')">
+                <div *ngIf="createFormGroup.controls['outputAmount'].errors.required">
+                  Please enter amount.
+                </div>
+                <div *ngIf="createFormGroup.controls['outputAmount'].errors.nonPositiveAmount">
+                  The amount must be positive number.
+                </div>
+                <div *ngIf="createFormGroup.controls['outputAmount'].errors.nonIntegerAmount">
+                  The amount must be integer.
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <span class="input-label">Pending Engagement Valid for</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-8">
+                <mat-button-toggle-group class="tenor-input" (change)="onTenorChange($event)">
+                    <mat-button-toggle value="15">15D</mat-button-toggle>
+                    <mat-button-toggle value="30">30D</mat-button-toggle>
+                    <mat-button-toggle value="45">45D</mat-button-toggle>
+                    <mat-button-toggle value="60">60D</mat-button-toggle>
+                </mat-button-toggle-group>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-8">
+                <span class="alternative-content" *ngIf="!showAlternativeTenor" (click)="showAlternativeTenor = true">
+                    Enter a custom value
+                </span>
+                <mat-form-field appearance="outline" class="amount-input" *ngIf="showAlternativeTenor">
+                    <input matInput placeholder="2 ~ 90 Days" formControlName="duration">
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+              <div class="error-content" *ngIf="shouldShowErrorMessage('duration')">
+                <div *ngIf="createFormGroup.controls['interestRate'].duration">
+                  Please enter a number between 2 ~ 90.
+                </div>
+              </div>
+            </div>
+          </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="create-button-wrapper">
+                    <button mat-raised-button color="primary"
+                        [ngClass]="{'create-button': true, 'valid': createFormGroup.valid}">Create</button>
+                </div>
+            </div>
+        </div>
+    </form>
 </mat-card>
