@@ -31,6 +31,7 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
   public positionDataSource: PositionDataSource;
 
   private lendingIssuanceSubscription: Subscription;
+  private borrowingIssuanceSubscription: Subscription;
   private currentAccountSubscription: Subscription;
   private currencySubscription: Subscription;
 
@@ -41,6 +42,9 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
     this.positionDataSource = new PositionDataSource();
     this.updatePositions();
     this.lendingIssuanceSubscription = this.instrumentService.lendingIssuancesUpdatedSubject.subscribe(_ => {
+      this.updatePositions();
+    });
+    this.borrowingIssuanceSubscription = this.instrumentService.borrowingIssuancesUpdatedSubject.subscribe(_ => {
       this.updatePositions();
     });
     this.currentAccountSubscription = this.nutsPlatformService.currentAccountSubject.subscribe(_ => {
@@ -54,6 +58,7 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.lendingIssuanceSubscription.unsubscribe();
+    this.borrowingIssuanceSubscription.unsubscribe();
     this.currentAccountSubscription.unsubscribe();
     this.currencySubscription.unsubscribe();
   }
@@ -89,6 +94,40 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
             state: issuance.getIssuanceState(),
             token: this.nutsPlatformService.getTokenNameByAddress(issuance.lendingTokenAddress),
             amount: issuance.lendingAmount,
+            action: 'repay',
+            supplementalLineItems: issuance.supplementalLineItems,
+          });
+        }
+      });
+
+      this.instrumentService.borrowingIssuances.forEach(issuance => {
+        // If the current user is maker and the issuance is engageable.
+        if (issuance.makerAddress.toLowerCase() === this.nutsPlatformService.currentAccount.toLowerCase()
+          && issuance.state === 2) {
+          positions.push({
+            instrument: 'borrowing',
+            issuanceId: issuance.issuanceId,
+            creationTimestamp: issuance.creationTimestamp,
+            role: 'maker',
+            state: issuance.getIssuanceState(),
+            token: this.nutsPlatformService.getTokenNameByAddress(issuance.borrowingTokenAddress),
+            amount: issuance.borrowingAmount,
+            action: 'close',
+            supplementalLineItems: issuance.supplementalLineItems,
+          });
+        }
+
+        // If the current user is taker and the issuance is engaged.
+        if (issuance.takerAddress.toLowerCase() === this.nutsPlatformService.currentAccount.toLowerCase()
+          && issuance.state == 3) {
+          positions.push({
+            instrument: 'lending',
+            issuanceId: issuance.issuanceId,
+            creationTimestamp: issuance.creationTimestamp,
+            role: 'taker',
+            state: issuance.getIssuanceState(),
+            token: this.nutsPlatformService.getTokenNameByAddress(issuance.borrowingTokenAddress),
+            amount: issuance.borrowingAmount,
             action: 'repay',
             supplementalLineItems: issuance.supplementalLineItems,
           });
