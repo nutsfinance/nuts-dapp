@@ -40,14 +40,14 @@ export class InstrumentService {
     this.nutsPlatformService.platformInitializedSubject.subscribe(initialized => {
       if (initialized) {
         console.log('Instrument initialized', initialized);
-        this.reloadLendingIssuances();
+        this.reloadIssuances();
         this.nutsPlatformService.currentNetworkSubject.subscribe(currentNetwork => {
           console.log('Network changed. Reloading lending issuances.', currentNetwork);
-          this.reloadLendingIssuances();
+          this.reloadIssuances();
         });
     
         // Reloads issuances every 60s.
-        setTimeout(this.reloadLendingIssuances.bind(this), 60000);
+        setTimeout(this.reloadIssuances.bind(this), 60000);
       }
     });
   }

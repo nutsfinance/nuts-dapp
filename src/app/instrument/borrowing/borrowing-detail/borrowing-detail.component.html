@@ -1,1 +1,250 @@
-<p>borrowing-detail works!</p>
+<mat-card class="detail-card" *ngIf="issuance">
+    <div class="row">
+        <div class="col-xs-8 card-title">
+            <img src="../../../../assets/images/navigate_back.png" class="navigate-back" (click)="navigateBack()"> Offer
+            Details
+        </div>
+        <div class="col-xs-4 card-state" [ngStyle]="{'color':issuance.state <= 3 ? '#8bc34a' : 'grey'}">
+            <span class="card-state-indicator">&#8226;</span>
+            {{issuance.getIssuanceState()}}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 detail-value detail-label">
+            {{currencyService.currency}} value
+        </div>
+    </div>
+
+    <div class="row detail-row">
+        <div class="col-xs-3 card-label">Principal</div>
+
+        <div class="col-xs-6">
+            <div class="value-content">
+                {{issuance.borrowingAmount | tokenValue:borrowingToken | number: '1.0-4'}} {{borrowingToken}}
+            </div>
+        </div>
+
+        <div class="col-xs-3 detail-value">
+            {{currencyService.getCurrencySymbol()}} {{ convertedBorrowingValue | async | number: '1.0-2'}}
+        </div>
+    </div>
+
+    <div class="row detail-row">
+        <div class="col-xs-3 card-label">Collateral</div>
+
+        <div class="col-xs-6">
+            <div class="value-row">
+                <div class="value-notation">
+                    required
+                </div>
+                <div class="value-content">
+                    {{ collateralValue | tokenValue:collateralToken | number: '1.0-4' }} {{collateralToken}}
+                </div>
+            </div>
+            <div class="value-row">
+                <div class="value-notation">
+                    ratio
+                </div>
+                <div class="value-content">
+                    {{issuance.collateralRatio / 100}} %
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-3 detail-value">
+            {{currencyService.getCurrencySymbol()}} {{ convertedCollateralValue | async | number: '1.0-2' }}
+        </div>
+    </div>
+
+    <div class="row detail-row">
+        <div class="col-xs-3 card-label">Interest</div>
+
+        <div class="col-xs-6">
+            <div class="value-row">
+                <div class="value-notation">
+                    per day
+                </div>
+                <div class="value-content">
+                    {{ (issuance.borrowingAmount * issuance.interestRate / 1000000) | tokenValue:borrowingToken | number: '1.0-6' }} {{borrowingToken}}
+                </div>
+            </div>
+            <div class="value-row">
+                <div class="value-notation">
+                    total
+                </div>
+                <div class="value-content">
+                    {{ (issuance.borrowingAmount * issuance.interestRate * issuance.tenorDays / 1000000) | tokenValue:borrowingToken | number: '1.0-4' }} {{borrowingToken}}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-3">
+            <div class="detail-value">
+                {{currencyService.getCurrencySymbol()}} {{ convertedPerDayInterestValue | async | number: '1.0-4' }}
+            </div>
+            <div class="detail-value">
+                {{currencyService.getCurrencySymbol()}} {{ convertedTotalInterestValue | async | number: '1.0-2' }}
+            </div>
+        </div>
+    </div>
+
+    <div class="row detail-row" *ngIf="issuance.makerAddress.toLowerCase() == nutsPlatformService.currentAccount.toLowerCase() || issuance.takerAddress.toLowerCase() == nutsPlatformService.currentAccount.toLowerCase()">
+        <div class="col-xs-3 card-label">Role</div>
+
+        <div class="col-xs-6">
+            <div class="value-content">
+                {{issuance.makerAddress.toLowerCase() == nutsPlatformService.currentAccount.toLowerCase() ? 'maker' : 'taker'}}
+            </div>
+        </div>
+
+        <div class="col-xs-2"></div>
+    </div>
+
+    <div class="row detail-row">
+        <div class="col-xs-3 card-label">Tenor</div>
+
+        <div class="col-xs-6">
+            <div class="value-content">
+                {{issuance.tenorDays}} days
+            </div>
+        </div>
+
+        <div class="col-xs-2"></div>
+    </div>
+
+    <div class="row detail-row" *ngIf="issuance.engagementTimestamp">
+        <div class="col-xs-3 card-label">Engaged</div>
+
+        <div class="col-xs-6">
+            <div class="value-content">
+                {{issuance.engagementTimestamp * 1000 | date: 'MM-dd-yyyy'}}
+            </div>
+        </div>
+
+        <div class="col-xs-2"></div>
+    </div>
+
+    <div class="row detail-row" *ngIf="issuance.state <= 3">
+        <div class="col-xs-3 card-label">Due Date</div>
+
+        <div class="col-xs-6">
+            <div class="value-content">
+                {{ (issuance.state <= 2? issuance.engagementDueTimestamp * 1000 : issuance.issuanceDueTimestamp * 1000) | date: 'MM-dd-yyyy'}}
+            </div>
+        </div>
+
+        <div class="col-xs-2"></div>
+    </div>
+
+    <div class="row" *ngIf="issuance.state == 2 && issuance.makerAddress.toLowerCase() != nutsPlatformService.currentAccount.toLowerCase()">
+        <div class="col-xs-12 action-row">
+            <button mat-raised-button color="primary"
+                [ngClass]="{'engage-button': true, 'valid': collateralSufficient}"
+                (click)="engageIssuance()">Engage</button>
+        </div>
+    </div>
+    <div class="row" *ngIf="issuance.state == 2 && issuance.makerAddress.toLowerCase() != nutsPlatformService.currentAccount.toLowerCase()">
+        <div
+            [ngClass]="{'col-xs-12': true, 'hidden': collateralSufficient}">
+            <span style="color: red;">Insufficient balance</span>
+            (<span style="color: blue;">
+                <app-account-balance [instrument]="'borrowing'" [selectedToken]="collateralToken"
+                    (balanceUpdated)="onCollateralTokenBalanceUpdated($event)">
+                </app-account-balance>
+                {{collateralToken}}
+            </span> available)
+            <a class="deposit-button" [routerLink]="['/instrument/borrowing/account']" [queryParams]="{ token: collateralToken}">Deposit</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 action-row"
+            *ngIf="issuance.state == 3 && issuance.takerAddress.toLowerCase() == nutsPlatformService.currentAccount.toLowerCase()">
+            <button mat-raised-button color="primary"
+                [ngClass]="{'repay-button': true, 'valid': principalSufficient}"
+                (click)="repayIssuance()">Repay</button>
+        </div>
+    </div>
+
+    <div class="row" *ngIf="issuance.state == 3 && issuance.takerAddress.toLowerCase() == nutsPlatformService.currentAccount.toLowerCase()">
+        <div
+            [ngClass]="{'col-xs-12': true, 'hidden': principalSufficient}">
+            <span style="color: red;">Insufficient balance</span>
+            (<span style="color: blue;">
+                <app-account-balance [instrument]="'borrowing'" [selectedToken]="borrowingToken"
+                    (balanceUpdated)="onPrincipalTokenBalanceUpdated($event)">
+                </app-account-balance>
+                {{borrowingToken}}
+            </span> available)
+            <a class="deposit-button" [routerLink]="['/instrument/borrowing/account']" [queryParams]="{ token: borrowingToken}">Deposit</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 action-row"
+            *ngIf="issuance.state == 2 && issuance.makerAddress.toLowerCase() == nutsPlatformService.currentAccount.toLowerCase()">
+            <button mat-stroked-button color="primary" class="close-button" (click)="cancelIssuance()">Close
+                Position</button>
+        </div>
+    </div>
+</mat-card>
+
+<div class="container transaction-history-container">
+    <div class="row">
+        <div class="col-xs-12 transaction-title">
+            Transaction History
+        </div>
+    </div>
+
+    <div *ngFor="let transaction of transactions; let i = index" [ngClass]="{'odd': i % 2 == 0, 'row': true, 'transaction-container': true}">
+        <div class="col-xs-3 transaction-content transaction-action">{{transaction.action}}</div>
+        <div class="col-xs-5 transaction-content transaction-from-to">
+            <div class="transaction-from">
+                <img src="../../../../assets/images/Maker_AC.png" alt="Maker A/C" class="transaction-wallet"
+                    *ngIf="transaction.fromWallet == 'A/C' && transaction.fromRole == 'Maker'">
+                <img src="../../../../assets/images/Maker_Position.png" alt="Maker Position" class="transaction-wallet"
+                    *ngIf="transaction.fromWallet == 'Position' && transaction.fromRole == 'Maker'">
+                <img src="../../../../assets/images/Taker_AC.png" alt="Taker A/C" class="transaction-wallet"
+                    *ngIf="transaction.fromWallet == 'A/C' && transaction.fromRole == 'Taker'">
+                <img src="../../../../assets/images/Taker_Position.png" alt="Maker Position" class="transaction-wallet"
+                    *ngIf="transaction.fromWallet == 'Position' && transaction.fromRole == 'Taker'">
+                <img src="../../../../assets/images/Custodian_AC.png" alt="Custodian A/C" class="transaction-wallet"
+                    *ngIf="transaction.fromWallet == 'A/C' && transaction.fromRole == 'Custodian'">
+                <img src="../../../../assets/images/Custodian_Position.png" alt="Custodian Position" class="transaction-wallet"
+                    *ngIf="transaction.fromWallet == 'Position' && transaction.fromRole == 'Custodian'">
+            </div>
+            <span class="transaction-direction">⇒</span>
+            <div class="transaction-to">
+                <img src="../../../../assets/images/Maker_AC.png" alt="Maker A/C" class="transaction-wallet"
+                    *ngIf="transaction.toWallet == 'A/C' && transaction.toRole == 'Maker'">
+                <img src="../../../../assets/images/Maker_Position.png" alt="Maker Position" class="transaction-wallet"
+                    *ngIf="transaction.toWallet == 'Position' && transaction.toRole == 'Maker'">
+                <img src="../../../../assets/images/Taker_AC.png" alt="Taker A/C" class="transaction-wallet"
+                    *ngIf="transaction.toWallet == 'A/C' && transaction.toRole == 'Taker'">
+                <img src="../../../../assets/images/Taker_Position.png" alt="Maker Position" class="transaction-wallet"
+                    *ngIf="transaction.toWallet == 'Position' && transaction.toRole == 'Taker'">
+                <img src="../../../../assets/images/Custodian_AC.png" alt="Custodian A/C" class="transaction-wallet"
+                    *ngIf="transaction.toWallet == 'A/C' && transaction.toRole == 'Custodian'">
+                <img src="../../../../assets/images/Custodian_Position.png" alt="Custodian Position" class="transaction-wallet"
+                    *ngIf="transaction.toWallet == 'Position' && transaction.toRole == 'Custodian'">
+            </div>
+        </div>
+        <div class="col-xs-2 transaction-content transaction-amount">
+            {{transaction.amount | tokenValue:(transaction.token) | number: '1.0-4'}} {{transaction.token}}
+        </div>
+        <div class="col-xs-2 transaction-content transaction-date">
+            <app-block-timestamp [blockNumber]="transaction.blockNumber" [showTimestamp]="true" [align]="'right'"></app-block-timestamp>
+        </div>
+    </div>
+
+    <hr class="transaction-divider"/>
+
+    <div class="row transaction-notation">
+        <img src="../../../../assets/images/AC.png" alt="A/C" class="transaction-notation-image">
+        <img src="../../../../assets/images/Position.png" alt="Position" class="transaction-notation-image">
+        <img src="../../../../assets/images/Maker.png" alt="Maker" class="transaction-notation-image">
+        <img src="../../../../assets/images/Taker.png" alt="Taker" class="transaction-notation-image">
+        <img src="../../../../assets/images/Custodian.png" alt="Custodian" class="transaction-notation-image">
+    </div>
+</div>

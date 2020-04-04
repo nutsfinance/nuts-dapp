@@ -35,7 +35,7 @@
         <div class="content-container">
             <div class="content-label">Principal</div>
             <div class="content-sublabel">borrowing</div>
-            <div class="content-value">{{issuance.lendingAmount | tokenValue:lendingToken | number: '1.0-4'}} {{borrowingToken}}</div>
+            <div class="content-value">{{issuance.borrowingAmount | tokenValue:borrowingToken | number: '1.0-4'}} {{borrowingToken}}</div>
         </div>
         <div class="content-container">
             <div class="content-label">Collateral</div>
@@ -47,17 +47,17 @@
         <div class="content-container">
             <div class="content-label">Interest</div>
             <div class="content-sublabel">per day</div>
-            <div class="content-value">{{ (issuance.lendingAmount * issuance.interestRate / 1000000) | tokenValue:lendingToken | number: '1.0-6' }} {{lendingToken}}</div>
+            <div class="content-value">{{ (issuance.borrowingAmount * issuance.interestRate / 1000000) | tokenValue:borrowingToken | number: '1.0-6' }} {{borrowingToken}}</div>
             <div class="content-sublabel">total</div>
-            <div class="content-value">{{ (issuance.lendingAmount * issuance.interestRate * issuance.tenorDays / 1000000) | tokenValue:lendingToken | number: '1.0-4' }} {{lendingToken}}</div>
+            <div class="content-value">{{ (issuance.borrowingAmount * issuance.interestRate * issuance.tenorDays / 1000000) | tokenValue:borrowingToken | number: '1.0-4' }} {{borrowingToken}}</div>
         </div>
     </div>
     <div class="issuance-card-more-content"  *ngIf="showMore">
         <div class="more-content-title">{{currencyService.currency}} Value</div>
         <div class="more-content-container">
             <div class="content-container">
-                <div class="content-sublabel">lending</div>
-                <div class="content-value">{{currencyService.getCurrencySymbol()}} {{ convertedLendingValue | async | number: '1.0-4' }}</div>
+                <div class="content-sublabel">borrowing</div>
+                <div class="content-value">{{currencyService.getCurrencySymbol()}} {{ convertedBorrowingValue | async | number: '1.0-4' }}</div>
             </div>
             <div class="content-container">
                 <div class="content-sublabel">required</div>

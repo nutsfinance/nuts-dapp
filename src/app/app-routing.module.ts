@@ -18,6 +18,7 @@ import { LendingDetailComponent } from './instrument/lending/lending-detail/lend
 import { InstrumentComponent } from './instrument/instrument.component';
 import { NotificationComponent } from './notification/notification.component';
 import { CanActivateInstrument } from './instrument/instrument-routing-guard.service';
+import { BorrowingDetailComponent } from './instrument/borrowing/borrowing-detail/borrowing-detail.component';
 
 
 const routes: Routes = [
@@ -47,7 +48,8 @@ const routes: Routes = [
           { path: 'account', component: AccountComponent, data: { instrument: 'borrowing' } },
           { path: 'create', component: BorrowingCreateComponent },
           { path: 'engage', component: BorrowingEngageComponent },
-          { path: 'positions', component: BorrowingPositionsComponent }
+          { path: 'positions', component: BorrowingPositionsComponent },
+          { path: 'positions/:id', component: BorrowingDetailComponent }
         ]
       },
       {
