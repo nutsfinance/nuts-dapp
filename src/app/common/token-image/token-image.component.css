@@ -1,0 +1,8 @@
+.token-image-container {
+  display: inline-block;
+}
+.token-image {
+  width: 15px;
+  margin-bottom: 4px;
+  margin-left: 3px;
+}

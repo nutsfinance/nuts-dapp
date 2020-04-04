@@ -50,6 +50,7 @@
 
 .content-container {
     flex-grow: 1;
+    text-align: center;
 }
 
 .content-label {
@@ -67,6 +68,11 @@
     margin-bottom: 3px;
 }
 
+.switch-icon {
+    width: 25px;
+    margin-top: 15px;
+}
+
 .more-content-title {
     font-family: "GillSans-Light", Helvetica, Arial, serif;
     font-size: 12px;
@@ -76,7 +82,8 @@
 .issuance-card-actions {
     display: flex;
     justify-content: flex-end;
-    margin-top: 15px;
+    margin-top: 25px;
+    margin-bottom: 10px;
 }
 
 .engage-button {

@@ -1,1 +1,40 @@
-<p>swap-positions works!</p>
+<div class="tab-group">
+    <div [ngClass]="{'tab-label': true, 'selected': selectedTab == 'all'}" (click)="selectTab('all')">All</div>
+    <div [ngClass]="{'tab-label': true, 'selected': selectedTab == 'engageable'}" (click)="selectTab('engageable')">
+      Engageable</div>
+    <div [ngClass]="{'tab-label': true, 'selected': selectedTab == 'engaged'}" (click)="selectTab('engaged')">Engaged
+    </div>
+    <div [ngClass]="{'tab-label': true, 'selected': selectedTab == 'inactive'}" (click)="selectTab('inactive')">Inactive
+    </div>
+  </div>
+  
+  <div class="no-issuance-container" *ngIf="issuances.length == 0" [ngSwitch]="selectedTab">
+    <img src="../../../../assets/images/no-issuance.png" class="no-issuance-image"/>
+    <div *ngSwitchCase="'inactive'">
+      <p class="no-issuance-title">There are currently no inactive positions.</p>
+    </div>
+  
+    <div *ngSwitchCase="'engaged'">
+      <p class="no-issuance-title">There are currently no engaged positions.</p>
+      <p class="no-issuance-content">Click here to view available offers.</p>
+      <button mat-raised-button color="primary" class="no-issuance-button" routerLink="/instrument/lending/engage">Engage</button>
+    </div>
+  
+    <div *ngSwitchCase="'engageable'">
+      <p class="no-issuance-title">There are currently no engageable positions.</p>
+      <p class="no-issuance-content">Click here to create an offer.</p>
+      <button mat-raised-button color="primary" class="no-issuance-button" routerLink="/instrument/swap/create">Create</button>
+    </div>
+  
+    <div *ngSwitchCase="'all'">
+      <p class="no-issuance-title">There are currently no positions.</p>
+      <p class="no-issuance-content">You can create or engage an offer.</p>
+      <button mat-raised-button color="primary" class="no-issuance-button" routerLink="/instrument/swap/engage">Engage</button>
+      <br/>
+      <button mat-raised-button color="primary" class="no-issuance-button" routerLink="/instrument/swap/create">Create</button>
+    </div>
+  </div>
+  
+  <app-swap-card *ngFor="let issuance of issuances" [issuance]="issuance"></app-swap-card>
+  
+  
