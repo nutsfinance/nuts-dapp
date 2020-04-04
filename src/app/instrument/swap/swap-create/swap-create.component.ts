@@ -53,6 +53,20 @@ export class SwapCreateComponent implements OnInit {
     this.createFormGroup.patchValue({ 'duration': tenorChange.value });
   }
 
+  /**
+   * Should show error message when the control is invalid and either
+   * 1) The control is touched
+   * 2) Or the form is submitted
+   * @param controlName
+   */
+  shouldShowErrorMessage(controlName: string): boolean {
+    const formSubmitted = this.form.submitted;
+    const controlTouched = this.createFormGroup.controls[controlName].touched;
+    const controlInvalid = this.createFormGroup.controls[controlName].invalid;
+
+    return controlInvalid && (controlTouched || formSubmitted);
+  }
+  
   async createSwapIssuance() {
     console.log(this.createFormGroup);
     if (!this.createFormGroup.valid) {

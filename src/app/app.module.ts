@@ -49,6 +49,8 @@ import { AccountBalanceDialog } from './common/account-total-balance/account-bal
 import { TokenValuePipe } from './common/web3/token-value.pipe';
 import { BorrowingCardComponent } from './instrument/borrowing/borrowing-card/borrowing-card.component';
 import { BorrowingDetailComponent } from './instrument/borrowing/borrowing-detail/borrowing-detail.component';
+import { SwapCardComponent } from './instrument/swap/swap-card/swap-card.component';
+import { SwapDetailComponent } from './instrument/swap/swap-detail/swap-detail.component';
 
 
 @NgModule({
@@ -99,6 +101,8 @@ import { BorrowingDetailComponent } from './instrument/borrowing/borrowing-detai
     TokenValuePipe,
     BorrowingCardComponent,
     BorrowingDetailComponent,
+    SwapCardComponent,
+    SwapDetailComponent,
   ],
   entryComponents: [
     CurrencySelectSheetComponent,

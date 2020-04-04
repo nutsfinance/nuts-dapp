@@ -48,6 +48,10 @@
   display: inline-block;
   margin-left: 10px;
 }
+.deposit-button {
+  text-decoration: underline;
+  font-weight: 600;
+}
 .create-button-wrapper {
   width: 100%;
   padding: 20px;

@@ -1,0 +1,90 @@
+.issuance-card {
+    font-family: "GillSans-Light", Helvetica, Arial, serif;
+    color: rgba(74, 73, 74, 1.0);
+    padding: 22px 22px 10px;
+    margin-bottom: 20px;
+}
+
+.issuance-title-container {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14.0px;
+    align-items: baseline;
+    margin-bottom: 12px;
+}
+
+.issuance-state {
+    font-size: 13px;
+}
+
+.issuance-card-subtitle {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.subtitle-container {
+    display: flex;
+    margin-right: 30px;
+    font-size: 12px;
+    align-items: center;
+}
+
+.subtitle-icon {
+    display: flex;
+    flex-direction: column;
+    color: rgba(155, 154, 155, 1.0);
+    font-size: 10.0px;
+    margin-right: 9px;
+    align-items: center;
+}
+
+.subtitle-icon-image {
+    width: 12px;
+    height: 12px;
+}
+
+.issuance-card-content,
+.more-content-container {
+    display: flex;
+}
+
+.content-container {
+    flex-grow: 1;
+}
+
+.content-label {
+    margin-bottom: 8px;
+}
+
+.content-sublabel {
+    color: rgba(155, 154, 155, 1.0);
+    font-size: 12px;
+}
+
+.content-value {
+    font-family: "GillSans", Helvetica, Arial, serif;
+    font-size: 13px;
+    margin-bottom: 3px;
+}
+
+.more-content-title {
+    font-family: "GillSans-Light", Helvetica, Arial, serif;
+    font-size: 12px;
+    margin: 10px 0;
+}
+
+.issuance-card-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 15px;
+}
+
+.engage-button {
+    color: white;
+    width: 100px;
+    margin-left: 15px;
+}
+
+.close-button {
+    margin-left: 15px;
+}
