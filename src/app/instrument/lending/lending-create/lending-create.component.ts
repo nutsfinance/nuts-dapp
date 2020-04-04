@@ -98,7 +98,10 @@ export class LendingCreateComponent implements OnInit {
     if (!this.createFormGroup.valid) {
       return;
     }
-    this.instrumentService.createLendingIssuance(this.principalToken, this.createFormGroup.value['principalAmount'],
+    const lendingAmount = this.principalToken === 'ETH' ?
+      this.nutsPlatformService.web3.utils.toWei(`${this.createFormGroup.value['principalAmount']}`, 'ether') :
+      this.createFormGroup.value['principalAmount'];
+    this.instrumentService.createLendingIssuance(this.principalToken, lendingAmount,
       this.collateralToken, this.createFormGroup.value['collateralRatio'], this.createFormGroup.value['tenor'],
       this.createFormGroup.value['interestRate'])
       .on('transactionHash', transactionHash => {

@@ -229,6 +229,10 @@ export class NutsPlatformService {
     }
   }
 
+  public getInstrumentManager(instrument: string): string {
+    return this.contractAddresses[this.currentNetwork].platform[instrument].instrumentManager;
+  }
+
   public getTokenNameByAddress(tokenAddress: string): string {
     if (tokenAddress.toLowerCase() === ETH_ADDRESS.toLowerCase()) return 'ETH';
     const tokens = this.contractAddresses[this.currentNetwork].tokens;

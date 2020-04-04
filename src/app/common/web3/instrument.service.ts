@@ -9,6 +9,7 @@ import { IssuanceModel } from '../model/issuance.model';
 import { LendingMakerParameterModel } from '../model/lending-maker-parameter.model';
 import { BorrowingMakerParameterModel } from '../model/borrowing-maker-parameter.model';
 import { BorrowingIssuanceModel } from '../model/borrowing-issuance.model';
+import { SwapMakerParameterModel } from '../model/swap-maker-parameter.model';
 
 const InstrumentManager = require('./abi/InstrumentManagerInterface.json');
 
@@ -55,19 +56,18 @@ export class InstrumentService {
   public createLendingIssuance(principalToken: string, principalAmount: number, collateralToken: string,
     collateralRatio: number, tenor: number, interestRate: number) {
 
-    const principalTokenAddress = principalToken === 'ETH' ? ETH_ADDRESS : this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].tokens[principalToken];
-    const lendingAmount = principalToken === 'ETH' ? this.nutsPlatformService.web3.utils.toWei(`${principalAmount}`, 'ether') : principalAmount;
-    const collateralTokenAddress = collateralToken === 'ETH' ? ETH_ADDRESS : this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].tokens[collateralToken];
-    console.log(collateralTokenAddress, principalTokenAddress, lendingAmount,
+    const principalTokenAddress = this.nutsPlatformService.getTokenAddressByName(principalToken);
+    const collateralTokenAddress = this.nutsPlatformService.getTokenAddressByName(collateralToken);
+    console.log(collateralTokenAddress, principalTokenAddress, principalAmount,
       Math.floor(collateralRatio * COLLATERAL_RATIO_DECIMALS), tenor, Math.floor(interestRate * INTEREST_RATE_DECIMALS));
 
-    const lendingMakerParametersModel = new LendingMakerParameterModel(collateralTokenAddress, principalTokenAddress, lendingAmount,
+    const lendingMakerParametersModel = new LendingMakerParameterModel(collateralTokenAddress, principalTokenAddress, principalAmount,
       Math.floor(collateralRatio * COLLATERAL_RATIO_DECIMALS), tenor, Math.floor(interestRate * INTEREST_RATE_DECIMALS));
     const message = lendingMakerParametersModel.toMessage().serializeBinary();
     const lendingMakerParameters = '0x' + Buffer.from(message).toString('hex');
     console.log(lendingMakerParameters);
 
-    const instrumentManagerAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform.lending.instrumentManager;
+    const instrumentManagerAddress = this.nutsPlatformService.getInstrumentManager('lending');
     const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
     return instrumentManagerContract.methods.createIssuance(lendingMakerParameters).send({ from: this.nutsPlatformService.currentAccount, gas: 6721975 })
       .on('transactionHash', (transactionHash) => {
@@ -79,7 +79,7 @@ export class InstrumentService {
           {
             principalTokenName: principalToken,
             principalTokenAddress,
-            principalAmount: `${lendingAmount}`,
+            principalAmount: `${principalAmount}`,
             collateralTokenName: collateralToken,
             collateralTokenAddress,
             collateralRatio: `${collateralRatio}`,
@@ -103,19 +103,18 @@ export class InstrumentService {
   public createBorrowingIssuance(principalToken: string, principalAmount: number, collateralToken: string,
     collateralRatio: number, tenor: number, interestRate: number) {
 
-    const principalTokenAddress = principalToken === 'ETH' ? ETH_ADDRESS : this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].tokens[principalToken];
-    const lendingAmount = principalToken === 'ETH' ? this.nutsPlatformService.web3.utils.toWei(`${principalAmount}`, 'ether') : principalAmount;
-    const collateralTokenAddress = collateralToken === 'ETH' ? ETH_ADDRESS : this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].tokens[collateralToken];
-    console.log(collateralTokenAddress, principalTokenAddress, lendingAmount,
+    const principalTokenAddress = this.nutsPlatformService.getTokenAddressByName(principalToken);
+    const collateralTokenAddress = this.nutsPlatformService.getTokenAddressByName(collateralToken);
+    console.log(collateralTokenAddress, principalTokenAddress, principalAmount,
       Math.floor(collateralRatio * COLLATERAL_RATIO_DECIMALS), tenor, Math.floor(interestRate * INTEREST_RATE_DECIMALS));
 
-    const borrowingMakerParametersModel = new BorrowingMakerParameterModel(collateralTokenAddress, principalTokenAddress, lendingAmount,
+    const borrowingMakerParametersModel = new BorrowingMakerParameterModel(collateralTokenAddress, principalTokenAddress, principalAmount,
       Math.floor(collateralRatio * COLLATERAL_RATIO_DECIMALS), tenor, Math.floor(interestRate * INTEREST_RATE_DECIMALS));
     const message = borrowingMakerParametersModel.toMessage().serializeBinary();
     const borrowingMakerParameters = '0x' + Buffer.from(message).toString('hex');
     console.log(borrowingMakerParameters);
 
-    const instrumentManagerAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform.borrowing.instrumentManager;
+    const instrumentManagerAddress = this.nutsPlatformService.getInstrumentManager('borrowing');
     const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
     return instrumentManagerContract.methods.createIssuance(borrowingMakerParameters).send({ from: this.nutsPlatformService.currentAccount, gas: 6721975 })
       .on('transactionHash', (transactionHash) => {
@@ -127,12 +126,55 @@ export class InstrumentService {
           {
             principalTokenName: principalToken,
             principalTokenAddress,
-            principalAmount: `${lendingAmount}`,
+            principalAmount: `${principalAmount}`,
             collateralTokenName: collateralToken,
             collateralTokenAddress,
             collateralRatio: `${collateralRatio}`,
             tenor: `${tenor}`,
             interestRate: `${interestRate}`,
+
+            // instrumentName: instrument,
+            // tokenName: token,
+            // tokenAddress,
+            // amount: `${amount}`,
+          }
+        );
+        this.notificationService.addTransaction(depositTransaction).subscribe(result => {
+          console.log(result);
+          // Note: Transaction Sent event is not sent until the transaction is recored in notification server!
+          this.nutsPlatformService.transactionSentSubject.next(transactionHash);
+        });
+      });
+  }
+
+  public createSwapIssuance(inputToken: string, inputAmount: number, outputToken: string, outputAmount: number,
+    duration: number) {
+
+    const inputTokenAddress = this.nutsPlatformService.getTokenAddressByName(inputToken);
+    const outputTokenAddress = this.nutsPlatformService.getTokenAddressByName(outputToken);
+    
+    const swapMakerParametersModel = new SwapMakerParameterModel(inputTokenAddress, outputTokenAddress, inputAmount, outputAmount, duration);
+    const message = swapMakerParametersModel.toMessage().serializeBinary();
+    const swapMakerParameters = '0x' + Buffer.from(message).toString('hex');
+    console.log(swapMakerParameters);
+
+    const instrumentManagerAddress = this.nutsPlatformService.getInstrumentManager('swap');
+    const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
+    return instrumentManagerContract.methods.createIssuance(swapMakerParameters).send({ from: this.nutsPlatformService.currentAccount, gas: 6721975 })
+      .on('transactionHash', (transactionHash) => {
+        console.log(transactionHash);
+        // this.nutsPlatformService.transactionSentSubject.next(transactionHash);
+        // Records the transaction
+        const depositTransaction = new TransactionModel(transactionHash, TransactionType.CREATE_OFFER, NotificationRole.MAKER,
+          this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId('swap'), 0,
+          {
+            inputTokenName: inputToken,
+            inputTokenAddress,
+            outputTokenName: outputToken,
+            outputTokenAddress,
+            inputAmount: `${inputAmount}`,
+            outputAmount: `${outputAmount}`,
+            duration: `${duration}`,
 
             // instrumentName: instrument,
             // tokenName: token,
