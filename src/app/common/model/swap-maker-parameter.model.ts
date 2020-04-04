@@ -4,7 +4,7 @@ export class SwapMakerParameterModel {
     constructor(public inputTokenAddress: string, public outputTokenAddress: string,
         public inputAmount: number, public outputAmount: number, public duration: number) {}
 
-    static fromMessage(swapMakerParameters: SwapData.SwapMakerParameters): SwapMakerParameterModel {
+    static fromMessage(swapMakerParameters: SwapData.SpotSwapMakerParameters): SwapMakerParameterModel {
         return new SwapMakerParameterModel(
             swapMakerParameters.getInputtokenaddress().toAddress(),
             swapMakerParameters.getOutputtokenaddress().toAddress(),
@@ -15,7 +15,7 @@ export class SwapMakerParameterModel {
     }
 
     toMessage(): SwapData.SwapMakerParameters {
-        const swapMakerParameters = new SwapData.SwapMakerParameters();
+        const swapMakerParameters = new SwapData.SpotSwapMakerParameters();
         swapMakerParameters.setInputtokenaddress(SwapData.address.fromAddress(this.inputTokenAddress.toLowerCase()));
         swapMakerParameters.setOutputtokenaddress(SwapData.address.fromAddress(this.outputTokenAddress.toLowerCase()));
         swapMakerParameters.setInputamount(SwapData.uint256.fromNumber(this.inputAmount));

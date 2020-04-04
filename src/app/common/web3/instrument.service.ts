@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LendingData, BorrowingData } from 'nuts-platform-protobuf-messages';
+import { LendingData, BorrowingData, SwapData } from 'nuts-platform-protobuf-messages';
 import { NutsPlatformService, ETH_ADDRESS, CUSTODIAN_ADDRESS } from './nuts-platform.service';
 import { NotificationService } from 'src/app/notification/notification.service';
 import { TransactionModel, TransactionType, NotificationRole } from 'src/app/notification/transaction.model';
@@ -49,7 +49,7 @@ export class InstrumentService {
           console.log('Network changed. Reloading lending issuances.', currentNetwork);
           this.reloadIssuances();
         });
-    
+
         // Reloads issuances every 60s.
         setTimeout(this.reloadIssuances.bind(this), 60000);
       }
@@ -153,9 +153,11 @@ export class InstrumentService {
   public createSwapIssuance(inputToken: string, outputToken: string, inputAmount: number, outputAmount: number,
     duration: number) {
 
+    console.log(inputToken, outputToken, inputAmount, outputAmount, duration);
     const inputTokenAddress = this.nutsPlatformService.getTokenAddressByName(inputToken);
     const outputTokenAddress = this.nutsPlatformService.getTokenAddressByName(outputToken);
-    
+    console.log(inputTokenAddress, outputTokenAddress);
+
     const swapMakerParametersModel = new SwapMakerParameterModel(inputTokenAddress, outputTokenAddress, inputAmount, outputAmount, duration);
     const message = swapMakerParametersModel.toMessage().serializeBinary();
     const swapMakerParameters = '0x' + Buffer.from(message).toString('hex');
@@ -313,7 +315,7 @@ export class InstrumentService {
     this.swapIssuances = [];
     for (let i = 1; i <= issuanceCount; i++) {
       const swapData = await instrumentManagerContract.methods.getCustomData(i, this.nutsPlatformService.web3.utils.fromAscii("swap_data")).call();
-      const swapCompleteProperties = swapData.SwapCompleteProperties.deserializeBinary(Uint8Array.from(Buffer.from(swapData.substring(2), 'hex')));
+      const swapCompleteProperties = SwapData.SpotSwapCompleteProperties.deserializeBinary(Uint8Array.from(Buffer.from(swapData.substring(2), 'hex')));
       this.swapIssuances.push(SwapIssuanceModel.fromMessage(swapCompleteProperties));
     }
 

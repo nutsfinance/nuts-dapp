@@ -14,8 +14,8 @@ export class SwapIssuanceModel extends IssuanceModel {
             state, supplementalLineItems);
     }
 
-    static fromMessage(swapCompleteProperties: SwapData.SwapCompleteProperties): SwapIssuanceModel {
-        const swapProperties = swapCompleteProperties.getSwapproperties();
+    static fromMessage(swapCompleteProperties: SwapData.SpotSwapCompleteProperties): SwapIssuanceModel {
+        const swapProperties = swapCompleteProperties.getSpotswapproperties();
         const issuanceProperties = swapCompleteProperties.getIssuanceproperties();
         const supplementalLineItems: SupplementalLineItemModel[] = [];
         for (let item of issuanceProperties.getSupplementallineitemsList()) {

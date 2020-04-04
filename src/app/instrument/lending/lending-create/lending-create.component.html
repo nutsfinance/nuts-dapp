@@ -92,7 +92,7 @@
 
     <div class="row">
       <div class="col-xs-12 field-row">
-        <mat-button-toggle-group class="toggle-input" [value]="createFormGroup.value['collateralRatio']"
+        <mat-button-toggle-group class="toggle-input narrow-toggle" [value]="createFormGroup.value['collateralRatio']"
           (change)="onCollateralRatioChange($event)">
           <mat-button-toggle value="50">50%</mat-button-toggle>
           <mat-button-toggle value="100">100%</mat-button-toggle>
@@ -142,7 +142,7 @@
 
     <div class="row">
       <div class="col-xs-12">
-        <mat-button-toggle-group class="toggle-input" [value]="createFormGroup.value['interestRate']" (change)="onInterestRateChange($event)">
+        <mat-button-toggle-group class="toggle-input narrow-toggle" [value]="createFormGroup.value['interestRate']" (change)="onInterestRateChange($event)">
           <mat-button-toggle value="0.010" class="toggle-input-button">0.010</mat-button-toggle>
           <mat-button-toggle value="0.020">0.020</mat-button-toggle>
           <mat-button-toggle value="0.030">0.030</mat-button-toggle>

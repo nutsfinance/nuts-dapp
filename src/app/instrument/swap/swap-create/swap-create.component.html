@@ -84,7 +84,7 @@
 
         <div class="row">
             <div class="col-xs-8">
-                <mat-button-toggle-group class="tenor-input" (change)="onTenorChange($event)">
+                <mat-button-toggle-group class="tenor-input" [value]="createFormGroup.value['duration']" (change)="onTenorChange($event)">
                     <mat-button-toggle value="15">15D</mat-button-toggle>
                     <mat-button-toggle value="30">30D</mat-button-toggle>
                     <mat-button-toggle value="45">45D</mat-button-toggle>

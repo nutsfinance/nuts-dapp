@@ -72,15 +72,14 @@ export class SwapCreateComponent implements OnInit {
     if (!this.createFormGroup.valid) {
       return;
     }
-    const inputTokenAddress = this.nutsPlatformService.getTokenAddressByName(this.inputToken);
-    const outputTokenAddress = this.nutsPlatformService.getTokenAddressByName(this.outputToken);
+
     const inputAmount = this.inputToken === 'ETH' ?
       this.nutsPlatformService.web3.utils.toWei(`${this.createFormGroup.value['inputAmount']}`, 'ether') :
       this.createFormGroup.value['inputAmount'];
     const outputAmount = this.outputToken === 'ETH' ?
       this.nutsPlatformService.web3.utils.toWei(`${this.createFormGroup.value['outputAmount']}`, 'ether') :
       this.createFormGroup.value['outputAmount'];
-    this.instrumentService.createSwapIssuance(inputTokenAddress, outputTokenAddress, inputAmount, outputAmount, 
+    this.instrumentService.createSwapIssuance(this.inputToken, this.outputToken, inputAmount, outputAmount, 
       this.createFormGroup.value['duration'])
       .on('transactionHash', transactionHash => {
         // Show Transaction Initiated dialog
@@ -91,9 +90,9 @@ export class SwapCreateComponent implements OnInit {
             data: {
               type: 'create_issuance',
               inputTokenName: this.inputToken,
-              inputTokenAddress,
+              inputTokenAddress: this.nutsPlatformService.getTokenAddressByName(this.inputToken),
               outputTokenName: this.outputToken,
-              outputTokenAddress,
+              outputTokenAddress: this.nutsPlatformService.getTokenAddressByName(this.outputToken),
               inputAmount,
               outputAmount,
               duration: this.createFormGroup.value['duration'],
