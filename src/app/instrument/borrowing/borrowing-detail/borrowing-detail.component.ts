@@ -6,7 +6,7 @@ import { BorrowingIssuanceModel } from 'src/app/common/model/borrowing-issuance.
 import { NutsPlatformService, USD_ADDRESS, CNY_ADDRESS } from 'src/app/common/web3/nuts-platform.service';
 import { PriceOracleService } from 'src/app/common/web3/price-oracle.service';
 import { CurrencyService } from 'src/app/common/currency-select/currency.service';
-import { InstrumentService, IssuanceTransaction } from 'src/app/common/web3/instrument.service';
+import { InstrumentService } from 'src/app/common/web3/instrument.service';
 import { MatDialog } from '@angular/material';
 import { TransactionInitiatedDialog } from 'src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component';
 import { AccountBalanceService } from 'src/app/common/web3/account-balance.service';
@@ -31,9 +31,6 @@ export class BorrowingDetailComponent implements OnInit {
   public convertedBorrowingValue: Promise<number>;
   public convertedPerDayInterestValue: Promise<number>;
   public convertedTotalInterestValue: Promise<number>;
-
-  public columns: string[] = ['action', 'from', 'to', 'amount', 'date'];
-  public transactions: IssuanceTransaction[] = [];
 
   private accountUpdatedSubscription: Subscription;
   private issuanceIdSubscription: Subscription;
@@ -225,12 +222,6 @@ export class BorrowingDetailComponent implements OnInit {
           this.issuance.borrowingTokenAddress, this.issuance.borrowingAmount * this.issuance.interestRate, 1000000);
         this.convertedTotalInterestValue = this.priceOracleService.getConvertedValue(targetTokenAddress,
           this.issuance.borrowingTokenAddress, this.issuance.borrowingAmount * this.issuance.interestRate * this.issuance.tenorDays, 1000000);
-
-        // Retrieve issuance transactions
-        this.instrumentService.getIssuanceTransactions('borrowing', this.issuance).then((transactions) => {
-          console.log('Transactions', transactions);
-          this.transactions = transactions;
-        });
       }
     });
   }

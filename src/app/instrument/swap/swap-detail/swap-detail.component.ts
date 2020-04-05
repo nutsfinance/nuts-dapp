@@ -1,12 +1,12 @@
 import { Location } from '@angular/common';
-import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { SwapIssuanceModel } from 'src/app/common/model/swap-issuance.model';
 import { NutsPlatformService, USD_ADDRESS, CNY_ADDRESS } from 'src/app/common/web3/nuts-platform.service';
 import { PriceOracleService } from 'src/app/common/web3/price-oracle.service';
 import { CurrencyService } from 'src/app/common/currency-select/currency.service';
-import { InstrumentService, IssuanceTransaction } from 'src/app/common/web3/instrument.service';
+import { InstrumentService } from 'src/app/common/web3/instrument.service';
 import { MatDialog } from '@angular/material';
 import { TransactionInitiatedDialog } from 'src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component';
 import { AccountBalanceService } from 'src/app/common/web3/account-balance.service';
@@ -26,9 +26,6 @@ export class SwapDetailComponent implements OnInit {
 
   public convertedInputValue: Promise<number>;
   public convertedOutputValue: Promise<number>;
-
-  public columns: string[] = ['action', 'from', 'to', 'amount', 'date'];
-  public transactions: IssuanceTransaction[] = [];
 
   private accountUpdatedSubscription: Subscription;
   private issuanceIdSubscription: Subscription;
@@ -163,12 +160,6 @@ export class SwapDetailComponent implements OnInit {
           this.issuance.inputTokenAddress, this.issuance.inputAmount);
         this.convertedOutputValue = this.priceOracleService.getConvertedValue(targetTokenAddress,
           this.issuance.outputTokenAddress, this.issuance.outputAmount);
-        
-        // Retrieve issuance transactions
-        this.instrumentService.getIssuanceTransactions('swap', this.issuance).then((transactions) => {
-          console.log('Transactions', transactions);
-          this.transactions = transactions;
-        });
       }
     });
   }

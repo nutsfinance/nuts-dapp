@@ -17,7 +17,7 @@ const InstrumentManager = require('./abi/InstrumentManagerInterface.json');
 const INTEREST_RATE_DECIMALS = 10000;
 const COLLATERAL_RATIO_DECIMALS = 100;
 
-export interface IssuanceTransaction {
+export interface IssuanceTransfer {
   action: string,
   fromWallet: string,
   fromRole: string,
@@ -341,11 +341,11 @@ export class InstrumentService {
     return this.swapIssuances.find(issuance => issuance.issuanceId === issuanceId);
   }
 
-  public async getIssuanceTransactions(instrument: string, issuance: IssuanceModel): Promise<IssuanceTransaction[]> {
+  public async getIssuanceTransfers(instrument: string, issuance: IssuanceModel): Promise<IssuanceTransfer[]> {
     const instrumentManagerAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument].instrumentManager;
     const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
     const tokenTransferEvents = await instrumentManagerContract.getPastEvents('TokenTransferred', { fromBlock: 0, toBlock: 'latest' });
-    const transactions: IssuanceTransaction[] = [];
+    const transactions: IssuanceTransfer[] = [];
     tokenTransferEvents.forEach((event) => {
       if (event.returnValues.issuanceId == issuance.issuanceId) {
         console.log(event);

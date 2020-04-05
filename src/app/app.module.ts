@@ -52,6 +52,7 @@ import { BorrowingDetailComponent } from './instrument/borrowing/borrowing-detai
 import { SwapCardComponent } from './instrument/swap/swap-card/swap-card.component';
 import { SwapDetailComponent } from './instrument/swap/swap-detail/swap-detail.component';
 import { TokenImageComponent } from './common/token-image/token-image.component';
+import { IssuanceTransfersComponent } from './common/issuance-transfers/issuance-transfers.component';
 
 
 @NgModule({
@@ -105,6 +106,7 @@ import { TokenImageComponent } from './common/token-image/token-image.component'
     SwapCardComponent,
     SwapDetailComponent,
     TokenImageComponent,
+    IssuanceTransfersComponent,
   ],
   entryComponents: [
     CurrencySelectSheetComponent,
