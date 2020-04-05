@@ -5,7 +5,7 @@ import { PriceOracleService } from '../web3/price-oracle.service';
 import { USD_ADDRESS, CNY_ADDRESS, NutsPlatformService } from '../web3/nuts-platform.service';
 import { Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material';
-import { AccountBalanceDialog } from './account-balance-doalog.component';
+import { AccountTotalBalanceDialog } from './account-total-balance-dialog.component';
 
 @Component({
   selector: 'app-account-total-balance',
@@ -42,10 +42,14 @@ export class AccountTotalBalanceComponent implements OnInit, OnDestroy {
   }
 
   openDialog() {
-    this.dialog.open(AccountBalanceDialog, {
-      width: '90%',
+    this.dialog.open(AccountTotalBalanceDialog, {
+      width: '60%',
       data: {
         instrument: this.instrument
+      },
+      position: {
+        top: '155px',
+        right: '20px'
       }
     });
   }

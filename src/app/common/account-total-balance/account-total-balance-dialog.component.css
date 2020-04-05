@@ -1,0 +1,7 @@
+.token-name {
+  display: flex;
+  justify-content: space-between;
+}
+.token-percentage {
+  text-align: end;
+}

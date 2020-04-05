@@ -45,7 +45,8 @@ import { NotificationComponent } from './notification/notification.component';
 import { TransactionInitiatedDialog } from './common/transaction-initiated-dialog/transaction-initiated-dialog.component';
 import { CanActivateInstrument } from './instrument/instrument-routing-guard.service';
 import { AccountTotalBalanceComponent } from './common/account-total-balance/account-total-balance.component';
-import { AccountBalanceDialog } from './common/account-total-balance/account-balance-doalog.component';
+import { AccountBalanceDialog } from './common/account-total-balance/account-balance-dialog.component';
+import { AccountTotalBalanceDialog } from './common/account-total-balance/account-total-balance-dialog.component';
 import { TokenValuePipe } from './common/web3/token-value.pipe';
 import { BorrowingCardComponent } from './instrument/borrowing/borrowing-card/borrowing-card.component';
 import { BorrowingDetailComponent } from './instrument/borrowing/borrowing-detail/borrowing-detail.component';
@@ -85,6 +86,7 @@ import { IssuanceTransfersComponent } from './common/issuance-transfers/issuance
     DashboardPositionBalanceComponent,
     WalletBalanceComponent,
     AccountBalanceComponent,
+    AccountTotalBalanceDialog,
     LanguageSelectSheet,
     NotificationSnackBar,
     BlockTimestampComponent,
@@ -118,6 +120,7 @@ import { IssuanceTransfersComponent } from './common/issuance-transfers/issuance
     IncorrectNetworkDialog,
     DisconnectedDialog,
     AccountBalanceDialog,
+    AccountTotalBalanceDialog,
   ],
   imports: [
     BrowserModule,
