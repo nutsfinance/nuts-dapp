@@ -141,7 +141,8 @@ export class AccountDepositComponent implements OnInit, OnChanges {
   }
 
   private depositETH() {
-    this.instrumentEscrowService.depositETH(this.instrument, this.amountControl.value)
+    const depositValue = this.nutsPlatformService.getWeiFromEther(this.amountControl.value);
+    this.instrumentEscrowService.depositETH(this.instrument, depositValue)
       .on('transactionHash', transactionHash => {
 
         this.zone.run(() => {
@@ -169,9 +170,11 @@ export class AccountDepositComponent implements OnInit, OnChanges {
           console.log('Deposit ETH receipt', receipt);
 
           // Update instrument balance
+          this.userBalanceService.updateAssetBalance(this.instrument, 'ETH');
+          // Updates it one more time in case there is any delay
           setTimeout(() => {
             this.userBalanceService.updateAssetBalance(this.instrument, 'ETH');
-          }, 2000)
+          }, 5000);
           this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
           clearInterval(interval);
         }, 4000);
@@ -222,9 +225,11 @@ export class AccountDepositComponent implements OnInit, OnChanges {
           this.submitEnabled = true;
 
           // Update instrument balance
+          this.userBalanceService.updateAssetBalance(this.instrument, this.selectedToken);
+          // Update it one more time in case there is any delay
           setTimeout(() => {
             this.userBalanceService.updateAssetBalance(this.instrument, this.selectedToken);
-          }, 2000);
+          }, 5000);
           this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
           clearInterval(interval);
         }, 4000);

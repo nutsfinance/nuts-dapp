@@ -38,6 +38,8 @@ export class AccountBalanceService {
         this.nutsPlatformService.currentAccountSubject.subscribe(_ => {
           this.getUserBalanceOnChain();
         });
+        // Reloads account every 60s.
+        setTimeout(this.getUserBalanceOnChain.bind(this), 60000);
       }
     });
   }

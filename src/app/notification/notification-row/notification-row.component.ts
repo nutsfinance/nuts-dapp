@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { NotificationModel, NotificationStatus, NotificationCategory } from '../notification.model';
+import { NotificationModel, NotificationReadStatus, NotificationCategory } from '../notification.model';
 import { MatCheckboxChange } from '@angular/material';
 import { NutsPlatformService } from 'src/app/common/web3/nuts-platform.service';
 import { TransactionType } from '../transaction.model';
@@ -15,25 +15,25 @@ import { NotificationService } from '../notification.service';
 export class NotificationRowComponent implements OnInit, OnChanges {
   @Input() public notification: NotificationModel;
   @Input() public showSelect: boolean;
-  @Output() public statusUpdated = new EventEmitter<{ id: string, status: NotificationStatus }>();
-  public notificationStatus: NotificationStatus;
+  @Output() public statusUpdated = new EventEmitter<{ id: string, readStatus: NotificationReadStatus }>();
+  public notificationStatus: NotificationReadStatus;
 
   constructor(private nutsPlatformService: NutsPlatformService, private notificationService: NotificationService,
     private router: Router) { }
 
   ngOnInit() {
-    this.notificationStatus = this.notification.status;
+    this.notificationStatus = this.notification.readStatus;
   }
 
   ngOnChanges(changes: SimpleChanges) {
     this.showSelect = changes.showSelect.currentValue;
     // Refreshes the notification status when select/cancel is clicked.
-    this.notificationStatus = this.notification.status;
+    this.notificationStatus = this.notification.readStatus;
   }
 
   onStatusChanged(change: MatCheckboxChange) {
-    this.notificationStatus = change.checked ? NotificationStatus.READ : NotificationStatus.NEW;
-    this.statusUpdated.next({ id: this.notification.notificationId, status: this.notificationStatus });
+    this.notificationStatus = change.checked ? NotificationReadStatus.READ : NotificationReadStatus.NEW;
+    this.statusUpdated.next({ id: this.notification.notificationId, readStatus: this.notificationStatus });
   }
 
   getEtherscanLink(): string {
@@ -63,7 +63,7 @@ export class NotificationRowComponent implements OnInit, OnChanges {
   onNotificationAction() {
     console.log(this.notification);
     // Mark notification as READ
-    this.notification.status = NotificationStatus.READ;
+    this.notification.readStatus = NotificationReadStatus.READ;
     this.notificationService.updateNotification(this.notification);
     const instrumentName = this.nutsPlatformService.getInstrumentById(+this.notification.instrumentId);
 

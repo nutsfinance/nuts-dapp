@@ -9,7 +9,7 @@ export enum NotificationCategory {
   DUE = 'DUE',
 }
 
-export enum NotificationStatus {
+export enum NotificationReadStatus {
   NEW = 'NEW',
   READ = 'READ',
 }
@@ -18,7 +18,7 @@ export class NotificationModel {
   constructor(public notificationId: string, public userAddress: string,
     public transactionHash: string, public creationTimestamp: number,
     public instrumentId: number, public issuanceId: number,
-    public category: NotificationCategory, public status: NotificationStatus,
+    public category: NotificationCategory, public readStatus: NotificationReadStatus,
     public title: string, public message: string,
     public type: TransactionType, public metadata: {[key: string]: string}) {}
 }

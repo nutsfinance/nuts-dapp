@@ -61,8 +61,6 @@ export class InstrumentService {
 
     const principalTokenAddress = this.nutsPlatformService.getTokenAddressByName(principalToken);
     const collateralTokenAddress = this.nutsPlatformService.getTokenAddressByName(collateralToken);
-    console.log(collateralTokenAddress, principalTokenAddress, principalAmount,
-      Math.floor(collateralRatio * COLLATERAL_RATIO_DECIMALS), tenor, Math.floor(interestRate * INTEREST_RATE_DECIMALS));
 
     const lendingMakerParametersModel = new LendingMakerParameterModel(collateralTokenAddress, principalTokenAddress, principalAmount,
       Math.floor(collateralRatio * COLLATERAL_RATIO_DECIMALS), tenor, Math.floor(interestRate * INTEREST_RATE_DECIMALS));
@@ -74,8 +72,6 @@ export class InstrumentService {
     const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
     return instrumentManagerContract.methods.createIssuance(lendingMakerParameters).send({ from: this.nutsPlatformService.currentAccount, gas: 6721975 })
       .on('transactionHash', (transactionHash) => {
-        console.log(transactionHash);
-        // this.nutsPlatformService.transactionSentSubject.next(transactionHash);
         // Records the transaction
         const depositTransaction = new TransactionModel(transactionHash, TransactionType.CREATE_OFFER, NotificationRole.MAKER,
           this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId('lending'), 0,
@@ -108,9 +104,7 @@ export class InstrumentService {
 
     const principalTokenAddress = this.nutsPlatformService.getTokenAddressByName(principalToken);
     const collateralTokenAddress = this.nutsPlatformService.getTokenAddressByName(collateralToken);
-    console.log(collateralTokenAddress, principalTokenAddress, principalAmount,
-      Math.floor(collateralRatio * COLLATERAL_RATIO_DECIMALS), tenor, Math.floor(interestRate * INTEREST_RATE_DECIMALS));
-
+ 
     const borrowingMakerParametersModel = new BorrowingMakerParameterModel(collateralTokenAddress, principalTokenAddress, principalAmount,
       Math.floor(collateralRatio * COLLATERAL_RATIO_DECIMALS), tenor, Math.floor(interestRate * INTEREST_RATE_DECIMALS));
     const message = borrowingMakerParametersModel.toMessage().serializeBinary();
@@ -135,11 +129,6 @@ export class InstrumentService {
             collateralRatio: `${collateralRatio}`,
             tenor: `${tenor}`,
             interestRate: `${interestRate}`,
-
-            // instrumentName: instrument,
-            // tokenName: token,
-            // tokenAddress,
-            // amount: `${amount}`,
           }
         );
         this.notificationService.addTransaction(depositTransaction).subscribe(result => {
@@ -152,8 +141,7 @@ export class InstrumentService {
 
   public createSwapIssuance(inputToken: string, outputToken: string, inputAmount: number, outputAmount: number,
     duration: number) {
-
-    console.log(inputToken, outputToken, inputAmount, outputAmount, duration);
+  
     const inputTokenAddress = this.nutsPlatformService.getTokenAddressByName(inputToken);
     const outputTokenAddress = this.nutsPlatformService.getTokenAddressByName(outputToken);
     console.log(inputTokenAddress, outputTokenAddress);
@@ -167,8 +155,6 @@ export class InstrumentService {
     const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
     return instrumentManagerContract.methods.createIssuance(swapMakerParameters).send({ from: this.nutsPlatformService.currentAccount, gas: 6721975 })
       .on('transactionHash', (transactionHash) => {
-        console.log(transactionHash);
-        // this.nutsPlatformService.transactionSentSubject.next(transactionHash);
         // Records the transaction
         const depositTransaction = new TransactionModel(transactionHash, TransactionType.CREATE_OFFER, NotificationRole.MAKER,
           this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId('swap'), 0,
@@ -180,11 +166,6 @@ export class InstrumentService {
             inputAmount: `${inputAmount}`,
             outputAmount: `${outputAmount}`,
             duration: `${duration}`,
-
-            // instrumentName: instrument,
-            // tokenName: token,
-            // tokenAddress,
-            // amount: `${amount}`,
           }
         );
         this.notificationService.addTransaction(depositTransaction).subscribe(result => {

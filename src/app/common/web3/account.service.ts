@@ -22,16 +22,6 @@ export class AccountService {
   constructor(private nutsPlatformService: NutsPlatformService, private notificationService: NotificationService) {}
 
   public approve(instrument: string, token: string, amount: number) {
-    if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork]) {
-      alert(`Network ${this.nutsPlatformService.currentNetwork} is not supported!`);
-    }
-    if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument]) {
-      alert(`Instrument ${instrument} is not supported!`);
-    }
-    if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].tokens[token]) {
-      alert(`Token ${token} is not supported!`);
-    }
-
     const instrumentEscrowAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument].instrumentEscrow;
     const tokenAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].tokens[token];
     const tokenContract = new this.nutsPlatformService.web3.eth.Contract(ERC20, tokenAddress);
@@ -65,20 +55,10 @@ export class AccountService {
   }
 
   public depositETH(instrument: string, amount: number) {
-    if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork]) {
-      alert(`Network ${this.nutsPlatformService.currentNetwork} is not supported!`);
-    }
-    if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument]) {
-      alert(`Instrument ${instrument} is not supported!`);
-    }
-
     const instrumentEscrowAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument].instrumentEscrow;
     const instrumentEscrowContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentEscrow, instrumentEscrowAddress);
-    return instrumentEscrowContract.methods.deposit().send({ from: this.nutsPlatformService.currentAccount, value: this.nutsPlatformService.web3.utils.toWei(`${amount}`, 'ether') })
+    return instrumentEscrowContract.methods.deposit().send({ from: this.nutsPlatformService.currentAccount, value: amount })
       .on('transactionHash', (transactionHash) => {
-        console.log(transactionHash);
-        // this.nutsPlatformService.transactionSentSubject.next(transactionHash);
-
         // Records the transaction
         const depositTransaction = new TransactionModel(transactionHash, TransactionType.DEPOSIT, NotificationRole.MAKER,
           this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId(instrument), 0,
@@ -98,24 +78,11 @@ export class AccountService {
   }
 
   public depositToken(instrument: string, token: string, amount: number) {
-    if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork]) {
-      alert(`Network ${this.nutsPlatformService.currentNetwork} is not supported!`);
-    }
-    if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument]) {
-      alert(`Instrument ${instrument} is not supported!`);
-    }
-    if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].tokens[token]) {
-      alert(`Token ${token} is not supported!`);
-    }
-
     const instrumentEscrowAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument].instrumentEscrow;
     const instrumentEscrowContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentEscrow, instrumentEscrowAddress);
     const tokenAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].tokens[token];
     return instrumentEscrowContract.methods.depositToken(tokenAddress, amount).send({ from: this.nutsPlatformService.currentAccount })
       .on('transactionHash', (transactionHash) => {
-        console.log(transactionHash);
-        // this.nutsPlatformService.transactionSentSubject.next(transactionHash);
-
         // Records the transaction
         const depositTransaction = new TransactionModel(transactionHash, TransactionType.DEPOSIT, NotificationRole.MAKER,
           this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId(instrument), 0,
@@ -135,20 +102,10 @@ export class AccountService {
   }
 
   public withdrawETH(instrument: string, amount: string) {
-    if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork]) {
-      alert(`Network ${this.nutsPlatformService.currentNetwork} is not supported!`);
-    }
-    if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument]) {
-      alert(`Instrument ${instrument} is not supported!`);
-    }
-
     const instrumentEscrowAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument].instrumentEscrow;
     const instrumentEscrowContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentEscrow, instrumentEscrowAddress);
-    return instrumentEscrowContract.methods.withdraw(this.nutsPlatformService.web3.utils.toWei(`${amount}`, 'ether')).send({ from: this.nutsPlatformService.currentAccount })
+    return instrumentEscrowContract.methods.withdraw(amount).send({ from: this.nutsPlatformService.currentAccount })
       .on('transactionHash', (transactionHash) => {
-        console.log(transactionHash);
-        // this.nutsPlatformService.transactionSentSubject.next(transactionHash);
-
         // Records the transaction
         const depositTransaction = new TransactionModel(transactionHash, TransactionType.WITHDRAW, NotificationRole.MAKER,
           this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId(instrument), 0,
@@ -172,16 +129,6 @@ export class AccountService {
   }
 
   public withdrawToken(instrument: string, token: string, amount: number) {
-    if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork]) {
-      alert(`Network ${this.nutsPlatformService.currentNetwork} is not supported!`);
-    }
-    if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument]) {
-      alert(`Instrument ${instrument} is not supported!`);
-    }
-    if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].tokens[token]) {
-      alert(`Token ${token} is not supported!`);
-    }
-
     const instrumentEscrowAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument].instrumentEscrow;
     const instrumentEscrowContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentEscrow, instrumentEscrowAddress);
     const tokenAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].tokens[token];

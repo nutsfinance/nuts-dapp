@@ -249,6 +249,14 @@ export class NutsPlatformService {
     return this.contractAddresses[this.currentNetwork].tokens[tokenName];
   }
 
+  public getWeiFromEther(etherAmount: number) {
+    return this.web3.utils.toWei(`${etherAmount}`, 'ether');
+  }
+
+  public getEtherFromWei(weiAmount: number) {
+    return this.web3.utils.fromWei(`${weiAmount}`, 'ether');
+  }
+
   public getInstrumentId(instrument: string): number {
     if (!this.contractAddresses[this.currentNetwork]) {
       alert(`Network ${this.currentNetwork} is not supported!`);

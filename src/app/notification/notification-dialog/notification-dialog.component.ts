@@ -2,7 +2,7 @@ import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
-import { NotificationModel, NotificationStatus, NotificationCategory } from '../notification.model';
+import { NotificationModel, NotificationReadStatus, NotificationCategory } from '../notification.model';
 import { NutsPlatformService } from 'src/app/common/web3/nuts-platform.service';
 import { TransactionType } from '../transaction.model';
 import { NotificationService } from '../notification.service';
@@ -23,7 +23,7 @@ export class NotificationDialog implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.notificationSubscription = this.notificationService.notificationUpdatedSubject.subscribe((notifications) => {
-      this.notifications = notifications.filter(notification => notification.status === 'NEW')
+      this.notifications = notifications.filter(notification => notification.readStatus === NotificationReadStatus.NEW)
       .sort((n1, n2) => n2.creationTimestamp - n1.creationTimestamp);
     });
   }
@@ -64,7 +64,7 @@ export class NotificationDialog implements OnInit, OnDestroy {
   onNotificationAction(notification: NotificationModel) {
     this.dialogRef.close();
     // Mark the notification as READ
-    notification.status = NotificationStatus.READ;
+    notification.readStatus = NotificationReadStatus.READ;
     this.notificationService.updateNotification(notification);
     const instrumentName = this.nutsPlatformService.getInstrumentById(+notification.instrumentId);
     
@@ -112,7 +112,7 @@ export class NotificationDialog implements OnInit, OnDestroy {
 
   markAllRead() {
     for (let notification of this.notifications) {
-      notification.status = NotificationStatus.READ;
+      notification.readStatus = NotificationReadStatus.READ;
     }
     this.notificationService.updateNotifications(this.notifications);
   }

@@ -2,14 +2,13 @@ import { Component, OnInit, OnDestroy, Inject, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSnackBar, MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 
-import { NotificationCategory, NotificationModel, NotificationStatus } from './notification/notification.model';
+import { NotificationCategory, NotificationModel } from './notification/notification.model';
 import { NotificationService } from './notification/notification.service';
 import { Subscription } from 'rxjs';
 import { NutsPlatformService } from './common/web3/nuts-platform.service';
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { InstrumentService } from './common/web3/instrument.service';
 import { AccountBalanceService } from './common/web3/account-balance.service';
-import { TransactionType } from './notification/transaction.model';
 
 export interface NotificationData {
   category: NotificationCategory,

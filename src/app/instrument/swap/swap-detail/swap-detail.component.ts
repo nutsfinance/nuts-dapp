@@ -65,7 +65,7 @@ export class SwapDetailComponent implements OnInit {
     this.location.back();
   }
 
-  onOutputBalanceUpdated(balance) {
+  onOutputTokenBalanceUpdated(balance) {
     this.outputTokenBalance = balance;
     setTimeout(() => {
       this.outputSufficient = this.outputTokenBalance >= this.issuance.outputAmount;

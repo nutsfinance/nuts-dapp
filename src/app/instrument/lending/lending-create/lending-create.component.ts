@@ -99,7 +99,7 @@ export class LendingCreateComponent implements OnInit {
       return;
     }
     const lendingAmount = this.principalToken === 'ETH' ?
-      this.nutsPlatformService.web3.utils.toWei(`${this.createFormGroup.value['principalAmount']}`, 'ether') :
+      this.nutsPlatformService.getWeiFromEther(this.createFormGroup.value['principalAmount']) :
       this.createFormGroup.value['principalAmount'];
     this.instrumentService.createLendingIssuance(this.principalToken, lendingAmount,
       this.collateralToken, this.createFormGroup.value['collateralRatio'], this.createFormGroup.value['tenor'],

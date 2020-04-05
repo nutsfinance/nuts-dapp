@@ -6,7 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 
 import { NotificationService } from '../notification/notification.service';
-import { NotificationStatus, NotificationModel } from '../notification/notification.model';
+import { NotificationReadStatus, NotificationModel } from '../notification/notification.model';
 import { NotificationDialog } from '../notification/notification-dialog/notification-dialog.component';
 
 @Component({
@@ -27,7 +27,7 @@ export class InstrumentComponent implements OnInit, OnDestroy {
     this.notificationSubscription = this.notificationService.notificationUpdatedSubject.subscribe(notifications => {
       this.zone.run(() => {
         this.unreadNotifications = notifications
-          .filter(notification => notification.status === NotificationStatus.NEW)
+          .filter(notification => notification.readStatus === NotificationReadStatus.NEW)
           .sort((n1, n2) => n2.creationTimestamp - n1.creationTimestamp);
       });
     });

@@ -2,10 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject, BehaviorSubject, of } from 'rxjs';
 
-import { environment } from '../../environments/environment';
 import { NutsPlatformService } from '../common/web3/nuts-platform.service';
 import { TransactionModel } from './transaction.model';
-import { NotificationModel, NotificationStatus } from './notification.model';
+import { NotificationModel, NotificationReadStatus } from './notification.model';
 
 @Injectable({
   providedIn: 'root'
@@ -55,6 +54,11 @@ export class NotificationService {
     });
   }
 
+  addTransaction(transaction: TransactionModel) {
+    console.log('Adding transaction', transaction);
+    return this.http.post(`${this.apiServerHost}/transactions`, transaction);
+  }
+
   getAllNotifications() {
     console.log('Get all notifications');
     if (!this.nutsPlatformService.isFullyLoaded()) {
@@ -67,11 +71,6 @@ export class NotificationService {
       this.notifications = sortedNotifications;
       this.notificationUpdatedSubject.next(sortedNotifications);
     });
-  }
-
-  addTransaction(transaction: TransactionModel) {
-    console.log(`${this.apiServerHost}/transactions`);
-    return this.http.post(`${this.apiServerHost}/transactions`, transaction);
   }
 
   updateNotification(notification: NotificationModel) {
@@ -167,7 +166,7 @@ export class NotificationService {
 
       // Check whether are any new unread notifications.
       for (let i = 0; i < reloadedNotifications.length; i++) {
-        if (reloadedNotifications[i].status === NotificationStatus.NEW) {
+        if (reloadedNotifications[i].readStatus === NotificationReadStatus.NEW) {
           console.log('Current notifications', this.notifications);
           console.log('Reloaded notifications', reloadedNotifications);
           console.log('New notification', reloadedNotifications[i]);

@@ -3,7 +3,7 @@ import { Location } from '@angular/common';
 import { Subscription } from 'rxjs';
 
 import { NotificationService } from './notification.service';
-import { NotificationModel, NotificationStatus } from './notification.model';
+import { NotificationModel, NotificationReadStatus } from './notification.model';
 
 @Component({
   selector: 'app-notification',
@@ -16,7 +16,7 @@ export class NotificationComponent implements OnInit, OnDestroy {
   public notifications: NotificationModel[] = [];
   
   private notificationSubscription: Subscription;
-  private notificationStatusUpdate: {[id: string]: NotificationStatus} = {};
+  private notificationReadStatusUpdate: {[id: string]: NotificationReadStatus} = {};
 
   constructor(private location: Location, private zone: NgZone, private notificationService: NotificationService) { }
 
@@ -40,16 +40,16 @@ export class NotificationComponent implements OnInit, OnDestroy {
     this.updateNotifications();
   }
 
-  onNotificationStatusUpdated(update: {id: string, status: NotificationStatus}) {
-    this.notificationStatusUpdate[update.id] = update.status;
+  onNotificationStatusUpdated(update: {id: string, readStatus: NotificationReadStatus}) {
+    this.notificationReadStatusUpdate[update.id] = update.readStatus;
   }
 
   saveNotifications() {
-    console.log(this.notificationStatusUpdate);
+    console.log(this.notificationReadStatusUpdate);
     const notificationsToUpdate: NotificationModel[] = [];
     for (let notification of this.notifications) {
-      if (notification.notificationId in this.notificationStatusUpdate) {
-        notification.status = this.notificationStatusUpdate[notification.notificationId];
+      if (notification.notificationId in this.notificationReadStatusUpdate) {
+        notification.readStatus = this.notificationReadStatusUpdate[notification.notificationId];
         notificationsToUpdate.push(notification);
       }
     }
@@ -65,7 +65,7 @@ export class NotificationComponent implements OnInit, OnDestroy {
           .sort((n1, n2) => n2.creationTimestamp - n1.creationTimestamp);
       } else {
         this.notifications = this.notificationService.notifications
-          .filter(notification => notification.status === 'NEW')
+          .filter(notification => notification.readStatus === NotificationReadStatus.NEW)
           .sort((n1, n2) => n2.creationTimestamp - n1.creationTimestamp);
       }
     });

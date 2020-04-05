@@ -48,8 +48,8 @@ export class AccountWithdrawComponent implements OnInit {
     }
     let withdrawPromise;
     if (this.selectedToken === 'ETH') {
-      withdrawPromise = this.instrumentEscrowService.withdrawETH(this.instrument, this.amountControl.value);
-
+      const withdrawValue = this.nutsPlatformService.getWeiFromEther(this.amountControl.value);
+      withdrawPromise = this.instrumentEscrowService.withdrawETH(this.instrument, withdrawValue);
     } else {
       withdrawPromise = this.instrumentEscrowService.withdrawToken(this.instrument, this.selectedToken, this.amountControl.value);
     }
@@ -81,9 +81,11 @@ export class AccountWithdrawComponent implements OnInit {
         console.log(receipt);
 
         // Update instrument balance
+        this.userBalanceService.updateAssetBalance(this.instrument, this.selectedToken);
+        // Update it one more time in case there is any delay
         setTimeout(() => {
           this.userBalanceService.updateAssetBalance(this.instrument, this.selectedToken);
-        }, 2000);
+        }, 5000);
         
         this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
         clearInterval(interval);

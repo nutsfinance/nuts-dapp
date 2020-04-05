@@ -74,10 +74,10 @@ export class SwapCreateComponent implements OnInit {
     }
 
     const inputAmount = this.inputToken === 'ETH' ?
-      this.nutsPlatformService.web3.utils.toWei(`${this.createFormGroup.value['inputAmount']}`, 'ether') :
+      this.nutsPlatformService.getWeiFromEther(this.createFormGroup.value['inputAmount']) :
       this.createFormGroup.value['inputAmount'];
     const outputAmount = this.outputToken === 'ETH' ?
-      this.nutsPlatformService.web3.utils.toWei(`${this.createFormGroup.value['outputAmount']}`, 'ether') :
+      this.nutsPlatformService.getWeiFromEther(this.createFormGroup.value['outputAmount']) :
       this.createFormGroup.value['outputAmount'];
     this.instrumentService.createSwapIssuance(this.inputToken, this.outputToken, inputAmount, outputAmount, 
       this.createFormGroup.value['duration'])
@@ -111,9 +111,9 @@ export class SwapCreateComponent implements OnInit {
           if (!receipt || !receipt.blockNumber) return;
 
           console.log('Create receipt', receipt);
-          // New lending issuance created. Need to refresh the lending issuance list.
-          this.instrumentService.reloadLendingIssuances();
-          // New lending issuance created. Need to update the principal balance as well.
+          // New swap issuance created. Need to refresh the swap issuance list.
+          this.instrumentService.reloadSwapIssuances();
+          // New swap issuance created. Need to update the input token balance as well.
           this.accountBalanceService.updateAssetBalance('swap', this.inputToken);
           this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
           clearInterval(interval);

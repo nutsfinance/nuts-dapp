@@ -21,7 +21,7 @@ export class BorrowingCreateComponent implements OnInit {
   public showAlternativeColleral = false;
   public showAlternativeInterest = false;
   public principalToken = this.tokens[0];
-  public principalTokenBalance: number;
+  public collateralTokenBalance: number;
   public collateralToken = this.tokens[1];
   public collateralValue = 0;
   public interestValue = 0;
@@ -82,7 +82,7 @@ export class BorrowingCreateComponent implements OnInit {
       return;
     }
     const borrowingAmount = this.principalToken === 'ETH' ?
-      this.nutsPlatformService.web3.utils.toWei(`${this.createFormGroup.value['principalAmount']}`, 'ether') :
+      this.nutsPlatformService.getWeiFromEther(this.createFormGroup.value['principalAmount']) :
       this.createFormGroup.value['principalAmount'];
 
     this.priceOracleSercvice.getConvertedValue(collateralTokenAddress, principalTokenAddress,
@@ -98,7 +98,7 @@ export class BorrowingCreateComponent implements OnInit {
       return;
     }
     const borrowingAmount = this.principalToken === 'ETH' ?
-      this.nutsPlatformService.web3.utils.toWei(`${this.createFormGroup.value['principalAmount']}`, 'ether') :
+      this.nutsPlatformService.getWeiFromEther(this.createFormGroup.value['principalAmount']) :
       this.createFormGroup.value['principalAmount'];
     this.instrumentService.createBorrowingIssuance(this.principalToken, borrowingAmount,
       this.collateralToken, this.createFormGroup.value['collateralRatio'], this.createFormGroup.value['tenor'],
@@ -171,9 +171,6 @@ export class BorrowingCreateComponent implements OnInit {
   validPrincipalAmount(control: FormControl): { [s: string]: boolean } {
     if (!control.value) {
       return { 'required': true };
-    }
-    if (this.principalTokenBalance < Number(control.value)) {
-      return { 'insufficientBalance': true };
     }
     if ((this.principalToken === 'ETH' && Number.isNaN(Number(control.value))) || Number(control.value) <= 0) {
       return { 'nonPositiveAmount': true };
