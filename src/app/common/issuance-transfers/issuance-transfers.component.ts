@@ -8,6 +8,7 @@ import { InstrumentService, IssuanceTransfer } from '../web3/instrument.service'
   styleUrls: ['./issuance-transfers.component.scss']
 })
 export class IssuanceTransfersComponent implements OnInit, OnChanges {
+  @Input() instrument: string;
   @Input() issuance: IssuanceModel;
 
   public columns: string[] = ['action', 'from', 'to', 'amount', 'date'];
@@ -21,7 +22,7 @@ export class IssuanceTransfersComponent implements OnInit, OnChanges {
   ngOnChanges() {
     if (this.issuance) {
       // Retrieve issuance transfers
-      this.instrumentService.getIssuanceTransfers('lending', this.issuance).then((transfers) => {
+      this.instrumentService.getIssuanceTransfers(this.instrument, this.issuance).then((transfers) => {
         console.log('Transfers', transfers);
         this.transfers = transfers;
       });
