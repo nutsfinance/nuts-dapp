@@ -14,13 +14,13 @@
   <div mat-dialog-content class="content-container">
     <p class="content-text" [ngSwitch]="data.type">
         <span *ngSwitchCase="'approve'">
-            Approval request for <span style="color: blue">{{data.fspName}}</span> to withdraw and spend up to <span style="color: blue;">{{data.amount}} {{data.tokenName}}</span> has been initiated.
+            Approval request for <span style="color: blue">{{data.fspName}}</span> to withdraw and spend up to <span style="color: blue;">{{data.tokenAmount}} {{data.tokenName}}</span> has been initiated.
         </span>
         <span *ngSwitchCase="'deposit'">
-            Your deposit request for <span style="color: blue;">{{data.amount}} {{data.tokenName}}</span>  has been initiated.
+            Your deposit request for <span style="color: blue;">{{data.tokenAmount}} {{data.tokenName}}</span>  has been initiated.
         </span>
         <span *ngSwitchCase="'withdraw'">
-            Your withdrawal request for <span style="color: blue;">{{data.amount}} {{data.tokenName}}</span>  has been initiated.
+            Your withdrawal request for <span style="color: blue;">{{data.tokenAmount}} {{data.tokenName}}</span>  has been initiated.
         </span>
         <span *ngSwitchCase="'create_issuance'">
             Your {{data.instrument}} offer for <span style="color: blue;">{{data.tokenAmount}} {{data.tokenName}}</span> has been initiated.

@@ -3,13 +3,11 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 export interface TransactionData {
   type: string,
+  instrument: string,
   fspName?: string,
   tokenName?: string,
-  amount?: number,
+  tokenAmount?: number,
   issuanceId?: string,
-  principalAmount?: number,
-  principalTokenName?: string,
-  totalAmount?: number,
 }
 
 @Component({
