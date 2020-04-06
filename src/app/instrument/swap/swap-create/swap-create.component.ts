@@ -89,13 +89,9 @@ export class SwapCreateComponent implements OnInit {
             width: '90%',
             data: {
               type: 'create_issuance',
-              inputTokenName: this.inputToken,
-              inputTokenAddress: this.nutsPlatformService.getTokenAddressByName(this.inputToken),
-              outputTokenName: this.outputToken,
-              outputTokenAddress: this.nutsPlatformService.getTokenAddressByName(this.outputToken),
-              inputAmount,
-              outputAmount,
-              duration: this.createFormGroup.value['duration'],
+              instrument: 'swap',
+              tokenName: this.inputToken,
+              tokenAmount: this.createFormGroup.value['inputAmount'],
             },
           });
           transactionInitiatedDialog.afterClosed().subscribe(() => {

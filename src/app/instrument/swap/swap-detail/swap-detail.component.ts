@@ -82,13 +82,10 @@ export class SwapDetailComponent implements OnInit {
             width: '90%',
             data: {
               type: 'engage_issuance',
+              instrument: 'swap',
               issuanceId: this.issuance.issuanceId,
-              inputTokenName: this.inputToken,
-              inputTokenAddress: this.issuance.inputTokenAddress,
-              outputTokenName: this.outputToken,
-              outputTokenAddress: this.issuance.outputTokenAddress,
-              inputAmount: this.issuance.inputAmount,
-              outputAmount: this.issuance.outputAmount,
+              tokenName: this.inputToken,
+              tokenAmount: this.nutsPlatformService.getTokenValueByName(this.inputToken, this.issuance.inputAmount),
             },
           });
           transactionInitiatedDialog.afterClosed().subscribe(() => {
@@ -121,6 +118,7 @@ export class SwapDetailComponent implements OnInit {
             width: '90%',
             data: {
               type: 'cancel_issuance',
+              instrument: 'swap',
               issuanceId: this.issuance.issuanceId,
             },
           });

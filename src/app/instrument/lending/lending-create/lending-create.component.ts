@@ -112,8 +112,9 @@ export class LendingCreateComponent implements OnInit {
             width: '90%',
             data: {
               type: 'create_issuance',
-              principalAmount: this.createFormGroup.value['principalAmount'],
-              principalTokenName: this.principalToken,
+              instrument: 'lending',
+              tokenAmount: this.createFormGroup.value['principalAmount'],
+              tokenName: this.principalToken,
             },
           });
           transactionInitiatedDialog.afterClosed().subscribe(() => {

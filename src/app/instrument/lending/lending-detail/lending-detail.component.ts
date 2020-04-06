@@ -99,9 +99,10 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
             width: '90%',
             data: {
               type: 'engage_issuance',
+              instrument: 'lending',
               issuanceId: this.issuance.issuanceId,
-              principalAmount: this.nutsPlatformService.getTokenValueByAddress(this.issuance.lendingTokenAddress, this.issuance.lendingAmount),
-              principalTokenName: this.nutsPlatformService.getTokenNameByAddress(this.issuance.lendingTokenAddress),
+              tokenAmount: this.nutsPlatformService.getTokenValueByAddress(this.issuance.lendingTokenAddress, this.issuance.lendingAmount),
+              tokenName: this.nutsPlatformService.getTokenNameByAddress(this.issuance.lendingTokenAddress),
             },
           });
           transactionInitiatedDialog.afterClosed().subscribe(() => {
@@ -137,9 +138,10 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
             width: '90%',
             data: {
               type: 'repay_issuance',
+              instrument: 'lending',
               issuanceId: this.issuance.issuanceId,
-              totalAmount: totalAmount,
-              principalTokenName: this.nutsPlatformService.getTokenNameByAddress(this.issuance.lendingTokenAddress),
+              tokenAmount: totalAmount,
+              tokenName: this.nutsPlatformService.getTokenNameByAddress(this.issuance.lendingTokenAddress),
             },
           });
           transactionInitiatedDialog.afterClosed().subscribe(() => {
@@ -172,6 +174,7 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
             width: '90%',
             data: {
               type: 'cancel_issuance',
+              instrument: 'lending',
               issuanceId: this.issuance.issuanceId,
             },
           });

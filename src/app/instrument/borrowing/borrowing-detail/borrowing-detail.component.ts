@@ -96,9 +96,10 @@ export class BorrowingDetailComponent implements OnInit {
             width: '90%',
             data: {
               type: 'engage_issuance',
+              instrument: 'borrowing',
               issuanceId: this.issuance.issuanceId,
-              principalAmount: this.nutsPlatformService.getTokenValueByAddress(this.issuance.borrowingTokenAddress, this.issuance.borrowingAmount),
-              principalTokenName: this.nutsPlatformService.getTokenNameByAddress(this.issuance.borrowingTokenAddress),
+              tokenAmount: this.nutsPlatformService.getTokenValueByAddress(this.issuance.borrowingTokenAddress, this.issuance.borrowingAmount),
+              tokenName: this.nutsPlatformService.getTokenNameByAddress(this.issuance.borrowingTokenAddress),
             },
           });
           transactionInitiatedDialog.afterClosed().subscribe(() => {
@@ -134,9 +135,10 @@ export class BorrowingDetailComponent implements OnInit {
             width: '90%',
             data: {
               type: 'repay_issuance',
+              instrument: 'borrowing',
               issuanceId: this.issuance.issuanceId,
-              totalAmount: totalAmount,
-              principalTokenName: this.nutsPlatformService.getTokenNameByAddress(this.issuance.borrowingTokenAddress),
+              tokenAmount: totalAmount,
+              tokenName: this.nutsPlatformService.getTokenNameByAddress(this.issuance.borrowingTokenAddress),
             },
           });
           transactionInitiatedDialog.afterClosed().subscribe(() => {
@@ -169,6 +171,7 @@ export class BorrowingDetailComponent implements OnInit {
             width: '90%',
             data: {
               type: 'cancel_issuance',
+              instrument: 'borrowing',
               issuanceId: this.issuance.issuanceId,
             },
           });
