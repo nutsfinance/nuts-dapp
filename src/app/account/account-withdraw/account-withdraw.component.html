@@ -35,7 +35,7 @@
         <span class="balance-content">
           {{instrumentName}} A/C Balance:
           <app-account-balance [instrument]="instrument" [selectedToken]="selectedToken"
-            (balanceUpdated)="instrumentEscrowBalance = $event"></app-account-balance>
+            (balanceUpdated)="accountBalance = $event"></app-account-balance>
           {{selectedToken}}
         </span>
       </div>

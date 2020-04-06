@@ -21,7 +21,7 @@
         <img src="../../../../assets/images/wallet-balance.png" class="balance-icon">
         <span class="balance-content">
           Wallet Balance:
-          <app-wallet-balance [selectedToken]="selectedToken" (balanceUpdated)="accountBalance = $event">
+          <app-wallet-balance [selectedToken]="selectedToken" (balanceUpdated)="walletBalance = $event">
           </app-wallet-balance>
           {{selectedToken}}
         </span>

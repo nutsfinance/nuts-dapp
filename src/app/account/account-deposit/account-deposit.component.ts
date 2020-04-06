@@ -18,7 +18,7 @@ export class AccountDepositComponent implements OnInit, OnChanges {
   @Input() public showApprove = false;
 
   public instrumentName = '';
-  public accountBalance: number;
+  public walletBalance: number;
   public amountControl: FormControl;
   public depositFormGroup: FormGroup;
 
@@ -60,7 +60,9 @@ export class AccountDepositComponent implements OnInit, OnChanges {
 
   setMaxAmount() {
     if (this.amountControl.enabled) {
-      this.depositFormGroup.patchValue({ amount: this.accountBalance });
+      this.depositFormGroup.patchValue({
+        amount: this.nutsPlatformService.getTokenValueByName(this.selectedToken, this.walletBalance),
+      });
     }
   }
 
@@ -83,7 +85,7 @@ export class AccountDepositComponent implements OnInit, OnChanges {
     if (!control.value) {
       return { 'required': true };
     }
-    if (this.accountBalance < Number(control.value)) {
+    if (this.walletBalance < Number(control.value)) {
       return { 'insufficientBalance': true };
     }
     if ((this.selectedToken === 'ETH' && Number.isNaN(Number(control.value))) || Number(control.value) <= 0) {

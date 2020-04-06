@@ -16,7 +16,7 @@ export class AccountWithdrawComponent implements OnInit {
 
   public instrumentName = '';
   public selectedToken = 'ETH';
-  public instrumentEscrowBalance: number;
+  public accountBalance: number;
   public amountControl: FormControl;
   public withdrawForm: FormGroup;
 
@@ -38,7 +38,9 @@ export class AccountWithdrawComponent implements OnInit {
   }
 
   setMaxAmount() {
-    this.withdrawForm.patchValue({ amount: this.instrumentEscrowBalance });
+    this.withdrawForm.patchValue({
+      amount: this.nutsPlatformService.getTokenValueByName(this.selectedToken, this.accountBalance)
+    });
   }
 
   withdraw() {
@@ -98,7 +100,7 @@ export class AccountWithdrawComponent implements OnInit {
     if (!control.value) {
       return { 'required': true };
     }
-    if (this.instrumentEscrowBalance < Number(control.value)) {
+    if (this.accountBalance < Number(control.value)) {
       return { 'insufficientBalance': true };
     }
     if ((this.selectedToken === 'ETH' && Number.isNaN(Number(control.value))) || Number(control.value) <= 0) {
