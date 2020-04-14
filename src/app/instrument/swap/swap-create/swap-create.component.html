@@ -2,7 +2,7 @@
     <form #form="ngForm" [formGroup]="createFormGroup" (ngSubmit)="createSwapIssuance()">
         <div class="row">
             <div class="col-xs-6">
-                <span class="input-label">From</span>
+                <span class="input-label">Input Token</span>
             </div>
             <div class="col-xs-6 form-reset">
                 <span class="reset-button" (click)="resetForm()">Reset</span>
@@ -36,7 +36,7 @@
                 </div>
               </div>
               <div class="balance-content">
-                Swap Account Balance:
+                Swap A/C Balance:
                 <app-account-balance [instrument]="'swap'" [selectedToken]="inputToken"
                   (balanceUpdated)="inputTokenBalance = $event">
                 </app-account-balance>
@@ -47,7 +47,7 @@
 
         <div class="row">
             <div class="col-xs-12">
-                <span class="input-label">To</span>
+                <span class="input-label">Output Token</span>
             </div>
         </div>
 
@@ -78,26 +78,26 @@
 
         <div class="row">
             <div class="col-xs-12">
-                <span class="input-label">Pending Engagement Valid for</span>
+                <span class="input-label">Valid for</span>
             </div>
         </div>
 
         <div class="row">
             <div class="col-xs-8">
                 <mat-button-toggle-group class="tenor-input" [value]="createFormGroup.value['duration']" (change)="onTenorChange($event)">
+                    <mat-button-toggle value="3">3D</mat-button-toggle>
+                    <mat-button-toggle value="7">7D</mat-button-toggle>
+                    <mat-button-toggle value="10">10D</mat-button-toggle>
                     <mat-button-toggle value="15">15D</mat-button-toggle>
-                    <mat-button-toggle value="30">30D</mat-button-toggle>
-                    <mat-button-toggle value="45">45D</mat-button-toggle>
-                    <mat-button-toggle value="60">60D</mat-button-toggle>
                 </mat-button-toggle-group>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-xs-8">
-                <span class="alternative-content" *ngIf="!showAlternativeTenor" (click)="showAlternativeTenor = true">
-                    Enter a custom value
-                </span>
+            <div class="col-xs-12">
+              <span class="alternative-content" *ngIf="!showAlternativeTenor" (click)="showAlternativeTenor = true">
+                Enter a custom value
+              </span>
                 <mat-form-field appearance="outline" class="amount-input" *ngIf="showAlternativeTenor">
                     <input matInput placeholder="2 ~ 90 Days" formControlName="duration">
                 </mat-form-field>

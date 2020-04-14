@@ -121,7 +121,7 @@
           Projected collateral cost: {{ collateralValue | tokenValue:collateralToken | number: '1.0-4' }} {{collateralToken}}
         </span>
         <div class="balance-content">
-          Borrowing Account Balance:
+          Borrowing A/C Balance:
           <app-account-balance [instrument]="'borrowing'" [selectedToken]="collateralToken"
             (balanceUpdated)="collateralTokenBalance = $event">
           </app-account-balance>
