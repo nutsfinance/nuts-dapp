@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { LendingData, BorrowingData, SwapData } from 'nuts-platform-protobuf-messages';
 import { NutsPlatformService, ETH_ADDRESS, CUSTODIAN_ADDRESS } from './nuts-platform.service';
 import { NotificationService } from 'src/app/notification/notification.service';
@@ -39,7 +40,8 @@ export class InstrumentService {
   public swapIssuances: SwapIssuanceModel[] = [];
   public swapIssuancesUpdatedSubject = new Subject<SwapIssuanceModel[]>();
 
-  constructor(private nutsPlatformService: NutsPlatformService, private notificationService: NotificationService) {
+  constructor(private nutsPlatformService: NutsPlatformService, private notificationService: NotificationService,
+    private http: HttpClient) {
     // We don't initialize the lending issuance list until the platform is initialized!
     this.nutsPlatformService.platformInitializedSubject.subscribe(initialized => {
       if (initialized) {
@@ -187,7 +189,7 @@ export class InstrumentService {
 
         // Records the transaction
         const depositTransaction = new TransactionModel(transactionHash, TransactionType.ACCEPT_OFFER, NotificationRole.TAKER,
-          this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId('lending'), issuanceId, {});
+          this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId(instrument), issuanceId, {});
         this.notificationService.addTransaction(depositTransaction).subscribe(result => {
           console.log(result);
           // Note: Transaction Sent event is not sent until the transaction is recored in notification server!
@@ -211,7 +213,7 @@ export class InstrumentService {
 
         // Records the transaction
         const depositTransaction = new TransactionModel(transactionHash, TransactionType.PAY_OFFER, NotificationRole.TAKER,
-          this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId('lending'), issuanceId,
+          this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId(instrument), issuanceId,
           {
             principalTokenName: this.nutsPlatformService.getTokenNameByAddress(tokenAddress),
             principalTokenAddress: tokenAddress,
@@ -238,7 +240,7 @@ export class InstrumentService {
 
         // Records the transaction
         const depositTransaction = new TransactionModel(transactionHash, TransactionType.CANCEL_OFFER, NotificationRole.MAKER,
-          this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId('lending'), issuanceId, {});
+          this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId(instrument), issuanceId, {});
         this.notificationService.addTransaction(depositTransaction).subscribe(result => {
           console.log(result);
           // Note: Transaction Sent event is not sent until the transaction is recored in notification server!
@@ -249,6 +251,15 @@ export class InstrumentService {
 
   public async reloadLendingIssuances() {
     console.log('Reloading lending issuances.');
+
+    // this.http.get<LendingIssuanceModel[]>(`${this.nutsPlatformService.getApiServerHost()}/query/issuance`, {
+    //   params: {
+    //     instrument_id: `${this.nutsPlatformService.getInstrumentId('lending')}`,
+    //   }
+    // }).subscribe(lendingIssuances => {
+    //   this.lendingIssuances = lendingIssuances.map(issuance => LendingIssuanceModel.fromMessage(issuance));
+    //   this.lendingIssuancesUpdatedSubject.next(this.lendingIssuances);
+    // });
 
     const instrumentManagerAddress = this.nutsPlatformService.getInstrumentManager('lending');
     const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);

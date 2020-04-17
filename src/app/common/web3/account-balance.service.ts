@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-
+import { HttpClient } from '@angular/common/http';
 import { NutsPlatformService } from './nuts-platform.service';
 import { Subject } from 'rxjs';
 
@@ -26,7 +26,7 @@ export class AccountBalanceService {
   public accountBalances: AccountBalances = {};
   public accountBalancesSubject: Subject<AccountBalances> = new Subject();
 
-  constructor(private nutsPlatformService: NutsPlatformService) {
+  constructor(private nutsPlatformService: NutsPlatformService, private http: HttpClient) {
     // We don't initialize the user balance until the platform is initialized!
     this.nutsPlatformService.platformInitializedSubject.subscribe(initialized => {
       console.log('User balance initialized', initialized);
@@ -44,18 +44,20 @@ export class AccountBalanceService {
     });
   }
 
-  // getUserBalance() {
-  //   const currentAddress = this.nutsPlatformService.currentAccount;
-  //   const currentNetwork = this.nutsPlatformService.currentNetwork;
-  //   if (!currentAddress || (currentNetwork !== 1 && currentNetwork !== 4)) {
-  //     console.log('Current address', currentAddress, 'Current network', currentNetwork);
-  //     return of([]);
-  //   }
-  //   this.http.get<UserBalance>(`${environment.notificationServer}/query/balance`, {params: {user: currentAddress}}).subscribe(userBalance => {
-  //     this.userBalance = userBalance;
-  //     this.userBalanceSubject.next(userBalance);
-  //   });
-  // }
+  getUserBalanceFromBackend() {
+    const currentAddress = this.nutsPlatformService.currentAccount;
+    const currentNetwork = this.nutsPlatformService.currentNetwork;
+    console.log('User balance: Current address', currentAddress, 'Current network', currentNetwork);
+    if (!this.nutsPlatformService.isFullyLoaded()) {
+      console.log('Either network or account is not loaded.');
+      return;
+    }
+    this.http.get<AccountBalances>(`${this.nutsPlatformService.getApiServerHost()}/query/balance`, {params: {user: currentAddress}}).subscribe(accountBalances => {
+      console.log('Account balance from backend', accountBalances);
+      this.accountBalances = accountBalances;
+      this.accountBalancesSubject.next(accountBalances);
+    });
+  }
 
   async getUserBalanceOnChain() {
     const currentAddress = this.nutsPlatformService.currentAccount;

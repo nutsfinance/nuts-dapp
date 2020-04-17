@@ -14,20 +14,14 @@ export class NotificationService {
   public notificationUpdatedSubject: Subject<NotificationModel[]> = new BehaviorSubject<NotificationModel[]>([]);
   public newNotificationSubject: Subject<NotificationModel> = new Subject<NotificationModel>();
 
-  private apiServerHost = '';
-
   constructor(private nutsPlatformService: NutsPlatformService, private http: HttpClient) {
     this.nutsPlatformService.platformInitializedSubject.subscribe(initialized => {
       if (initialized) {
         console.log('Notification initialized', initialized);
-        // Updates the API server first
-        this.updateApiServerHost(this.nutsPlatformService.currentNetwork);
         this.getAllNotifications();
 
         // Reload notifications when the network changes
         this.nutsPlatformService.currentNetworkSubject.subscribe(currentNetwork => {
-          // Updates the API server first
-          this.updateApiServerHost(currentNetwork);
           this.getAllNotifications();
         });
 
@@ -56,7 +50,7 @@ export class NotificationService {
 
   addTransaction(transaction: TransactionModel) {
     console.log('Adding transaction', transaction);
-    return this.http.post(`${this.apiServerHost}/transactions`, transaction);
+    return this.http.post(`${this.nutsPlatformService.getApiServerHost()}/transactions`, transaction);
   }
 
   getAllNotifications() {
@@ -74,7 +68,7 @@ export class NotificationService {
   }
 
   updateNotification(notification: NotificationModel) {
-    this.http.put<NotificationModel>(`${this.apiServerHost}/notifications/${notification.notificationId}`, notification).subscribe(updatedNotification => {
+    this.http.put<NotificationModel>(`${this.nutsPlatformService.getApiServerHost()}/notifications/${notification.notificationId}`, notification).subscribe(updatedNotification => {
       for (let i = 0; i < this.notifications.length; i++) {
         if (this.notifications[i].notificationId === updatedNotification.notificationId) {
           this.notifications[i] = updatedNotification;
@@ -87,7 +81,7 @@ export class NotificationService {
   }
 
   updateNotifications(notifications: NotificationModel[]) {
-    this.http.put<NotificationModel[]>(`${this.apiServerHost}/notifications`, notifications).subscribe(updatedNotifications => {
+    this.http.put<NotificationModel[]>(`${this.nutsPlatformService.getApiServerHost()}/notifications`, notifications).subscribe(updatedNotifications => {
       for (let notification of notifications) {
         for (let i = 0; i < this.notifications.length; i++) {
           if (this.notifications[i].notificationId === notification.notificationId) {
@@ -102,28 +96,6 @@ export class NotificationService {
   }
 
   /**
-   * Updates the API server host name.
-   * @param currentNetwork 
-   */
-  private updateApiServerHost(currentNetwork) {
-    switch(currentNetwork) {
-      case '1':
-        this.apiServerHost = 'https://main-api.dapp.finance';
-        break;
-      case '4':
-        this.apiServerHost = 'https://rinkeby-api.dapp.finance';
-        break;
-      case '42':
-        this.apiServerHost = 'https://kovan-api.dapp.finance';
-        break;
-      default:
-        this.apiServerHost = '';
-        break;
-    }
-    console.log('Network updated', currentNetwork, "New API server host", this.apiServerHost);
-  }
-
-  /**
    * Get notifications from the backend
    */
   private getNotificationFromBackend() {
@@ -133,7 +105,7 @@ export class NotificationService {
       console.log('Notification not initialized: Current address', currentAddress, 'Current network', currentNetwork);
       return of([]);
     }
-    return this.http.get<NotificationModel[]>(`${this.apiServerHost}/notifications/${currentAddress}`);
+    return this.http.get<NotificationModel[]>(`${this.nutsPlatformService.getApiServerHost()}/notifications/${currentAddress}`);
   }
 
   /**

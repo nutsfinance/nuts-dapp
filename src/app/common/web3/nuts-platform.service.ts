@@ -209,6 +209,19 @@ export class NutsPlatformService {
     return this.currentNetwork === '1' || this.currentNetwork === '4' || this.currentNetwork === '42';
   }
 
+  public getApiServerHost(): string {
+    switch(this.currentNetwork) {
+      case '1':
+        return 'https://main-api.dapp.finance';
+      case '4':
+        return 'https://rinkeby-api.dapp.finance';
+      case '42':
+        return 'https://kovan-api.dapp.finance';
+      default:
+        return '';
+    }
+  }
+
   public isFullyLoaded(): boolean {
     return this.isAddressValid() && this.isNetworkValid();
   }
