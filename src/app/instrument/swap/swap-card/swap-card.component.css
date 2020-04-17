@@ -20,7 +20,7 @@
 }
 .subtitle-container {
   display: flex;
-  margin-right: 30px;
+  margin-right: 20px;
   font-size: 12px;
   align-items: center;
 }
@@ -29,7 +29,7 @@
   flex-direction: column;
   color: #9b9a9b;
   font-size: 10px;
-  margin-right: 9px;
+  margin-right: 7px;
   align-items: center;
 }
 .subtitle-icon-image {
