@@ -10,6 +10,9 @@
   font-family: "GillSans-Light", Helvetica, Arial, serif;
   font-size: 12px;
 }
+.position-label {
+  display: inline-block;
+}
 .positions-table {
   min-height: 200px;
 }
