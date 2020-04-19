@@ -5,6 +5,7 @@ import { ETH_ADDRESS, NutsPlatformService } from './nuts-platform.service';
 
 const ERC20 = require('./abi/IERC20.json');
 const InstrumentEscrow = require('./abi/InstrumentEscrowInterface.json');
+const APPROVE_AMOUNT = '115792089237316200000000000000000000000000000000000000000000';
 
 export interface AccountTransaction {
   deposit: boolean,
@@ -21,7 +22,7 @@ export class AccountService {
 
   constructor(private nutsPlatformService: NutsPlatformService, private notificationService: NotificationService) {}
 
-  public approve(instrument: string, token: string, amount: number) {
+  public approve(instrument: string, token: string) {
     const instrumentEscrowAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument].instrumentEscrow;
     const tokenAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].tokens[token];
     const tokenContract = new this.nutsPlatformService.web3.eth.Contract(ERC20, tokenAddress);
@@ -29,9 +30,9 @@ export class AccountService {
       instrumentName: instrument,
       tokenName: token,
       tokenAddress,
-      amount: `${amount}`,
+      amount: `${APPROVE_AMOUNT}`,
     });
-    return tokenContract.methods.approve(instrumentEscrowAddress, amount).send({ from: this.nutsPlatformService.currentAccount })
+    return tokenContract.methods.approve(instrumentEscrowAddress, APPROVE_AMOUNT).send({ from: this.nutsPlatformService.currentAccount })
       .on('transactionHash', (transactionHash) => {
         console.log(transactionHash);
         // this.nutsPlatformService.transactionSentSubject.next(transactionHash);
@@ -43,7 +44,6 @@ export class AccountService {
             instrumentName: instrument,
             tokenName: token,
             tokenAddress,
-            amount: `${amount}`,
           }
         );
         this.notificationService.addTransaction(depositTransaction).subscribe(result => {

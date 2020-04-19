@@ -1,11 +1,11 @@
 export enum TransactionType {
-  APPROVE = 'APPROVE',
-  DEPOSIT = 'DEPOSIT',
-  WITHDRAW = 'WITHDRAW',
-  CREATE_OFFER = 'CREATE_OFFER',
-  CANCEL_OFFER = 'CANCEL_OFFER',
-  ACCEPT_OFFER = 'ACCEPT_OFFER',
-  PAY_OFFER = 'PAY_OFFER',
+  APPROVE = 0,
+  DEPOSIT = 1,
+  WITHDRAW = 2,
+  CREATE_OFFER = 3,
+  CANCEL_OFFER = 4,
+  ACCEPT_OFFER = 5,
+  PAY_OFFER = 6,
 }
 
 export enum NotificationRole {

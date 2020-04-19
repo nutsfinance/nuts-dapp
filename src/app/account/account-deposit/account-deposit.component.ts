@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnChanges, ViewChild, NgZone, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, ViewChild, NgZone, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { AccountService } from '../../common/web3/account.service';
@@ -15,15 +15,13 @@ export class AccountDepositComponent implements OnInit, OnChanges {
   @Input() public instrument: string;
   @Input() public selectedToken = 'ETH';
   @Input() public amount: string;
-  @Input() public showApprove = false;
+  @Output() public approveToken = new EventEmitter<string>();
 
   public instrumentName = '';
   public walletBalance: number;
   public amountControl: FormControl;
   public depositFormGroup: FormGroup;
-
-  public tokenSelectEnabled = true;     // Whether token select is enabled
-  public submitEnabled = true;          // Whether the submit button is enabled
+  public showApprove = false;
 
   @ViewChild('form', { static: true }) private form: NgForm;
 
@@ -39,23 +37,31 @@ export class AccountDepositComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     this.instrumentName = this.instrument.charAt(0).toUpperCase() + this.instrument.substring(1);
     this.depositFormGroup.patchValue({ amount: this.amount });
-    this.submitEnabled = true;
-
-    if (this.selectedToken !== 'ETH' && !this.showApprove) {
-      // If the selected token is not ETH and we show the Deposit button
-      // This means we are in the deposit phase of the Approve-Deposit workflow
-      this.amountControl.disable();
-      this.tokenSelectEnabled = false;
-    } else {
-      this.amountControl.enable();
-      this.tokenSelectEnabled = true;
-    }
   }
 
   onTokenSelected(token: string) {
     this.form.reset();
     this.selectedToken = token;
-    this.showApprove = this.selectedToken !== 'ETH';
+    if (token == 'ETH') {
+      this.showApprove = false;
+      this.approveToken.next('');
+      this.amountControl.enable();
+    } else {
+      this.nutsPlatformService.getWalletAllowance(this.instrument, token).then(allowance => {
+        console.log('Allowance', allowance, typeof allowance);
+        if (allowance) {
+          console.log('Show deposit');
+          this.showApprove = false;
+          this.approveToken.next('');
+          this.amountControl.enable();
+        } else {
+          console.log('Show approve');
+          this.showApprove = true;
+          this.approveToken.next(this.selectedToken);
+          this.amountControl.disable();
+        }
+      });
+    }
   }
 
   setMaxAmount() {
@@ -67,7 +73,7 @@ export class AccountDepositComponent implements OnInit, OnChanges {
   }
 
   submit() {
-    if (this.depositFormGroup.invalid || !this.submitEnabled) {
+    if (this.depositFormGroup.invalid) {
       return;
     }
     if (this.showApprove) {
@@ -98,7 +104,7 @@ export class AccountDepositComponent implements OnInit, OnChanges {
   }
 
   private approve() {
-    this.instrumentEscrowService.approve(this.instrument, this.selectedToken, this.amountControl.value)
+    this.instrumentEscrowService.approve(this.instrument, this.selectedToken)
       .on('transactionHash', transactionHash => {
         this.zone.run(() => {
           // Opens Approval Initiated dialog.
@@ -118,16 +124,6 @@ export class AccountDepositComponent implements OnInit, OnChanges {
           });
         });
 
-        // After the Approve transaction is submitted
-        // 1. Disables amount input
-        this.amountControl.disable();
-        // 2. Disables token select
-        this.tokenSelectEnabled = false;
-        // 3. Change button from Approve to Deposit
-        this.showApprove = false;
-        // 4. Disables the button
-        this.submitEnabled = false;
-
         // Monitoring transaction status(work around for Metamask mobile)
         const interval = setInterval(async () => {
           const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
@@ -135,7 +131,9 @@ export class AccountDepositComponent implements OnInit, OnChanges {
 
           console.log('Approve receipt', receipt);
           // Once the Approve transaction is successful, enables the button
-          this.submitEnabled = true;
+          this.nutsPlatformService.getWalletAllowance(this.instrument, this.selectedToken).then(allowance => {
+            this.showApprove = !!allowance;
+          });
           this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
           clearInterval(interval);
         }, 4000);
@@ -205,9 +203,6 @@ export class AccountDepositComponent implements OnInit, OnChanges {
           });
         });
 
-        // After Deposit transaction is submitted, disables submit button
-        this.submitEnabled = false;
-
         // Monitoring transaction status(work around for Metamask mobile)
         const interval = setInterval(async () => {
           const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
@@ -217,15 +212,6 @@ export class AccountDepositComponent implements OnInit, OnChanges {
           // After Deposit transaction is successful
           // 1. Reset form
           this.form.resetForm();
-          // 2. Re-enable amount input
-          this.amountControl.enable();
-          // 3. Re-enable token select
-          this.tokenSelectEnabled = true;
-          // 4. Change button from Deposit to Approve
-          this.showApprove = true;
-          // 5. Re-enables submit button
-          this.submitEnabled = true;
-
           // Update instrument balance
           this.userBalanceService.updateAssetBalance(this.instrument, this.selectedToken);
           // Update it one more time in case there is any delay

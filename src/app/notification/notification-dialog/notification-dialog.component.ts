@@ -84,8 +84,6 @@ export class NotificationDialog implements OnInit, OnDestroy {
           queryParams: {
             panel: 'deposit',
             token: notification.metadata['tokenName'],
-            amount: notification.metadata['amount'],
-            showApprove: false
           }
         });
         break;

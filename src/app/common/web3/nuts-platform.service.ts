@@ -307,10 +307,12 @@ export class NutsPlatformService {
     }
   }
 
-  public async getWalletAllowance(token: string): Promise<number> {
+  public async getWalletAllowance(instrument: string, token: string): Promise<number> {
     const tokenAddress = this.contractAddresses[this.currentNetwork].tokens[token];
     const tokenContract = new this.web3.eth.Contract(ERC20, tokenAddress);
-    return tokenContract.methods.allowance(this.currentAccount).call();
+    const instrumentEscrowAddres = this.contractAddresses[this.currentNetwork].platform[instrument].instrumentEscrow;
+    const allowance = await tokenContract.methods.allowance(this.currentAccount, instrumentEscrowAddres).call();
+    return Number(allowance);
   }
 
   public async getBlockTimestamp(blockNumber: string): Promise<number> {

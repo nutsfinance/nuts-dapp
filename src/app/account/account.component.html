@@ -1,5 +1,8 @@
 <mat-accordion>
 
+  <div class="deposit-warning" *ngIf="panel == 'deposit' && approveToken">
+    Please enable {{approveToken}} before deposit.
+  </div>
   <mat-expansion-panel [expanded]="panel == 'deposit'" (afterExpand)="panel = 'deposit'">
     <mat-expansion-panel-header>
       <div class="panel-header-wrapper">
@@ -11,7 +14,7 @@
     <app-account-deposit [instrument]="instrument"
       [selectedToken]="token"
       [amount]="amount"
-      [showApprove]="showApprove">
+      (approveToken)="approveToken = $event">
     </app-account-deposit>
 
   </mat-expansion-panel>

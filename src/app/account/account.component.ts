@@ -12,7 +12,7 @@ export class AccountComponent implements OnInit, OnDestroy {
   public panel = 'deposit';
   public token = 'ETH';
   public amount = '';
-  public showApprove = false;
+  public approveToken = '';
 
   private routeDataSubscription: Subscription;
   private routeParamSubscription: Subscription;
@@ -24,7 +24,6 @@ export class AccountComponent implements OnInit, OnDestroy {
     this.panel = this.route.snapshot.queryParams['panel'] || 'deposit';
     this.token = this.route.snapshot.queryParams['token'] || 'ETH';
     this.amount = this.route.snapshot.queryParams['amount'] || '';
-    this.showApprove = this.route.snapshot.queryParams['showApprove'] ? this.route.snapshot.queryParams['showApprove'].toLowerCase() === 'true' : this.token !== 'ETH';
 
     this.routeDataSubscription = this.route.data.subscribe((data: Data) => {
       this.instrument = data['instrument'];
@@ -33,7 +32,6 @@ export class AccountComponent implements OnInit, OnDestroy {
       this.panel = queryParams['panel'] || 'deposit';
       this.token = queryParams['token'] || 'ETH';
       this.amount = queryParams['amount'] || '';
-      this.showApprove = queryParams['showApprove'] ?  queryParams['showApprove'].toLowerCase() === 'true' : this.token !== 'ETH';
     });
   }
 

@@ -1,16 +1,16 @@
-<div [ngClass]="{'row': true, 'notification-container': true, 'read': notificationStatus == 'READ'}">
+<div [ngClass]="{'row': true, 'notification-container': true, 'read': notificationStatus == 1}">
     <div class="col-xs-2">
         <div class="notification-icon" [ngSwitch]="notification.category" *ngIf="!showSelect">
-            <img *ngSwitchCase="'TRANSACTION_INITIATED'" src="../../../assets/images/transaction-initiated.png" class="icon-image">
-            <img *ngSwitchCase="'TRANSACTION_CONFIRMED'" src="../../../assets/images/transaction-confirmed.png" class="icon-image">
-            <img *ngSwitchCase="'TRANSACTION_FAILED'" src="../../../assets/images/transaction-failed.png" class="icon-image">
-            <img *ngSwitchCase="'ASSETS'" src="../../../assets/images/assets.png" class="icon-image">
-            <img *ngSwitchCase="'EXPIRATION'" src="../../../assets/images/expiration.png" class="icon-image">
-            <img *ngSwitchCase="'DUE'" src="../../../assets/images/due.png" class="icon-image">
+            <img *ngSwitchCase="0" src="../../../assets/images/transaction-initiated.png" class="icon-image">
+            <img *ngSwitchCase="1" src="../../../assets/images/transaction-confirmed.png" class="icon-image">
+            <img *ngSwitchCase="2" src="../../../assets/images/transaction-failed.png" class="icon-image">
+            <img *ngSwitchCase="3" src="../../../assets/images/assets.png" class="icon-image">
+            <img *ngSwitchCase="4" src="../../../assets/images/expiration.png" class="icon-image">
+            <img *ngSwitchCase="5" src="../../../assets/images/due.png" class="icon-image">
         </div>
         <div class="notification-icon" *ngIf="showSelect">
             <mat-checkbox color="primary"
-                [checked]="notificationStatus == 'READ'"
+                [checked]="notificationStatus == 1"
                 (change)="onStatusChanged($event)">
             </mat-checkbox>
         </div>
@@ -18,12 +18,12 @@
     <div class="col-xs-7">
         <div class="notification-content">
             <div class="notification-title" [ngSwitch]="notification.category">
-                <span *ngSwitchCase="'TRANSACTION_INITIATED'" class="transaction-initiated">{{notification.title}}</span>
-                <span *ngSwitchCase="'TRANSACTION_CONFIRMED'" class="transaction-confirmed">{{notification.title}}</span>
-                <span *ngSwitchCase="'TRANSACTION_FAILED'" class="transaction-failed">{{notification.title}}</span>
-                <span *ngSwitchCase="'ASSETS'" class="assets">{{notification.title}}</span>
-                <span *ngSwitchCase="'EXPIRATION'" class="expiration">{{notification.title}}</span>
-                <span *ngSwitchCase="'DUE'" class="due">{{notification.title}}</span>
+                <span *ngSwitchCase="0" class="transaction-initiated">{{notification.title}}</span>
+                <span *ngSwitchCase="1" class="transaction-confirmed">{{notification.title}}</span>
+                <span *ngSwitchCase="2" class="transaction-failed">{{notification.title}}</span>
+                <span *ngSwitchCase="3" class="assets">{{notification.title}}</span>
+                <span *ngSwitchCase="4" class="expiration">{{notification.title}}</span>
+                <span *ngSwitchCase="5" class="due">{{notification.title}}</span>
             </div>
             <div class="notification-message">{{notification.message}} <a [href]="getEtherscanLink()" *ngIf="notification.transactionHash">{{getTransactionShortHash()}}</a></div>
             <div class="notification-timestamp">{{notification.creationTimestamp | number | timeAgo}}</div>
@@ -31,9 +31,9 @@
     </div>
     <div class="col-xs-3">
         <div class="notification-action" [ngSwitch]="notification.category">
-            <mat-spinner *ngSwitchCase="'TRANSACTION_INITIATED'" [diameter]="25"></mat-spinner>
+            <mat-spinner *ngSwitchCase="0" [diameter]="25"></mat-spinner>
             <button mat-button color="primary" class="notification-button"
-                *ngSwitchCase="'TRANSACTION_FAILED'" (click)="retryTransaction()">
+                *ngSwitchCase="2" (click)="retryTransaction()">
                 Retry
             </button>
             <button mat-button color="primary" class="notification-button"

@@ -83,8 +83,6 @@ export class NotificationRowComponent implements OnInit, OnChanges {
           queryParams: {
             panel: 'deposit',
             token: this.notification.metadata['tokenName'],
-            amount: this.notification.metadata['amount'],
-            showApprove: false
           }
         });
         break;

@@ -14,7 +14,7 @@
   <div mat-dialog-content class="content-container">
     <p class="content-text" [ngSwitch]="data.type">
         <span *ngSwitchCase="'approve'">
-            Approval request for <span style="color: blue">{{data.fspName}}</span> to withdraw and spend up to <span style="color: blue;">{{data.tokenAmount}} {{data.tokenName}}</span> has been initiated.
+            Approval request for <span style="color: blue">{{data.fspName}}</span> to withdraw and spend <span style="color: blue;">{{data.tokenName}}</span> has been initiated.
         </span>
         <span *ngSwitchCase="'deposit'">
             Your deposit request for <span style="color: blue;">{{data.tokenAmount}} {{data.tokenName}}</span>  has been initiated.
