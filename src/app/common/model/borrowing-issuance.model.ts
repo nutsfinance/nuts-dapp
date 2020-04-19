@@ -45,4 +45,35 @@ export class BorrowingIssuanceModel extends IssuanceModel {
             supplementalLineItems
         );
     }
+
+    static fromObject(borrowingCompleteProperties): BorrowingIssuanceModel {
+        const borrowingProperties = borrowingCompleteProperties.borrowingproperties;
+        const issuanceProperties = borrowingCompleteProperties.issuanceproperties;
+        const supplementalLineItems: SupplementalLineItemModel[] = [];
+        for (let item of issuanceProperties.supplementallineitems) {
+            supplementalLineItems.push(SupplementalLineItemModel.fromObject(item));
+        }
+        return new BorrowingIssuanceModel(
+            borrowingProperties.borrowingtokenaddress,
+            borrowingProperties.collateraltokenaddress,
+            borrowingProperties.borrowingamount,
+            borrowingProperties.collateralratio,
+            borrowingProperties.collateralamount,
+            borrowingProperties.interestrate,
+            borrowingProperties.interestamount,
+            borrowingProperties.tenordays,
+            issuanceProperties.issuanceid,
+            issuanceProperties.makeraddress,
+            issuanceProperties.takeraddress,
+            issuanceProperties.engagementduetimestamp,
+            issuanceProperties.issuanceduetimestamp,
+            issuanceProperties.creationtimestamp,
+            issuanceProperties.engagementtimestamp,
+            issuanceProperties.settlementtimestamp,
+            issuanceProperties.issuanceproxyaddress,
+            issuanceProperties.issuanceescrowaddress,
+            issuanceProperties.state,
+            supplementalLineItems
+        );
+    }
 }

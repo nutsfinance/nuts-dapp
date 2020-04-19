@@ -52,8 +52,8 @@ export class InstrumentService {
           this.reloadIssuances();
         });
 
-        // Reloads issuances every 60s.
-        setTimeout(this.reloadIssuances.bind(this), 60000);
+        // Reloads issuances every 30s.
+        setTimeout(this.reloadIssuances.bind(this), 30000);
       }
     });
   }
@@ -251,68 +251,83 @@ export class InstrumentService {
 
   public async reloadLendingIssuances() {
     console.log('Reloading lending issuances.');
+    this.http.get<LendingIssuanceModel[]>(`${this.nutsPlatformService.getApiServerHost()}/query/issuance`, {
+      params: {
+        instrument_id: `${this.nutsPlatformService.getInstrumentId('lending')}`,
+      }
+    }).subscribe(lendingIssuances => {
+      this.lendingIssuances = lendingIssuances.map(issuance => LendingIssuanceModel.fromObject(issuance));
+      this.lendingIssuancesUpdatedSubject.next(this.lendingIssuances);
+    });
 
-    // this.http.get<LendingIssuanceModel[]>(`${this.nutsPlatformService.getApiServerHost()}/query/issuance`, {
-    //   params: {
-    //     instrument_id: `${this.nutsPlatformService.getInstrumentId('lending')}`,
-    //   }
-    // }).subscribe(lendingIssuances => {
-    //   this.lendingIssuances = lendingIssuances.map(issuance => LendingIssuanceModel.fromMessage(issuance));
-    //   this.lendingIssuancesUpdatedSubject.next(this.lendingIssuances);
-    // });
+    // const instrumentManagerAddress = this.nutsPlatformService.getInstrumentManager('lending');
+    // const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
+    // const issuanceCount = await instrumentManagerContract.methods.getLastIssuanceId().call({ from: this.nutsPlatformService.currentAccount });
+    // console.log('Lending issuance count', issuanceCount);
 
-    const instrumentManagerAddress = this.nutsPlatformService.getInstrumentManager('lending');
-    const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
-    const issuanceCount = await instrumentManagerContract.methods.getLastIssuanceId().call({ from: this.nutsPlatformService.currentAccount });
-    console.log('Lending issuance count', issuanceCount);
+    // this.lendingIssuances = [];
+    // for (let i = 1; i <= issuanceCount; i++) {
+    //   const lendingDate = await instrumentManagerContract.methods.getCustomData(i, this.nutsPlatformService.web3.utils.fromAscii("lending_data")).call();
+    //   const lendingCompleteProperties = LendingData.LendingCompleteProperties.deserializeBinary(Uint8Array.from(Buffer.from(lendingDate.substring(2), 'hex')));
+    //   this.lendingIssuances.push(LendingIssuanceModel.fromMessage(lendingCompleteProperties));
+    // }
 
-    this.lendingIssuances = [];
-    for (let i = 1; i <= issuanceCount; i++) {
-      const lendingDate = await instrumentManagerContract.methods.getCustomData(i, this.nutsPlatformService.web3.utils.fromAscii("lending_data")).call();
-      const lendingCompleteProperties = LendingData.LendingCompleteProperties.deserializeBinary(Uint8Array.from(Buffer.from(lendingDate.substring(2), 'hex')));
-      this.lendingIssuances.push(LendingIssuanceModel.fromMessage(lendingCompleteProperties));
-    }
-
-    this.lendingIssuancesUpdatedSubject.next(this.lendingIssuances);
-    console.log('Lending issuance updated', 'request', issuanceCount, 'response', this.lendingIssuances.length);
+    // this.lendingIssuancesUpdatedSubject.next(this.lendingIssuances);
+    // console.log('Lending issuance updated', 'request', issuanceCount, 'response', this.lendingIssuances.length);
   }
 
   public async reloadBorrowingIssuances() {
     console.log('Reloading borrowing issuances.');
+    this.http.get<BorrowingIssuanceModel[]>(`${this.nutsPlatformService.getApiServerHost()}/query/issuance`, {
+      params: {
+        instrument_id: `${this.nutsPlatformService.getInstrumentId('borrowing')}`,
+      }
+    }).subscribe(borrowingIssuances => {
+      this.borrowingIssuances = borrowingIssuances.map(issuance => BorrowingIssuanceModel.fromObject(issuance));
+      this.borrowingIssuancesUpdatedSubject.next(this.borrowingIssuances);
+    });
 
-    const instrumentManagerAddress = this.nutsPlatformService.getInstrumentManager('borrowing');
-    const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
-    const issuanceCount = await instrumentManagerContract.methods.getLastIssuanceId().call({ from: this.nutsPlatformService.currentAccount });
-    console.log('Borrowing issuance count', issuanceCount);
+    // const instrumentManagerAddress = this.nutsPlatformService.getInstrumentManager('borrowing');
+    // const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
+    // const issuanceCount = await instrumentManagerContract.methods.getLastIssuanceId().call({ from: this.nutsPlatformService.currentAccount });
+    // console.log('Borrowing issuance count', issuanceCount);
 
-    this.borrowingIssuances = [];
-    for (let i = 1; i <= issuanceCount; i++) {
-      const borrowingData = await instrumentManagerContract.methods.getCustomData(i, this.nutsPlatformService.web3.utils.fromAscii("borrowing_data")).call();
-      const borrowingCompleteProperties = BorrowingData.BorrowingCompleteProperties.deserializeBinary(Uint8Array.from(Buffer.from(borrowingData.substring(2), 'hex')));
-      this.borrowingIssuances.push(BorrowingIssuanceModel.fromMessage(borrowingCompleteProperties));
-    }
+    // this.borrowingIssuances = [];
+    // for (let i = 1; i <= issuanceCount; i++) {
+    //   const borrowingData = await instrumentManagerContract.methods.getCustomData(i, this.nutsPlatformService.web3.utils.fromAscii("borrowing_data")).call();
+    //   const borrowingCompleteProperties = BorrowingData.BorrowingCompleteProperties.deserializeBinary(Uint8Array.from(Buffer.from(borrowingData.substring(2), 'hex')));
+    //   this.borrowingIssuances.push(BorrowingIssuanceModel.fromMessage(borrowingCompleteProperties));
+    // }
 
-    this.borrowingIssuancesUpdatedSubject.next(this.borrowingIssuances);
-    console.log('Borrowing issuance updated', 'request', issuanceCount, 'response', this.borrowingIssuances.length);
+    // this.borrowingIssuancesUpdatedSubject.next(this.borrowingIssuances);
+    // console.log('Borrowing issuance updated', 'request', issuanceCount, 'response', this.borrowingIssuances.length);
   }
 
   public async reloadSwapIssuances() {
     console.log('Reloading swap issuances.');
+    this.http.get<SwapIssuanceModel[]>(`${this.nutsPlatformService.getApiServerHost()}/query/issuance`, {
+      params: {
+        instrument_id: `${this.nutsPlatformService.getInstrumentId('swap')}`,
+      }
+    }).subscribe(swapIssuances => {
+      this.swapIssuances = swapIssuances.map(issuance => SwapIssuanceModel.fromObject(issuance));
+      this.swapIssuancesUpdatedSubject.next(this.swapIssuances);
+    });
 
-    const instrumentManagerAddress = this.nutsPlatformService.getInstrumentManager('swap');
-    const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
-    const issuanceCount = await instrumentManagerContract.methods.getLastIssuanceId().call({ from: this.nutsPlatformService.currentAccount });
-    console.log('Swap issuance count', issuanceCount);
+    // const instrumentManagerAddress = this.nutsPlatformService.getInstrumentManager('swap');
+    // const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
+    // const issuanceCount = await instrumentManagerContract.methods.getLastIssuanceId().call({ from: this.nutsPlatformService.currentAccount });
+    // console.log('Swap issuance count', issuanceCount);
 
-    this.swapIssuances = [];
-    for (let i = 1; i <= issuanceCount; i++) {
-      const swapData = await instrumentManagerContract.methods.getCustomData(i, this.nutsPlatformService.web3.utils.fromAscii("swap_data")).call();
-      const swapCompleteProperties = SwapData.SpotSwapCompleteProperties.deserializeBinary(Uint8Array.from(Buffer.from(swapData.substring(2), 'hex')));
-      this.swapIssuances.push(SwapIssuanceModel.fromMessage(swapCompleteProperties));
-    }
+    // this.swapIssuances = [];
+    // for (let i = 1; i <= issuanceCount; i++) {
+    //   const swapData = await instrumentManagerContract.methods.getCustomData(i, this.nutsPlatformService.web3.utils.fromAscii("swap_data")).call();
+    //   const swapCompleteProperties = SwapData.SpotSwapCompleteProperties.deserializeBinary(Uint8Array.from(Buffer.from(swapData.substring(2), 'hex')));
+    //   this.swapIssuances.push(SwapIssuanceModel.fromMessage(swapCompleteProperties));
+    // }
 
-    this.swapIssuancesUpdatedSubject.next(this.swapIssuances);
-    console.log('Swap issuance updated', 'request', issuanceCount, 'response', this.swapIssuances.length);
+    // this.swapIssuancesUpdatedSubject.next(this.swapIssuances);
+    // console.log('Swap issuance updated', 'request', issuanceCount, 'response', this.swapIssuances.length);
   }
 
   public async reloadIssuances() {

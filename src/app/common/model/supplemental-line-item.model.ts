@@ -30,4 +30,18 @@ export class SupplementalLineItemModel {
             supplementalLineItem.getReinitiatedto().toNumber()
         );
     }
+
+    static fromObject(supplementalLineItem): SupplementalLineItemModel {
+        return new SupplementalLineItemModel(
+            supplementalLineItem.id,
+            supplementalLineItem.lineitemtype,
+            supplementalLineItem.state,
+            supplementalLineItem.obligatoraddress,
+            supplementalLineItem.claimoraddress,
+            supplementalLineItem.tokenaddress,
+            supplementalLineItem.amount,
+            supplementalLineItem.duetimestamp,
+            supplementalLineItem.reinitiatedto,
+        );
+    }
 }

@@ -41,4 +41,32 @@ export class SwapIssuanceModel extends IssuanceModel {
             supplementalLineItems
         );
     }
+
+    static fromObject(swapCompleteProperties): SwapIssuanceModel {
+        const swapProperties = swapCompleteProperties.spotswapproperties;
+        const issuanceProperties = swapCompleteProperties.issuanceproperties;
+        const supplementalLineItems: SupplementalLineItemModel[] = [];
+        for (let item of issuanceProperties.supplementallineitems) {
+            supplementalLineItems.push(SupplementalLineItemModel.fromObject(item));
+        }
+        return new SwapIssuanceModel(
+            swapProperties.inputtokenaddress,
+            swapProperties.outputtokenaddress,
+            swapProperties.inputamount,
+            swapProperties.outputamount,
+            swapProperties.duration,
+            issuanceProperties.issuanceid,
+            issuanceProperties.makeraddress,
+            issuanceProperties.takeraddress,
+            issuanceProperties.engagementduetimestamp,
+            issuanceProperties.issuanceduetimestamp,
+            issuanceProperties.creationtimestamp,
+            issuanceProperties.engagementtimestamp,
+            issuanceProperties.settlementtimestamp,
+            issuanceProperties.issuanceproxyaddress,
+            issuanceProperties.issuanceescrowaddress,
+            issuanceProperties.state,
+            supplementalLineItems
+        );
+    }
 }
