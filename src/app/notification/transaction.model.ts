@@ -9,8 +9,8 @@ export enum TransactionType {
 }
 
 export enum NotificationRole {
-  TAKER = 'TAKER',
-  MAKER = 'MAKER',
+  TAKER = 0,
+  MAKER = 1,
 }
 
 export class TransactionModel {
