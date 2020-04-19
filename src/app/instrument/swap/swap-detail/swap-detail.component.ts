@@ -50,7 +50,7 @@ export class SwapDetailComponent implements OnInit {
       this.updateSwapIssuance();
     });
     this.currencyUpdatedSubscription = this.currencyService.currencyUpdatedSubject.subscribe(_ => {
-      this.updateSwapIssuance();
+      this.updateConvertedValue();
     });
   }
 
@@ -151,14 +151,18 @@ export class SwapDetailComponent implements OnInit {
         // Compute issuance token values
         this.inputToken = this.nutsPlatformService.getTokenNameByAddress(this.issuance.inputTokenAddress);
         this.outputToken = this.nutsPlatformService.getTokenNameByAddress(this.issuance.outputTokenAddress);
+        
+        this.updateConvertedValue();
+      }
+    });
+  }
 
+  private updateConvertedValue() {
         // Compute converted issuance token values
         const targetTokenAddress = this.currencyService.currency === 'USD' ? USD_ADDRESS : CNY_ADDRESS;
         this.convertedInputValue = this.priceOracleService.getConvertedValue(targetTokenAddress,
           this.issuance.inputTokenAddress, this.issuance.inputAmount);
         this.convertedOutputValue = this.priceOracleService.getConvertedValue(targetTokenAddress,
           this.issuance.outputTokenAddress, this.issuance.outputAmount);
-      }
-    });
   }
 }

@@ -58,7 +58,7 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
       this.updateLendingIssuance();
     });
     this.currencyUpdatedSubscription = this.currencyService.currencyUpdatedSubject.subscribe(_ => {
-      this.updateLendingIssuance();
+      this.updateConvertedValue();
     });
   }
 
@@ -202,8 +202,8 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
   private updateLendingIssuance() {
     this.zone.run(() => {
       this.issuance = this.instrumentService.getLendingIssuanceById(this.issuanceId);
+      console.log('Issuance detail', this.issuance);
       if (this.issuance) {
-        console.log('Issuance detail', this.issuance);
         // Compute issuance token values
         this.lendingToken = this.nutsPlatformService.getTokenNameByAddress(this.issuance.lendingTokenAddress);
         this.collateralToken = this.nutsPlatformService.getTokenNameByAddress(this.issuance.collateralTokenAddress);
@@ -217,18 +217,21 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
             this.collateralSufficient = this.collateralTokenBalance === -1 || this.collateralTokenBalance >= this.collateralValue;
           });
         }
-
-        // Compute converted issuance token values
-        const targetTokenAddress = this.currencyService.currency === 'USD' ? USD_ADDRESS : CNY_ADDRESS;
-        this.convertedCollateralValue = this.priceOracleService.getConvertedValue(targetTokenAddress,
-          this.issuance.lendingTokenAddress, this.issuance.lendingAmount * this.issuance.collateralRatio, 10000);
-        this.convertedLendingValue = this.priceOracleService.getConvertedValue(targetTokenAddress,
-          this.issuance.lendingTokenAddress, this.issuance.lendingAmount);
-        this.convertedPerDayInterestValue = this.priceOracleService.getConvertedValue(targetTokenAddress,
-          this.issuance.lendingTokenAddress, this.issuance.lendingAmount * this.issuance.interestRate, 1000000);
-        this.convertedTotalInterestValue = this.priceOracleService.getConvertedValue(targetTokenAddress,
-          this.issuance.lendingTokenAddress, this.issuance.lendingAmount * this.issuance.interestRate * this.issuance.tenorDays, 1000000);
+        this.updateConvertedValue();
       }
     });
+  }
+
+  private updateConvertedValue() {
+    // Compute converted issuance token values
+    const targetTokenAddress = this.currencyService.currency === 'USD' ? USD_ADDRESS : CNY_ADDRESS;
+    this.convertedCollateralValue = this.priceOracleService.getConvertedValue(targetTokenAddress,
+      this.issuance.lendingTokenAddress, this.issuance.lendingAmount * this.issuance.collateralRatio, 10000);
+    this.convertedLendingValue = this.priceOracleService.getConvertedValue(targetTokenAddress,
+      this.issuance.lendingTokenAddress, this.issuance.lendingAmount);
+    this.convertedPerDayInterestValue = this.priceOracleService.getConvertedValue(targetTokenAddress,
+      this.issuance.lendingTokenAddress, this.issuance.lendingAmount * this.issuance.interestRate, 1000000);
+    this.convertedTotalInterestValue = this.priceOracleService.getConvertedValue(targetTokenAddress,
+      this.issuance.lendingTokenAddress, this.issuance.lendingAmount * this.issuance.interestRate * this.issuance.tenorDays, 1000000);
   }
 }

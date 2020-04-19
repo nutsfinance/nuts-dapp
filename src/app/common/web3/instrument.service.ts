@@ -337,15 +337,15 @@ export class InstrumentService {
   }
 
   public getLendingIssuanceById(issuanceId: number): LendingIssuanceModel {
-    return this.lendingIssuances.find(issuance => issuance.issuanceId === issuanceId);
+    return this.lendingIssuances.find(issuance => issuance.issuanceId == issuanceId);
   }
 
   public getBorrowingIssuanceById(issuanceId: number): BorrowingIssuanceModel {
-    return this.borrowingIssuances.find(issuance => issuance.issuanceId === issuanceId);
+    return this.borrowingIssuances.find(issuance => issuance.issuanceId == issuanceId);
   }
 
   public getSwapIssuanceById(issuanceId: number): SwapIssuanceModel {
-    return this.swapIssuances.find(issuance => issuance.issuanceId === issuanceId);
+    return this.swapIssuances.find(issuance => issuance.issuanceId == issuanceId);
   }
 
   public async getIssuanceTransfers(instrument: string, issuance: IssuanceModel): Promise<IssuanceTransfer[]> {

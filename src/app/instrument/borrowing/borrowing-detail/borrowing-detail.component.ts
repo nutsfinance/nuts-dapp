@@ -55,7 +55,7 @@ export class BorrowingDetailComponent implements OnInit {
       this.updateBorrowingIssuance();
     });
     this.currencyUpdatedSubscription = this.currencyService.currencyUpdatedSubject.subscribe(_ => {
-      this.updateBorrowingIssuance();
+      this.updateConvertedValue();
     });
   }
 
@@ -214,19 +214,22 @@ export class BorrowingDetailComponent implements OnInit {
             this.collateralSufficient = this.collateralTokenBalance === -1 || this.collateralTokenBalance >= this.collateralValue;
           });
         }
-
-        // Compute converted issuance token values
-        const targetTokenAddress = this.currencyService.currency === 'USD' ? USD_ADDRESS : CNY_ADDRESS;
-        this.convertedCollateralValue = this.priceOracleService.getConvertedValue(targetTokenAddress,
-          this.issuance.borrowingTokenAddress, this.issuance.borrowingAmount * this.issuance.collateralRatio, 10000);
-        this.convertedBorrowingValue = this.priceOracleService.getConvertedValue(targetTokenAddress,
-          this.issuance.borrowingTokenAddress, this.issuance.borrowingAmount);
-        this.convertedPerDayInterestValue = this.priceOracleService.getConvertedValue(targetTokenAddress,
-          this.issuance.borrowingTokenAddress, this.issuance.borrowingAmount * this.issuance.interestRate, 1000000);
-        this.convertedTotalInterestValue = this.priceOracleService.getConvertedValue(targetTokenAddress,
-          this.issuance.borrowingTokenAddress, this.issuance.borrowingAmount * this.issuance.interestRate * this.issuance.tenorDays, 1000000);
+        this.updateConvertedValue();
       }
     });
   }
 
+  private updateConvertedValue() {
+    // Compute converted issuance token values
+    const targetTokenAddress = this.currencyService.currency === 'USD' ? USD_ADDRESS : CNY_ADDRESS;
+    this.convertedCollateralValue = this.priceOracleService.getConvertedValue(targetTokenAddress,
+      this.issuance.borrowingTokenAddress, this.issuance.borrowingAmount * this.issuance.collateralRatio, 10000);
+    this.convertedBorrowingValue = this.priceOracleService.getConvertedValue(targetTokenAddress,
+      this.issuance.borrowingTokenAddress, this.issuance.borrowingAmount);
+    this.convertedPerDayInterestValue = this.priceOracleService.getConvertedValue(targetTokenAddress,
+      this.issuance.borrowingTokenAddress, this.issuance.borrowingAmount * this.issuance.interestRate, 1000000);
+    this.convertedTotalInterestValue = this.priceOracleService.getConvertedValue(targetTokenAddress,
+      this.issuance.borrowingTokenAddress, this.issuance.borrowingAmount * this.issuance.interestRate * this.issuance.tenorDays, 1000000);
+
+  }
 }
