@@ -40,6 +40,11 @@
 .more-content-container {
   display: flex;
 }
+.issuance-card-notation {
+  margin-top: 5px;
+  margin-left: 20px;
+  font-size: 12px;
+}
 .content-container {
   flex-grow: 1;
   text-align: center;
