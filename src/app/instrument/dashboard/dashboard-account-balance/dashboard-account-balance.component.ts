@@ -78,7 +78,7 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
   public assetChartOptions = {
     title: {
       display: true,
-      text: 'Assets Balance'
+      text: 'Asset Composition'
     },
     legend: {
       position: 'bottom',
