@@ -297,21 +297,20 @@ export class NutsPlatformService {
     return '';
   }
 
-  public async getAccountBalance(token: string): Promise<number> {
-    if (!this.web3 || !this.currentAccount) {
-      return Promise.resolve(0);
-    }
-
+  public async getWalletBalance(token: string): Promise<number> {
     if (token === 'ETH') {
       return await this.web3.eth.getBalance(this.currentAccount);
-    } else if (token && this.contractAddresses[this.currentNetwork]
-      && this.contractAddresses[this.currentNetwork].tokens[token]) {
+    } else {
       const tokenAddress = this.contractAddresses[this.currentNetwork].tokens[token];
       const tokenContract = new this.web3.eth.Contract(ERC20, tokenAddress);
       return tokenContract.methods.balanceOf(this.currentAccount).call();
-    } else {
-      return Promise.resolve(0);
     }
+  }
+
+  public async getWalletAllowance(token: string): Promise<number> {
+    const tokenAddress = this.contractAddresses[this.currentNetwork].tokens[token];
+    const tokenContract = new this.web3.eth.Contract(ERC20, tokenAddress);
+    return tokenContract.methods.allowance(this.currentAccount).call();
   }
 
   public async getBlockTimestamp(blockNumber: string): Promise<number> {

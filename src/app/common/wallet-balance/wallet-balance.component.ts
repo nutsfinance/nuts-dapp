@@ -48,7 +48,7 @@ export class WalletBalanceComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private updateTokenBalance() {
-    this.nutsPlatformService_.getAccountBalance(this.selectedToken).then(balance => {
+    this.nutsPlatformService_.getWalletBalance(this.selectedToken).then(balance => {
       this.zone.run(() => {
         console.log('Wallet balance updated', this.selectedToken, balance);
         this.tokenBalance = balance;
