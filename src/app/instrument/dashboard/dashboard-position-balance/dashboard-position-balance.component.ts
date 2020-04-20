@@ -32,6 +32,7 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
 
   private lendingIssuanceSubscription: Subscription;
   private borrowingIssuanceSubscription: Subscription;
+  private swapIssuanceSubscription: Subscription;
   private currentAccountSubscription: Subscription;
   private currencySubscription: Subscription;
 
@@ -47,6 +48,9 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
     this.borrowingIssuanceSubscription = this.instrumentService.borrowingIssuancesUpdatedSubject.subscribe(_ => {
       this.updatePositions();
     });
+    this.swapIssuanceSubscription = this.instrumentService.swapIssuancesUpdatedSubject.subscribe(_ => {
+      this.updatePositions();
+    })
     this.currentAccountSubscription = this.nutsPlatformService.currentAccountSubject.subscribe(_ => {
       this.updatePositions();
     });
@@ -129,6 +133,24 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
             token: this.nutsPlatformService.getTokenNameByAddress(issuance.borrowingTokenAddress),
             amount: issuance.borrowingAmount,
             action: 'repay',
+            supplementalLineItems: issuance.supplementalLineItems,
+          });
+        }
+      });
+
+      this.instrumentService.swapIssuances.forEach(issuance => {
+        // If the current user is maker and the issuance is engageable.
+        if (issuance.makerAddress.toLowerCase() === this.nutsPlatformService.currentAccount.toLowerCase()
+          && issuance.state === 2) {
+          positions.push({
+            instrument: 'swap',
+            issuanceId: issuance.issuanceId,
+            creationTimestamp: issuance.creationTimestamp,
+            role: 'maker',
+            state: issuance.getIssuanceState(),
+            token: this.nutsPlatformService.getTokenNameByAddress(issuance.inputTokenAddress),
+            amount: issuance.inputAmount,
+            action: 'close',
             supplementalLineItems: issuance.supplementalLineItems,
           });
         }
