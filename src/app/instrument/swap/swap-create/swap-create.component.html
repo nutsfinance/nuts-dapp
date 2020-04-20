@@ -73,6 +73,9 @@
                   The amount must be integer.
                 </div>
               </div>
+              <div class="balance-content">
+                Exchange Rate: 1 {{inputToken}} &asymp; {{(createFormGroup.controls['inputAmount'].value ? createFormGroup.controls['outputAmount'].value / createFormGroup.controls['inputAmount'].value : 0) | number: '1.0-4'}} {{outputToken}}
+              </div>
             </div>
         </div>
 
