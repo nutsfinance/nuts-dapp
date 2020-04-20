@@ -31,23 +31,22 @@ export class AccountBalanceService {
     this.nutsPlatformService.platformInitializedSubject.subscribe(initialized => {
       console.log('User balance initialized', initialized);
       if (initialized) {
-        this.getUserBalanceOnChain();
+        this.getUserBalanceFromBackend();
         this.nutsPlatformService.currentNetworkSubject.subscribe(_ => {
-          this.getUserBalanceOnChain();
+          this.getUserBalanceFromBackend();
         });
         this.nutsPlatformService.currentAccountSubject.subscribe(_ => {
-          this.getUserBalanceOnChain();
+          this.getUserBalanceFromBackend();
         });
-        // Reloads account every 60s.
-        setTimeout(this.getUserBalanceOnChain.bind(this), 60000);
+        // Reloads account every 20s.
+        setInterval(this.getUserBalanceFromBackend.bind(this), 20000);
       }
     });
   }
 
   getUserBalanceFromBackend() {
+    console.log('Reloading user balance from backend');
     const currentAddress = this.nutsPlatformService.currentAccount;
-    const currentNetwork = this.nutsPlatformService.currentNetwork;
-    console.log('User balance: Current address', currentAddress, 'Current network', currentNetwork);
     if (!this.nutsPlatformService.isFullyLoaded()) {
       console.log('Either network or account is not loaded.');
       return;

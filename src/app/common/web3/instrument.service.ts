@@ -53,7 +53,7 @@ export class InstrumentService {
         });
 
         // Reloads issuances every 30s.
-        setTimeout(this.reloadIssuances.bind(this), 30000);
+        setInterval(this.reloadIssuances.bind(this), 30000);
       }
     });
   }
@@ -331,6 +331,7 @@ export class InstrumentService {
   }
 
   public async reloadIssuances() {
+    console.log('Reloading all issuances...');
     await this.reloadLendingIssuances();
     await this.reloadBorrowingIssuances();
     await this.reloadSwapIssuances();
