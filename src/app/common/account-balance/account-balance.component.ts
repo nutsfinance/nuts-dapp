@@ -1,8 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, OnChanges, SimpleChanges, NgZone } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { NutsPlatformService } from '../web3/nuts-platform.service';
-import { AccountService } from '../web3/account.service';
 import { AccountBalanceService } from '../web3/account-balance.service';
 
 @Component({
@@ -18,14 +16,16 @@ export class AccountBalanceComponent implements OnInit, OnChanges, OnDestroy {
   
   private accountBalancesSubscription: Subscription;
 
-  constructor(private nutsPlatformService_: NutsPlatformService, private instrumentEscrowService: AccountService,
-    private accountBalanceService: AccountBalanceService, private zone: NgZone) { }
+  constructor(private accountBalanceService: AccountBalanceService, private zone: NgZone) { }
 
   ngOnInit() {
     this.accountBalancesSubscription = this.accountBalanceService.accountBalancesSubject.subscribe(accountBalances => {
-      console.log('Account balance: Account balances updated', accountBalances);
-      this.tokenBalance = accountBalances[this.instrument][this.selectedToken];
-      this.balanceUpdated.next(this.tokenBalance);
+      this.zone.run(() => {
+        console.log('Account balance: Account balances updated', accountBalances);
+        this.tokenBalance = accountBalances[this.instrument] && accountBalances[this.instrument][this.selectedToken] ?
+          accountBalances[this.instrument][this.selectedToken] : 0;
+        this.balanceUpdated.next(this.tokenBalance);
+      });
     });
   }
 
