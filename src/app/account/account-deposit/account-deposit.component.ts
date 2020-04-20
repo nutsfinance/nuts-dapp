@@ -132,7 +132,8 @@ export class AccountDepositComponent implements OnInit, OnChanges {
           console.log('Approve receipt', receipt);
           // Once the Approve transaction is successful, enables the button
           this.nutsPlatformService.getWalletAllowance(this.instrument, this.selectedToken).then(allowance => {
-            this.showApprove = !!allowance;
+            this.showApprove = false;
+            this.approveToken.next('');
           });
           this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
           clearInterval(interval);

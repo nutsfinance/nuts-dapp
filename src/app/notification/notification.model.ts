@@ -1,17 +1,17 @@
 import { TransactionType } from './transaction.model';
 
 export enum NotificationCategory {
-  TRANSACTION_INITIATED = 0,
-  TRANSACTION_CONFIRMED = 1,
-  TRANSACTION_FAILED = 2,
-  ASSETS = 3,
-  EXPIRATION = 4,
-  DUE = 5,
+  TRANSACTION_INITIATED = 'TRANSACTION_INITIATED',
+  TRANSACTION_CONFIRMED = 'TRANSACTION_CONFIRMED',
+  TRANSACTION_FAILED = 'TRANSACTION_FAILED',
+  ASSETS = 'ASSETS',
+  EXPIRATION = 'EXPIRATION',
+  DUE = 'DUE',
 }
 
 export enum NotificationReadStatus {
-  NEW = 0,
-  READ = 1,
+  NEW = 'NEW',
+  READ = 'READ',
 }
 
 export class NotificationModel {
