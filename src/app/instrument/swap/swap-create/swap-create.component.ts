@@ -66,7 +66,7 @@ export class SwapCreateComponent implements OnInit {
 
     return controlInvalid && (controlTouched || formSubmitted);
   }
-  
+
   async createSwapIssuance() {
     console.log(this.createFormGroup);
     if (!this.createFormGroup.valid) {
@@ -79,7 +79,7 @@ export class SwapCreateComponent implements OnInit {
     const outputAmount = this.outputToken === 'ETH' ?
       this.nutsPlatformService.getWeiFromEther(this.createFormGroup.value['outputAmount']) :
       this.createFormGroup.value['outputAmount'];
-    this.instrumentService.createSwapIssuance(this.inputToken, this.outputToken, inputAmount, outputAmount, 
+    this.instrumentService.createSwapIssuance(this.inputToken, this.outputToken, inputAmount, outputAmount,
       this.createFormGroup.value['duration'])
       .on('transactionHash', transactionHash => {
         // Show Transaction Initiated dialog
@@ -101,20 +101,24 @@ export class SwapCreateComponent implements OnInit {
           });
         });
 
-        // Monitoring transaction status(work around for Metamask mobile)
-        const interval = setInterval(async () => {
-          const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
-          if (!receipt || !receipt.blockNumber) return;
-
-          console.log('Create receipt', receipt);
-          // New swap issuance created. Need to refresh the swap issuance list.
-          this.instrumentService.reloadSwapIssuances();
-          // New swap issuance created. Need to update the input token balance as well.
-          this.accountBalanceService.updateAssetBalance('swap', this.inputToken);
-          this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
-          clearInterval(interval);
-        }, 2000);
+        this.monitorSwapTransaction(transactionHash);
       });
+  }
+
+  private monitorSwapTransaction(transactionHash) {
+    // Monitoring transaction status(work around for Metamask mobile)
+    const interval = setInterval(async () => {
+      const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
+      if (!receipt || !receipt.blockNumber) return;
+
+      console.log('Create receipt', receipt);
+      // New swap issuance created. Need to refresh the swap issuance list.
+      this.instrumentService.reloadSwapIssuances();
+      // New swap issuance created. Need to update the input token balance as well.
+      this.accountBalanceService.updateAssetBalance('swap', this.inputToken);
+      this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
+      clearInterval(interval);
+    }, 2000);
   }
 
   resetForm() {

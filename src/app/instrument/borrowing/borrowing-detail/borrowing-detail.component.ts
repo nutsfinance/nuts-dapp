@@ -107,19 +107,7 @@ export class BorrowingDetailComponent implements OnInit {
           });
         });
 
-        // Monitoring transaction status(work around for Metamask mobile)
-        const interval = setInterval(async () => {
-          const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
-          if (!receipt || !receipt.blockNumber) return;
-
-          console.log('Engage receipt', receipt);
-          // Engagement success. Need to update borrowing issuance list.
-          this.instrumentService.reloadBorrowingIssuances();
-          // Engagement success. Need to update account balance as well.
-          this.accountBalanceService.updateAccountBalance('borrowing');
-          this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
-          clearInterval(interval);
-        }, 2000);
+        this.monitorBorrowingTransaction(transactionHash);
       });
   }
 
@@ -146,19 +134,7 @@ export class BorrowingDetailComponent implements OnInit {
           });
         });
 
-        // Monitoring transaction status(work around for Metamask mobile)
-        const interval = setInterval(async () => {
-          const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
-          if (!receipt || !receipt.blockNumber) return;
-
-          console.log('Repay receipt', receipt);
-          // Repay successful. Need to update the borrowing issuance list
-          this.instrumentService.reloadBorrowingIssuances();
-          // Repay successful. Need to update the borrowing account balance as well
-          this.accountBalanceService.updateAccountBalance('borrowing');
-          this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
-          clearInterval(interval);
-        }, 2000);
+        this.monitorBorrowingTransaction(transactionHash);
       });
   }
 
@@ -180,20 +156,26 @@ export class BorrowingDetailComponent implements OnInit {
           });
         });
 
-        // Monitoring transaction status(work around for Metamask mobile)
-        const interval = setInterval(async () => {
-          const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
-          if (!receipt || !receipt.blockNumber) return;
-
-          console.log('Cancel receipt', receipt);
-          // Cancel successful. Need to update the borrowing issuance list
-          this.instrumentService.reloadBorrowingIssuances();
-          // Cancel successful. Need to update the borrowing account as well
-          this.accountBalanceService.updateAssetBalance('borrowing', this.borrowingToken);
-          this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
-          clearInterval(interval);
-        }, 2000);
+        this.monitorBorrowingTransaction(transactionHash);
       });
+  }
+
+  private monitorBorrowingTransaction(transactionHash) {
+    // Monitoring transaction status(work around for Metamask mobile)
+    const interval = setInterval(async () => {
+      const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
+      if (!receipt || !receipt.blockNumber) return;
+
+      console.log('Create receipt', receipt);
+      setTimeout(() => {
+        // Borrowing transaction successful. Need to refresh the borrowing issuance list.
+        this.instrumentService.reloadBorrowingIssuances();
+        // Borrowing transaction successful. Need to update the principal balance as well.
+        this.accountBalanceService.getUserBalanceFromBackend();
+      }, 2000);
+      this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
+      clearInterval(interval);
+    }, 2000);
   }
 
   private updateBorrowingIssuance() {

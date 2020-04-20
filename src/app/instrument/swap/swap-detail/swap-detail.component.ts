@@ -93,19 +93,7 @@ export class SwapDetailComponent implements OnInit {
           });
         });
 
-        // Monitoring transaction status(work around for Metamask mobile)
-        const interval = setInterval(async () => {
-          const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
-          if (!receipt || !receipt.blockNumber) return;
-
-          console.log('Engage receipt', receipt);
-          // Engagement success. Need to update swap issuance list.
-          this.instrumentService.reloadSwapIssuances();
-          // Engagement success. Need to update account balance as well.
-          this.accountBalanceService.updateAccountBalance('swap');
-          this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
-          clearInterval(interval);
-        }, 2000);
+        this.monitorSwapTransaction(transactionHash);
       });
   }
 
@@ -127,20 +115,24 @@ export class SwapDetailComponent implements OnInit {
           });
         });
 
-        // Monitoring transaction status(work around for Metamask mobile)
-        const interval = setInterval(async () => {
-          const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
-          if (!receipt || !receipt.blockNumber) return;
-
-          console.log('Cancel receipt', receipt);
-          // Cancel successful. Need to update the swap issuance list
-          this.instrumentService.reloadSwapIssuances();
-          // Cancel successful. Need to update the swap account as well
-          this.accountBalanceService.updateAssetBalance('swap', this.inputToken);
-          this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
-          clearInterval(interval);
-        }, 2000);
+        this.monitorSwapTransaction(transactionHash);
       });
+  }
+
+  private monitorSwapTransaction(transactionHash) {
+    // Monitoring transaction status(work around for Metamask mobile)
+    const interval = setInterval(async () => {
+      const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
+      if (!receipt || !receipt.blockNumber) return;
+
+      console.log('Create receipt', receipt);
+      // Swap transaction successful. Need to refresh the swap issuance list.
+      this.instrumentService.reloadSwapIssuances();
+      // Swap transaction successful. Need to update the input token balance as well.
+      this.accountBalanceService.updateAssetBalance('swap', this.inputToken);
+      this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
+      clearInterval(interval);
+    }, 2000);
   }
 
   private updateSwapIssuance() {

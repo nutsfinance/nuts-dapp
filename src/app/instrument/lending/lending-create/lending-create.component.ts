@@ -124,20 +124,26 @@ export class LendingCreateComponent implements OnInit {
           });
         });
 
-        // Monitoring transaction status(work around for Metamask mobile)
-        const interval = setInterval(async () => {
-          const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
-          if (!receipt || !receipt.blockNumber) return;
-
-          console.log('Create receipt', receipt);
-          // New lending issuance created. Need to refresh the lending issuance list.
-          this.instrumentService.reloadLendingIssuances();
-          // New lending issuance created. Need to update the principal balance as well.
-          this.accountBalanceService.updateAssetBalance('lending', this.principalToken);
-          this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
-          clearInterval(interval);
-        }, 2000);
+        this.monitorLendingTransaction(transactionHash);
       });
+  }
+
+  private monitorLendingTransaction(transactionHash) {
+    // Monitoring transaction status(work around for Metamask mobile)
+    const interval = setInterval(async () => {
+      const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
+      if (!receipt || !receipt.blockNumber) return;
+
+      console.log('Create receipt', receipt);
+      setTimeout(() => {
+        // New lending issuance created. Need to refresh the lending issuance list.
+        this.instrumentService.reloadLendingIssuances();
+        // New lending issuance created. Need to update the principal balance as well.
+        this.accountBalanceService.getUserBalanceFromBackend();
+      }, 2000);
+      this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
+      clearInterval(interval);
+    }, 2000);
   }
 
   resetForm() {
