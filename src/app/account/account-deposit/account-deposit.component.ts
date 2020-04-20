@@ -131,10 +131,13 @@ export class AccountDepositComponent implements OnInit, OnChanges {
 
           console.log('Approve receipt', receipt);
           // Once the Approve transaction is successful, enables the button
-          this.nutsPlatformService.getWalletAllowance(this.instrument, this.selectedToken).then(allowance => {
-            this.showApprove = false;
-            this.approveToken.next('');
-          });
+          setTimeout(() => {
+            this.nutsPlatformService.getWalletAllowance(this.instrument, this.selectedToken).then(allowance => {
+              this.showApprove = false;
+              this.approveToken.next('');
+              this.amountControl.enable();
+            });
+          }, 2000);
           this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
           clearInterval(interval);
         }, 4000);
@@ -154,7 +157,7 @@ export class AccountDepositComponent implements OnInit, OnChanges {
               type: 'deposit',
               fspName: FSP_NAME,
               tokenName: this.selectedToken,
-              amount: this.amountControl.value,
+              tokenAmount: this.amountControl.value,
             },
           });
           transactionInitiatedDialog.afterClosed().subscribe(() => {
@@ -195,7 +198,7 @@ export class AccountDepositComponent implements OnInit, OnChanges {
               type: 'deposit',
               fspName: FSP_NAME,
               tokenName: this.selectedToken,
-              amount: this.amountControl.value,
+              tokenAmount: this.amountControl.value,
             },
           });
           transactionInitiatedDialog.afterClosed().subscribe(() => {
