@@ -12,7 +12,7 @@
         <div class="row">
             <div class="col-xs-12 field-row">
                 <mat-form-field appearance="outline" class="amount-input">
-                    <input matInput placeholder="Amount" formControlName="inputAmount">
+                    <input matInput type="number" placeholder="Amount" formControlName="inputAmount">
                 </mat-form-field>
                 <app-token-select [selectedToken]="inputToken" (tokenSelected)="onInputTokenSelected($event)"></app-token-select>
             </div>
@@ -54,7 +54,7 @@
         <div class="row">
             <div class="col-xs-12 field-row">
                 <mat-form-field appearance="outline" class="amount-input">
-                    <input matInput placeholder="Amount" formControlName="outputAmount">
+                    <input matInput type="number" placeholder="Amount" formControlName="outputAmount">
                 </mat-form-field>
                 <app-token-select [selectedToken]="outputToken" (tokenSelected)="onOutputTokenSelected($event)"></app-token-select>
             </div>
@@ -102,7 +102,7 @@
                 Enter a custom value
               </span>
                 <mat-form-field appearance="outline" class="amount-input" *ngIf="showAlternativeTenor">
-                    <input matInput placeholder="2 ~ 90 Days" formControlName="duration">
+                    <input matInput type="number" placeholder="2 ~ 90 Days" formControlName="duration">
                 </mat-form-field>
             </div>
         </div>

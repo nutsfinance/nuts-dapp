@@ -110,7 +110,7 @@
           Enter a different amount.
         </span>
         <mat-form-field appearance="outline" class="amount-input" *ngIf="showAlternativeColleral">
-          <input matInput step="10" placeholder="50 ~ 200" formControlName="collateralRatio">
+          <input matInput type="number" placeholder="50 ~ 200" formControlName="collateralRatio">
           <span matSuffix>%</span>
         </mat-form-field>
       </div>
@@ -160,7 +160,7 @@
           Enter a different amount.
         </span>
         <mat-form-field appearance="outline" class="amount-input" *ngIf="showAlternativeInterest">
-          <input matInput placeholder="0.010 ~ 5.000" formControlName="interestRate">
+          <input matInput type="number" placeholder="0.010 ~ 5.000" formControlName="interestRate">
           <span matSuffix>%</span>
         </mat-form-field>
       </div>
