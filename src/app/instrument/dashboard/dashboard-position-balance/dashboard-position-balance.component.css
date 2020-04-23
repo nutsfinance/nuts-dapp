@@ -11,7 +11,7 @@
   font-size: 12px;
 }
 .position-label {
-  display: inline-block;
+  display: block;
 }
 .positions-table {
   min-height: 200px;
