@@ -38,13 +38,13 @@ export class LendingCardComponent implements OnInit, OnDestroy {
     });
     this.lendingToken = this.nutsPlatformService.getTokenNameByAddress(this.issuance.lendingTokenAddress);
     this.collateralToken = this.nutsPlatformService.getTokenNameByAddress(this.issuance.collateralTokenAddress);
-    // If the collateral value is already set
-    if (this.issuance.collateralAmount) {
-      this.collateralValue = this.issuance.collateralAmount;
-    } else {
+    // If the collateral value is not set
+    if (this.issuance.collateralAmount == 0) {
       this.priceOracleService.getConvertedValue(this.issuance.collateralTokenAddress, this.issuance.lendingTokenAddress, this.issuance.lendingAmount * this.issuance.collateralRatio, 10000).then(value => {
         this.collateralValue = value;
       });
+    } else {
+      this.collateralValue = this.issuance.collateralAmount;
     }
 
     // Compute issuance converted token values

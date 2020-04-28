@@ -44,18 +44,23 @@ export class AccountBalanceService {
     });
   }
 
-  getUserBalanceFromBackend() {
+  getUserBalanceFromBackend(times: number = 1, interval: number = 1000) {
     console.log('Reloading user balance from backend');
     const currentAddress = this.nutsPlatformService.currentAccount;
     if (!this.nutsPlatformService.isFullyLoaded()) {
       console.log('Either network or account is not loaded.');
       return;
     }
-    this.http.get<AccountBalances>(`${this.nutsPlatformService.getApiServerHost()}/query/balance`, {params: {user: currentAddress}}).subscribe(accountBalances => {
-      console.log('Account balance from backend', accountBalances);
-      this.accountBalances = accountBalances;
-      this.accountBalancesSubject.next(accountBalances);
-    });
+
+    let count = 0;
+    let intervalId = setInterval(() => {
+      this.http.get<AccountBalances>(`${this.nutsPlatformService.getApiServerHost()}/query/balance`, {params: {user: currentAddress}}).subscribe(accountBalances => {
+        console.log('Account balance from backend', accountBalances);
+        this.accountBalances = accountBalances;
+        this.accountBalancesSubject.next(accountBalances);
+      });
+      if (++count >= times) clearInterval(intervalId);
+    }, interval); 
   }
 
   async getUserBalanceOnChain() {

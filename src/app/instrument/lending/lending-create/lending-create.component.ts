@@ -135,12 +135,11 @@ export class LendingCreateComponent implements OnInit {
       if (!receipt || !receipt.blockNumber) return;
 
       console.log('Create receipt', receipt);
-      setTimeout(() => {
-        // New lending issuance created. Need to refresh the lending issuance list.
-        this.instrumentService.reloadLendingIssuances();
-        // New lending issuance created. Need to update the principal balance as well.
-        this.accountBalanceService.getUserBalanceFromBackend();
-      }, 2000);
+      // New lending issuance created. Need to refresh the lending issuance list.
+      this.instrumentService.reloadLendingIssuances(5, 3000);
+      // New lending issuance created. Need to update the principal balance as well.
+      this.accountBalanceService.getUserBalanceFromBackend(5, 3000);
+    
       this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
       clearInterval(interval);
     }, 2000);

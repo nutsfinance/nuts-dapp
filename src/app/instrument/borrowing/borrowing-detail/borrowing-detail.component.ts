@@ -167,12 +167,10 @@ export class BorrowingDetailComponent implements OnInit {
       if (!receipt || !receipt.blockNumber) return;
 
       console.log('Create receipt', receipt);
-      setTimeout(() => {
-        // Borrowing transaction successful. Need to refresh the borrowing issuance list.
-        this.instrumentService.reloadBorrowingIssuances();
-        // Borrowing transaction successful. Need to update the principal balance as well.
-        this.accountBalanceService.getUserBalanceFromBackend();
-      }, 2000);
+      // New borrowing issuance created. Need to refresh the borrowing issuance list.
+      this.instrumentService.reloadBorrowingIssuances(5, 3000);
+      // New borrowing issuance created. Need to update the principal balance as well.
+      this.accountBalanceService.getUserBalanceFromBackend(5, 3000);
       this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
       clearInterval(interval);
     }, 2000);
@@ -186,15 +184,15 @@ export class BorrowingDetailComponent implements OnInit {
         // Compute issuance token values
         this.borrowingToken = this.nutsPlatformService.getTokenNameByAddress(this.issuance.borrowingTokenAddress);
         this.collateralToken = this.nutsPlatformService.getTokenNameByAddress(this.issuance.collateralTokenAddress);
-        // If the collateral value is already set
-        if (this.issuance.collateralAmount) {
-          this.collateralValue = this.issuance.collateralAmount;
-          this.collateralSufficient = this.collateralTokenBalance === -1 || this.collateralTokenBalance >= this.collateralValue;
-        } else {
+        // If the collateral value is not set
+        if (this.issuance.collateralAmount == 0) {
           this.priceOracleService.getConvertedValue(this.issuance.collateralTokenAddress, this.issuance.borrowingTokenAddress, this.issuance.borrowingAmount * this.issuance.collateralRatio, 10000).then(value => {
             this.collateralValue = value;
             this.collateralSufficient = this.collateralTokenBalance === -1 || this.collateralTokenBalance >= this.collateralValue;
           });
+        } else {
+          this.collateralValue = this.issuance.collateralAmount;
+          this.collateralSufficient = this.collateralTokenBalance === -1 || this.collateralTokenBalance >= this.collateralValue;
         }
         this.updateConvertedValue();
       }

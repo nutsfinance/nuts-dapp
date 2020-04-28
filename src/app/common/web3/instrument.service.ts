@@ -249,16 +249,20 @@ export class InstrumentService {
       });
   }
 
-  public async reloadLendingIssuances() {
+  public async reloadLendingIssuances(times: number = 1, interval: number = 1000) {
     console.log('Reloading lending issuances.');
-    this.http.get<LendingIssuanceModel[]>(`${this.nutsPlatformService.getApiServerHost()}/query/issuance`, {
-      params: {
-        instrument_id: `${this.nutsPlatformService.getInstrumentId('lending')}`,
-      }
-    }).subscribe(lendingIssuances => {
-      this.lendingIssuances = lendingIssuances.map(issuance => LendingIssuanceModel.fromObject(issuance));
-      this.lendingIssuancesUpdatedSubject.next(this.lendingIssuances);
-    });
+    let count = 0;
+    let intervalId = setInterval(() => {
+      this.http.get<LendingIssuanceModel[]>(`${this.nutsPlatformService.getApiServerHost()}/query/issuance`, {
+        params: {
+          instrument_id: `${this.nutsPlatformService.getInstrumentId('lending')}`,
+        }
+      }).subscribe(lendingIssuances => {
+        this.lendingIssuances = lendingIssuances.map(issuance => LendingIssuanceModel.fromObject(issuance));
+        this.lendingIssuancesUpdatedSubject.next(this.lendingIssuances);
+      });
+      if (++count >= times) clearInterval(intervalId);
+    }, interval);
 
     // const instrumentManagerAddress = this.nutsPlatformService.getInstrumentManager('lending');
     // const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
@@ -276,16 +280,21 @@ export class InstrumentService {
     // console.log('Lending issuance updated', 'request', issuanceCount, 'response', this.lendingIssuances.length);
   }
 
-  public async reloadBorrowingIssuances() {
+  public async reloadBorrowingIssuances(times: number = 1, interval: number = 1000) {
     console.log('Reloading borrowing issuances.');
-    this.http.get<BorrowingIssuanceModel[]>(`${this.nutsPlatformService.getApiServerHost()}/query/issuance`, {
-      params: {
-        instrument_id: `${this.nutsPlatformService.getInstrumentId('borrowing')}`,
-      }
-    }).subscribe(borrowingIssuances => {
-      this.borrowingIssuances = borrowingIssuances.map(issuance => BorrowingIssuanceModel.fromObject(issuance));
-      this.borrowingIssuancesUpdatedSubject.next(this.borrowingIssuances);
-    });
+  
+    let count = 0;
+    let intervalId = setInterval(() => {
+      this.http.get<BorrowingIssuanceModel[]>(`${this.nutsPlatformService.getApiServerHost()}/query/issuance`, {
+        params: {
+          instrument_id: `${this.nutsPlatformService.getInstrumentId('borrowing')}`,
+        }
+      }).subscribe(borrowingIssuances => {
+        this.borrowingIssuances = borrowingIssuances.map(issuance => BorrowingIssuanceModel.fromObject(issuance));
+        this.borrowingIssuancesUpdatedSubject.next(this.borrowingIssuances);
+      });
+      if (++count >= times) clearInterval(intervalId);
+    }, interval);
 
     // const instrumentManagerAddress = this.nutsPlatformService.getInstrumentManager('borrowing');
     // const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
@@ -303,16 +312,21 @@ export class InstrumentService {
     // console.log('Borrowing issuance updated', 'request', issuanceCount, 'response', this.borrowingIssuances.length);
   }
 
-  public async reloadSwapIssuances() {
+  public async reloadSwapIssuances(times: number = 1, interval: number = 1000) {
     console.log('Reloading swap issuances.');
-    this.http.get<SwapIssuanceModel[]>(`${this.nutsPlatformService.getApiServerHost()}/query/issuance`, {
-      params: {
-        instrument_id: `${this.nutsPlatformService.getInstrumentId('swap')}`,
-      }
-    }).subscribe(swapIssuances => {
-      this.swapIssuances = swapIssuances.map(issuance => SwapIssuanceModel.fromObject(issuance));
-      this.swapIssuancesUpdatedSubject.next(this.swapIssuances);
-    });
+
+    let count = 0;
+    let intervalId = setInterval(() => {
+      this.http.get<SwapIssuanceModel[]>(`${this.nutsPlatformService.getApiServerHost()}/query/issuance`, {
+        params: {
+          instrument_id: `${this.nutsPlatformService.getInstrumentId('swap')}`,
+        }
+      }).subscribe(swapIssuances => {
+        this.swapIssuances = swapIssuances.map(issuance => SwapIssuanceModel.fromObject(issuance));
+        this.swapIssuancesUpdatedSubject.next(this.swapIssuances);
+      });
+      if (++count >= times) clearInterval(intervalId);
+    }, interval);
 
     // const instrumentManagerAddress = this.nutsPlatformService.getInstrumentManager('swap');
     // const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);

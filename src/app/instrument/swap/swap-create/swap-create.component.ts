@@ -113,9 +113,10 @@ export class SwapCreateComponent implements OnInit {
 
       console.log('Create receipt', receipt);
       // New swap issuance created. Need to refresh the swap issuance list.
-      this.instrumentService.reloadSwapIssuances();
+      this.instrumentService.reloadSwapIssuances(5, 3000);
       // New swap issuance created. Need to update the input token balance as well.
-      this.accountBalanceService.updateAssetBalance('swap', this.inputToken);
+      this.accountBalanceService.getUserBalanceFromBackend(5, 3000);
+
       this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
       clearInterval(interval);
     }, 2000);
