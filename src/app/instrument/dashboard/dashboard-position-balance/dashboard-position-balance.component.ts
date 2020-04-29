@@ -1,11 +1,12 @@
 import { DataSource } from '@angular/cdk/table';
-import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
+import { Component, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { NutsPlatformService, USD_ADDRESS, CNY_ADDRESS } from 'src/app/common/web3/nuts-platform.service';
 import { PriceOracleService } from 'src/app/common/web3/price-oracle.service';
 import { CurrencyService } from 'src/app/common/currency-select/currency.service';
 import { SupplementalLineItemModel, SupplementalLineItemType, SupplementalLineItemState } from 'src/app/common/model/supplemental-line-item.model';
 import { InstrumentService } from 'src/app/common/web3/instrument.service';
+import { MatPaginator, MatTableDataSource } from '@angular/material';
 
 interface Position {
   instrument: string,
@@ -25,7 +26,10 @@ interface Position {
   styleUrls: ['./dashboard-position-balance.component.scss']
 })
 export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   public activePositions: Position[] = [];
+  public dataSource = new MatTableDataSource<Position>([]);
+
   public convertedPayable: Promise<number>;
   public convertedReceivable: Promise<number>;
   public positionDataSource: PositionDataSource;
@@ -40,7 +44,6 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
     private priceOracleService: PriceOracleService, public currencyService: CurrencyService, private zone: NgZone) { }
 
   ngOnInit() {
-    this.positionDataSource = new PositionDataSource();
     this.updatePositions();
     this.lendingIssuanceSubscription = this.instrumentService.lendingIssuancesUpdatedSubject.subscribe(_ => {
       this.updatePositions();
@@ -63,6 +66,7 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.lendingIssuanceSubscription.unsubscribe();
     this.borrowingIssuanceSubscription.unsubscribe();
+    this.swapIssuanceSubscription.unsubscribe();
     this.currentAccountSubscription.unsubscribe();
     this.currencySubscription.unsubscribe();
   }
@@ -157,7 +161,8 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
       });
 
       this.activePositions = positions;
-      this.positionDataSource.setData(positions);
+      this.dataSource = new MatTableDataSource<Position>(this.activePositions);
+      this.dataSource.paginator = this.paginator;
       this.convertedPayable = this.getTotalPayable();
       this.convertedReceivable = this.getTotalReceivable();
     });

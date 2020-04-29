@@ -60,7 +60,7 @@
   </div>
 </div>
 
-<mat-table [dataSource]="positionDataSource" class="positions-table" *ngIf="activePositions.length > 0">
+<mat-table [dataSource]="dataSource" class="positions-table" *ngIf="activePositions.length > 0">
 
   <!-- Type Column -->
   <ng-container matColumnDef="type">
@@ -105,11 +105,12 @@
     </mat-cell>
   </ng-container>
 
-
   <mat-header-row *matHeaderRowDef="['type', 'role', 'status', 'amount', 'action']"></mat-header-row>
   <mat-row *matRowDef="let row; columns: ['type', 'role', 'status', 'amount', 'action'];" class="position-content-row">
   </mat-row>>
 </mat-table>
+
+<mat-paginator [pageSize]="10" hidePageSize></mat-paginator>
 
 <div class="no-position-container" *ngIf="activePositions.length == 0">
   There are currently no active positions.
