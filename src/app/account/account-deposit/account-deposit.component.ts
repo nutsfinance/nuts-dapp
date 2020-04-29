@@ -26,7 +26,7 @@ export class AccountDepositComponent implements OnInit, OnChanges {
   @ViewChild('form', { static: true }) private form: NgForm;
 
   constructor(private dialog: MatDialog, private zone: NgZone,
-    private nutsPlatformService: NutsPlatformService, private userBalanceService: AccountBalanceService,
+    private nutsPlatformService: NutsPlatformService, private accountBalanceService: AccountBalanceService,
     private instrumentEscrowService: AccountService) {
     this.amountControl = new FormControl(this.amount, this.validBalance.bind(this));
     this.depositFormGroup = new FormGroup({ amount: this.amountControl });
@@ -174,11 +174,7 @@ export class AccountDepositComponent implements OnInit, OnChanges {
           console.log('Deposit ETH receipt', receipt);
 
           // Update instrument balance
-          this.userBalanceService.updateAssetBalance(this.instrument, 'ETH');
-          // Updates it one more time in case there is any delay
-          setTimeout(() => {
-            this.userBalanceService.updateAssetBalance(this.instrument, 'ETH');
-          }, 5000);
+          this.accountBalanceService.getUserBalanceFromBackend(5, 3000);
           this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
           clearInterval(interval);
         }, 4000);
@@ -217,11 +213,7 @@ export class AccountDepositComponent implements OnInit, OnChanges {
           // 1. Reset form
           this.form.resetForm();
           // Update instrument balance
-          this.userBalanceService.updateAssetBalance(this.instrument, this.selectedToken);
-          // Update it one more time in case there is any delay
-          setTimeout(() => {
-            this.userBalanceService.updateAssetBalance(this.instrument, this.selectedToken);
-          }, 5000);
+          this.accountBalanceService.getUserBalanceFromBackend(5, 3000);
           this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
           clearInterval(interval);
         }, 4000);
