@@ -24,6 +24,7 @@
 .deposit-button {
   width: 150px;
   color: white;
+  margin-right: 15px;
 }
 .deposit-button:not(.valid) {
   background-color: #9b9b9b;

@@ -2,7 +2,16 @@
   <form #form="ngForm" [formGroup]="createFormGroup" (ngSubmit)="createBorrowingIssuance()">
     <div class="row">
       <div class="col-xs-6">
-        <span class="input-label">Principal</span>
+        <span class="input-label">
+          Principal
+          <button mat-icon-button class="tooltip-button" type="button"
+              #principalTooltip="matTooltip"
+              (click)="principalTooltip.toggle()"
+              matTooltip="Assets you wish to borrow."
+              aria-label="Assets you wish to borrow.">
+              <mat-icon class="tooltip-icon">info_outline</mat-icon>
+          </button>
+        </span>
       </div>
       <div class="col-xs-6 form-reset">
         <span class="reset-button" (click)="resetForm()">Reset</span>
@@ -37,7 +46,16 @@
 
     <div class="row">
       <div class="col-xs-12">
-        <span class="input-label">Tenor</span>
+        <span class="input-label">
+          Tenor
+          <button mat-icon-button class="tooltip-button" type="button"
+              #tenorTooltip="matTooltip"
+              (click)="tenorTooltip.toggle()"
+              matTooltip="The length of time until the loan is due."
+              aria-label="The length of time until the loan is due.">
+              <mat-icon class="tooltip-icon">info_outline</mat-icon>
+          </button>
+        </span>
       </div>
     </div>
 
@@ -75,7 +93,16 @@
 
     <div class="row">
       <div class="col-xs-12">
-        <span class="input-label">Collateral</span>
+        <span class="input-label">
+          Collateral
+          <button mat-icon-button class="tooltip-button" type="button"
+              #collateralTooltip="matTooltip"
+              (click)="collateralTooltip.toggle()"
+              matTooltip="Assets pledged by you in order to secure the loan."
+              aria-label="Assets pledged by you in order to secure the loan.">
+              <mat-icon class="tooltip-icon">info_outline</mat-icon>
+          </button>
+        </span>
       </div>
     </div>
 
@@ -136,7 +163,16 @@
 
     <div class="row">
       <div class="col-xs-12">
-        <span class="input-label">Interest</span>
+        <span class="input-label">
+          Interest
+          <button mat-icon-button class="tooltip-button" type="button"
+              #interestTooltip="matTooltip"
+              (click)="interestTooltip.toggle()"
+              matTooltip="Your borrowing, calculated using on simple interest."
+              aria-label="Your borrowing, calculated using on simple interest.">
+              <mat-icon class="tooltip-icon">info_outline</mat-icon>
+          </button>
+        </span>
       </div>
     </div>
 

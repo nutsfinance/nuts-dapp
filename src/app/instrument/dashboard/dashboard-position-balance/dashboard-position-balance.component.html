@@ -1,6 +1,15 @@
 <div class="row">
   <div class="col-xs-12">
-    <div class="dashboard-label">Position Balance</div>
+    <div class="dashboard-label">
+      Position Balance
+      <button mat-icon-button class="tooltip-button"
+          #titleTooltip="matTooltip"
+          (click)="titleTooltip.toggle()"
+          matTooltip="Position Balance provides a balance sheet view of the assets stored in active positions."
+          aria-label="Position Balance provides a balance sheet view of the assets stored in active positions.">
+          <mat-icon class="tooltip-icon">info_outline</mat-icon>
+      </button>
+    </div>
   </div>
 </div>
 
@@ -20,7 +29,16 @@
       <span class="position-value">{{currencyService.getCurrencySymbol()}}
         {{ convertedPayable | async | number: '1.0-4' }}
       </span> 
-      <span class="position-label"> total payables</span>
+      <span class="position-label">
+         total payables
+         <button mat-icon-button class="tooltip-button"
+            #payableTooltip="matTooltip"
+            (click)="payableTooltip.toggle()"
+            matTooltip="Amount to be repaid for active positions."
+            aria-label="Amount to be repaid for active positions.">
+            <mat-icon class="tooltip-icon">info_outline</mat-icon>
+        </button>
+      </span>
     </div>
   </div>
   <div class="col-xs-6">
@@ -28,7 +46,16 @@
       <span class="position-value">{{currencyService.getCurrencySymbol()}}
         {{ convertedReceivable | async | number: '1.0-4' }}
       </span> 
-      <span class="position-label"> total receivables</span>
+      <span class="position-label">
+         total receivables
+         <button mat-icon-button class="tooltip-button"
+            #receivableTooltip="matTooltip"
+            (click)="receivableTooltip.toggle()"
+            matTooltip="Amount to be received for active positions."
+            aria-label="Amount to be received for active positions.">
+            <mat-icon class="tooltip-icon">info_outline</mat-icon>
+        </button>
+      </span>
     </div>
   </div>
 </div>

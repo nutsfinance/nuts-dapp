@@ -39,3 +39,16 @@ $custom-typography: mat-typography-config(
 .narrow-toggle .mat-button-toggle-label-content {
   padding: 0 9px !important;
 }
+
+.tooltip-icon {
+  height: 21px !important;
+  width: 18px !important;
+  font-size: 18px !important;
+}
+
+.tooltip-button {
+  height: 25px !important;
+  width: 25px !important;
+  font-size: 25px !important;
+  line-height: 25px !important;
+}

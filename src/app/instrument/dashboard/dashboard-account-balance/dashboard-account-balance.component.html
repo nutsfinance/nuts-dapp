@@ -1,7 +1,18 @@
 <div class="row">
     <div class="col-xs-12 balance-container">
-        <p class="dashboard-label">Account Balance</p>
-        <p class="dashboard-value">{{ currencyService.getCurrencySymbol() }} {{totalValue | number: '1.0-2' }}</p>
+        <div class="dashboard-label">
+            Account Balance
+            <button mat-icon-button class="tooltip-button"
+                #tooltip="matTooltip"
+                (click)="tooltip.toggle()"
+                matTooltip="The overall Account Balance represents the total assets stored across all instrument markets."
+                aria-label="The overall Account Balance represents the total assets stored across all instrument markets.">
+                <mat-icon class="tooltip-icon">info_outline</mat-icon>
+            </button>
+        </div>
+        <p class="dashboard-value">
+            {{ currencyService.getCurrencySymbol() }} {{totalValue | number: '1.0-2' }}
+        </p>
         <canvas baseChart 
             [data]="instrumentChartData" 
             [labels]="instrumentChartLabels" 
