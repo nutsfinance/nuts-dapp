@@ -169,7 +169,7 @@ export class LendingCreateComponent implements OnInit {
     if (!control.value) {
       return { 'required': true };
     }
-    if (this.principalTokenBalance < Number(control.value)) {
+    if (this.principalTokenBalance < this.nutsPlatformService.getTokenActualValueByName(this.principalToken, control.value)) {
       return { 'insufficientBalance': true };
     }
     if ((this.principalToken === 'ETH' && Number.isNaN(Number(control.value))) || Number(control.value) <= 0) {

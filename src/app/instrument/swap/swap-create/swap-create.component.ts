@@ -128,7 +128,7 @@ export class SwapCreateComponent implements OnInit {
     if (!control.value) {
       return { 'required': true };
     }
-    if (this.inputTokenBalance < Number(control.value)) {
+    if (this.inputTokenBalance < this.nutsPlatformService.getTokenActualValueByName(this.inputToken, control.value)) {
       return { 'insufficientBalance': true };
     }
     if ((this.inputToken === 'ETH' && Number.isNaN(Number(control.value))) || Number(control.value) <= 0) {
