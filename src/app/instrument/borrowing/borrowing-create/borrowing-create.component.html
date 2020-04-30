@@ -224,7 +224,7 @@
       <div class="col-xs-12">
         <div class="create-button-wrapper">
           <button mat-raised-button color="primary"
-            [ngClass]="{'create-button': true, 'valid': createFormGroup.valid}">Create</button>
+            [ngClass]="{'create-button': true, 'valid': createFormGroup.valid && collateralTokenBalance >= collateralValue}">Create</button>
         </div>
       </div>
     </div>

@@ -101,7 +101,7 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
               type: 'engage_issuance',
               instrument: 'lending',
               issuanceId: this.issuance.issuanceId,
-              tokenAmount: this.nutsPlatformService.getTokenValueByAddress(this.issuance.lendingTokenAddress, this.issuance.lendingAmount),
+              tokenAmount: this.issuance.lendingAmount,
               tokenName: this.nutsPlatformService.getTokenNameByAddress(this.issuance.lendingTokenAddress),
             },
           });
@@ -115,7 +115,7 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
   }
 
   repayIssuance() {
-    const totalAmount = this.issuance.lendingAmount + this.issuance.lendingAmount * this.issuance.interestRate * this.issuance.tenorDays / 1000000;
+    const totalAmount = this.issuance.lendingAmount + this.issuance.lendingAmount * this.issuance.interestAmount;
     console.log('Total amount: ' + totalAmount + ", balance: " + this.lendingTokenBalance);
     if (this.lendingTokenBalance < totalAmount) return;
     this.instrumentService.repayIssuance('lending', this.issuanceId, this.issuance.lendingTokenAddress, totalAmount)

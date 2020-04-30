@@ -21,6 +21,7 @@ export class BorrowingCreateComponent implements OnInit {
   public showAlternativeColleral = false;
   public showAlternativeInterest = false;
   public principalToken = this.tokens[0];
+  public principalValue = 0;
   public collateralTokenBalance: number;
   public collateralToken = this.tokens[1];
   public collateralValue = 0;
@@ -38,6 +39,7 @@ export class BorrowingCreateComponent implements OnInit {
       'interestRate': new FormControl('', this.validInterestRate),
     });
     this.createFormGroup.valueChanges.subscribe(_ => {
+      this.principalValue = this.nutsPlatformService.getTokenActualValueByName(this.principalToken, this.createFormGroup.value['principalAmount']);
       this.computeCollateralValue();
       this.computeInterestValue();
     });
@@ -54,39 +56,31 @@ export class BorrowingCreateComponent implements OnInit {
 
   onTenorChange(tenorChange: MatButtonToggleChange) {
     this.createFormGroup.patchValue({ 'tenor': tenorChange.value });
-    // this.interestValue = this.getInterestValue();
   }
 
   onCollateralTokenSelected(token: string) {
     this.collateralToken = token;
     this.createFormGroup.controls['collateralRatio'].reset();
-    // this.collateralValue = this.getCollateralValue();
   }
 
   onCollateralRatioChange(collateralRatioChange: MatButtonToggleChange) {
     this.createFormGroup.patchValue({ 'collateralRatio': collateralRatioChange.value });
-    // this.collateralValue = this.getCollateralValue();
   }
 
   onInterestRateChange(interestRateChange: MatButtonToggleChange) {
     this.createFormGroup.patchValue({ 'interestRate': interestRateChange.value });
-    // this.interestValue = this.getInterestValue();
-    // console.log(this.interestValue);
   }
 
   computeCollateralValue() {
     const principalTokenAddress = this.nutsPlatformService.getTokenAddressByName(this.principalToken);
     const collateralTokenAddress = this.nutsPlatformService.getTokenAddressByName(this.collateralToken);
-    if (!this.createFormGroup.value['principalAmount']) {
+    if (!this.principalValue) {
       this.collateralValue = 0;
       return;
     }
-    const borrowingAmount = this.principalToken === 'ETH' ?
-      this.nutsPlatformService.getWeiFromEther(this.createFormGroup.value['principalAmount']) :
-      this.createFormGroup.value['principalAmount'];
 
     this.priceOracleSercvice.getConvertedValue(collateralTokenAddress, principalTokenAddress,
-      borrowingAmount * this.createFormGroup.value['collateralRatio'], 100).then(value => {
+      this.principalValue * this.createFormGroup.value['collateralRatio'], 100).then(value => {
         this.collateralValue = value;
         console.log(value);
       });
@@ -94,13 +88,10 @@ export class BorrowingCreateComponent implements OnInit {
 
   async createBorrowingIssuance() {
     console.log(this.createFormGroup);
-    if (!this.createFormGroup.valid) {
+    if (!this.createFormGroup.valid || this.collateralTokenBalance < this.collateralValue) {
       return;
     }
-    const borrowingAmount = this.principalToken === 'ETH' ?
-      this.nutsPlatformService.getWeiFromEther(this.createFormGroup.value['principalAmount']) :
-      this.createFormGroup.value['principalAmount'];
-    this.instrumentService.createBorrowingIssuance(this.principalToken, borrowingAmount,
+    this.instrumentService.createBorrowingIssuance(this.principalToken, this.principalValue,
       this.collateralToken, this.createFormGroup.value['collateralRatio'], this.createFormGroup.value['tenor'],
       this.createFormGroup.value['interestRate'])
       .on('transactionHash', transactionHash => {
@@ -112,7 +103,7 @@ export class BorrowingCreateComponent implements OnInit {
             data: {
               type: 'create_issuance',
               instrument: 'borrowing',
-              tokenAmount: this.createFormGroup.value['principalAmount'],
+              tokenAmount: this.principalValue,
               tokenName: this.principalToken,
             },
           });

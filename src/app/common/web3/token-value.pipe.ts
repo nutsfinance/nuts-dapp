@@ -10,6 +10,6 @@ export class TokenValuePipe implements PipeTransform {
 
   transform(value: any, ...args: any[]): any {
     if (!value) return 0;
-    return this.nutsPlatformService.getTokenValueByName(args[0], value);
+    return this.nutsPlatformService.getDisplayValueByName(args[0], value);
   }
 }

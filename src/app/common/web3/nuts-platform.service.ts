@@ -226,7 +226,13 @@ export class NutsPlatformService {
     return this.isAddressValid() && this.isNetworkValid();
   }
 
-  public getTokenValueByAddress(tokenAddress: string, value: number): number {
+  /**
+   * Gets the display value for the token.
+   * @param tokenAddress The address of the token.
+   * @param value The value without decimal.
+   */
+  public getDisplayValueByAddress(tokenAddress: string, value: number): number {
+    if (!value) return 0;
     if (tokenAddress.toLowerCase() === ETH_ADDRESS.toLowerCase()) {
       return +this.web3.utils.fromWei(`${value}`, 'ether');
     } else {
@@ -234,9 +240,43 @@ export class NutsPlatformService {
     }
   }
 
-  public getTokenValueByName(tokenName: string, value: number): number {
+  /**
+   * Gets the display value for the token.
+   * @param tokenAddress The name of the token.
+   * @param value The value without decimal.
+   */
+  public getDisplayValueByName(tokenName: string, value: number): number {
+    if (!value) return 0;
     if (tokenName === 'ETH') {
       return +this.web3.utils.fromWei(`${value}`, 'ether');
+    } else {
+      return value;
+    }
+  }
+
+  /**
+   * Gets the actual value for the token from the display value.
+   * @param tokenAddress The address of the token.
+   * @param value The value with decimal.
+   */
+  public getTokenActualValueByAddress(tokenAddress: string, value: number): number {
+    if (!value) return 0;
+    if (tokenAddress.toLowerCase() === ETH_ADDRESS.toLowerCase()) {
+      return +this.web3.utils.toWei(`${value}`, 'ether');
+    } else {
+      return value;
+    }
+  }
+
+  /**
+   * Gets the actual value for the token from the display value.
+   * @param tokenAddress The name of the token.
+   * @param value The value with decimal.
+   */
+  public getTokenActualValueByName(tokenName: string, value: number): number {
+    if (!value) return 0;
+    if (tokenName === 'ETH') {
+      return +this.web3.utils.toWei(`${value}`, 'ether');
     } else {
       return value;
     }
@@ -260,14 +300,6 @@ export class NutsPlatformService {
   public getTokenAddressByName(tokenName: string): string {
     if (tokenName === 'ETH') return ETH_ADDRESS;
     return this.contractAddresses[this.currentNetwork].tokens[tokenName];
-  }
-
-  public getWeiFromEther(etherAmount: number) {
-    return this.web3.utils.toWei(`${etherAmount}`, 'ether');
-  }
-
-  public getEtherFromWei(weiAmount: number) {
-    return this.web3.utils.fromWei(`${weiAmount}`, 'ether');
   }
 
   public getInstrumentId(instrument: string): number {

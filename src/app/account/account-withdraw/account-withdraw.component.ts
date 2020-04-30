@@ -39,21 +39,20 @@ export class AccountWithdrawComponent implements OnInit {
 
   setMaxAmount() {
     this.withdrawForm.patchValue({
-      amount: this.nutsPlatformService.getTokenValueByName(this.selectedToken, this.accountBalance)
+      amount: this.nutsPlatformService.getDisplayValueByName(this.selectedToken, this.accountBalance)
     });
   }
 
   withdraw() {
-    console.log(this.withdrawForm);
     if (!this.withdrawForm.valid) {
       return;
     }
+    const withdrawValue = this.nutsPlatformService.getTokenActualValueByName(this.selectedToken, this.amountControl.value);
     let withdrawPromise;
     if (this.selectedToken === 'ETH') {
-      const withdrawValue = this.nutsPlatformService.getWeiFromEther(this.amountControl.value);
       withdrawPromise = this.instrumentEscrowService.withdrawETH(this.instrument, withdrawValue);
     } else {
-      withdrawPromise = this.instrumentEscrowService.withdrawToken(this.instrument, this.selectedToken, this.amountControl.value);
+      withdrawPromise = this.instrumentEscrowService.withdrawToken(this.instrument, this.selectedToken, withdrawValue);
     }
 
     withdrawPromise.on('transactionHash', transactionHash => {

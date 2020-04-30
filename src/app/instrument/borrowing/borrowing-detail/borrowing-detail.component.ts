@@ -73,7 +73,7 @@ export class BorrowingDetailComponent implements OnInit {
   onPrincipalTokenBalanceUpdated(balance) {
     this.borrowingTokenBalance = balance;
     setTimeout(() => {
-      const repayAmount = this.issuance.borrowingAmount + this.issuance.borrowingAmount * this.issuance.interestRate * this.issuance.tenorDays / 1000000;
+      const repayAmount = this.issuance.borrowingAmount + this.issuance.interestAmount;
       this.principalSufficient = this.borrowingTokenBalance >= repayAmount;
     });
   }
@@ -98,7 +98,7 @@ export class BorrowingDetailComponent implements OnInit {
               type: 'engage_issuance',
               instrument: 'borrowing',
               issuanceId: this.issuance.issuanceId,
-              tokenAmount: this.nutsPlatformService.getTokenValueByAddress(this.issuance.borrowingTokenAddress, this.issuance.borrowingAmount),
+              tokenAmount: this.issuance.borrowingAmount,
               tokenName: this.nutsPlatformService.getTokenNameByAddress(this.issuance.borrowingTokenAddress),
             },
           });
@@ -112,7 +112,7 @@ export class BorrowingDetailComponent implements OnInit {
   }
 
   repayIssuance() {
-    const totalAmount = this.issuance.borrowingAmount + this.issuance.borrowingAmount * this.issuance.interestRate * this.issuance.tenorDays / 1000000;
+    const totalAmount = this.issuance.borrowingAmount + this.issuance.borrowingAmount * this.issuance.interestAmount;
     console.log('Total amount: ' + totalAmount + ", balance: " + this.borrowingTokenBalance);
     if (this.borrowingTokenBalance < totalAmount) return;
     this.instrumentService.repayIssuance('borrowing', this.issuanceId, this.issuance.borrowingTokenAddress, totalAmount)

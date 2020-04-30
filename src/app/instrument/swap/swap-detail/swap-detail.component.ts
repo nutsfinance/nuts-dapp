@@ -85,7 +85,7 @@ export class SwapDetailComponent implements OnInit {
               instrument: 'swap',
               issuanceId: this.issuance.issuanceId,
               tokenName: this.inputToken,
-              tokenAmount: this.nutsPlatformService.getTokenValueByName(this.inputToken, this.issuance.inputAmount),
+              tokenAmount: this.issuance.inputAmount,
             },
           });
           transactionInitiatedDialog.afterClosed().subscribe(() => {

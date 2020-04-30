@@ -67,7 +67,7 @@ export class AccountDepositComponent implements OnInit, OnChanges {
   setMaxAmount() {
     if (this.amountControl.enabled) {
       this.depositFormGroup.patchValue({
-        amount: this.nutsPlatformService.getTokenValueByName(this.selectedToken, this.walletBalance),
+        amount: this.nutsPlatformService.getDisplayValueByName(this.selectedToken, this.walletBalance),
       });
     }
   }
@@ -79,11 +79,7 @@ export class AccountDepositComponent implements OnInit, OnChanges {
     if (this.showApprove) {
       this.approve();
     } else {
-      if (this.selectedToken === 'ETH') {
-        this.depositETH();
-      } else {
-        this.depositToken();
-      }
+      this.deposit();
     }
   }
 
@@ -114,7 +110,6 @@ export class AccountDepositComponent implements OnInit, OnChanges {
               type: 'approve',
               fspName: FSP_NAME,
               tokenName: this.selectedToken,
-              amount: this.amountControl.value,
             },
           });
 
@@ -144,79 +139,45 @@ export class AccountDepositComponent implements OnInit, OnChanges {
       });
   }
 
-  private depositETH() {
-    const depositValue = this.nutsPlatformService.getWeiFromEther(this.amountControl.value);
-    this.instrumentEscrowService.depositETH(this.instrument, depositValue)
-      .on('transactionHash', transactionHash => {
-
-        this.zone.run(() => {
-          // Opens Deposit Initiated dialog.
-          const transactionInitiatedDialog = this.dialog.open(TransactionInitiatedDialog, {
-            width: '90%',
-            data: {
-              type: 'deposit',
-              fspName: FSP_NAME,
-              tokenName: this.selectedToken,
-              tokenAmount: this.amountControl.value,
-            },
-          });
-          transactionInitiatedDialog.afterClosed().subscribe(() => {
-            this.form.resetForm();
-            // Scroll to top
-            document.body.scrollTop = document.documentElement.scrollTop = 0;
-          });
+  private deposit() {
+    const depositValue = this.nutsPlatformService.getTokenActualValueByName(this.selectedToken, this.amountControl.value);
+    let depositPromise;
+    if (this.selectedToken === 'ETH') {
+      depositPromise = this.instrumentEscrowService.depositETH(this.instrument, depositValue);
+    } else {
+      depositPromise = this.instrumentEscrowService.depositToken(this.instrument, this.selectedToken, depositValue);
+    }
+    depositPromise.on('transactionHash', transactionHash => {
+      this.zone.run(() => {
+        // Opens Deposit Initiated dialog.
+        const transactionInitiatedDialog = this.dialog.open(TransactionInitiatedDialog, {
+          width: '90%',
+          data: {
+            type: 'deposit',
+            fspName: FSP_NAME,
+            tokenName: this.selectedToken,
+            tokenAmount: depositValue,
+          },
         });
-
-        // Monitoring transaction status(work around for Metamask mobile)
-        const interval = setInterval(async () => {
-          const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
-          if (!receipt || !receipt.blockNumber) return;
-          console.log('Deposit ETH receipt', receipt);
-
-          // Update instrument balance
-          this.accountBalanceService.getUserBalanceFromBackend(5, 3000);
-          this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
-          clearInterval(interval);
-        }, 4000);
-      })
-      .on('error', console.error);
-  }
-
-  private depositToken() {
-    this.instrumentEscrowService.depositToken(this.instrument, this.selectedToken, this.amountControl.value)
-      .on('transactionHash', transactionHash => {
-
-        this.zone.run(() => {
-          // Opens Deposit Initiated dialog.
-          const transactionInitiatedDialog = this.dialog.open(TransactionInitiatedDialog, {
-            width: '90%',
-            data: {
-              type: 'deposit',
-              fspName: FSP_NAME,
-              tokenName: this.selectedToken,
-              tokenAmount: this.amountControl.value,
-            },
-          });
-          transactionInitiatedDialog.afterClosed().subscribe(() => {
-            // Scroll to top
-            document.body.scrollTop = document.documentElement.scrollTop = 0;
-          });
-        });
-
-        // Monitoring transaction status(work around for Metamask mobile)
-        const interval = setInterval(async () => {
-          const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
-          if (!receipt || !receipt.blockNumber) return;
-          console.log('Deposit token receipt', receipt);
-
-          // After Deposit transaction is successful
-          // 1. Reset form
+        transactionInitiatedDialog.afterClosed().subscribe(() => {
           this.form.resetForm();
-          // Update instrument balance
-          this.accountBalanceService.getUserBalanceFromBackend(5, 3000);
-          this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
-          clearInterval(interval);
-        }, 4000);
+          // Scroll to top
+          document.body.scrollTop = document.documentElement.scrollTop = 0;
+        });
       });
+
+      // Monitoring transaction status(work around for Metamask mobile)
+      const interval = setInterval(async () => {
+        const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
+        if (!receipt || !receipt.blockNumber) return;
+        console.log('Deposit ETH receipt', receipt);
+
+        // Update instrument balance
+        this.accountBalanceService.getUserBalanceFromBackend(5, 3000);
+        this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
+        clearInterval(interval);
+      }, 4000);
+    })
+      .on('error', console.error);
   }
 }

@@ -36,7 +36,7 @@ export class SwapCardComponent implements OnInit, OnDestroy {
     });
     this.inputToken = this.nutsPlatformService.getTokenNameByAddress(this.issuance.inputTokenAddress);
     this.outputToken = this.nutsPlatformService.getTokenNameByAddress(this.issuance.outputTokenAddress);
-    this.exchangeRate = 1.0 * this.nutsPlatformService.getTokenValueByName(this.outputToken, this.issuance.outputAmount) / this.nutsPlatformService.getTokenValueByName(this.inputToken, this.issuance.inputAmount);
+    this.exchangeRate = 1.0 * this.nutsPlatformService.getDisplayValueByName(this.outputToken, this.issuance.outputAmount) / this.nutsPlatformService.getDisplayValueByName(this.inputToken, this.issuance.inputAmount);
 
     // Compute issuance converted token values
     this.updateConvertedValues();

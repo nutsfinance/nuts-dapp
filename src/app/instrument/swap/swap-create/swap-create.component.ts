@@ -73,12 +73,8 @@ export class SwapCreateComponent implements OnInit {
       return;
     }
 
-    const inputAmount = this.inputToken === 'ETH' ?
-      this.nutsPlatformService.getWeiFromEther(this.createFormGroup.value['inputAmount']) :
-      this.createFormGroup.value['inputAmount'];
-    const outputAmount = this.outputToken === 'ETH' ?
-      this.nutsPlatformService.getWeiFromEther(this.createFormGroup.value['outputAmount']) :
-      this.createFormGroup.value['outputAmount'];
+    const inputAmount = this.nutsPlatformService.getTokenActualValueByName(this.inputToken, this.createFormGroup.value['inputAmount']);
+    const outputAmount = this.nutsPlatformService.getTokenActualValueByName(this.outputToken, this.createFormGroup.value['outputAmount']);
     this.instrumentService.createSwapIssuance(this.inputToken, this.outputToken, inputAmount, outputAmount,
       this.createFormGroup.value['duration'])
       .on('transactionHash', transactionHash => {
@@ -91,7 +87,7 @@ export class SwapCreateComponent implements OnInit {
               type: 'create_issuance',
               instrument: 'swap',
               tokenName: this.inputToken,
-              tokenAmount: this.createFormGroup.value['inputAmount'],
+              tokenAmount: inputAmount,
             },
           });
           transactionInitiatedDialog.afterClosed().subscribe(() => {

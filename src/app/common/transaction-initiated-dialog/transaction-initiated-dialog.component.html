@@ -17,30 +17,30 @@
             Approval request for <span style="color: blue">{{data.fspName}}</span> to withdraw and spend <span style="color: blue;">{{data.tokenName}}</span> has been initiated.
         </span>
         <span *ngSwitchCase="'deposit'">
-            Your deposit request for <span style="color: blue;">{{data.tokenAmount}} {{data.tokenName}}</span>  has been initiated.
+            Your deposit request for <span style="color: blue;">{{data.tokenAmount | tokenValue:data.tokenName}} {{data.tokenName}}</span>  has been initiated.
         </span>
         <span *ngSwitchCase="'withdraw'">
-            Your withdrawal request for <span style="color: blue;">{{data.tokenAmount}} {{data.tokenName}}</span>  has been initiated.
+            Your withdrawal request for <span style="color: blue;">{{data.tokenAmount | tokenValue:data.tokenName}} {{data.tokenName}}</span>  has been initiated.
         </span>
         <span *ngSwitchCase="'create_issuance'">
-            Your {{data.instrument}} offer for <span style="color: blue;">{{data.tokenAmount}} {{data.tokenName}}</span> has been initiated.
+            Your {{data.instrument}} offer for <span style="color: blue;">{{data.tokenAmount | tokenValue:data.tokenName}} {{data.tokenName}}</span> has been initiated.
         </span>
         <span *ngSwitchCase="'engage_issuance'">
             <span *ngIf="data.instrument == 'lending'">
-                Your loan request for <span style="color: blue;">{{data.tokenAmount}} {{data.tokenName}}</span> has been initiated.
+                Your loan request for <span style="color: blue;">{{data.tokenAmount | tokenValue:data.tokenName}} {{data.tokenName}}</span> has been initiated.
             </span>
             <span *ngIf="data.instrument == 'borrowing'">
-                Your lending request for <span style="color: blue;">{{data.tokenAmount}} {{data.tokenName}}</span> has been initiated.
+                Your lending request for <span style="color: blue;">{{data.tokenAmount | tokenValue:data.tokenName}} {{data.tokenName}}</span> has been initiated.
             </span>
             <span *ngIf="data.instrument == 'swap'">
-                Your swap request for <span style="color: blue;">{{data.tokenAmount}} {{data.tokenName}}</span> has been initiated.
+                Your swap request for <span style="color: blue;">{{data.tokenAmount | tokenValue:data.tokenName}} {{data.tokenName}}</span> has been initiated.
             </span>
         </span>
         <span *ngSwitchCase="'cancel_issuance'">
             Your cancellation request for {{data.instrument}} offer <span style="color: blue;">{{data.issuanceId}}</span> has been initiated.
         </span>
         <span *ngSwitchCase="'repay_issuance'">
-            Principal and interests repayment <span style="color: blue;">{{data.tokenAmount}} {{data.tokenName}}</span> has been initiated.
+            Principal and interests repayment <span style="color: blue;">{{data.tokenAmount | tokenValue:data.tokenName}} {{data.tokenName}}</span> has been initiated.
         </span>
     </p>
   </div>

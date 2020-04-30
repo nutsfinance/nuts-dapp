@@ -101,7 +101,7 @@ export class AccountService {
       });
   }
 
-  public withdrawETH(instrument: string, amount: string) {
+  public withdrawETH(instrument: string, amount: number) {
     const instrumentEscrowAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument].instrumentEscrow;
     const instrumentEscrowContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentEscrow, instrumentEscrowAddress);
     return instrumentEscrowContract.methods.withdraw(amount).send({ from: this.nutsPlatformService.currentAccount })
