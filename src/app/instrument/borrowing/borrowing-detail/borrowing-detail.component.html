@@ -140,21 +140,8 @@
     <div class="row" *ngIf="issuance.state == 2 && issuance.makerAddress.toLowerCase() != nutsPlatformService.currentAccount.toLowerCase()">
         <div class="col-xs-12 action-row">
             <button mat-raised-button color="primary"
-                [ngClass]="{'engage-button': true, 'valid': collateralSufficient}"
+                [ngClass]="{'engage-button': true, 'valid': principalSufficient}"
                 (click)="engageIssuance()">Engage</button>
-        </div>
-    </div>
-    <div class="row" *ngIf="issuance.state == 2 && issuance.makerAddress.toLowerCase() != nutsPlatformService.currentAccount.toLowerCase()">
-        <div
-            [ngClass]="{'col-xs-12': true, 'hidden': collateralSufficient}">
-            <span style="color: red;">Insufficient balance</span>
-            (<span style="color: blue;">
-                <app-account-balance [instrument]="'borrowing'" [selectedToken]="collateralToken"
-                    (balanceUpdated)="onCollateralTokenBalanceUpdated($event)">
-                </app-account-balance>
-                {{collateralToken}}
-            </span> available)
-            <a class="deposit-button" [routerLink]="['/instrument/borrowing/account']" [queryParams]="{ token: collateralToken}">Deposit</a>
         </div>
     </div>
 
@@ -167,9 +154,8 @@
         </div>
     </div>
 
-    <div class="row" *ngIf="issuance.state == 3 && issuance.takerAddress.toLowerCase() == nutsPlatformService.currentAccount.toLowerCase()">
-        <div
-            [ngClass]="{'col-xs-12': true, 'hidden': principalSufficient}">
+    <div class="row">
+        <div [ngClass]="{'col-xs-12': true, 'hidden': principalSufficient}">
             <span style="color: red;">Insufficient balance</span>
             (<span style="color: blue;">
                 <app-account-balance [instrument]="'borrowing'" [selectedToken]="borrowingToken"

@@ -2,6 +2,7 @@ import { Location } from '@angular/common';
 import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { IssuanceState } from 'src/app/common/model/issuance.model';
 import { BorrowingIssuanceModel } from 'src/app/common/model/borrowing-issuance.model';
 import { NutsPlatformService, USD_ADDRESS, CNY_ADDRESS } from 'src/app/common/web3/nuts-platform.service';
 import { PriceOracleService } from 'src/app/common/web3/price-oracle.service';
@@ -16,16 +17,14 @@ import { AccountBalanceService } from 'src/app/common/web3/account-balance.servi
   templateUrl: './borrowing-detail.component.html',
   styleUrls: ['./borrowing-detail.component.scss']
 })
-export class BorrowingDetailComponent implements OnInit {
+export class BorrowingDetailComponent implements OnInit, OnDestroy {
   public issuanceId: number;
   public issuance: BorrowingIssuanceModel;
   public borrowingToken: string;
   public collateralToken: string;
-  public borrowingTokenBalance = -1;
-  public collateralTokenBalance = -1;
+  public borrowingTokenBalance = 0;
   public collateralValue = 0;
   public principalSufficient = true;
-  public collateralSufficient = true;
 
   public convertedCollateralValue: Promise<number>;
   public convertedBorrowingValue: Promise<number>;
@@ -72,22 +71,25 @@ export class BorrowingDetailComponent implements OnInit {
 
   onPrincipalTokenBalanceUpdated(balance) {
     this.borrowingTokenBalance = balance;
-    setTimeout(() => {
-      const repayAmount = this.issuance.borrowingAmount + this.issuance.interestAmount;
-      this.principalSufficient = this.borrowingTokenBalance >= repayAmount;
-    });
-  }
+    // We only need to check two cases:
+    // 1. Current user is the maker, and the current user is going to repay
+    // 2. Current user is the taker, and the current user is going to engage
+    let targetAmount = 0;
+    if (this.issuance.makerAddress.toLowerCase() === this.nutsPlatformService.currentAccount.toLowerCase()
+      && this.issuance.state === IssuanceState.Engaged) {
+      targetAmount = this.issuance.borrowingAmount + this.issuance.interestAmount;
+    } else if (this.issuance.makerAddress.toLowerCase() !== this.nutsPlatformService.currentAccount.toLowerCase()
+    && this.issuance.state === IssuanceState.Engageable) {
+      targetAmount = this.issuance.borrowingAmount;
+    }
 
-  onCollateralTokenBalanceUpdated(balance) {
-    this.collateralTokenBalance = balance;
     setTimeout(() => {
-      this.collateralSufficient = this.collateralTokenBalance >= this.collateralValue;
-      console.log(this.collateralTokenBalance, this.collateralValue, this.collateralSufficient);
+      this.principalSufficient = this.borrowingTokenBalance >= targetAmount;
     });
   }
 
   engageIssuance() {
-    if (this.collateralTokenBalance < this.collateralValue) return;
+    if (this.borrowingTokenBalance < this.issuance.borrowingAmount) return;
     this.instrumentService.engageIssuance('borrowing', this.issuanceId)
       .on('transactionHash', transactionHash => {
         this.zone.run(() => {
@@ -112,7 +114,7 @@ export class BorrowingDetailComponent implements OnInit {
   }
 
   repayIssuance() {
-    const totalAmount = this.issuance.borrowingAmount + this.issuance.borrowingAmount * this.issuance.interestAmount;
+    const totalAmount = this.issuance.borrowingAmount + this.issuance.interestAmount;
     console.log('Total amount: ' + totalAmount + ", balance: " + this.borrowingTokenBalance);
     if (this.borrowingTokenBalance < totalAmount) return;
     this.instrumentService.repayIssuance('borrowing', this.issuanceId, this.issuance.borrowingTokenAddress, totalAmount)
@@ -188,11 +190,9 @@ export class BorrowingDetailComponent implements OnInit {
         if (this.issuance.collateralAmount == 0) {
           this.priceOracleService.getConvertedValue(this.issuance.collateralTokenAddress, this.issuance.borrowingTokenAddress, this.issuance.borrowingAmount * this.issuance.collateralRatio, 10000).then(value => {
             this.collateralValue = value;
-            this.collateralSufficient = this.collateralTokenBalance === -1 || this.collateralTokenBalance >= this.collateralValue;
           });
         } else {
           this.collateralValue = this.issuance.collateralAmount;
-          this.collateralSufficient = this.collateralTokenBalance === -1 || this.collateralTokenBalance >= this.collateralValue;
         }
         this.updateConvertedValue();
       }
