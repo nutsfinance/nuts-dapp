@@ -93,6 +93,16 @@ export class AccountBalanceService {
   }
 
   /**
+   * Get the balance of a token in the account.
+   * @param instrument 
+   * @param tokenName 
+   */
+  getTokenBalance(instrument: string, tokenName: string): number {
+    return this.accountBalances[instrument] && this.accountBalances[instrument][tokenName] ?
+      this.accountBalances[instrument] && this.accountBalances[instrument][tokenName] : 0;
+  }
+
+  /**
    * Update the account balance on the instrument and asset specified
    */
   async updateAssetBalance(instrument: string, asset: string) {

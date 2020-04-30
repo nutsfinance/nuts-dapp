@@ -22,8 +22,7 @@ export class AccountBalanceComponent implements OnInit, OnChanges, OnDestroy {
     this.accountBalancesSubscription = this.accountBalanceService.accountBalancesSubject.subscribe(accountBalances => {
       this.zone.run(() => {
         console.log('Account balance: Account balances updated', accountBalances);
-        this.tokenBalance = accountBalances[this.instrument] && accountBalances[this.instrument][this.selectedToken] ?
-          accountBalances[this.instrument][this.selectedToken] : 0;
+        this.tokenBalance = this.accountBalanceService.getTokenBalance(this.instrument, this.selectedToken);
         this.balanceUpdated.next(this.tokenBalance);
       });
     });
@@ -34,8 +33,7 @@ export class AccountBalanceComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.tokenBalance = this.accountBalanceService.accountBalances[this.instrument] ?
-      this.accountBalanceService.accountBalances[this.instrument][this.selectedToken] : 0;
+    this.tokenBalance = this.accountBalanceService.getTokenBalance(this.instrument, this.selectedToken);
     this.balanceUpdated.next(this.tokenBalance);
   }
 }

@@ -51,7 +51,6 @@ export class BorrowingCreateComponent implements OnInit {
     this.createFormGroup.controls['principalAmount'].reset();
     // Update collaterals
     this.collateralToken = token === this.tokens[0] ? this.tokens[1] : this.tokens[0];
-    // this.collateralValue = this.getCollateralValue();
   }
 
   onTenorChange(tenorChange: MatButtonToggleChange) {
@@ -60,6 +59,7 @@ export class BorrowingCreateComponent implements OnInit {
 
   onCollateralTokenSelected(token: string) {
     this.collateralToken = token;
+    this.collateralTokenBalance = this.accountBalanceService.getTokenBalance('lending', this.collateralToken);
     this.createFormGroup.controls['collateralRatio'].reset();
   }
 
