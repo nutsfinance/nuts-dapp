@@ -344,6 +344,7 @@ export class NutsPlatformService {
     const tokenContract = new this.web3.eth.Contract(ERC20, tokenAddress);
     const instrumentEscrowAddres = this.contractAddresses[this.currentNetwork].platform[instrument].instrumentEscrow;
     const allowance = await tokenContract.methods.allowance(this.currentAccount, instrumentEscrowAddres).call();
+    console.log('Allowance for instrument ' + instrument + ', token ' + token + ': ' + allowance);
     return Number(allowance);
   }
 

@@ -48,7 +48,7 @@ export class AccountDepositComponent implements OnInit, OnChanges {
       this.amountControl.enable();
     } else {
       this.nutsPlatformService.getWalletAllowance(this.instrument, token).then(allowance => {
-        console.log('Allowance', allowance, typeof allowance);
+        console.log('Allowance for ', token, allowance, typeof allowance);
         if (allowance) {
           console.log('Show deposit');
           this.showApprove = false;
@@ -128,6 +128,7 @@ export class AccountDepositComponent implements OnInit, OnChanges {
           // Once the Approve transaction is successful, enables the button
           setTimeout(() => {
             this.nutsPlatformService.getWalletAllowance(this.instrument, this.selectedToken).then(allowance => {
+              console.log('Allowance for ', this.selectedToken, allowance, typeof allowance);
               this.showApprove = false;
               this.approveToken.next('');
               this.amountControl.enable();
