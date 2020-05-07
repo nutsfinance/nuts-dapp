@@ -116,8 +116,6 @@ export class InstrumentService {
     const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
     return instrumentManagerContract.methods.createIssuance(borrowingMakerParameters).send({ from: this.nutsPlatformService.currentAccount, gas: 6721975 })
       .on('transactionHash', (transactionHash) => {
-        console.log(transactionHash);
-        // this.nutsPlatformService.transactionSentSubject.next(transactionHash);
         // Records the transaction
         const depositTransaction = new TransactionModel(transactionHash, TransactionType.CREATE_OFFER, NotificationRole.MAKER,
           this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId('borrowing'), 0,
@@ -141,11 +139,9 @@ export class InstrumentService {
   }
 
   public createSwapIssuance(inputToken: string, outputToken: string, inputAmount: number, outputAmount: number,
-    duration: number) {
-  
+    duration: number) {  
     const inputTokenAddress = this.nutsPlatformService.getTokenAddressByName(inputToken);
     const outputTokenAddress = this.nutsPlatformService.getTokenAddressByName(outputToken);
-    console.log(inputTokenAddress, outputTokenAddress);
 
     const swapMakerParametersModel = new SwapMakerParameterModel(inputTokenAddress, outputTokenAddress, inputAmount, outputAmount, duration);
     const message = swapMakerParametersModel.toMessage().serializeBinary();
@@ -169,7 +165,6 @@ export class InstrumentService {
           }
         );
         this.notificationService.addTransaction(depositTransaction).subscribe(result => {
-          console.log(result);
           // Note: Transaction Sent event is not sent until the transaction is recored in notification server!
           this.nutsPlatformService.transactionSentSubject.next(transactionHash);
         });
@@ -177,19 +172,14 @@ export class InstrumentService {
   }
 
   public engageIssuance(instrument: string, issuanceId: number) {
-
     const instrumentManagerAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument].instrumentManager;
     const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
     return instrumentManagerContract.methods.engageIssuance(issuanceId, this.nutsPlatformService.web3.utils.fromAscii("")).send({ from: this.nutsPlatformService.currentAccount, gas: 6721975 })
       .on('transactionHash', (transactionHash) => {
-        console.log(transactionHash);
-        // this.nutsPlatformService.transactionSentSubject.next(transactionHash);
-
         // Records the transaction
         const depositTransaction = new TransactionModel(transactionHash, TransactionType.ACCEPT_OFFER, NotificationRole.TAKER,
           this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId(instrument), issuanceId, {});
         this.notificationService.addTransaction(depositTransaction).subscribe(result => {
-          console.log(result);
           // Note: Transaction Sent event is not sent until the transaction is recored in notification server!
           this.nutsPlatformService.transactionSentSubject.next(transactionHash);
         });
@@ -206,9 +196,6 @@ export class InstrumentService {
     return instrumentManagerContract.methods.notifyCustomEvent(issuanceId, this.nutsPlatformService.web3.utils.fromAscii("repay_full"),
       this.nutsPlatformService.web3.utils.fromAscii("")).send({ from: this.nutsPlatformService.currentAccount, gas: 6721975 })
       .on('transactionHash', (transactionHash) => {
-        console.log(transactionHash);
-        // this.nutsPlatformService.transactionSentSubject.next(transactionHash);
-
         // Records the transaction
         const depositTransaction = new TransactionModel(transactionHash, TransactionType.PAY_OFFER, NotificationRole.TAKER,
           this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId(instrument), issuanceId,
@@ -219,7 +206,6 @@ export class InstrumentService {
           }
         );
         this.notificationService.addTransaction(depositTransaction).subscribe(result => {
-          console.log(result);
           // Note: Transaction Sent event is not sent until the transaction is recored in notification server!
           this.nutsPlatformService.transactionSentSubject.next(transactionHash);
         });
@@ -233,14 +219,10 @@ export class InstrumentService {
     return instrumentManagerContract.methods.notifyCustomEvent(issuanceId, this.nutsPlatformService.web3.utils.fromAscii("cancel_issuance"),
       this.nutsPlatformService.web3.utils.fromAscii("")).send({ from: this.nutsPlatformService.currentAccount, gas: 6721975 })
       .on('transactionHash', (transactionHash) => {
-        console.log(transactionHash);
-        // this.nutsPlatformService.transactionSentSubject.next(transactionHash);
-
         // Records the transaction
         const depositTransaction = new TransactionModel(transactionHash, TransactionType.CANCEL_OFFER, NotificationRole.MAKER,
           this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId(instrument), issuanceId, {});
         this.notificationService.addTransaction(depositTransaction).subscribe(result => {
-          console.log(result);
           // Note: Transaction Sent event is not sent until the transaction is recored in notification server!
           this.nutsPlatformService.transactionSentSubject.next(transactionHash);
         });

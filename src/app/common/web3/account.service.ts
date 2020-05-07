@@ -26,12 +26,7 @@ export class AccountService {
     const instrumentEscrowAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument].instrumentEscrow;
     const tokenAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].tokens[token];
     const tokenContract = new this.nutsPlatformService.web3.eth.Contract(ERC20, tokenAddress);
-    console.log({
-      instrumentName: instrument,
-      tokenName: token,
-      tokenAddress,
-      amount: `${APPROVE_AMOUNT}`,
-    });
+
     return tokenContract.methods.approve(instrumentEscrowAddress, APPROVE_AMOUNT).send({ from: this.nutsPlatformService.currentAccount })
       .on('transactionHash', (transactionHash) => {
         // Records the transaction

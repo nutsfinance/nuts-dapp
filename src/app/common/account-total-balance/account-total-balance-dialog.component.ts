@@ -35,10 +35,9 @@ export class AccountTotalBalanceDialog implements OnInit, OnDestroy {
         this.updateAccountBalances(this.accountBalanceService.accountBalances);
         this.accountBalancesSubscription = this.accountBalanceService.accountBalancesSubject.subscribe(accountBalances => {
             this.zone.run(() => {
-              console.log('Dashboard: Account balances updated', accountBalances);
-              this.updateAccountBalances(accountBalances);
+                this.updateAccountBalances(accountBalances);
             });
-          });
+        });
     }
 
     ngOnDestroy() {

@@ -50,12 +50,10 @@ export class AccountDepositComponent implements OnInit, OnChanges {
       this.nutsPlatformService.getWalletAllowance(this.instrument, token).then(allowance => {
         console.log('Allowance for ', token, allowance, typeof allowance);
         if (allowance) {
-          console.log('Show deposit');
           this.showApprove = false;
           this.approveToken.next('');
           this.amountControl.enable();
         } else {
-          console.log('Show approve');
           this.showApprove = true;
           this.approveToken.next(this.selectedToken);
           this.amountControl.disable();
@@ -124,11 +122,10 @@ export class AccountDepositComponent implements OnInit, OnChanges {
           const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
           if (!receipt || !receipt.blockNumber) return;
 
-          console.log('Approve receipt', receipt);
           // Once the Approve transaction is successful, enables the button
           setTimeout(() => {
             this.nutsPlatformService.getWalletAllowance(this.instrument, this.selectedToken).then(allowance => {
-              console.log('Allowance for ', this.selectedToken, allowance, typeof allowance);
+              console.log('Allowance for', this.selectedToken, allowance);
               this.showApprove = false;
               this.approveToken.next('');
               this.amountControl.enable();

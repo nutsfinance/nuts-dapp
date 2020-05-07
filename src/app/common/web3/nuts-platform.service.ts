@@ -344,7 +344,6 @@ export class NutsPlatformService {
     const tokenContract = new this.web3.eth.Contract(ERC20, tokenAddress);
     const instrumentEscrowAddres = this.contractAddresses[this.currentNetwork].platform[instrument].instrumentEscrow;
     const allowance = await tokenContract.methods.allowance(this.currentAccount, instrumentEscrowAddres).call();
-    console.log('Allowance for instrument ' + instrument + ', token ' + token + ': ' + allowance);
     return Number(allowance);
   }
 
@@ -359,7 +358,6 @@ export class NutsPlatformService {
 
   public async retryTransaction(transactionHash: string) {
     const transaction = await this.web3.eth.getTransaction(transactionHash);
-    console.log(transaction);
     const retryTransaction = {
       from: transaction.from,
       to: transaction.to,
@@ -373,8 +371,6 @@ export class NutsPlatformService {
 
   public makeBatchRequest(calls) {
     let batch = new this.web3.BatchRequest();
-    console.log('Batch request', this.currentAccount);
-
     let promises = calls.map(call => {
       return new Promise((res, rej) => {
         let req = call.request({ from: this.currentAccount }, (err, data) => {

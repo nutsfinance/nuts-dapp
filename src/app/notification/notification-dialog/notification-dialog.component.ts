@@ -33,9 +33,7 @@ export class NotificationDialog implements OnInit, OnDestroy {
   }
 
   closeDialog() {
-    console.log('Closing');
     this.dialogRef.close();
-    console.log('Should close');
   }
 
   getEtherscanLink(transactionHash: string): string {

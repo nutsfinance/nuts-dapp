@@ -61,7 +61,6 @@ export class NotificationRowComponent implements OnInit, OnChanges {
   }
 
   onNotificationAction() {
-    console.log(this.notification);
     // Mark notification as READ
     this.notification.readStatus = NotificationReadStatus.READ;
     this.notificationService.updateNotification(this.notification);
