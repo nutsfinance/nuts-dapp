@@ -34,9 +34,6 @@ export class AccountService {
     });
     return tokenContract.methods.approve(instrumentEscrowAddress, APPROVE_AMOUNT).send({ from: this.nutsPlatformService.currentAccount })
       .on('transactionHash', (transactionHash) => {
-        console.log(transactionHash);
-        // this.nutsPlatformService.transactionSentSubject.next(transactionHash);
-
         // Records the transaction
         const depositTransaction = new TransactionModel(transactionHash, TransactionType.APPROVE, NotificationRole.MAKER,
           this.nutsPlatformService.currentAccount, this.nutsPlatformService.getInstrumentId(instrument), 0,
@@ -47,11 +44,14 @@ export class AccountService {
           }
         );
         this.notificationService.addTransaction(depositTransaction).subscribe(result => {
-          console.log(result);
           // Note: Transaction Sent event is not sent until the transaction is recored in notification server!
           this.nutsPlatformService.transactionSentSubject.next(transactionHash);
         });
-      });
+      })
+      .on('receipt', (receipt) => {
+        console.log('Approve receipt', receipt);
+        this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
+      });;
   }
 
   public depositETH(instrument: string, amount: number) {
@@ -70,11 +70,14 @@ export class AccountService {
           }
         );
         this.notificationService.addTransaction(depositTransaction).subscribe(result => {
-          console.log(result);
           // Note: Transaction Sent event is not sent until the transaction is recored in notification server!
           this.nutsPlatformService.transactionSentSubject.next(transactionHash);
         });
-      });
+      })
+      .on('receipt', (receipt) => {
+        console.log('Deposit ETH receipt', receipt);
+        this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
+      });;
   }
 
   public depositToken(instrument: string, token: string, amount: number) {
@@ -98,7 +101,11 @@ export class AccountService {
           // Note: Transaction Sent event is not sent until the transaction is recored in notification server!
           this.nutsPlatformService.transactionSentSubject.next(transactionHash);
         });
-      });
+      })
+      .on('receipt', (receipt) => {
+        console.log('Deposit token receipt', receipt);
+        this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
+      });;
   }
 
   public withdrawETH(instrument: string, amount: number) {
@@ -117,13 +124,12 @@ export class AccountService {
           }
         );
         this.notificationService.addTransaction(depositTransaction).subscribe(result => {
-          console.log(result);
           // Note: Transaction Sent event is not sent until the transaction is recored in notification server!
           this.nutsPlatformService.transactionSentSubject.next(transactionHash);
         });
       })
       .on('receipt', (receipt) => {
-        console.log(receipt);
+        console.log('Withdraw ETH receipt', receipt);
         this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
       });
   }
@@ -148,13 +154,12 @@ export class AccountService {
           }
         );
         this.notificationService.addTransaction(depositTransaction).subscribe(result => {
-          console.log(result);
           // Note: Transaction Sent event is not sent until the transaction is recored in notification server!
           this.nutsPlatformService.transactionSentSubject.next(transactionHash);
         });
       })
       .on('receipt', (receipt) => {
-        console.log(receipt);
+        console.log('Withdraw token receipt', receipt);
         this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
       });
   }

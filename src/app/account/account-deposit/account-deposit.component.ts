@@ -132,6 +132,7 @@ export class AccountDepositComponent implements OnInit, OnChanges {
               this.showApprove = false;
               this.approveToken.next('');
               this.amountControl.enable();
+              this.amountControl.markAsPristine();
             });
           }, 2000);
           this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);

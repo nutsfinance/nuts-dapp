@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject, BehaviorSubject, of } from 'rxjs';
+import * as isEqual from 'lodash.isequal';
 
 import { NutsPlatformService } from '../common/web3/nuts-platform.service';
 import { TransactionModel } from './transaction.model';
@@ -17,13 +18,12 @@ export class NotificationService {
   constructor(private nutsPlatformService: NutsPlatformService, private http: HttpClient) {
     this.nutsPlatformService.platformInitializedSubject.subscribe(initialized => {
       if (initialized) {
+        // Need to reload notifications each time there is a change to the network or account
         this.getAllNotifications();
-
         // Reload notifications when the network changes
         this.nutsPlatformService.currentNetworkSubject.subscribe(currentNetwork => {
           this.getAllNotifications();
         });
-
         // Reload notifications when the account changes
         this.nutsPlatformService.currentAccountSubject.subscribe(currentAddress => {
           this.getAllNotifications();
@@ -31,7 +31,7 @@ export class NotificationService {
 
         // Reload notifications each time a new transaction is sent to receive the TRANSACTION INITIATED notification
         this.nutsPlatformService.transactionSentSubject.subscribe(_ => {
-          this.getAllNotifications();
+          this.incrementalGetNotification();
         });
 
         // Incrementally read new notification each time a new receipt is received
@@ -46,7 +46,6 @@ export class NotificationService {
   }
 
   addTransaction(transaction: TransactionModel) {
-    console.log('Adding transaction', transaction);
     return this.http.post(`${this.nutsPlatformService.getApiServerHost()}/transactions`, transaction);
   }
 
@@ -121,7 +120,6 @@ export class NotificationService {
       if (!updated) {
         for (let i = 0; i < reloadedNotifications.length; i++) {
           if (reloadedNotifications[i].notificationId !== this.notifications[i].notificationId) {
-            console.log('Mismatch', i, reloadedNotifications[i].notificationId, this.notifications[i].notificationId);
             updated = true;
             break;
           }
@@ -135,17 +133,18 @@ export class NotificationService {
       // Check whether are any new unread notifications.
       for (let i = 0; i < reloadedNotifications.length; i++) {
         if (reloadedNotifications[i].readStatus === NotificationReadStatus.NEW) {
-          console.log('Current notifications', this.notifications);
-          console.log('Reloaded notifications', reloadedNotifications);
           console.log('New notification', reloadedNotifications[i]);
           this.newNotificationSubject.next(reloadedNotifications[i]);
           break;
         }
       }
 
-      // Updates the notification list
-      this.notifications = reloadedNotifications;
-      this.notificationUpdatedSubject.next(reloadedNotifications);
+      // Updates the notification list if there is a change
+      if (!isEqual(this.notifications, reloadedNotifications)) {
+        console.log('Notification list updated.');
+        this.notifications = reloadedNotifications;
+        this.notificationUpdatedSubject.next(reloadedNotifications);
+      }
     });
   }
 }

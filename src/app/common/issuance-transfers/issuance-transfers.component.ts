@@ -23,7 +23,6 @@ export class IssuanceTransfersComponent implements OnInit, OnChanges {
     if (this.issuance) {
       // Retrieve issuance transfers
       this.instrumentService.getIssuanceTransfers(this.instrument, this.issuance).then((transfers) => {
-        console.log('Transfers', transfers);
         this.transfers = transfers;
       });
     }

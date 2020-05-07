@@ -52,8 +52,6 @@ export class LendingPositionsComponent implements OnInit, OnDestroy {
   }
 
   updateLendingIssuances() {
-    console.log('Lending issuance updated', this.instrumentService.lendingIssuances.length);
-    console.log(this.instrumentService.lendingIssuances.map(issuance => issuance.issuanceId));
     this.zone.run(() => {
       const lendingIssuances = this.instrumentService.lendingIssuances
         .filter(issuance => {
@@ -72,8 +70,7 @@ export class LendingPositionsComponent implements OnInit, OnDestroy {
         .sort((l1, l2) => {
           return l1.state === l2.state ? l2.creationTimestamp - l1.creationTimestamp : l1.state - l2.state;
         });
-      console.log('Filtered issuance', lendingIssuances.length);
-      console.log(lendingIssuances.map(issuance => issuance.issuanceId));
+      console.log('Filtered issuance', lendingIssuances.map(issuance => issuance.issuanceId));
       this.issuances = lendingIssuances;
     });
   }

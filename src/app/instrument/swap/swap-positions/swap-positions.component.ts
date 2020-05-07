@@ -52,8 +52,6 @@ export class SwapPositionsComponent implements OnInit {
   }
 
   updateSwapIssuances() {
-    console.log('Swap issuance updated', this.instrumentService.swapIssuances.length);
-    console.log(this.instrumentService.swapIssuances.map(issuance => issuance.issuanceId));
     this.zone.run(() => {
       const swapIssuances = this.instrumentService.swapIssuances
         .filter(issuance => {
@@ -72,8 +70,7 @@ export class SwapPositionsComponent implements OnInit {
         .sort((l1, l2) => {
           return l1.state === l2.state ? l2.creationTimestamp - l1.creationTimestamp : l1.state - l2.state;
         });
-      console.log('Filtered issuance', swapIssuances.length);
-      console.log(swapIssuances.map(issuance => issuance.issuanceId));
+      console.log('Filtered issuance', swapIssuances.map(issuance => issuance.issuanceId));
       this.issuances = swapIssuances;
     });
   }}

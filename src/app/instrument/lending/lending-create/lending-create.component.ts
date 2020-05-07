@@ -82,12 +82,10 @@ export class LendingCreateComponent implements OnInit {
     this.priceOracleSercvice.getConvertedValue(collateralTokenAddress, principalTokenAddress,
       this.principalValue * this.createFormGroup.value['collateralRatio'], 100).then(value => {
         this.collateralValue = value;
-        console.log(value);
       });
   }
 
   async createLendingIssuance() {
-    console.log(this.createFormGroup);
     if (!this.createFormGroup.valid) {
       return;
     }
@@ -146,7 +144,6 @@ export class LendingCreateComponent implements OnInit {
     const interestRate = Math.floor(this.createFormGroup.value['interestRate'] * 10000);
     const tenor = this.createFormGroup.value['tenor'];
     const interest = principalAmount * interestRate * tenor / 10000000000;
-    console.log(principalAmount, interestRate, tenor, interest);
 
     this.interestValue = interest;
   }
