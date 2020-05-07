@@ -31,7 +31,6 @@ export class AccountTotalBalanceComponent implements OnInit, OnDestroy {
       this.instrumentBalance = this.getInstrumentAccountBalance();
     });
     this.accountBalancesSubscription = this.accountBalanceService.accountBalancesSubject.subscribe(accountBalances => {
-      console.log('Account total balance: Account balances updated', accountBalances);
       this.zone.run(() => this.instrumentBalance = this.getInstrumentAccountBalance());
     });
   }
@@ -69,7 +68,6 @@ export class AccountTotalBalanceComponent implements OnInit, OnDestroy {
       totalValue += await this.priceOracleService.getConvertedValue(targetTokenAddress, assetAddress, userBalance[this.instrument][assets[i]]);
     }
 
-    console.log('Total value', totalValue);
     return totalValue;
   }
 }

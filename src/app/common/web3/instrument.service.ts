@@ -45,7 +45,6 @@ export class InstrumentService {
     // We don't initialize the lending issuance list until the platform is initialized!
     this.nutsPlatformService.platformInitializedSubject.subscribe(initialized => {
       if (initialized) {
-        console.log('Instrument initialized', initialized);
         this.reloadIssuances();
         this.nutsPlatformService.currentNetworkSubject.subscribe(currentNetwork => {
           console.log('Network changed. Reloading lending issuances.', currentNetwork);
@@ -250,7 +249,6 @@ export class InstrumentService {
   }
 
   public async reloadLendingIssuances(times: number = 1, interval: number = 1000) {
-    console.log('Reloading lending issuances.');
     let count = 0;
     let intervalId = setInterval(() => {
       this.http.get<LendingIssuanceModel[]>(`${this.nutsPlatformService.getApiServerHost()}/query/issuance`, {
@@ -281,8 +279,6 @@ export class InstrumentService {
   }
 
   public async reloadBorrowingIssuances(times: number = 1, interval: number = 1000) {
-    console.log('Reloading borrowing issuances.');
-  
     let count = 0;
     let intervalId = setInterval(() => {
       this.http.get<BorrowingIssuanceModel[]>(`${this.nutsPlatformService.getApiServerHost()}/query/issuance`, {
@@ -313,8 +309,6 @@ export class InstrumentService {
   }
 
   public async reloadSwapIssuances(times: number = 1, interval: number = 1000) {
-    console.log('Reloading swap issuances.');
-
     let count = 0;
     let intervalId = setInterval(() => {
       this.http.get<SwapIssuanceModel[]>(`${this.nutsPlatformService.getApiServerHost()}/query/issuance`, {
@@ -345,7 +339,6 @@ export class InstrumentService {
   }
 
   public async reloadIssuances() {
-    console.log('Reloading all issuances...');
     await this.reloadLendingIssuances();
     await this.reloadBorrowingIssuances();
     await this.reloadSwapIssuances();

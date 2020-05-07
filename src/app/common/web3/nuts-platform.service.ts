@@ -412,7 +412,6 @@ export class NutsPlatformService {
   }
 
   private async bootstrapWeb3() {
-    console.log('Bootstrap web3');
     const { ethereum } = window;
     if (!ethereum) {
       alert('Please install MetaMask.');
@@ -438,7 +437,6 @@ export class NutsPlatformService {
       return;
     }
 
-    console.log(ethereum);
     // Important! Let other components handle the initialization result first!
     this.handleAccountChanged([ethereum.selectedAddress]);
     this.handleNetworkChanged(ethereum.networkVersion);
@@ -467,7 +465,6 @@ export class NutsPlatformService {
   }
 
   private handleAccountChanged(accounts) {
-    console.log('Account changed', accounts);
     // If we have received the account addresses
     if (accounts && accounts.length > 0) {
       if (accounts[0] != this.currentAccount) {
@@ -482,7 +479,6 @@ export class NutsPlatformService {
   }
 
   private handleNetworkChanged(network) {
-    console.log('Network changed', network);
     if (network !== this.currentNetwork) {
       this.currentNetwork = network;
       this.currentNetworkSubject.next(network);

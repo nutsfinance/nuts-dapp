@@ -31,7 +31,6 @@ export class WalletBalanceComponent implements OnInit, OnDestroy, OnChanges {
     });
     // When user balance changes, it's likely that user balance is changed as well!
     this.accountBalancesSubscription = this.userBalanceService.accountBalancesSubject.subscribe(accountBalances => {
-      console.log('Wallet balance: Account balances updated', accountBalances);
       this.updateTokenBalance();
     });
   }

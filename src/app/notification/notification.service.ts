@@ -17,7 +17,6 @@ export class NotificationService {
   constructor(private nutsPlatformService: NutsPlatformService, private http: HttpClient) {
     this.nutsPlatformService.platformInitializedSubject.subscribe(initialized => {
       if (initialized) {
-        console.log('Notification initialized', initialized);
         this.getAllNotifications();
 
         // Reload notifications when the network changes
@@ -32,13 +31,11 @@ export class NotificationService {
 
         // Reload notifications each time a new transaction is sent to receive the TRANSACTION INITIATED notification
         this.nutsPlatformService.transactionSentSubject.subscribe(_ => {
-          console.log('Transaction sent. Reloading notifications....');
           this.getAllNotifications();
         });
 
         // Incrementally read new notification each time a new receipt is received
         this.nutsPlatformService.transactionConfirmedSubject.subscribe(_ => {
-          console.log('Receipt received. Reloading notifications....');
           setTimeout(this.incrementalGetNotification.bind(this), 1000);
         });
 
@@ -54,13 +51,12 @@ export class NotificationService {
   }
 
   getAllNotifications() {
-    console.log('Get all notifications');
     if (!this.nutsPlatformService.isFullyLoaded()) {
       console.log('Either network or account is not loaded.');
       return;
     }
     this.getNotificationFromBackend().subscribe(notifications => {
-      console.log('Notifications updated', notifications);
+      console.log('Notifications updated', notifications.length);
       const sortedNotifications = notifications.sort((n1, n2) => n2.creationTimestamp - n1.creationTimestamp);
       this.notifications = sortedNotifications;
       this.notificationUpdatedSubject.next(sortedNotifications);
@@ -117,7 +113,7 @@ export class NotificationService {
   private incrementalGetNotification() {
     this.getNotificationFromBackend().subscribe(notifications => {
       const reloadedNotifications = notifications.sort((n1, n2) => n2.creationTimestamp - n1.creationTimestamp);
-      console.log('Reloaded notifications', reloadedNotifications);
+      console.log('Reloaded notifications', reloadedNotifications.length);
 
       // Checks whether the notification list is updated.
       // If notifications length is not the same, it must be updated.

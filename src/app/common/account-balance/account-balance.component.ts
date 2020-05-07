@@ -21,7 +21,6 @@ export class AccountBalanceComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit() {
     this.accountBalancesSubscription = this.accountBalanceService.accountBalancesSubject.subscribe(accountBalances => {
       this.zone.run(() => {
-        console.log('Account balance: Account balances updated', accountBalances);
         this.tokenBalance = this.accountBalanceService.getTokenBalance(this.instrument, this.selectedToken);
         this.balanceUpdated.next(this.tokenBalance);
       });

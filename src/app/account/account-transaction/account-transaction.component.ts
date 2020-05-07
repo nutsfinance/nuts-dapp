@@ -39,7 +39,6 @@ export class AccountTransactionComponent implements OnInit, OnDestroy {
 
     // If the user balance is updated, it's likely that a new transaction has confirmed!
     this.accountBalancesSubscription = this.accountBalanceService.accountBalancesSubject.subscribe(userBalance => {
-      console.log('Wallet transaction: Account balance updated', userBalance);
       this.updateAccountTransactions();
     });
   }
@@ -56,12 +55,10 @@ export class AccountTransactionComponent implements OnInit, OnDestroy {
 
   private async updateAccountTransactions() {
     const transactions = await this.accountService.getAccountTransactions(this.instrument);
-    console.log('Transactions', transactions);
     this.zone.run(() => {
       this.accountTransactions = transactions.sort((t1, t2) => t2.blockNumber - t1.blockNumber);;
       this.dataSource = new MatTableDataSource<AccountTransaction>(this.accountTransactions);
       this.dataSource.paginator = this.paginator;
     });
-    console.log('Account transactions updated', transactions);
   }
 }

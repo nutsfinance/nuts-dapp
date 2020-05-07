@@ -29,7 +29,6 @@ export class AccountBalanceService {
   constructor(private nutsPlatformService: NutsPlatformService, private http: HttpClient) {
     // We don't initialize the user balance until the platform is initialized!
     this.nutsPlatformService.platformInitializedSubject.subscribe(initialized => {
-      console.log('User balance initialized', initialized);
       if (initialized) {
         this.getUserBalanceFromBackend();
         this.nutsPlatformService.currentNetworkSubject.subscribe(_ => {
@@ -45,7 +44,6 @@ export class AccountBalanceService {
   }
 
   getUserBalanceFromBackend(times: number = 1, interval: number = 1000) {
-    console.log('Reloading user balance from backend');
     const currentAddress = this.nutsPlatformService.currentAccount;
     if (!this.nutsPlatformService.isFullyLoaded()) {
       console.log('Either network or account is not loaded.');
@@ -55,7 +53,6 @@ export class AccountBalanceService {
     let count = 0;
     let intervalId = setInterval(() => {
       this.http.get<AccountBalances>(`${this.nutsPlatformService.getApiServerHost()}/query/balance`, {params: {user: currentAddress}}).subscribe(accountBalances => {
-        console.log('Account balance from backend', accountBalances);
         this.accountBalances = accountBalances;
         this.accountBalancesSubject.next(accountBalances);
       });
