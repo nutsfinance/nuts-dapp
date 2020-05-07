@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NutsPlatformService } from './nuts-platform.service';
 
-const PriceOracle = require('./abi/PriceOracleInterface.json');
-
 @Injectable({
   providedIn: 'root'
 })
@@ -20,15 +18,7 @@ export class PriceOracleService {
     if (this.prices[priceKey] && !refresh) {
       return Promise.resolve(this.prices[priceKey]);
     }
-
-    if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork]) {
-      alert(`Network ${this.nutsPlatformService.currentNetwork} is not supported!`);
-    }
-    if (!this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform.priceOracle) {
-      alert(`Price Oracle is not supported!`);
-    }
-    const priceOracleAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform.priceOracle;
-    const priceOracleContract = new this.nutsPlatformService.web3.eth.Contract(PriceOracle, priceOracleAddress);
+    const priceOracleContract = this.nutsPlatformService.getPriceOracle();
     const result = await priceOracleContract.methods.getRate(baseTokenAddress, quoteTokenAddress).call({from: this.nutsPlatformService.currentAccount});
     this.prices[priceKey] = result;
 

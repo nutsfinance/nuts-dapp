@@ -3,6 +3,7 @@ import { Subject } from 'rxjs';
 
 const Web3 = require('web3');
 const ERC20 = require('./abi/IERC20.json');
+const PriceOracle = require('./abi/PriceOracleInterface.json');
 
 export const FSP_NAME = 'acoconut.nuts.finance';
 export const ETH_ADDRESS = '0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF';
@@ -210,7 +211,7 @@ export class NutsPlatformService {
   }
 
   public getApiServerHost(): string {
-    switch(this.currentNetwork) {
+    switch (this.currentNetwork) {
       case '1':
         return 'https://main-api.dapp.finance';
       case '4':
@@ -303,23 +304,14 @@ export class NutsPlatformService {
   }
 
   public getInstrumentId(instrument: string): number {
-    if (!this.contractAddresses[this.currentNetwork]) {
-      alert(`Network ${this.currentNetwork} is not supported!`);
-      return;
-    }
-    if (!this.contractAddresses[this.currentNetwork].platform[instrument]) {
-      alert(`Instrument ${instrument} is not supported!`);
-      return;
+    if (!this.contractAddresses[this.currentNetwork] || !this.contractAddresses[this.currentNetwork].platform[instrument]) {
+      return 0;
     }
 
     return this.contractAddresses[this.currentNetwork].platform[instrument].instrumentId;
   }
 
   public getInstrumentById(instrumentId: number): string {
-    if (!this.contractAddresses[this.currentNetwork]) {
-      alert(`Network ${this.currentNetwork} is not supported!`);
-      return;
-    }
     for (let instrument in this.contractAddresses[this.currentNetwork].platform) {
       if (this.contractAddresses[this.currentNetwork].platform[instrument].instrumentId === instrumentId) {
         return instrument;
@@ -405,6 +397,11 @@ export class NutsPlatformService {
     this.handleAccountChanged([ethereum.selectedAddress]);
     this.handleNetworkChanged(Number(ethereum.networkVersion));
     this.platformInitializedSubject.next(true);
+  }
+
+  public getPriceOracle() {
+    const priceOracleAddress = this.contractAddresses[this.currentNetwork].platform.priceOracle;
+    return new this.web3.eth.Contract(PriceOracle, priceOracleAddress);
   }
 
   private async bootstrapWeb3() {
