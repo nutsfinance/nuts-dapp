@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import * as isEqual from 'lodash.isequal';
+
 import { LendingData, BorrowingData, SwapData } from 'nuts-platform-protobuf-messages';
 import { NutsPlatformService, ETH_ADDRESS, CUSTODIAN_ADDRESS } from './nuts-platform.service';
 import { NotificationService } from 'src/app/notification/notification.service';
@@ -67,7 +69,6 @@ export class InstrumentService {
       Math.floor(collateralRatio * COLLATERAL_RATIO_DECIMALS), tenor, Math.floor(interestRate * INTEREST_RATE_DECIMALS));
     const message = lendingMakerParametersModel.toMessage().serializeBinary();
     const lendingMakerParameters = '0x' + Buffer.from(message).toString('hex');
-    console.log(lendingMakerParameters);
 
     const instrumentManagerAddress = this.nutsPlatformService.getInstrumentManager('lending');
     const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
@@ -110,7 +111,6 @@ export class InstrumentService {
       Math.floor(collateralRatio * COLLATERAL_RATIO_DECIMALS), tenor, Math.floor(interestRate * INTEREST_RATE_DECIMALS));
     const message = borrowingMakerParametersModel.toMessage().serializeBinary();
     const borrowingMakerParameters = '0x' + Buffer.from(message).toString('hex');
-    console.log(borrowingMakerParameters);
 
     const instrumentManagerAddress = this.nutsPlatformService.getInstrumentManager('borrowing');
     const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
@@ -150,7 +150,6 @@ export class InstrumentService {
     const swapMakerParametersModel = new SwapMakerParameterModel(inputTokenAddress, outputTokenAddress, inputAmount, outputAmount, duration);
     const message = swapMakerParametersModel.toMessage().serializeBinary();
     const swapMakerParameters = '0x' + Buffer.from(message).toString('hex');
-    console.log(swapMakerParameters);
 
     const instrumentManagerAddress = this.nutsPlatformService.getInstrumentManager('swap');
     const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
@@ -256,8 +255,13 @@ export class InstrumentService {
           instrument_id: `${this.nutsPlatformService.getInstrumentId('lending')}`,
         }
       }).subscribe(lendingIssuances => {
-        this.lendingIssuances = lendingIssuances.map(issuance => LendingIssuanceModel.fromObject(issuance));
-        this.lendingIssuancesUpdatedSubject.next(this.lendingIssuances);
+        const reloadedIssuance = lendingIssuances.map(issuance => LendingIssuanceModel.fromObject(issuance));
+        // Update the lending issuance list if there is a change
+        if (!isEqual(reloadedIssuance, this.lendingIssuances)) {
+          console.log('Lending issuance list updated.');
+          this.lendingIssuances = reloadedIssuance;
+          this.lendingIssuancesUpdatedSubject.next(this.lendingIssuances);
+        }
       });
       if (++count >= times) clearInterval(intervalId);
     }, interval);
@@ -286,8 +290,13 @@ export class InstrumentService {
           instrument_id: `${this.nutsPlatformService.getInstrumentId('borrowing')}`,
         }
       }).subscribe(borrowingIssuances => {
-        this.borrowingIssuances = borrowingIssuances.map(issuance => BorrowingIssuanceModel.fromObject(issuance));
-        this.borrowingIssuancesUpdatedSubject.next(this.borrowingIssuances);
+        // Update the borrowing issuance list if there is a change
+        const reloadedIssuance = borrowingIssuances.map(issuance => BorrowingIssuanceModel.fromObject(issuance));
+        if (!isEqual(reloadedIssuance, this.borrowingIssuances)) {
+          console.log('Borrowing issuance list updated.');
+          this.borrowingIssuances = reloadedIssuance;
+          this.borrowingIssuancesUpdatedSubject.next(this.borrowingIssuances);
+        }
       });
       if (++count >= times) clearInterval(intervalId);
     }, interval);
@@ -316,8 +325,13 @@ export class InstrumentService {
           instrument_id: `${this.nutsPlatformService.getInstrumentId('swap')}`,
         }
       }).subscribe(swapIssuances => {
-        this.swapIssuances = swapIssuances.map(issuance => SwapIssuanceModel.fromObject(issuance));
-        this.swapIssuancesUpdatedSubject.next(this.swapIssuances);
+        // Update swap issuance list if there is any change
+        const reloadedIssuance = swapIssuances.map(issuance => SwapIssuanceModel.fromObject(issuance));
+        if (!isEqual(reloadedIssuance, this.swapIssuances)) {
+          console.log('Swap issuance list updated.');
+          this.swapIssuances = reloadedIssuance;
+          this.swapIssuancesUpdatedSubject.next(this.swapIssuances);
+        }
       });
       if (++count >= times) clearInterval(intervalId);
     }, interval);

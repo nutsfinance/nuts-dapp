@@ -52,8 +52,6 @@ export class BorrowingPositionsComponent implements OnInit {
   }
 
   updateBorrowingIssuances() {
-    console.log('Borrowing issuance updated', this.instrumentService.borrowingIssuances.length);
-    console.log(this.instrumentService.borrowingIssuances.map(issuance => issuance.issuanceId));
     this.zone.run(() => {
       const borrowingIssuances = this.instrumentService.borrowingIssuances
         .filter(issuance => {
@@ -72,8 +70,7 @@ export class BorrowingPositionsComponent implements OnInit {
         .sort((l1, l2) => {
           return l1.state === l2.state ? l2.creationTimestamp - l1.creationTimestamp : l1.state - l2.state;
         });
-      console.log('Filtered issuance', borrowingIssuances.length);
-      console.log(borrowingIssuances.map(issuance => issuance.issuanceId));
+      console.log('Filtered issuances', borrowingIssuances.map(issuance => issuance.issuanceId));
       this.issuances = borrowingIssuances;
     });
   }

@@ -49,7 +49,6 @@ export class SwapCreateComponent implements OnInit {
   }
 
   onTenorChange(tenorChange: MatButtonToggleChange) {
-    console.log(tenorChange.value);
     this.createFormGroup.patchValue({ 'duration': tenorChange.value });
   }
 
@@ -68,7 +67,6 @@ export class SwapCreateComponent implements OnInit {
   }
 
   async createSwapIssuance() {
-    console.log(this.createFormGroup);
     if (!this.createFormGroup.valid) {
       return;
     }

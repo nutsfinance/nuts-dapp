@@ -39,14 +39,11 @@ export class LendingEngageComponent implements OnInit, OnDestroy {
 
   updateLendingIssuances() {
     this.zone.run(() => {
-      console.log('Engage: Lending issuance updated', this.instrumentService.lendingIssuances.length);
-      console.log(this.instrumentService.lendingIssuances.map(issuance => issuance.issuanceId));
       const lendingIssuances = this.instrumentService.lendingIssuances.filter(issuance => {
         // Issuances in Engageable state and the maker is not current user.
         return issuance.state === 2 && issuance.makerAddress.toLowerCase() !== this.currentAccount.toLowerCase();
       });
-      console.log('Engage: Filtered issuance', lendingIssuances.length);
-      console.log(lendingIssuances.map(issuance => issuance.issuanceId));
+      console.log('Engage: Filtered issuance', lendingIssuances.map(issuance => issuance.issuanceId));
       this.issuances = lendingIssuances;
     });
   }

@@ -85,7 +85,6 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
     this.collateralTokenBalance = balance;
     setTimeout(() => {
       this.collateralSufficient = this.collateralTokenBalance >= this.collateralValue;
-      console.log(this.collateralTokenBalance, this.collateralValue, this.collateralSufficient);
     });
   }
 
@@ -116,7 +115,6 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
 
   repayIssuance() {
     const totalAmount = this.issuance.lendingAmount + this.issuance.lendingAmount * this.issuance.interestAmount;
-    console.log('Total amount: ' + totalAmount + ", balance: " + this.lendingTokenBalance);
     if (this.lendingTokenBalance < totalAmount) return;
     this.instrumentService.repayIssuance('lending', this.issuanceId, this.issuance.lendingTokenAddress, totalAmount)
       .on('transactionHash', transactionHash => {
@@ -169,7 +167,7 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
       const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
       if (!receipt || !receipt.blockNumber) return;
 
-      console.log('Create receipt', receipt);
+      console.log('Lending receipt', receipt);
       // New lending issuance created. Need to refresh the lending issuance list.
       this.instrumentService.reloadLendingIssuances(5, 3000);
       // New lending issuance created. Need to update the principal balance as well.
@@ -182,7 +180,6 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
   private updateLendingIssuance() {
     this.zone.run(() => {
       this.issuance = this.instrumentService.getLendingIssuanceById(this.issuanceId);
-      console.log('Issuance detail', this.issuance);
       if (this.issuance) {
         // Compute issuance token values
         this.lendingToken = this.nutsPlatformService.getTokenNameByAddress(this.issuance.lendingTokenAddress);

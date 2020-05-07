@@ -125,7 +125,7 @@ export class SwapDetailComponent implements OnInit {
       const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
       if (!receipt || !receipt.blockNumber) return;
 
-      console.log('Create receipt', receipt);
+      console.log('Swap receipt', receipt);
       // New swap issuance created. Need to refresh the swap issuance list.
       this.instrumentService.reloadSwapIssuances(5, 3000);
       // New swap issuance created. Need to update the input token balance as well.
@@ -139,7 +139,6 @@ export class SwapDetailComponent implements OnInit {
     this.zone.run(() => {
       this.issuance = this.instrumentService.getSwapIssuanceById(this.issuanceId);
       if (this.issuance) {
-        console.log('Issuance detail', this.issuance);
         // Compute issuance token values
         this.inputToken = this.nutsPlatformService.getTokenNameByAddress(this.issuance.inputTokenAddress);
         this.outputToken = this.nutsPlatformService.getTokenNameByAddress(this.issuance.outputTokenAddress);
@@ -150,11 +149,11 @@ export class SwapDetailComponent implements OnInit {
   }
 
   private updateConvertedValue() {
-        // Compute converted issuance token values
-        const targetTokenAddress = this.currencyService.currency === 'USD' ? USD_ADDRESS : CNY_ADDRESS;
-        this.convertedInputValue = this.priceOracleService.getConvertedValue(targetTokenAddress,
-          this.issuance.inputTokenAddress, this.issuance.inputAmount);
-        this.convertedOutputValue = this.priceOracleService.getConvertedValue(targetTokenAddress,
-          this.issuance.outputTokenAddress, this.issuance.outputAmount);
+    // Compute converted issuance token values
+    const targetTokenAddress = this.currencyService.currency === 'USD' ? USD_ADDRESS : CNY_ADDRESS;
+    this.convertedInputValue = this.priceOracleService.getConvertedValue(targetTokenAddress,
+      this.issuance.inputTokenAddress, this.issuance.inputAmount);
+    this.convertedOutputValue = this.priceOracleService.getConvertedValue(targetTokenAddress,
+      this.issuance.outputTokenAddress, this.issuance.outputAmount);
   }
 }

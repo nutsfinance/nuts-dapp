@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { NutsPlatformService } from './nuts-platform.service';
 import { Subject } from 'rxjs';
+import * as isEqual from 'lodash.isequal';
 
 const InstrumentEscrow = require('./abi/InstrumentEscrowInterface.json');
 
@@ -52,9 +53,14 @@ export class AccountBalanceService {
 
     let count = 0;
     let intervalId = setInterval(() => {
+      console.log('Loading account balance. Time = ' + count);
       this.http.get<AccountBalances>(`${this.nutsPlatformService.getApiServerHost()}/query/balance`, {params: {user: currentAddress}}).subscribe(accountBalances => {
-        this.accountBalances = accountBalances;
-        this.accountBalancesSubject.next(accountBalances);
+        // Update user balance if there is any change
+        if (!isEqual(accountBalances, this.accountBalances)) {
+          console.log('Account balanes updated.');
+          this.accountBalances = accountBalances;
+          this.accountBalancesSubject.next(accountBalances);        
+        }
       });
       if (++count >= times) clearInterval(intervalId);
     }, interval); 
