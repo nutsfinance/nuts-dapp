@@ -35,7 +35,7 @@
                 </div>
                 <div *ngIf="createFormGroup.controls['inputAmount'].errors.insufficientBalance">
                   Insufficient balance.
-                  <a class="deposit-button" routerLink="/instrument/swap/account" [queryParams]="{ token: inputToken}">Deposit</a>
+                  <a class="deposit-button" routerLink="../account" [queryParams]="{ token: inputToken}">Deposit</a>
                 </div>
                 <div *ngIf="createFormGroup.controls['inputAmount'].errors.nonPositiveAmount">
                   The amount must be positive number.

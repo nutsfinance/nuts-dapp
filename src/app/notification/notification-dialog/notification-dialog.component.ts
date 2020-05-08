@@ -1,12 +1,13 @@
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 import { NotificationModel, NotificationReadStatus, NotificationCategory } from '../notification.model';
 import { NutsPlatformService } from 'src/app/common/web3/nuts-platform.service';
 import { TransactionType } from '../transaction.model';
 import { NotificationService } from '../notification.service';
-import { Subscription } from 'rxjs';
+import { LanguageService } from '../../common/web3/language.service';
 
 @Component({
   selector: 'app-notification-dialog',
@@ -16,9 +17,8 @@ import { Subscription } from 'rxjs';
 export class NotificationDialog implements OnInit, OnDestroy {
   private notificationSubscription: Subscription;
 
-  constructor(public dialogRef: MatDialogRef<NotificationDialog>,
-    @Inject(MAT_DIALOG_DATA) public notifications: NotificationModel[],
-    private nutsPlatformService: NutsPlatformService, private router: Router,
+  constructor(public dialogRef: MatDialogRef<NotificationDialog>, @Inject(MAT_DIALOG_DATA) public notifications: NotificationModel[],
+    private languageService: LanguageService, private nutsPlatformService: NutsPlatformService, private router: Router,
     private notificationService: NotificationService) { }
 
   ngOnInit() {
@@ -65,6 +65,7 @@ export class NotificationDialog implements OnInit, OnDestroy {
     notification.readStatus = NotificationReadStatus.READ;
     this.notificationService.updateNotification(notification);
     const instrumentName = this.nutsPlatformService.getInstrumentById(+notification.instrumentId);
+    const language = this.languageService.language;
     
     // Note:
     // 1. Transaction initiated has no action
@@ -72,13 +73,13 @@ export class NotificationDialog implements OnInit, OnDestroy {
     // 3. Transaction confirmed should redirect to issuance page
     // 4. All others should redirect to issuance page
     if (notification.category !== NotificationCategory.TRANSACTION_CONFIRMED) {
-      this.router.navigate([`/instrument/${instrumentName}/positions/${notification.issuanceId}`]);
+      this.router.navigate([`/${language}/instrument/${instrumentName}/positions/${notification.issuanceId}`]);
       return;
     }
 
     switch (notification.type) {
       case TransactionType.APPROVE:
-        this.router.navigate([`/instrument/${instrumentName}/account`], {
+        this.router.navigate([`/${language}/instrument/${instrumentName}/account`], {
           queryParams: {
             panel: 'deposit',
             token: notification.metadata['tokenName'],
@@ -87,13 +88,13 @@ export class NotificationDialog implements OnInit, OnDestroy {
         break;
       case TransactionType.DEPOSIT:
       case TransactionType.WITHDRAW:
-        this.router.navigate([`/instrument/${instrumentName}/account`], { queryParams: { panel: 'transactions' } });
+        this.router.navigate([`/${language}/instrument/${instrumentName}/account`], { queryParams: { panel: 'transactions' } });
         break;
       case TransactionType.CREATE_OFFER:
-        this.router.navigate([`/instrument/${instrumentName}/positions`], { queryParams: { tab: 'engageable' } });
+        this.router.navigate([`/${language}/instrument/${instrumentName}/positions`], { queryParams: { tab: 'engageable' } });
         break;
       case TransactionType.CANCEL_OFFER:
-        this.router.navigate([`/instrument/${instrumentName}/positions`], { queryParams: { tab: 'inactive' } });
+        this.router.navigate([`/${language}/instrument/${instrumentName}/positions`], { queryParams: { tab: 'inactive' } });
         break;
     }
   }

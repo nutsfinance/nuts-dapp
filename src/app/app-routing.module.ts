@@ -23,10 +23,10 @@ import { SwapDetailComponent } from './instrument/swap/swap-detail/swap-detail.c
 
 
 const routes: Routes = [
-  { path: '', redirectTo: 'instrument', pathMatch: 'full' },
-  { path: 'notification', component: NotificationComponent },
+  { path: ':lang', redirectTo: ':lang/instrument', pathMatch: 'full' },
+  { path: ':lang/notification', component: NotificationComponent },
   {
-    path: 'instrument',
+    path: ':lang/instrument',
     component: InstrumentComponent,
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -66,6 +66,7 @@ const routes: Routes = [
       },
     ]
   },
+  { path: '**', redirectTo: 'en/instrument' }
 ];
 
 @NgModule({

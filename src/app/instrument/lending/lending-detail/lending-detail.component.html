@@ -154,7 +154,7 @@
                 </app-account-balance>
                 {{collateralToken}}
             </span> available)
-            <a class="deposit-button" [routerLink]="['/instrument/lending/account']" [queryParams]="{ token: collateralToken}">Deposit</a>
+            <a class="deposit-button" routerLink="../../account" [queryParams]="{ token: collateralToken}">Deposit</a>
         </div>
     </div>
 
@@ -177,7 +177,7 @@
                 </app-account-balance>
                 {{lendingToken}}
             </span> available)
-            <a class="deposit-button" [routerLink]="['/instrument/lending/account']" [queryParams]="{ token: lendingToken}">Deposit</a>
+            <a class="deposit-button" routerLink="../../account" [queryParams]="{ token: lendingToken}">Deposit</a>
         </div>
     </div>
 

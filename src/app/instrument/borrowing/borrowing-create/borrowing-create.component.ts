@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, NgZone } from '@angular/core';
 import { FormControl, FormGroup, NgForm } from '@angular/forms';
 import { MatButtonToggleChange, MatDialog } from '@angular/material';
+
 import { NutsPlatformService } from '../../../common/web3/nuts-platform.service';
 import { PriceOracleService } from '../../../common/web3/price-oracle.service';
 import { InstrumentService } from 'src/app/common/web3/instrument.service';

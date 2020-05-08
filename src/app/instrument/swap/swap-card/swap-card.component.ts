@@ -1,9 +1,11 @@
 import { Component, Input, OnInit, OnDestroy, NgZone } from '@angular/core';
+
 import { SwapIssuanceModel } from 'src/app/common/model/swap-issuance.model';
 import { NutsPlatformService, USD_ADDRESS, CNY_ADDRESS } from 'src/app/common/web3/nuts-platform.service';
 import { PriceOracleService } from 'src/app/common/web3/price-oracle.service';
 import { Subscription } from 'rxjs';
 import { CurrencyService } from 'src/app/common/currency-select/currency.service';
+import { LanguageService } from '../../../common/web3/language.service';
 
 @Component({
   selector: 'app-swap-card',
@@ -25,7 +27,7 @@ export class SwapCardComponent implements OnInit, OnDestroy {
   private currencyUpdatedSubscription: Subscription;
 
   constructor(public nutsPlatformService: NutsPlatformService, private priceOracleService: PriceOracleService,
-              public currencyService: CurrencyService, private zone: NgZone) { }
+    public languageService: LanguageService, public currencyService: CurrencyService, private zone: NgZone) { }
 
   ngOnInit() {
     this.currentAccount = this.nutsPlatformService.currentAccount;

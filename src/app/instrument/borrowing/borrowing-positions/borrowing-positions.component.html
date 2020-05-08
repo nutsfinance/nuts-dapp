@@ -17,21 +17,21 @@
     <div *ngSwitchCase="'engaged'">
       <p class="no-issuance-title">There are currently no engaged positions.</p>
       <p class="no-issuance-content">Click here to view available offers.</p>
-      <button mat-raised-button color="primary" class="no-issuance-button" routerLink="/instrument/borrowing/engage">Engage</button>
+      <button mat-raised-button color="primary" class="no-issuance-button" routerLink="../engage">Engage</button>
     </div>
   
     <div *ngSwitchCase="'engageable'">
       <p class="no-issuance-title">There are currently no engageable positions.</p>
       <p class="no-issuance-content">Click here to create an offer.</p>
-      <button mat-raised-button color="primary" class="no-issuance-button" routerLink="/instrument/borrowing/create">Create</button>
+      <button mat-raised-button color="primary" class="no-issuance-button" routerLink="../create">Create</button>
     </div>
   
     <div *ngSwitchCase="'all'">
       <p class="no-issuance-title">There are currently no positions.</p>
       <p class="no-issuance-content">You can create or engage an offer.</p>
-      <button mat-raised-button color="primary" class="no-issuance-button" routerLink="/instrument/borrowing/engage">Engage</button>
+      <button mat-raised-button color="primary" class="no-issuance-button" routerLink="../engage">Engage</button>
       <br/>
-      <button mat-raised-button color="primary" class="no-issuance-button" routerLink="/instrument/borrowing/create">Create</button>
+      <button mat-raised-button color="primary" class="no-issuance-button" routerLink="../create">Create</button>
     </div>
   </div>
   

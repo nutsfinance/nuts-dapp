@@ -156,7 +156,7 @@
         </div>
         <div class="error-content" *ngIf="collateralTokenBalance < collateralValue">
           Insufficient balance.
-          <a class="deposit-button" routerLink="/instrument/borrowing/account" [queryParams]="{ token: collateralToken}">Deposit</a>
+          <a class="deposit-button" routerLink="../account" [queryParams]="{ token: collateralToken}">Deposit</a>
         </div>
       </div>
     </div>

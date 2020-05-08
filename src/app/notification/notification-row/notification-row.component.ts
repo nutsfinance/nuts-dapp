@@ -6,6 +6,7 @@ import { MatCheckboxChange } from '@angular/material';
 import { NutsPlatformService } from 'src/app/common/web3/nuts-platform.service';
 import { TransactionType } from '../transaction.model';
 import { NotificationService } from '../notification.service';
+import { LanguageService } from '../../common/web3/language.service';
 
 @Component({
   selector: 'app-notification-row',
@@ -19,7 +20,7 @@ export class NotificationRowComponent implements OnInit, OnChanges {
   public notificationStatus: NotificationReadStatus;
 
   constructor(private nutsPlatformService: NutsPlatformService, private notificationService: NotificationService,
-    private router: Router) { }
+    private languageService: LanguageService, private router: Router) { }
 
   ngOnInit() {
     this.notificationStatus = this.notification.readStatus;
@@ -65,6 +66,7 @@ export class NotificationRowComponent implements OnInit, OnChanges {
     this.notification.readStatus = NotificationReadStatus.READ;
     this.notificationService.updateNotification(this.notification);
     const instrumentName = this.nutsPlatformService.getInstrumentById(+this.notification.instrumentId);
+    const language = this.languageService.language;
 
     // Note:
     // 1. Transaction initiated has no action
@@ -72,13 +74,13 @@ export class NotificationRowComponent implements OnInit, OnChanges {
     // 3. Transaction confirmed should redirect to issuance page
     // 4. All others should redirect to issuance page
     if (this.notification.category !== NotificationCategory.TRANSACTION_CONFIRMED) {
-      this.router.navigate([`/instrument/${instrumentName}/positions/${this.notification.issuanceId}`]);
+      this.router.navigate([`/${language}/instrument/${instrumentName}/positions/${this.notification.issuanceId}`]);
       return;
     }
 
     switch (this.notification.type) {
       case TransactionType.APPROVE:
-        this.router.navigate([`/instrument/${instrumentName}/account`], {
+        this.router.navigate([`/${language}/instrument/${instrumentName}/account`], {
           queryParams: {
             panel: 'deposit',
             token: this.notification.metadata['tokenName'],
@@ -87,19 +89,19 @@ export class NotificationRowComponent implements OnInit, OnChanges {
         break;
       case TransactionType.DEPOSIT:
       case TransactionType.WITHDRAW:
-        this.router.navigate([`/instrument/${instrumentName}/account`], { queryParams: { panel: 'transactions' } });
+        this.router.navigate([`/${language}/instrument/${instrumentName}/account`], { queryParams: { panel: 'transactions' } });
         break;
       case TransactionType.CREATE_OFFER:
-        this.router.navigate([`/instrument/${instrumentName}/positions`], { queryParams: { tab: 'engageable' } });
+        this.router.navigate([`/${language}/instrument/${instrumentName}/positions`], { queryParams: { tab: 'engageable' } });
         break;
       case TransactionType.CANCEL_OFFER:
-        this.router.navigate([`/instrument/${instrumentName}/positions`], { queryParams: { tab: 'inactive' } });
+        this.router.navigate([`/${language}/instrument/${instrumentName}/positions`], { queryParams: { tab: 'inactive' } });
         break;
       case TransactionType.ACCEPT_OFFER:
-        this.router.navigate([`/instrument/${instrumentName}/positions`], { queryParams: { tab: 'engaged' } });
+        this.router.navigate([`/${language}/instrument/${instrumentName}/positions`], { queryParams: { tab: 'engaged' } });
         break;
       case TransactionType.PAY_OFFER:
-        this.router.navigate([`/instrument/${instrumentName}/positions`]);
+        this.router.navigate([`/${language}/instrument/${instrumentName}/positions`]);
         break;
     }
   }

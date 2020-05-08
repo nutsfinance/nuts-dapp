@@ -163,7 +163,7 @@
                 </app-account-balance>
                 {{borrowingToken}}
             </span> available)
-            <a class="deposit-button" [routerLink]="['/instrument/borrowing/account']" [queryParams]="{ token: borrowingToken}">Deposit</a>
+            <a class="deposit-button" routerLink="../../account" [queryParams]="{ token: borrowingToken}">Deposit</a>
         </div>
     </div>
 

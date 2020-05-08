@@ -109,7 +109,7 @@
                 </app-account-balance>
                 {{outputToken}}
             </span> available)
-            <a class="deposit-button" [routerLink]="['/instrument/swap/account']" [queryParams]="{ token: outputToken}">Deposit</a>
+            <a class="deposit-button" routerLink="../../account" [queryParams]="{ token: outputToken}">Deposit</a>
         </div>
     </div>
 

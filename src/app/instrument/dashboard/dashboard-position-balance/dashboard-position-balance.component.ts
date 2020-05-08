@@ -7,6 +7,7 @@ import { CurrencyService } from 'src/app/common/currency-select/currency.service
 import { SupplementalLineItemModel, SupplementalLineItemType, SupplementalLineItemState } from 'src/app/common/model/supplemental-line-item.model';
 import { InstrumentService } from 'src/app/common/web3/instrument.service';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { LanguageService } from '../../../common/web3/language.service';
 
 interface Position {
   instrument: string,
@@ -41,7 +42,8 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
   private currencySubscription: Subscription;
 
   constructor(private nutsPlatformService: NutsPlatformService, private instrumentService: InstrumentService,
-    private priceOracleService: PriceOracleService, public currencyService: CurrencyService, private zone: NgZone) { }
+    private priceOracleService: PriceOracleService, public currencyService: CurrencyService,
+    private languageService: LanguageService, private zone: NgZone) { }
 
   ngOnInit() {
     this.updatePositions();

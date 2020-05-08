@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="f65253954b66e929a8b4d5ecaf61f9129f8cec64" datatype="html">
+        <source>Dashboard</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/instrument.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="bd1d7c5f0559a64441ae19b21999d5d309ac62b8" datatype="html">
+        <source>Instruments</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/instrument.component.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="f2c5688f273db06ac1d74353468b588d1cbbd508" datatype="html">
+        <source>Lending</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/instrument.component.html</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="92b0d1798f7b07bca1d5434578d111e1a1763a37" datatype="html">
+        <source>Borrowing</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/instrument.component.html</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1206727eea0df987e04297276543a1b1a0e65414" datatype="html">
+        <source>Swap</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/instrument.component.html</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="fe46ccaae902ce974e2441abe752399288298619" datatype="html">
+        <source>Language</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/instrument.component.html</context>
+          <context context-type="linenumber">47</context>
+        </context-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
