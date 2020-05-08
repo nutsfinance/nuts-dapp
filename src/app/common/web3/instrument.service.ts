@@ -15,8 +15,6 @@ import { BorrowingIssuanceModel } from '../model/borrowing-issuance.model';
 import { SwapMakerParameterModel } from '../model/swap-maker-parameter.model';
 import { SwapIssuanceModel } from '../model/swap-issuance.model';
 
-const InstrumentManager = require('./abi/InstrumentManagerInterface.json');
-
 const INTEREST_RATE_DECIMALS = 10000;
 const COLLATERAL_RATIO_DECIMALS = 100;
 
@@ -70,8 +68,7 @@ export class InstrumentService {
     const message = lendingMakerParametersModel.toMessage().serializeBinary();
     const lendingMakerParameters = '0x' + Buffer.from(message).toString('hex');
 
-    const instrumentManagerAddress = this.nutsPlatformService.getInstrumentManager('lending');
-    const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
+    const instrumentManagerContract = this.nutsPlatformService.getInstrumentManagerContract('lending');
     return instrumentManagerContract.methods.createIssuance(lendingMakerParameters).send({ from: this.nutsPlatformService.currentAccount, gas: 6721975 })
       .on('transactionHash', (transactionHash) => {
         // Records the transaction
@@ -112,8 +109,7 @@ export class InstrumentService {
     const message = borrowingMakerParametersModel.toMessage().serializeBinary();
     const borrowingMakerParameters = '0x' + Buffer.from(message).toString('hex');
 
-    const instrumentManagerAddress = this.nutsPlatformService.getInstrumentManager('borrowing');
-    const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
+    const instrumentManagerContract = this.nutsPlatformService.getInstrumentManagerContract('borrowing');
     return instrumentManagerContract.methods.createIssuance(borrowingMakerParameters).send({ from: this.nutsPlatformService.currentAccount, gas: 6721975 })
       .on('transactionHash', (transactionHash) => {
         // Records the transaction
@@ -147,8 +143,7 @@ export class InstrumentService {
     const message = swapMakerParametersModel.toMessage().serializeBinary();
     const swapMakerParameters = '0x' + Buffer.from(message).toString('hex');
 
-    const instrumentManagerAddress = this.nutsPlatformService.getInstrumentManager('swap');
-    const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
+    const instrumentManagerContract = this.nutsPlatformService.getInstrumentManagerContract('swap');
     return instrumentManagerContract.methods.createIssuance(swapMakerParameters).send({ from: this.nutsPlatformService.currentAccount, gas: 6721975 })
       .on('transactionHash', (transactionHash) => {
         // Records the transaction
@@ -172,8 +167,7 @@ export class InstrumentService {
   }
 
   public engageIssuance(instrument: string, issuanceId: number) {
-    const instrumentManagerAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument].instrumentManager;
-    const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
+    const instrumentManagerContract = this.nutsPlatformService.getInstrumentManagerContract(instrument);
     return instrumentManagerContract.methods.engageIssuance(issuanceId, this.nutsPlatformService.web3.utils.fromAscii("")).send({ from: this.nutsPlatformService.currentAccount, gas: 6721975 })
       .on('transactionHash', (transactionHash) => {
         // Records the transaction
@@ -187,9 +181,7 @@ export class InstrumentService {
   }
 
   public repayIssuance(instrument: string, issuanceId: number, tokenAddress: string, amount: number) {
-
-    const instrumentManagerAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument].instrumentManager;
-    const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
+    const instrumentManagerContract = this.nutsPlatformService.getInstrumentManagerContract(instrument);
     const totalAmount = tokenAddress.toLowerCase() === ETH_ADDRESS.toLowerCase() ? this.nutsPlatformService.web3.utils.toWei(`${amount}`, 'ether') : amount;
 
     // return instrumentManagerContract.methods.depositToIssuance(issuanceId, tokenAddress, totalAmount).send({ from: this.nutsPlatformService.currentAccount, gas: 6721975 })
@@ -213,9 +205,7 @@ export class InstrumentService {
   }
 
   public cancelIssuance(instrument: string, issuanceId: number) {
-
-    const instrumentManagerAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument].instrumentManager;
-    const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
+    const instrumentManagerContract = this.nutsPlatformService.getInstrumentManagerContract(instrument);
     return instrumentManagerContract.methods.notifyCustomEvent(issuanceId, this.nutsPlatformService.web3.utils.fromAscii("cancel_issuance"),
       this.nutsPlatformService.web3.utils.fromAscii("")).send({ from: this.nutsPlatformService.currentAccount, gas: 6721975 })
       .on('transactionHash', (transactionHash) => {
@@ -353,8 +343,7 @@ export class InstrumentService {
   }
 
   public async getIssuanceTransfers(instrument: string, issuance: IssuanceModel): Promise<IssuanceTransfer[]> {
-    const instrumentManagerAddress = this.nutsPlatformService.contractAddresses[this.nutsPlatformService.currentNetwork].platform[instrument].instrumentManager;
-    const instrumentManagerContract = new this.nutsPlatformService.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
+    const instrumentManagerContract = this.nutsPlatformService.getInstrumentManagerContract(instrument);
     const tokenTransferEvents = await instrumentManagerContract.getPastEvents('TokenTransferred', { fromBlock: 0, toBlock: 'latest' });
     const transactions: IssuanceTransfer[] = [];
     tokenTransferEvents.forEach((event) => {

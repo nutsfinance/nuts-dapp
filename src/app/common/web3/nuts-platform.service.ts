@@ -4,6 +4,8 @@ import { Subject } from 'rxjs';
 const Web3 = require('web3');
 const ERC20 = require('./abi/IERC20.json');
 const PriceOracle = require('./abi/PriceOracleInterface.json');
+const InstrumentEscrow = require('./abi/InstrumentEscrowInterface.json');
+const InstrumentManager = require('./abi/InstrumentManagerInterface.json');
 
 export const FSP_NAME = 'acoconut.nuts.finance';
 export const ETH_ADDRESS = '0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF';
@@ -283,7 +285,7 @@ export class NutsPlatformService {
     }
   }
 
-  public getInstrumentManager(instrument: string): string {
+  public getInstrumentManagerAddress(instrument: string): string {
     return this.contractAddresses[this.currentNetwork].platform[instrument].instrumentManager;
   }
 
@@ -325,9 +327,7 @@ export class NutsPlatformService {
     if (token === 'ETH') {
       return await this.web3.eth.getBalance(this.currentAccount);
     } else {
-      const tokenAddress = this.contractAddresses[this.currentNetwork].tokens[token];
-      const tokenContract = new this.web3.eth.Contract(ERC20, tokenAddress);
-      return tokenContract.methods.balanceOf(this.currentAccount).call();
+      return this.getERC20Contract(token).methods.balanceOf(this.currentAccount).call();
     }
   }
 
@@ -399,9 +399,24 @@ export class NutsPlatformService {
     this.platformInitializedSubject.next(true);
   }
 
-  public getPriceOracle() {
+  public getPriceOracleContract() {
     const priceOracleAddress = this.contractAddresses[this.currentNetwork].platform.priceOracle;
     return new this.web3.eth.Contract(PriceOracle, priceOracleAddress);
+  }
+
+  public getInstrumentEscrowContract(instrument: string) {
+    const instrumentEscrowAddress = this.contractAddresses[this.currentNetwork].platform[instrument].instrumentEscrow;
+    return new this.web3.eth.Contract(InstrumentEscrow, instrumentEscrowAddress);
+  }
+
+  public getERC20Contract(tokenName: string) {
+    const tokenAddress = this.contractAddresses[this.currentNetwork].tokens[tokenName];
+    return new this.web3.eth.Contract(ERC20, tokenAddress);
+  }
+
+  public getInstrumentManagerContract(instrument: string) {
+    const instrumentManagerAddress = this.getInstrumentManagerAddress(instrument);
+    return new this.web3.eth.Contract(InstrumentManager, instrumentManagerAddress);
   }
 
   private async bootstrapWeb3() {

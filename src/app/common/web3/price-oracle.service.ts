@@ -18,7 +18,7 @@ export class PriceOracleService {
     if (this.prices[priceKey] && !refresh) {
       return Promise.resolve(this.prices[priceKey]);
     }
-    const priceOracleContract = this.nutsPlatformService.getPriceOracle();
+    const priceOracleContract = this.nutsPlatformService.getPriceOracleContract();
     const result = await priceOracleContract.methods.getRate(baseTokenAddress, quoteTokenAddress).call({from: this.nutsPlatformService.currentAccount});
     this.prices[priceKey] = result;
 
