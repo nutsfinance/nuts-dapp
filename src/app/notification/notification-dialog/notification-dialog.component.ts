@@ -18,7 +18,7 @@ export class NotificationDialog implements OnInit, OnDestroy {
   private notificationSubscription: Subscription;
 
   constructor(public dialogRef: MatDialogRef<NotificationDialog>, @Inject(MAT_DIALOG_DATA) public notifications: NotificationModel[],
-    private languageService: LanguageService, private nutsPlatformService: NutsPlatformService, private router: Router,
+    public languageService: LanguageService, private nutsPlatformService: NutsPlatformService, private router: Router,
     private notificationService: NotificationService) { }
 
   ngOnInit() {

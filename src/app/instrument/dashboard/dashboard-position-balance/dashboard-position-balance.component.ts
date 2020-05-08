@@ -43,7 +43,7 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
 
   constructor(private nutsPlatformService: NutsPlatformService, private instrumentService: InstrumentService,
     private priceOracleService: PriceOracleService, public currencyService: CurrencyService,
-    private languageService: LanguageService, private zone: NgZone) { }
+    public languageService: LanguageService, private zone: NgZone) { }
 
   ngOnInit() {
     this.updatePositions();
