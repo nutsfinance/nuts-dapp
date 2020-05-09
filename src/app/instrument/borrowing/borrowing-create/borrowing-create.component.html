@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-xs-6">
         <span class="input-label">
-          Principal
+          <span i18n>Principal</span>
           <button mat-icon-button class="tooltip-button" type="button"
               #principalTooltip="matTooltip"
               (click)="principalTooltip.toggle()"
@@ -14,7 +14,7 @@
         </span>
       </div>
       <div class="col-xs-6 form-reset">
-        <span class="reset-button" (click)="resetForm()">Reset</span>
+        <span class="reset-button" (click)="resetForm()" i18n>Reset</span>
       </div>
     </div>
 
@@ -31,13 +31,13 @@
     <div class="row">
       <div class="col-xs-12">
         <div class="error-content" *ngIf="shouldShowErrorMessage('principalAmount')">
-          <div *ngIf="createFormGroup.controls['principalAmount'].errors.required">
+          <div *ngIf="createFormGroup.controls['principalAmount'].errors.required" i18n>
             Please enter amount.
           </div>
-          <div *ngIf="createFormGroup.controls['principalAmount'].errors.nonPositiveAmount">
+          <div *ngIf="createFormGroup.controls['principalAmount'].errors.nonPositiveAmount" i18n>
             The amount must be positive number.
           </div>
-          <div *ngIf="createFormGroup.controls['principalAmount'].errors.nonIntegerAmount">
+          <div *ngIf="createFormGroup.controls['principalAmount'].errors.nonIntegerAmount" i18n>
             The amount must be integer.
           </div>
         </div>
@@ -47,7 +47,7 @@
     <div class="row">
       <div class="col-xs-12">
         <span class="input-label">
-          Tenor
+          <span i18n>Tenor</span>
           <button mat-icon-button class="tooltip-button" type="button"
               #tenorTooltip="matTooltip"
               (click)="tenorTooltip.toggle()"
@@ -72,7 +72,7 @@
 
     <div class="row">
       <div class="col-xs-12">
-        <span class="alternative-content" *ngIf="!showAlternativeTenor" (click)="showAlternativeTenor = true">
+        <span class="alternative-content" *ngIf="!showAlternativeTenor" (click)="showAlternativeTenor = true" i18n>
           Enter a different amount.
         </span>
         <mat-form-field appearance="outline" class="amount-input" *ngIf="showAlternativeTenor">
@@ -84,7 +84,7 @@
     <div class="row">
       <div class="col-xs-12">
         <div class="error-content" *ngIf="shouldShowErrorMessage('tenor')">
-          <div *ngIf="createFormGroup.controls['tenor'].errors">
+          <div *ngIf="createFormGroup.controls['tenor'].errors" i18n>
             Please enter a number between 2-90 days.
           </div>
         </div>
@@ -94,7 +94,7 @@
     <div class="row">
       <div class="col-xs-12">
         <span class="input-label">
-          Collateral
+          <span i18n>Collateral</span>
           <button mat-icon-button class="tooltip-button" type="button"
               #collateralTooltip="matTooltip"
               (click)="collateralTooltip.toggle()"
@@ -122,7 +122,7 @@
 
     <div class="row">
       <div class="col-xs-12">
-        <span class="alternative-content" *ngIf="!showAlternativeColleral" (click)="showAlternativeColleral = true">
+        <span class="alternative-content" *ngIf="!showAlternativeColleral" (click)="showAlternativeColleral = true" i18n>
           Enter a different amount.
         </span>
         <mat-form-field appearance="outline" class="amount-input" *ngIf="showAlternativeColleral">
@@ -135,7 +135,7 @@
     <div class="row">
       <div class="col-xs-12">
         <div class="error-content" *ngIf="shouldShowErrorMessage('collateralRatio')">
-          <div *ngIf="createFormGroup.controls['collateralRatio'].errors">
+          <div *ngIf="createFormGroup.controls['collateralRatio'].errors" i18n>
             Please enter a number between 50% - 200%.
           </div>
         </div>
@@ -144,19 +144,19 @@
 
     <div class="row">
       <div class="col-xs-12">
-        <span class="balance-content">
+        <span class="balance-content" i18n>
           Projected collateral cost: {{ collateralValue | tokenValue:collateralToken | number: '1.0-4' }} {{collateralToken}}
         </span>
         <div class="balance-content">
-          Borrowing A/C Balance:
+          <span i18n>Borrowing A/C Balance:</span>
           <app-account-balance [instrument]="'borrowing'" [selectedToken]="collateralToken"
             (balanceUpdated)="collateralTokenBalance = $event">
           </app-account-balance>
           {{collateralToken}}
         </div>
         <div class="error-content" *ngIf="collateralTokenBalance < collateralValue">
-          Insufficient balance.
-          <a class="deposit-button" routerLink="../account" [queryParams]="{ token: collateralToken}">Deposit</a>
+          <span i18n>Insufficient balance.</span>
+          <a class="deposit-button" routerLink="../account" [queryParams]="{ token: collateralToken}" i18n>Deposit</a>
         </div>
       </div>
     </div>
@@ -164,7 +164,7 @@
     <div class="row">
       <div class="col-xs-12">
         <span class="input-label">
-          Interest
+          <span i18n>Interest</span>
           <button mat-icon-button class="tooltip-button" type="button"
               #interestTooltip="matTooltip"
               (click)="interestTooltip.toggle()"
@@ -184,7 +184,7 @@
           <mat-button-toggle value="0.030">0.030</mat-button-toggle>
           <mat-button-toggle value="0.040">0.040</mat-button-toggle>
         </mat-button-toggle-group>
-        <span class="hint-content">
+        <span class="hint-content" i18n>
           % per day
         </span>
       </div>
@@ -192,7 +192,7 @@
 
     <div class="row">
       <div class="col-xs-12">
-        <span class="alternative-content" *ngIf="!showAlternativeInterest" (click)="showAlternativeInterest = true">
+        <span class="alternative-content" *ngIf="!showAlternativeInterest" (click)="showAlternativeInterest = true" i18n>
           Enter a different amount.
         </span>
         <mat-form-field appearance="outline" class="amount-input" *ngIf="showAlternativeInterest">
@@ -205,7 +205,7 @@
     <div class="row">
       <div class="col-xs-12">
         <div class="error-content" *ngIf="shouldShowErrorMessage('interestRate')">
-          <div *ngIf="createFormGroup.controls['interestRate'].errors">
+          <div *ngIf="createFormGroup.controls['interestRate'].errors" i18n>
             Please enter a number between 0.010% ~ 5.000%.
           </div>
         </div>
@@ -215,7 +215,7 @@
     <div class="row">
       <div class="col-xs-12">
         <span class="balance-content">
-          Projected interest cost: {{interestValue}} {{principalToken}}
+          <span i18n>Projected interest cost:</span> {{interestValue}} {{principalToken}}
         </span>
       </div>
     </div>
@@ -224,7 +224,7 @@
       <div class="col-xs-12">
         <div class="create-button-wrapper">
           <button mat-raised-button color="primary"
-            [ngClass]="{'create-button': true, 'valid': createFormGroup.valid && collateralTokenBalance >= collateralValue}">Create</button>
+            [ngClass]="{'create-button': true, 'valid': createFormGroup.valid && collateralTokenBalance >= collateralValue}" i18n>Create</button>
         </div>
       </div>
     </div>
