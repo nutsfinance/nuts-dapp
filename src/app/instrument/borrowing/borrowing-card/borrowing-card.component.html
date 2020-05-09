@@ -1,6 +1,9 @@
 <mat-card class="issuance-card">
     <div class="issuance-title-container">
-        <div class="issuance-title">Issuance ID: {{nutsPlatformService.getInstrumentId("borrowing")}}-{{issuance.issuanceId}}</div>
+        <div class="issuance-title">
+            <span i18n>Issuance ID: </span>
+            {{nutsPlatformService.getInstrumentId("borrowing")}}-{{issuance.issuanceId}}
+        </div>
         <div [ngStyle]="{'color':issuance.state <= 3 ? '#8bc34a' : 'grey'}" class="issuance-state">
             <span style="font-size: 20px">&#8226;</span>
             {{issuance.getIssuanceState()}}
@@ -10,9 +13,11 @@
         <div class="subtitle-container" *ngIf="issuance.makerAddress.toLowerCase() == currentAccount.toLowerCase() || issuance.takerAddress.toLowerCase() == currentAccount.toLowerCase()">
             <div class="subtitle-icon">
                 <img src="../../../../assets/images/role.png" alt="role" class="subtitle-icon-image">
-                role
+                <span i18n>role</span>
             </div>
-            {{ issuance.makerAddress.toLowerCase() == currentAccount.toLowerCase() ? 'maker' : 'taker' }}
+            <span i18n>
+                {issuance.makerAddress.toLowerCase() == currentAccount.toLowerCase(), select, true{maker} false{taker}}
+            </span>
         </div>
 
         <div class="subtitle-container">
@@ -26,49 +31,49 @@
         <div class="subtitle-container">
             <div class="subtitle-icon">
                 <img src="../../../../assets/images/clock.png" alt="tenor" class="subtitle-icon-image">
-                tenor
+                <span i18n>tenor</span>
             </div>
-            {{issuance.tenorDays}} days
+            {{issuance.tenorDays}} <span i18n>days</span>
         </div>
     </div>
     <div class="issuance-card-content">
         <div class="content-container">
-            <div class="content-label">Principal</div>
-            <div class="content-sublabel">borrowing</div>
+            <div class="content-label" i18n>Principal</div>
+            <div class="content-sublabel" i18n>borrowing</div>
             <div class="content-value">{{issuance.borrowingAmount | tokenValue:borrowingToken | number: '1.0-4'}} {{borrowingToken}}</div>
         </div>
         <div class="content-container">
-            <div class="content-label">Collateral</div>
-            <div class="content-sublabel">required</div>
+            <div class="content-label" i18n>Collateral</div>
+            <div class="content-sublabel" i18n>required</div>
             <div class="content-value">{{ collateralValue | tokenValue:collateralToken | number: '1.0-4' }} {{collateralToken}}</div>
-            <div class="content-sublabel">ratio</div>
+            <div class="content-sublabel" i18n>ratio</div>
             <div class="content-value">{{ issuance.collateralRatio / 100 }} %</div>
         </div>
         <div class="content-container">
-            <div class="content-label">Interest</div>
-            <div class="content-sublabel">per day</div>
+            <div class="content-label" i18n>Interest</div>
+            <div class="content-sublabel" i18n>per day</div>
             <div class="content-value">{{ (issuance.borrowingAmount * issuance.interestRate / 1000000) | tokenValue:borrowingToken | number: '1.0-6' }} {{borrowingToken}}</div>
-            <div class="content-sublabel">total</div>
+            <div class="content-sublabel" i18n>total</div>
             <div class="content-value">{{ (issuance.borrowingAmount * issuance.interestRate * issuance.tenorDays / 1000000) | tokenValue:borrowingToken | number: '1.0-4' }} {{borrowingToken}}</div>
         </div>
     </div>
     <div class="issuance-card-more-content"  *ngIf="showMore">
-        <div class="more-content-title">{{currencyService.currency}} Value</div>
+        <div class="more-content-title" i18n>{{currencyService.currency}} Value</div>
         <div class="more-content-container">
             <div class="content-container">
-                <div class="content-sublabel">borrowing</div>
+                <div class="content-sublabel" i18n>borrowing</div>
                 <div class="content-value">{{currencyService.getCurrencySymbol()}} {{ convertedBorrowingValue | async | number: '1.0-4' }}</div>
             </div>
             <div class="content-container">
-                <div class="content-sublabel">required</div>
+                <div class="content-sublabel" i18n>required</div>
                 <div class="content-value">{{currencyService.getCurrencySymbol()}} {{ convertedCollateralValue | async | number: '1.0-2' }}</div>
-                <div class="content-sublabel">ratio</div>
+                <div class="content-sublabel" i18n>ratio</div>
                 <div class="content-value">{{ issuance.collateralRatio / 100 }} %</div>
             </div>
             <div class="content-container">
-                <div class="content-sublabel">per day</div>
+                <div class="content-sublabel" i18n>per day</div>
                 <div class="content-value">{{currencyService.getCurrencySymbol()}} {{ convertedPerDayInterestValue | async | number: '1.0-2' }}</div>
-                <div class="content-sublabel">total</div>
+                <div class="content-sublabel" i18n>total</div>
                 <div class="content-value">{{currencyService.getCurrencySymbol()}} {{ convertedTotalInterestValue | async | number: '1.0-2' }}</div>
             </div>
         </div>

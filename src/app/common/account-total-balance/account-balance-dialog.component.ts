@@ -21,7 +21,6 @@ export class AccountBalanceDialog implements OnInit, OnDestroy {
     private accountBalancesSubscription: Subscription;
     private currencySubscription: Subscription;
 
-    public instrumentName = '';
     public totalValue = 0;
     public assetValue = [0, 0, 0, 0, 0];
     public assetPercentage = [0, 0, 0, 0, 0];
@@ -70,7 +69,6 @@ export class AccountBalanceDialog implements OnInit, OnDestroy {
         private zone: NgZone) { }
 
     ngOnInit() {
-        this.instrumentName = this.data.instrument.charAt(0).toUpperCase() + this.data.instrument.substring(1);
         this.updateAccountBalances(this.accountBalanceService.accountBalances);
         this.accountBalancesSubscription = this.accountBalanceService.accountBalancesSubject.subscribe(accountBalances => {
             this.zone.run(() => {

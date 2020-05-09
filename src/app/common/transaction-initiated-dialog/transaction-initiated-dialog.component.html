@@ -1,51 +1,43 @@
 <div class="title-container">
     <img src="../../../../assets/images/transaction-initiated.png" class="title-image">
     <p class="title-content" [ngSwitch]="data.type">
-        <span *ngSwitchCase="'approve'">Approval Initiated</span>
-        <span *ngSwitchCase="'deposit'">Deposit Initiated</span>
-        <span *ngSwitchCase="'withdraw'">Withdrawal Initiated</span>
-        <span *ngSwitchCase="'create_issuance'">Offer Creation Initiated</span>
-        <span *ngSwitchCase="'engage_issuance'">Engagement Initiated</span>
-        <span *ngSwitchCase="'cancel_issuance'">Cancellation Initiated</span>
-        <span *ngSwitchCase="'repay_issuance'">Repayment Initiated</span>
+        <span *ngSwitchCase="'approve'" i18n>Approval Initiated</span>
+        <span *ngSwitchCase="'deposit'" i18n>Deposit Initiated</span>
+        <span *ngSwitchCase="'withdraw'" i18n>Withdrawal Initiated</span>
+        <span *ngSwitchCase="'create_issuance'" i18n>Offer Creation Initiated</span>
+        <span *ngSwitchCase="'engage_issuance'" i18n>Engagement Initiated</span>
+        <span *ngSwitchCase="'cancel_issuance'" i18n>Cancellation Initiated</span>
+        <span *ngSwitchCase="'repay_issuance'" i18n>Repayment Initiated</span>
     </p>
   </div>
   <hr class="divider">
   <div mat-dialog-content class="content-container">
     <p class="content-text" [ngSwitch]="data.type">
         <span *ngSwitchCase="'approve'">
-            Approval request for <span style="color: blue">{{data.fspName}}</span> to withdraw and spend <span style="color: blue;">{{data.tokenName}}</span> has been initiated.
+            <span i18n>Approval request for</span> <span style="color: blue">{{data.fspName}}</span> <span i18n>to withdraw and spend</span> <span style="color: blue;">{{data.tokenName}}</span> <span i18n>has been initiated.</span>
         </span>
         <span *ngSwitchCase="'deposit'">
-            Your deposit request for <span style="color: blue;">{{data.tokenAmount | tokenValue:data.tokenName}} {{data.tokenName}}</span>  has been initiated.
+            <span i18n>Your deposit request for</span> <span style="color: blue;">{{data.tokenAmount | tokenValue:data.tokenName}} {{data.tokenName}}</span>  <span i18n>has been initiated.</span>
         </span>
         <span *ngSwitchCase="'withdraw'">
-            Your withdrawal request for <span style="color: blue;">{{data.tokenAmount | tokenValue:data.tokenName}} {{data.tokenName}}</span>  has been initiated.
+            <span i18n>Your withdrawal request for</span> <span style="color: blue;">{{data.tokenAmount | tokenValue:data.tokenName}} {{data.tokenName}}</span>  <span i18n>has been initiated.</span>
         </span>
         <span *ngSwitchCase="'create_issuance'">
-            Your {{data.instrument}} offer for <span style="color: blue;">{{data.tokenAmount | tokenValue:data.tokenName}} {{data.tokenName}}</span> has been initiated.
+            <span i18n>Your {data.instrument, select, lending{lending} borrowing{borrowing} swap{swap}} offer for</span> <span style="color: blue;">{{data.tokenAmount | tokenValue:data.tokenName}} {{data.tokenName}}</span> <span i18n>has been initiated.</span>
         </span>
         <span *ngSwitchCase="'engage_issuance'">
-            <span *ngIf="data.instrument == 'lending'">
-                Your loan request for <span style="color: blue;">{{data.tokenAmount | tokenValue:data.tokenName}} {{data.tokenName}}</span> has been initiated.
-            </span>
-            <span *ngIf="data.instrument == 'borrowing'">
-                Your lending request for <span style="color: blue;">{{data.tokenAmount | tokenValue:data.tokenName}} {{data.tokenName}}</span> has been initiated.
-            </span>
-            <span *ngIf="data.instrument == 'swap'">
-                Your swap request for <span style="color: blue;">{{data.tokenAmount | tokenValue:data.tokenName}} {{data.tokenName}}</span> has been initiated.
-            </span>
+            <span i18n>Your {data.instrument, select, lending{loan} borrowing{lending} swap{swap}} request for</span> <span style="color: blue;">{{data.tokenAmount | tokenValue:data.tokenName}} {{data.tokenName}}</span> <span i18n>has been initiated.</span>
         </span>
         <span *ngSwitchCase="'cancel_issuance'">
-            Your cancellation request for {{data.instrument}} offer <span style="color: blue;">{{data.issuanceId}}</span> has been initiated.
+            <span i18n>Your cancellation request for {data.instrument, select, lending{lending} borrowing{borrowing} swap{swap}} offer</span> <span style="color: blue;">{{data.issuanceId}}</span> <span i18n>has been initiated.</span>
         </span>
         <span *ngSwitchCase="'repay_issuance'">
-            Principal and interests repayment <span style="color: blue;">{{data.tokenAmount | tokenValue:data.tokenName}} {{data.tokenName}}</span> has been initiated.
+            <span i18n>Principal and interests repayment</span> <span style="color: blue;">{{data.tokenAmount | tokenValue:data.tokenName}} {{data.tokenName}}</span> <span i18n>has been initiated.</span>
         </span>
     </p>
   </div>
   <mat-dialog-actions class="action-container" align="center">
-    <button mat-stroked-button mat-dialog-close color="primary" cdkFocusInitial class="action-button">Close</button>
+    <button mat-stroked-button mat-dialog-close color="primary" cdkFocusInitial class="action-button" i18n>Close</button>
   </mat-dialog-actions>
   
   

@@ -1,13 +1,13 @@
 <mat-accordion>
 
-  <div class="deposit-warning" *ngIf="panel == 'deposit' && approveToken">
+  <div class="deposit-warning" *ngIf="panel == 'deposit' && approveToken" i18n>
     Please enable {{approveToken}} before deposit.
   </div>
   <mat-expansion-panel [expanded]="panel == 'deposit'" (afterExpand)="panel = 'deposit'">
     <mat-expansion-panel-header>
       <div class="panel-header-wrapper">
         <img src="../../../assets/images/vertical-lines.png" class="panel-vertical-line">
-        <span class="wallet-header">
+        <span class="wallet-header" i18n>
           Deposit
         </span>
       </div>
@@ -25,7 +25,7 @@
     <mat-expansion-panel-header>
       <div class="panel-header-wrapper">
         <img src="../../../assets/images/vertical-lines.png" class="panel-vertical-line">
-        <span class="wallet-header">Withdraw</span>
+        <span class="wallet-header" i18n>Withdraw</span>
       </div>
     </mat-expansion-panel-header>
 
@@ -37,7 +37,7 @@
     <mat-expansion-panel-header>
       <div class="panel-header-wrapper">
         <img src="../../../assets/images/vertical-lines.png" class="panel-vertical-line">
-        <span class="wallet-header">Transaction</span>
+        <span class="wallet-header" i18n>Transaction</span>
       </div>
     </mat-expansion-panel-header>
 

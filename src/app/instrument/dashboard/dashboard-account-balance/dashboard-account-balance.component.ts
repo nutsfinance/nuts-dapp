@@ -1,10 +1,12 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { MultiDataSet, Label } from 'ng2-charts';
+
 import { AccountBalanceService, AccountBalances } from 'src/app/common/web3/account-balance.service';
 import { Subscription } from 'rxjs';
 import { PriceOracleService } from 'src/app/common/web3/price-oracle.service';
 import { NutsPlatformService, USD_ADDRESS, CNY_ADDRESS } from 'src/app/common/web3/nuts-platform.service';
 import { CurrencyService } from 'src/app/common/currency-select/currency.service';
+import { LanguageService } from '../../../common/web3/language.service';
 
 @Component({
   selector: 'app-dashboard-account-balance',
@@ -38,7 +40,7 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
   public instrumentChartOptions = {
     title: {
       display: true,
-      text: 'Instruments Balance',
+      text: this.languageService.language == 'zh' ? '产品资产分布' : 'Instruments Balance',
     },
     legend: {
       position: 'bottom',
@@ -78,7 +80,7 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
   public assetChartOptions = {
     title: {
       display: true,
-      text: 'Asset Composition'
+      text: this.languageService.language == 'zh' ? '代币资产分布' : 'Asset Composition',
     },
     legend: {
       position: 'bottom',
@@ -104,7 +106,8 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
   private currencySubscription: Subscription;
 
   constructor(private accountBalanceService: AccountBalanceService, private priceOracleService: PriceOracleService,
-    private nutsPlatformService: NutsPlatformService, public currencyService: CurrencyService, private zone: NgZone) { }
+    private nutsPlatformService: NutsPlatformService, public currencyService: CurrencyService,
+    private languageService: LanguageService, private zone: NgZone) { }
 
   ngOnInit() {
     this.updateAccountBalances(this.accountBalanceService.accountBalances);

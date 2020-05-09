@@ -14,7 +14,6 @@ import { AccountTotalBalanceDialog } from './account-total-balance-dialog.compon
 })
 export class AccountTotalBalanceComponent implements OnInit, OnDestroy {
   @Input() instrument = '';
-  public instrumentName = '';
   public instrumentBalance: Promise<Number>;
 
   private accountBalancesSubscription: Subscription;
@@ -25,7 +24,6 @@ export class AccountTotalBalanceComponent implements OnInit, OnDestroy {
     private dialog: MatDialog) { }
 
   ngOnInit() {
-    this.instrumentName = this.instrument.charAt(0).toUpperCase() + this.instrument.substring(1);
     this.instrumentBalance = this.getInstrumentAccountBalance();
     this.currencySubscription = this.currencyService.currencyUpdatedSubject.subscribe(_ => {
       this.instrumentBalance = this.getInstrumentAccountBalance();

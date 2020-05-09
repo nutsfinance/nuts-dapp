@@ -2,6 +2,479 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
   <file source-language="en" datatype="plaintext" original="ng2.template">
     <body>
+      <trans-unit id="7bc1fd7a8745bd0705ad2b0afd460eb3596df97c" datatype="html">
+        <source>Wallet: </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/wallet-address/wallet-address.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2369cd7c3fe7c60e3e92ebe53b50efd601cf8311" datatype="html">
+        <source>
+    Please enable <x id="INTERPOLATION" equiv-text="{{approveToken}}"/> before deposit.
+  </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/account/account.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="62ae17b146e97f59fd6283c10f0a7ce7e35e3e2a" datatype="html">
+        <source>
+          Deposit
+        </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/account/account.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3b89c3f162961114eff2672607a5427e7ed8803b" datatype="html">
+        <source>Withdraw</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/account/account.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/account/account-withdraw/account-withdraw.component.html</context>
+          <context context-type="linenumber">48</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="b59ea65c89a5ae15b787d8318fdad9edd6fec243" datatype="html">
+        <source>Transaction</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/account/account.component.html</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="b7b22aa7bb952cd386daa986840f815b1ecd8230" datatype="html">
+        <source>Approval Initiated</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="c06b9cfea2f35761c248056e79a4b2e67765d981" datatype="html">
+        <source>Deposit Initiated</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="63b7308f439e8fe26da1699d035dcbee8add3286" datatype="html">
+        <source>Withdrawal Initiated</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="c2d8d3552926319d419e0e7b582f7ecfa053d34a" datatype="html">
+        <source>Offer Creation Initiated</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="fcd7b5afb63b2741e8ed6f96d0f91ccc19931c47" datatype="html">
+        <source>Engagement Initiated</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="adffefc6904701a344e6438b84a747d00de21624" datatype="html">
+        <source>Cancellation Initiated</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="b531421ba6a4e92dc4280d5003c8895f39aa021a" datatype="html">
+        <source>Repayment Initiated</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="173ef52416a64cd0501b4b77884ab82193f73395" datatype="html">
+        <source>Approval request for</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="bd0e9330a3f0f99181210a2a468fd8c6303a35b5" datatype="html">
+        <source>to withdraw and spend</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1d12ff02f7b950fbee08e0c4f1369bad4cb2f415" datatype="html">
+        <source>has been initiated.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ec5ca6b1c7a24aca8c29b4ec90533eeb0def9777" datatype="html">
+        <source>Your deposit request for</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8b1cf454cdb59f34cb2cd44fe6bdb12efe0fc658" datatype="html">
+        <source>Your withdrawal request for</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="62f79c6655d7c229044a2a7fd462a5a39f77022a" datatype="html">
+        <source>Your <x id="ICU" equiv-text="{data.instrument, select, lending {...} borrowing {...} swap {...}}"/> offer for</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9b5fd3c0a793e5aec9ea40b996b08381e16a6680" datatype="html">
+        <source>{VAR_SELECT, select, lending {lending} borrowing {borrowing} swap {swap} }</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5cd2ee84d05d6988bcdd919de31db2a027a7ceec" datatype="html">
+        <source>Your <x id="ICU" equiv-text="{data.instrument, select, lending {...} borrowing {...} swap {...}}"/> request for</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ee796ffec28de5e1f15db22503ae925d4789a11c" datatype="html">
+        <source>{VAR_SELECT, select, lending {loan} borrowing {lending} swap {swap} }</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4c8d275ba1c4565dbcf65f2b32374f1a54274e09" datatype="html">
+        <source>Your cancellation request for <x id="ICU" equiv-text="{data.instrument, select, lending {...} borrowing {...} swap {...}}"/> offer</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7c92f6791d8adabd56d072e1b529e16b1101bc04" datatype="html">
+        <source>Principal and interests repayment</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="f4e529ae5ffd73001d1ff4bbdeeb0a72e342e5c8" datatype="html">
+        <source>Close</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context>
+          <context context-type="linenumber">97</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="84ea0f5d36f1f26b1d8517d87ab18435314cc218" datatype="html">
+        <source>Please enter amount.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/account/account-deposit/account-deposit.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/account/account-withdraw/account-withdraw.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="234574a234d535b8d5778534026cd9c842642af4" datatype="html">
+        <source>Insufficient balance.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/account/account-deposit/account-deposit.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/account/account-withdraw/account-withdraw.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="bfde51a72d73d0e68228e3df70eab0f79f957969" datatype="html">
+        <source>The amount must be positive number.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/account/account-deposit/account-deposit.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/account/account-withdraw/account-withdraw.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="0807eedd7d8583f5bf5d85899e5cebb234de993e" datatype="html">
+        <source>The amount must be integer.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/account/account-deposit/account-deposit.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/account/account-withdraw/account-withdraw.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3909cf076f7126b7eb25dd3ec51367fa55a00c2f" datatype="html">
+        <source>Wallet Balance:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/account/account-deposit/account-deposit.component.html</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/account/account-withdraw/account-withdraw.component.html</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="cfc18f82c586d5deb1d3c44e085e845e93f34519" datatype="html">
+        <source><x id="ICU" equiv-text="{instrument, select, lending {...} borrowing {...} swap {...}}"/> A/C Balance:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/account/account-deposit/account-deposit.component.html</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/account/account-withdraw/account-withdraw.component.html</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/account-total-balance/account-total-balance.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="e2f663fec626aad4d88cd1b501f9c427d509c9e8" datatype="html">
+        <source>{VAR_SELECT, select, lending {Lending} borrowing {Borrowing} swap {Swap} }</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/account/account-deposit/account-deposit.component.html</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/account/account-withdraw/account-withdraw.component.html</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/account-total-balance/account-total-balance.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="0f6865e675bcf6574467ddf8f71191579323c81b" datatype="html">
+        <source> Date </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/account/account-transaction/account-transaction.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="01a32bb7e93373cbc305329319efc67c0bd85226" datatype="html">
+        <source> Action </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/account/account-transaction/account-transaction.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="bb60d279d1b544ae80de6c89297fd454f93844e8" datatype="html">
+        <source> Amount </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/account/account-transaction/account-transaction.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context>
+          <context context-type="linenumber">84</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="a825188842145b0d86cb9fc50a3152013e30aee8" datatype="html">
+        <source>There is currently no transaction history.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/account/account-transaction/account-transaction.component.html</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="0e5b7cb3c0ca8d1a1d93b316343efbccdfed1332" datatype="html">
+        <source>Click here to create a deposit.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/account/account-transaction/account-transaction.component.html</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="cf06fa6d688bcb358f749f49f5f73deeb4be2a9c" datatype="html">
+        <source>Deposit</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/account/account-transaction/account-transaction.component.html</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="e595d29a3a88967a8a08aa3c79588e91ff3efc60" datatype="html">
+        <source>
+        You are currently connected to the Rinkeby Network.
+    </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/network-toolbar/network-toolbar.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5c7cc693cfa37989c4b1330c830246dfdc9c7113" datatype="html">
+        <source>
+        You are currently connected to the Kovan Network.
+    </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/network-toolbar/network-toolbar.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="a79f0bf4aadda9f0d29a77ec272b83758302a0a9" datatype="html">
+        <source>
+        You are connected to an unsupported network(<x id="INTERPOLATION" equiv-text="{{network}}"/>).
+    </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/network-toolbar/network-toolbar.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="58eae516dd7b65064f25aefbeb4852da898e6c82" datatype="html">
+        <source>You&apos;re offline.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/network-toolbar/network-toolbar.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="942bed2e331ca61ea6ad17109327bf391aa12f7f" datatype="html">
+        <source>Connect Metamask wallet.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/network-toolbar/network-toolbar.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1cb0c1f40f7ef8d62da2ccdccfdd2b7cdd18d2b9" datatype="html">
+        <source>USD</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/currency-select/currency-select-sheet.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="fb170f72915fbf84b2b6aee2d47502b591e3294c" datatype="html">
+        <source>CNY</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/currency-select/currency-select-sheet.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="248ffe8270f5c960463d8014fbdc4a9966c87abe" datatype="html">
+        <source>Account Balance</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/dashboard/dashboard-account-balance/dashboard-account-balance.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="540c47c4a05a58e297605f91898d3cf80454c70f" datatype="html">
+        <source>Position Balance</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="af93b737f9a0f41249960613fbc5fcf8b7b52056" datatype="html">
+        <source> <x id="ICU" equiv-text="{activePositions.length, plural, =0 {...} =1 {...} other {...}}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4962374f7b3475a991f11073fe0f8c98040df875" datatype="html">
+        <source>{VAR_PLURAL, plural, =0 {active position} =1 {active position} other {active positions} }</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="e2d50906a6d17419f7677137ee1d2b9810bdc667" datatype="html">
+        <source>total payables</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7855ac0f0bdaab269eda3e5f53ec6011da7e35b0" datatype="html">
+        <source>total receivables</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context>
+          <context context-type="linenumber">45</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4bea5cb235dec5098d09764a9c7ba0de647c827d" datatype="html">
+        <source> Type </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context>
+          <context context-type="linenumber">60</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="52c1447c1ec9570a2a3025c7e566557b8d19ed92" datatype="html">
+        <source> Role </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context>
+          <context context-type="linenumber">68</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6d1cddbe2f61020230280a0543a70e48e43d9832" datatype="html">
+        <source> Status </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context>
+          <context context-type="linenumber">76</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="017f0836ba97d8edb7a73c741d5a6d8b9af3b731" datatype="html">
+        <source>Repay</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context>
+          <context context-type="linenumber">102</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="537a051beb5f0ae8dedb1ad3ad67a5103f72e2fa" datatype="html">
+        <source>
+  There are currently no active positions.
+</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context>
+          <context context-type="linenumber">114</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="f65253954b66e929a8b4d5ecaf61f9129f8cec64" datatype="html">
         <source>Dashboard</source>
         <context-group purpose="location">
@@ -42,6 +515,163 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/instrument/instrument.component.html</context>
           <context context-type="linenumber">47</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="c3bb35125daad277ca9c040f8f47805fd505ab40" datatype="html">
+        <source><x id="ICU" equiv-text="{data.instrument, select, lending {...} borrowing {...} swap {...}}"/> A/C Balance</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/account-total-balance/account-balance-dialog.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="24154a470b491f66155d3b18913aaefc15e507fc" datatype="html">
+        <source>{VAR_SELECT, select, lending {Lending} borrowing {Borrowing} swap {Swap} }</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/account-total-balance/account-balance-dialog.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="e329f67417e3574eda9988c92b15c0e29df1dd1b" datatype="html">
+        <source>close</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/account-total-balance/account-balance-dialog.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9acccc9d4354ee6f40b7b0f17328599721fb524d" datatype="html">
+        <source>Issuance ID: </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="dc4fba275819619ee78e8eae14d357ea69ba7477" datatype="html">
+        <source>role</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="db6a674e3391f7310c3b267573360d493ca3f49c" datatype="html">
+        <source>
+                <x id="ICU" equiv-text="{issuance.makerAddress.toLowerCase() == currentAccount.toLowerCase(), select, true {...} false {...}}"/>
+            </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="cac3bf6999f32a27ea48c6004f5e843d0a53765f" datatype="html">
+        <source>{VAR_SELECT, select, true {maker} false {taker} }</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="bf6e91f9e940dbb4156ab301ecdf85ed69fd74e7" datatype="html">
+        <source>tenor</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="fc34f2683c4cb526ed7095c5b1cdd66d672ba932" datatype="html">
+        <source>days</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="732705569e07059ff6e4ffccc4157a2faaa031f4" datatype="html">
+        <source>Principal</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context>
+          <context context-type="linenumber">41</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5bbfaff44bde73248724fe45572a8b287167fff4" datatype="html">
+        <source>borrowing</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context>
+          <context context-type="linenumber">42</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context>
+          <context context-type="linenumber">64</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5e06b36478c3dad29ba1a239c12f1d447f0a1cbb" datatype="html">
+        <source>Collateral</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="fcab82ffa40f399bccefb1ae15cce8ad3182f0dd" datatype="html">
+        <source>required</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context>
+          <context context-type="linenumber">47</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context>
+          <context context-type="linenumber">68</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="0a11ad81fa82a37742db9063ac73147b05397a4e" datatype="html">
+        <source>ratio</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context>
+          <context context-type="linenumber">49</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context>
+          <context context-type="linenumber">70</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="fe788dd32538034a1afe978e956f3d2403e2df83" datatype="html">
+        <source>Interest</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context>
+          <context context-type="linenumber">53</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="0399779d28ce9009d9f81b9a0ff09e75adba0d62" datatype="html">
+        <source>per day</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context>
+          <context context-type="linenumber">54</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context>
+          <context context-type="linenumber">74</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="79347388740c50b7ac97e144c2494bb62912f312" datatype="html">
+        <source>total</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context>
+          <context context-type="linenumber">56</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context>
+          <context context-type="linenumber">76</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4e5537fd9f67fe253922e7c676653a340d0225d5" datatype="html">
+        <source><x id="INTERPOLATION" equiv-text="{{currencyService.currency}}"/> Value</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context>
+          <context context-type="linenumber">61</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="a34d9ca82cb0ddd3f032d9f99eebefa4d68b81b2" datatype="html">
+        <source>
+            Transfer History
+        </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/issuance-transfers/issuance-transfers.component.html</context>
+          <context context-type="linenumber">3</context>
         </context-group>
       </trans-unit>
     </body>

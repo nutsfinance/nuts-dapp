@@ -17,7 +17,6 @@ export class AccountDepositComponent implements OnInit, OnChanges {
   @Input() public amount: string;
   @Output() public approveToken = new EventEmitter<string>();
 
-  public instrumentName = '';
   public walletBalance: number;
   public amountControl: FormControl;
   public depositFormGroup: FormGroup;
@@ -35,7 +34,6 @@ export class AccountDepositComponent implements OnInit, OnChanges {
   ngOnInit() { }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.instrumentName = this.instrument.charAt(0).toUpperCase() + this.instrument.substring(1);
     this.depositFormGroup.patchValue({ amount: this.amount });
   }
 

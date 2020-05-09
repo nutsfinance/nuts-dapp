@@ -62,6 +62,14 @@
                   "maximumError": "10kb"
                 }
               ]
+            },
+            "zh": {
+              "aot": true,
+              "outputPath": "dist/zh/",
+              "i18nFile": "src/locale/messages.zh.xlf",
+              "i18nFormat": "xlf",
+              "i18nLocale": "zh",
+              "i18nMissingTranslation": "error"
             }
           }
         },
@@ -73,6 +81,9 @@
           "configurations": {
             "production": {
               "browserTarget": "nuts-dapp:build:production"
+            },
+            "zh": {
+              "browserTarget": "nuts-dapp:build:zh"
             }
           }
         },

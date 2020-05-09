@@ -1,11 +1,11 @@
 <div class="row">
     <div class="col-xs-9">
-        <p class="dashboard-label">{{instrumentName}} A/C Balance</p>
+        <p class="dashboard-label" i18n>{data.instrument, select, lending {Lending} borrowing {Borrowing} swap {Swap}} A/C Balance</p>
         <p class="dashboard-value">{{ currencyService.getCurrencySymbol() }} {{totalValue | number: '1.0-2' }}</p>
     </div>
     <div class="col-xs-3 dialog-action">
         <button mat-icon-button aria-label="Close notification dialog" mat-dialog-close>
-            <mat-icon>close</mat-icon>
+            <mat-icon i18n>close</mat-icon>
         </button>
     </div>
 </div>
