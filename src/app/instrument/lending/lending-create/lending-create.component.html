@@ -34,8 +34,8 @@
           <div *ngIf="createFormGroup.controls['principalAmount'].errors.required" i18n>
             Please enter amount.
           </div>
-          <div *ngIf="createFormGroup.controls['principalAmount'].errors.insufficientBalance" i18n>
-            Insufficient balance.
+          <div *ngIf="createFormGroup.controls['principalAmount'].errors.insufficientBalance">
+            <span i18n>Insufficient balance.</span>
             <a class="deposit-button" routerLink="../account" [queryParams]="{ token: principalToken}" i18n>Deposit</a>
           </div>
           <div *ngIf="createFormGroup.controls['principalAmount'].errors.nonPositiveAmount" i18n>
@@ -156,7 +156,8 @@
     <div class="row">
       <div class="col-xs-12">
         <span class="balance-content">
-        </span i18n>Projected collateral cost:</span> {{ collateralValue | tokenValue:collateralToken | number: '1.0-4' }} {{collateralToken}}
+          <span i18n>Projected collateral cost:</span> 
+          {{ collateralValue | tokenValue:collateralToken | number: '1.0-4' }} {{collateralToken}}
         </span>
       </div>
     </div>
