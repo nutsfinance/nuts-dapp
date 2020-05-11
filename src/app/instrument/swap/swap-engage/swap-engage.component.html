@@ -1,8 +1,8 @@
 <div class="no-issuance-container" *ngIf="issuances.length == 0">
     <img src="../../../../assets/images/no-issuance.png" class="no-issuance-image"/>
-    <p class="no-issuance-title">There are currently no available offers.</p>
-    <p class="no-issuance-content">Click here to create an offer.</p>
-    <button mat-raised-button color="primary" class="no-issuance-button" routerLink="../create">Create</button>
+    <p class="no-issuance-title" i18n>There are currently no available offers.</p>
+    <p class="no-issuance-content" i18n>Click here to create an offer.</p>
+    <button mat-raised-button color="primary" class="no-issuance-button" routerLink="../create" i18n>Create</button>
 </div>
 
 <app-swap-card *ngFor="let issuance of issuances" [issuance]="issuance"></app-swap-card>

@@ -1,6 +1,8 @@
 <mat-card class="issuance-card">
     <div class="issuance-title-container">
-        <div class="issuance-title">Issuance ID: {{nutsPlatformService.getInstrumentId("lending")}}-{{issuance.issuanceId}}</div>
+        <div class="issuance-title">
+            <span i18n>Issuance ID:</span>
+             {{nutsPlatformService.getInstrumentId("lending")}}-{{issuance.issuanceId}}</div>
         <div [ngStyle]="{'color':issuance.state <= 3 ? '#8bc34a' : 'grey'}" class="issuance-state">
             <span style="font-size: 20px">&#8226;</span>
             {{issuance.getIssuanceState()}}
@@ -10,22 +12,24 @@
         <div class="subtitle-container" *ngIf="issuance.makerAddress.toLowerCase() == currentAccount.toLowerCase() || issuance.takerAddress.toLowerCase() == currentAccount.toLowerCase()">
             <div class="subtitle-icon">
                 <img src="../../../../assets/images/role.png" alt="role" class="subtitle-icon-image">
-                role
+                <span i18n>role</span>
             </div>
-            {{ issuance.makerAddress.toLowerCase() == currentAccount.toLowerCase() ? 'maker' : 'taker' }}
+            <span i18n>
+                {issuance.makerAddress.toLowerCase() == currentAccount.toLowerCase(), select, true{maker} false{taker}}
+            </span>
         </div>
 
         <div class="subtitle-container">
             <div class="subtitle-icon">
                 <img src="../../../../assets/images/calendar.png" alt="expiry" class="subtitle-icon-image">
-                expiry
+                <span i18n>expiry</span>
             </div>
             {{(issuance.state == 2 || issuance.state == 5 || issuance.state == 6? issuance.engagementDueTimestamp * 1000 : issuance.issuanceDueTimestamp * 1000) | date: 'MM-dd-yyyy'}}
         </div>
     </div>
     <div class="issuance-card-content">
         <div class="content-container">
-            <div class="content-label">Input Token</div>
+            <div class="content-label" i18n>Input Token</div>
             <div class="content-value">
                 {{issuance.inputAmount | tokenValue:inputToken | number: '1.0-4'}} {{inputToken}}
                 <app-token-image [token]="inputToken"></app-token-image>
@@ -35,7 +39,7 @@
             <img src="../../../../assets/images/switch.png" class="switch-icon" alt="switch icon">
         </div>
         <div class="content-container">
-            <div class="content-label">Output Token</div>
+            <div class="content-label" i18n>Output Token</div>
             <div class="content-value">
                 {{issuance.outputAmount | tokenValue:outputToken | number: '1.0-4'}} {{outputToken}}
                 <app-token-image [token]="outputToken"></app-token-image>
@@ -46,7 +50,7 @@
         1 {{inputToken}} &asymp; {{ exchangeRate | number: '1.0-4'}} {{outputToken}}
     </div>
     <div class="issuance-card-more-content"  *ngIf="showMore">
-        <div class="more-content-title">{{currencyService.currency}} Value</div>
+        <div class="more-content-title">{{currencyService.currency}} <span i18n>Value</span></div>
         <div class="more-content-container">
             <div class="content-container">
                 <div class="content-value">
@@ -63,20 +67,20 @@
         </div>
     </div>
     <div class="issuance-card-actions">
-        <button mat-button color="secondary" class="issuance-action-button" (click)="showMore = !showMore">{{ showMore ? 'Hide' : 'Expand' }}</button>
+        <button mat-button color="secondary" class="issuance-action-button" (click)="showMore = !showMore" i18n>{showMore, select, true{Hide} false{Expand}}</button>
         <a mat-raised-button color="primary" class="issuance-action-button engage-button" 
             [routerLink]="['/', languageService.language, 'instrument', 'swap', 'positions', issuance.issuanceId]"
-            *ngIf="issuance.state == 2 && issuance.makerAddress.toLowerCase() != currentAccount.toLowerCase()">
+            *ngIf="issuance.state == 2 && issuance.makerAddress.toLowerCase() != currentAccount.toLowerCase()" i18n>
             Engage
         </a>
         <a mat-stroked-button color="primary" class="issuance-action-button close-button" 
             [routerLink]="['/', languageService.language, 'instrument', 'swap', 'positions', issuance.issuanceId]"
-            *ngIf="issuance.state == 2 && issuance.makerAddress.toLowerCase() == currentAccount.toLowerCase()">
+            *ngIf="issuance.state == 2 && issuance.makerAddress.toLowerCase() == currentAccount.toLowerCase()" i18n>
             Close Position
         </a>
         <a mat-stroked-button color="primary" class="issuance-action-button close-button" 
             [routerLink]="['/', languageService.language, 'instrument', 'swap', 'positions', issuance.issuanceId]"
-            *ngIf="issuance.state != 2 && !(issuance.state == 3 && issuance.takerAddress.toLowerCase() == currentAccount.toLowerCase())">
+            *ngIf="issuance.state != 2 && !(issuance.state == 3 && issuance.takerAddress.toLowerCase() == currentAccount.toLowerCase())" i18n>
             View Position
         </a>
     </div>
