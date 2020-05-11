@@ -1,5 +1,5 @@
 <div class="title-container">
-    <h1 class="notifications-title">Notifications</h1>
+    <h1 class="notifications-title" i18n>Notifications</h1>
     <button mat-icon-button aria-label="Close notification dialog" mat-dialog-close>
         <mat-icon>close</mat-icon>
     </button>
@@ -43,7 +43,7 @@
         <div class="col-xs-3 notification-action" [ngSwitch]="notification.category">
             <mat-spinner *ngSwitchCase="'TRANSACTION_INITIATED'" [diameter]="25"></mat-spinner>
             <button mat-button color="primary" class="notification-button"
-                *ngSwitchCase="'TRANSACTION_FAILED'" (click)="retryTransaction(notification)">
+                *ngSwitchCase="'TRANSACTION_FAILED'" (click)="retryTransaction(notification)" i18n>
                 Retry
             </button>
             <button mat-button color="primary" class="notification-button"
@@ -54,10 +54,10 @@
     </div>
 </div>
 <div mat-dialog-content class="notification-container" *ngIf="notifications.length == 0">
-    <p class="no-notifications">There are no new notifications.</p>
+    <p class="no-notifications" i18n>There are no new notifications.</p>
 </div>
 <mat-dialog-actions align="end" class="notification-actions">
-    <button color="secondary" mat-button cdkFocusInitial *ngIf="notifications.length > 0" (click)="markAllRead()">Mark all as read</button>
-    <a class="more-button" [routerLink]="['/', languageService.language, 'notification']" color="primary" mat-raised-button mat-dialog-close>More</a>
+    <button color="secondary" mat-button cdkFocusInitial *ngIf="notifications.length > 0" (click)="markAllRead()" i18n>Mark all as read</button>
+    <a class="more-button" [routerLink]="['/', languageService.language, 'notification']" color="primary" mat-raised-button mat-dialog-close i18n>More</a>
 </mat-dialog-actions>
 

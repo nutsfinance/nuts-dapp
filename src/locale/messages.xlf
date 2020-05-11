@@ -1275,6 +1275,51 @@
           <context context-type="linenumber">114</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="8bcabdf6b16cad0313a86c7e940c5e3ad7f9f8ab" datatype="html">
+        <source>Notifications</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/notification/notification-dialog/notification-dialog.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/notification/notification.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="277ab58de4e9352be7814665e655e813ed86d2ef" datatype="html">
+        <source>
+                Retry
+            </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/notification/notification-dialog/notification-dialog.component.html</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/notification/notification-row/notification-row.component.html</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6d93e6c160c48f7ca11e880bc4b76f075ad5811d" datatype="html">
+        <source>There are no new notifications.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/notification/notification-dialog/notification-dialog.component.html</context>
+          <context context-type="linenumber">57</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1da23f4068fd3796fbcb24d0c42bb62f92c96829" datatype="html">
+        <source>Mark all as read</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/notification/notification-dialog/notification-dialog.component.html</context>
+          <context context-type="linenumber">60</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ac0f81713a84217c9bd1d9bb460245d8190b073f" datatype="html">
+        <source>More</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/notification/notification-dialog/notification-dialog.component.html</context>
+          <context context-type="linenumber">61</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="f65253954b66e929a8b4d5ecaf61f9129f8cec64" datatype="html">
         <source>Dashboard</source>
         <context-group purpose="location">
@@ -1769,6 +1814,34 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/instrument/swap/swap-card/swap-card.component.html</context>
           <context context-type="linenumber">83</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="0b65c64d647efe3dae2e1aeeb80c86193350505f" datatype="html">
+        <source>{VAR_SELECT, select, true {Cancel} false {Select} }</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/notification/notification.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="fb55bc908a9ef04a80dcf464cd899a559e579d35" datatype="html">
+        <source>Mark as Read</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/notification/notification.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="696578673e8ea457e4f23f377e50ef2503d876c0" datatype="html">
+        <source>{VAR_SELECT, select, true {Show Unread} false {Show All} }</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/notification/notification.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="dc359d6c62c8790a0d3574bbb8c0a88c76d1e30c" datatype="html">
+        <source>You&apos;re up to date!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/notification/notification.component.html</context>
+          <context context-type="linenumber">16</context>
         </context-group>
       </trans-unit>
       <trans-unit id="c3bb35125daad277ca9c040f8f47805fd505ab40" datatype="html">

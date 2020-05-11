@@ -3,17 +3,17 @@
         <div class="col-xs-12 title-line-container">
             <div class="title-container">
                 <img src="../../../../assets/images/navigate_back.png" class="navigate-back" (click)="navigateBack()">
-                <span class="title">Notifications</span>
+                <span class="title" i18n>Notifications</span>
             </div>
-            <button color="secondary" mat-button (click)="showSelect = !showSelect" *ngIf="notifications.length > 0">{{showSelect ? 'Cancel' : 'Select'}}</button>
-            <button mat-button (click)="saveNotifications()" *ngIf="showSelect && notifications.length > 0">Mark as Read</button>
-            <button mat-button (click)="toggleShowAll()" *ngIf="!showSelect">{{showAll ? 'Show Unread' : 'Show All'}}</button>
+            <button color="secondary" mat-button (click)="showSelect = !showSelect" *ngIf="notifications.length > 0" i18n>{showSelect, select, true{Cancel} false{Select}}</button>
+            <button mat-button (click)="saveNotifications()" *ngIf="showSelect && notifications.length > 0" i18n>Mark as Read</button>
+            <button mat-button (click)="toggleShowAll()" *ngIf="!showSelect" i18n>{showAll, select, true{Show Unread} false{Show All}}</button>
         </div>
     </div>
 
     <div class="no-notification-container" *ngIf="notifications.length == 0">
         <img src="../../assets/images/no-notification.png" class="no-notification-image" />
-        <p class="no-notification-content">You're up to date!</p>
+        <p class="no-notification-content" i18n>You're up to date!</p>
     </div>
 
     <app-notification-row
