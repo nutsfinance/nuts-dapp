@@ -328,6 +328,28 @@
           <context context-type="linenumber">97</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="a7cb037ae894bbcd5a1953095b813202b2214786" datatype="html">
+        <source>Enter amount</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/account/account-deposit/account-deposit.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/account/account-withdraw/account-withdraw.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="96aeaae14bd4c0c3bc9a70daad6d04fe922d1ece" datatype="html">
+        <source>MAX</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/account/account-deposit/account-deposit.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/account/account-withdraw/account-withdraw.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="84ea0f5d36f1f26b1d8517d87ab18435314cc218" datatype="html">
         <source>Please enter amount.</source>
         <context-group purpose="location">
@@ -455,15 +477,15 @@
           <context context-type="linenumber">14</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="790589e05b952c02abe0703e9a0681f42cce507d" datatype="html">
-        <source> <x id="ICU" equiv-text="{transaction.deposit, select, true {...} false {...}}"/> </source>
+      <trans-unit id="3faca93c6f651a6b69036723268681ae1c9201a4" datatype="html">
+        <source> <x id="ICU" equiv-text="{transaction.action, select, deposit {...} withdraw {...}}"/> </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/account/account-transaction/account-transaction.component.html</context>
           <context context-type="linenumber">15</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="5fd244a6f0ca138a98a83f0e0564dfc865148cf4" datatype="html">
-        <source>{VAR_SELECT, select, true {Deposit} false {Withdraw} }</source>
+      <trans-unit id="2d7005c1e978a133d27a1ccae3c99ee9f2c308a8" datatype="html">
+        <source>{VAR_SELECT, select, deposit {Deposit} withdraw {Withdraw} }</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/account/account-transaction/account-transaction.component.html</context>
           <context context-type="linenumber">15</context>
@@ -571,6 +593,21 @@
           <context context-type="linenumber">17</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="a360a2ef41844e8024402f47f08acbb95af69b9f" datatype="html">
+        <source>Enter Amount</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/lending/lending-create/lending-create.component.html</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-create/borrowing-create.component.html</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/swap/swap-create/swap-create.component.html</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="b08b59dc0a496126041cc619bebe27d59d0ec621" datatype="html">
         <source>
             Please enter amount.
@@ -663,6 +700,21 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-create/borrowing-create.component.html</context>
           <context context-type="linenumber">195</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="b479506c9dd8dd8076e70eb58b7d87b5b495664e" datatype="html">
+        <source>2 ~ 90 Days</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/lending/lending-create/lending-create.component.html</context>
+          <context context-type="linenumber">90</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-create/borrowing-create.component.html</context>
+          <context context-type="linenumber">79</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/swap/swap-create/swap-create.component.html</context>
+          <context context-type="linenumber">132</context>
         </context-group>
       </trans-unit>
       <trans-unit id="54f10e60a30f6a65dcc796c08a8e3108d1eea5c0" datatype="html">

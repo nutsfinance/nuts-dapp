@@ -6,7 +6,7 @@ import { ETH_ADDRESS, NutsPlatformService } from './nuts-platform.service';
 const APPROVE_AMOUNT = '115792089237316200000000000000000000000000000000000000000000';
 
 export interface AccountTransaction {
-  deposit: boolean,
+  action: string,
   token: string,
   amount: number,
   transactionHash: string,
@@ -159,7 +159,7 @@ public async getAccountTransactions(instrument: string): Promise<AccountTransact
     instrumentEscrowEvents.forEach((escrowEvent) => {
       if (escrowEvent.event === 'Deposited' && escrowEvent.returnValues.depositer.toLowerCase() === this.nutsPlatformService.currentAccount.toLowerCase()) {
         transactions.push({
-          deposit: true,
+          action: 'deposit',
           token: 'ETH',
           amount: escrowEvent.returnValues.amount,
           transactionHash: escrowEvent.transactionHash,
@@ -167,7 +167,7 @@ public async getAccountTransactions(instrument: string): Promise<AccountTransact
         });
       } else if (escrowEvent.event === 'Withdrawn' && escrowEvent.returnValues.withdrawer.toLowerCase() === this.nutsPlatformService.currentAccount.toLowerCase()) {
         transactions.push({
-          deposit: false,
+          action: 'withdraw',
           token: 'ETH',
           amount: escrowEvent.returnValues.amount,
           transactionHash: escrowEvent.transactionHash,
@@ -175,7 +175,7 @@ public async getAccountTransactions(instrument: string): Promise<AccountTransact
         });
       } else if (escrowEvent.event === 'TokenDeposited' && escrowEvent.returnValues.depositer.toLowerCase() === this.nutsPlatformService.currentAccount.toLowerCase()) {
         transactions.push({
-          deposit: true,
+          action: 'deposit',
           token: this.nutsPlatformService.getTokenNameByAddress(escrowEvent.returnValues.token),
           amount: escrowEvent.returnValues.amount,
           transactionHash: escrowEvent.transactionHash,
@@ -183,7 +183,7 @@ public async getAccountTransactions(instrument: string): Promise<AccountTransact
         });
       } else if (escrowEvent.event === 'TokenWithdrawn' && escrowEvent.returnValues.withdrawer.toLowerCase() === this.nutsPlatformService.currentAccount.toLowerCase()) {
         transactions.push({
-          deposit: false,
+          action: 'withdraw',
           token: this.nutsPlatformService.getTokenNameByAddress(escrowEvent.returnValues.token),
           amount: escrowEvent.returnValues.amount,
           transactionHash: escrowEvent.transactionHash,

@@ -21,7 +21,7 @@
     <div class="row">
       <div class="col-xs-12 field-row">
         <mat-form-field appearance="outline" class="amount-input">
-          <input matInput type="number" placeholder="Amount" formControlName="principalAmount">
+          <input matInput type="number" placeholder="Enter Amount" formControlName="principalAmount" i18n-placeholder>
         </mat-form-field>
         <app-token-select [selectedToken]="principalToken" (tokenSelected)="onPrincipalTokenSelected($event)">
         </app-token-select>
@@ -87,7 +87,7 @@
           Enter a different amount.
         </span>
         <mat-form-field appearance="outline" class="amount-input" *ngIf="showAlternativeTenor">
-          <input matInput type="number" placeholder="2 ~ 90 Days" formControlName="tenor">
+          <input matInput type="number" placeholder="2 ~ 90 Days" formControlName="tenor" i18n-placeholder>
         </mat-form-field>
       </div>
     </div>

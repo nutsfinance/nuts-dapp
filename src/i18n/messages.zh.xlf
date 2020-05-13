@@ -335,7 +335,13 @@
         <source>Close</source><target state="new">关闭</target>
         
         
-      <context-group purpose="location"><context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context><context context-type="linenumber">46</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context><context context-type="linenumber">97</context></context-group></trans-unit>
+      <context-group purpose="location"><context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context><context context-type="linenumber">46</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context><context context-type="linenumber">97</context></context-group></trans-unit><trans-unit id="a7cb037ae894bbcd5a1953095b813202b2214786" datatype="html">
+        <source>Enter amount</source><target state="new">输入数额</target>
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/account/account-deposit/account-deposit.component.html</context><context context-type="linenumber">5</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/account/account-withdraw/account-withdraw.component.html</context><context context-type="linenumber">5</context></context-group></trans-unit><trans-unit id="96aeaae14bd4c0c3bc9a70daad6d04fe922d1ece" datatype="html">
+        <source>MAX</source><target state="new">最大值</target>
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/account/account-deposit/account-deposit.component.html</context><context context-type="linenumber">6</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/account/account-withdraw/account-withdraw.component.html</context><context context-type="linenumber">6</context></context-group></trans-unit>
       <trans-unit id="84ea0f5d36f1f26b1d8517d87ab18435314cc218" datatype="html">
         <source>Please enter amount.</source><target state="new">请输入数额。</target>
         <context-group purpose="location">
@@ -465,15 +471,14 @@
           <context context-type="sourcefile">src/app/account/account-transaction/account-transaction.component.html</context>
           <context context-type="linenumber">14</context>
         </context-group>
-      </trans-unit><trans-unit id="790589e05b952c02abe0703e9a0681f42cce507d" datatype="html">
-        <source> <x id="ICU" equiv-text="{transaction.deposit, select, true {...} false {...}}"/> </source><target state="new"> <x id="ICU" equiv-text="{transaction.deposit, select, true {...} false {...}}"/> </target>
+      </trans-unit><trans-unit id="3faca93c6f651a6b69036723268681ae1c9201a4" datatype="html">
+        <source> <x id="ICU" equiv-text="{transaction.action, select, deposit {...} withdraw {...}}"/> </source><target state="new"> <x id="ICU" equiv-text="{transaction.action, select, deposit {...} withdraw {...}}"/> </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/account/account-transaction/account-transaction.component.html</context>
           <context context-type="linenumber">15</context>
         </context-group>
-      </trans-unit><trans-unit id="5fd244a6f0ca138a98a83f0e0564dfc865148cf4" datatype="html">
-        <source>{VAR_SELECT, select, true {Deposit} false {Withdraw} }</source>
-        <target state="new">{VAR_SELECT, select, true {充值} false {提现} }</target>
+      </trans-unit><trans-unit id="2d7005c1e978a133d27a1ccae3c99ee9f2c308a8" datatype="html">
+        <source>{VAR_SELECT, select, deposit {Deposit} withdraw {Withdraw} }</source><target state="new">{VAR_SELECT, select, deposit {Deposit} withdraw {Withdraw} }</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/account/account-transaction/account-transaction.component.html</context>
           <context context-type="linenumber">15</context>
@@ -581,6 +586,20 @@
           <context context-type="sourcefile">src/app/instrument/swap/swap-create/swap-create.component.html</context>
           <context context-type="linenumber">17</context>
         </context-group>
+      </trans-unit><trans-unit id="a360a2ef41844e8024402f47f08acbb95af69b9f" datatype="html">
+        <source>Enter Amount</source><target state="new">输入数额</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/lending/lending-create/lending-create.component.html</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-create/borrowing-create.component.html</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/swap/swap-create/swap-create.component.html</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="b08b59dc0a496126041cc619bebe27d59d0ec621" datatype="html">
         <source>
@@ -658,7 +677,7 @@
         <source>
           Enter a different amount.
         </source><target state="new">
-          输入一个特定数额。
+          输入一个特定数额
         </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/instrument/lending/lending-create/lending-create.component.html</context>
@@ -683,6 +702,20 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-create/borrowing-create.component.html</context>
           <context context-type="linenumber">195</context>
+        </context-group>
+      </trans-unit><trans-unit id="b479506c9dd8dd8076e70eb58b7d87b5b495664e" datatype="html">
+        <source>2 ~ 90 Days</source><target state="new">2 ~ 90 天</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/lending/lending-create/lending-create.component.html</context>
+          <context context-type="linenumber">90</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-create/borrowing-create.component.html</context>
+          <context context-type="linenumber">79</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/swap/swap-create/swap-create.component.html</context>
+          <context context-type="linenumber">132</context>
         </context-group>
       </trans-unit>
       <trans-unit id="54f10e60a30f6a65dcc796c08a8e3108d1eea5c0" datatype="html">
@@ -1210,7 +1243,7 @@
         <source>
                 Enter a custom value
               </source><target state="new">
-                输入一个特定数额。
+                输入一个特定数额
               </target>
         
       <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap-create/swap-create.component.html</context><context context-type="linenumber">128</context></context-group></trans-unit>
@@ -1422,7 +1455,7 @@
         <source>
                     per day
                 </source><target state="new">
-                    /天
+                    每天
                 </target>
         
         
@@ -1485,7 +1518,7 @@
         
       <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/lending/lending-detail/lending-detail.component.html</context><context context-type="linenumber">150</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/lending/lending-detail/lending-detail.component.html</context><context context-type="linenumber">174</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/borrowing/borrowing-detail/borrowing-detail.component.html</context><context context-type="linenumber">159</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap-detail/swap-detail.component.html</context><context context-type="linenumber">105</context></context-group></trans-unit>
       <trans-unit id="16d5d7669b909b17da7b97679cb2a3a353f5490c" datatype="html">
-        <source>available</source><target state="new">available</target>
+        <source>available</source><target state="new"/>
         
         
         
@@ -1502,7 +1535,7 @@
         
       <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/lending/lending-detail/lending-detail.component.html</context><context context-type="linenumber">189</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/borrowing/borrowing-detail/borrowing-detail.component.html</context><context context-type="linenumber">173</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap-detail/swap-detail.component.html</context><context context-type="linenumber">119</context></context-group></trans-unit>
       <trans-unit id="aa0ff2ce61ce5a7809ad1c3b5d2feac8078b316b" datatype="html">
-        <source>Issuance ID:</source><target state="new">Issuance ID:</target>
+        <source>Issuance ID:</source><target state="new">订单 ID:</target>
         
         
       <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/lending/lending-card/lending-card.component.html</context><context context-type="linenumber">4</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap-card/swap-card.component.html</context><context context-type="linenumber">4</context></context-group></trans-unit>
@@ -1549,7 +1582,7 @@
         
       <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/lending/lending-card/lending-card.component.html</context><context context-type="linenumber">45</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/lending/lending-card/lending-card.component.html</context><context context-type="linenumber">66</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context><context context-type="linenumber">49</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context><context context-type="linenumber">70</context></context-group></trans-unit>
       <trans-unit id="0399779d28ce9009d9f81b9a0ff09e75adba0d62" datatype="html">
-        <source>per day</source><target state="new">/天</target>
+        <source>per day</source><target state="new">每天</target>
         
         
         
@@ -1650,7 +1683,7 @@
         
       <context-group purpose="location"><context context-type="sourcefile">src/app/common/account-total-balance/account-balance-dialog.component.html</context><context context-type="linenumber">8</context></context-group></trans-unit>
       <trans-unit id="9acccc9d4354ee6f40b7b0f17328599721fb524d" datatype="html">
-        <source>Issuance ID: </source><target state="new">Issuance ID: </target>
+        <source>Issuance ID: </source><target state="new">订单 ID: </target>
         
       <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context><context context-type="linenumber">4</context></context-group></trans-unit>
       <trans-unit id="db6a674e3391f7310c3b267573360d493ca3f49c" datatype="html">
