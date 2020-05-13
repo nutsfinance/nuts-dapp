@@ -26,20 +26,21 @@ export class AccountBalanceService {
   public accountBalancesSubject: Subject<AccountBalances> = new Subject();
 
   constructor(private nutsPlatformService: NutsPlatformService, private http: HttpClient) {
-    // We don't initialize the user balance until the platform is initialized!
+    this.getUserBalanceFromBackend();
     this.nutsPlatformService.platformInitializedSubject.subscribe(initialized => {
-      if (initialized) {
-        this.getUserBalanceFromBackend();
-        this.nutsPlatformService.currentNetworkSubject.subscribe(_ => {
-          this.getUserBalanceFromBackend();
-        });
-        this.nutsPlatformService.currentAccountSubject.subscribe(_ => {
-          this.getUserBalanceFromBackend();
-        });
-        // Reloads account every 20s.
-        setInterval(this.getUserBalanceFromBackend.bind(this), 20000);
-      }
+      if (!initialized) return;
+      console.log('Platform initialized. Reloading lending issuances.');
+      this.getUserBalanceFromBackend();
     });
+
+    this.nutsPlatformService.currentNetworkSubject.subscribe(_ => {
+      this.getUserBalanceFromBackend();
+    });
+    this.nutsPlatformService.currentAccountSubject.subscribe(_ => {
+      this.getUserBalanceFromBackend();
+    });
+    // Reloads account every 20s.
+    setInterval(this.getUserBalanceFromBackend.bind(this), 20000);
   }
 
   getUserBalanceFromBackend(times: number = 1, interval: number = 1000) {

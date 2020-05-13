@@ -42,20 +42,19 @@ export class InstrumentService {
 
   constructor(private nutsPlatformService: NutsPlatformService, private notificationService: NotificationService,
     private http: HttpClient) {
-    // We don't initialize the lending issuance list until the platform is initialized!
+    this.reloadIssuances();
     this.nutsPlatformService.platformInitializedSubject.subscribe(initialized => {
-      if (initialized) {
-        console.log('Platform initialized. Loading issuances.');
-        this.reloadIssuances();
-        this.nutsPlatformService.currentNetworkSubject.subscribe(currentNetwork => {
-          console.log('Network changed. Reloading lending issuances.', currentNetwork);
-          this.reloadIssuances();
-        });
-
-        // Reloads issuances every 30s.
-        setInterval(this.reloadIssuances.bind(this), 30000);
-      }
+      if (!initialized) return;
+      console.log('Platform initialized. Reloading lending issuances.');
+      this.reloadIssuances();
     });
+    this.nutsPlatformService.currentNetworkSubject.subscribe(currentNetwork => {
+      console.log('Network changed. Reloading lending issuances.', currentNetwork);
+      this.reloadIssuances();
+    });
+
+    // Reloads issuances every 30s.
+    setInterval(this.reloadIssuances.bind(this), 30000);
   }
 
   public createLendingIssuance(principalToken: string, principalAmount: number, collateralToken: string,
@@ -104,7 +103,7 @@ export class InstrumentService {
 
     const principalTokenAddress = this.nutsPlatformService.getTokenAddressByName(principalToken);
     const collateralTokenAddress = this.nutsPlatformService.getTokenAddressByName(collateralToken);
- 
+
     const borrowingMakerParametersModel = new BorrowingMakerParameterModel(collateralTokenAddress, principalTokenAddress, principalAmount,
       Math.floor(collateralRatio * COLLATERAL_RATIO_DECIMALS), tenor, Math.floor(interestRate * INTEREST_RATE_DECIMALS));
     const message = borrowingMakerParametersModel.toMessage().serializeBinary();
@@ -136,7 +135,7 @@ export class InstrumentService {
   }
 
   public createSwapIssuance(inputToken: string, outputToken: string, inputAmount: number, outputAmount: number,
-    duration: number) {  
+    duration: number) {
     const inputTokenAddress = this.nutsPlatformService.getTokenAddressByName(inputToken);
     const outputTokenAddress = this.nutsPlatformService.getTokenAddressByName(outputToken);
 
@@ -326,6 +325,10 @@ export class InstrumentService {
   }
 
   public async reloadIssuances() {
+    if (!this.nutsPlatformService.isFullyLoaded()) {
+      console.log('Either network or account is not loaded.');
+      return;
+    }
     console.log('Reloading issuance...');
     await this.reloadLendingIssuances();
     await this.reloadBorrowingIssuances();

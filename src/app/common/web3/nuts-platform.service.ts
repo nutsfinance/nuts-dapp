@@ -448,6 +448,7 @@ export class NutsPlatformService {
     // Important! Let other components handle the initialization result first!
     this.handleAccountChanged([ethereum.selectedAddress]);
     this.handleNetworkChanged(ethereum.networkVersion);
+    console.log('Platform is initialized...');
     this.platformInitializedSubject.next(true);
 
     // try {
