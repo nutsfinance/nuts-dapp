@@ -105,12 +105,4 @@ export class NotificationRowComponent implements OnInit, OnChanges {
         break;
     }
   }
-
-  getNotificationAction(): string {
-    if (this.notification.type === TransactionType.APPROVE) {
-      return 'Deposit';
-    }
-
-    return 'View';
-  }
 }

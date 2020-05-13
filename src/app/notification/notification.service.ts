@@ -6,6 +6,7 @@ import * as isEqual from 'lodash.isequal';
 import { NutsPlatformService } from '../common/web3/nuts-platform.service';
 import { TransactionModel } from './transaction.model';
 import { NotificationModel, NotificationReadStatus } from './notification.model';
+import { LanguageService } from '../common/web3/language.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,8 @@ export class NotificationService {
   public notificationUpdatedSubject: Subject<NotificationModel[]> = new BehaviorSubject<NotificationModel[]>([]);
   public newNotificationSubject: Subject<NotificationModel> = new Subject<NotificationModel>();
 
-  constructor(private nutsPlatformService: NutsPlatformService, private http: HttpClient) {
+  constructor(private nutsPlatformService: NutsPlatformService, private languageService: LanguageService,
+    private http: HttpClient) {
     this.nutsPlatformService.platformInitializedSubject.subscribe(initialized => {
       if (initialized) {
         // Need to reload notifications each time there is a change to the network or account
@@ -100,7 +102,11 @@ export class NotificationService {
       console.log('Notification not initialized: Current address', currentAddress, 'Current network', currentNetwork);
       return of([]);
     }
-    return this.http.get<NotificationModel[]>(`${this.nutsPlatformService.getApiServerHost()}/notifications/${currentAddress}`);
+    return this.http.get<NotificationModel[]>(`${this.nutsPlatformService.getApiServerHost()}/notifications/${currentAddress}`, {
+      params: {
+        language: this.languageService.language === 'zh' ? 'zh-CN' : 'en-US'
+      }
+    });
   }
 
   /**

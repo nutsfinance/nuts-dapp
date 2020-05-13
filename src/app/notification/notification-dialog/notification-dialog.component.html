@@ -47,8 +47,8 @@
                 Retry
             </button>
             <button mat-button color="primary" class="notification-button"
-                *ngSwitchDefault (click)="onNotificationAction(notification)">
-                {{getNotificationAction(notification)}}
+                *ngSwitchDefault (click)="onNotificationAction(notification)" i18n>
+                {notification.type, select, APPROVE {Deposit} other {View}}
             </button>
         </div>
     </div>

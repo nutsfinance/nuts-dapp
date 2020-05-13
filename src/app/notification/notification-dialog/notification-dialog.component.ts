@@ -99,14 +99,6 @@ export class NotificationDialog implements OnInit, OnDestroy {
     }
   }
 
-  getNotificationAction(notification: NotificationModel): string {
-    if (notification.type === TransactionType.APPROVE) {
-      return 'Deposit';
-    }
-
-    return 'View';
-  }
-
   markAllRead() {
     for (let notification of this.notifications) {
       notification.readStatus = NotificationReadStatus.READ;

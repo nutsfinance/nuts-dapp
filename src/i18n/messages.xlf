@@ -1416,6 +1416,30 @@
           <context context-type="linenumber">36</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="d2f0e5eeeeb9913b12a75f3b5e54d2587c723d6e" datatype="html">
+        <source>
+                <x id="ICU" equiv-text="{notification.type, select, APPROVE {...} other {...}}"/>
+            </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/notification/notification-dialog/notification-dialog.component.html</context>
+          <context context-type="linenumber">50</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/notification/notification-row/notification-row.component.html</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9fdd1816bfcc2305eb9db7ee041e7f815efe1000" datatype="html">
+        <source>{VAR_SELECT, select, APPROVE {Deposit} other {View} }</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/notification/notification-dialog/notification-dialog.component.html</context>
+          <context context-type="linenumber">51</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/notification/notification-row/notification-row.component.html</context>
+          <context context-type="linenumber">41</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="6d93e6c160c48f7ca11e880bc4b76f075ad5811d" datatype="html">
         <source>There are no new notifications.</source>
         <context-group purpose="location">

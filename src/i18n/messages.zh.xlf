@@ -472,7 +472,8 @@
           <context context-type="linenumber">15</context>
         </context-group>
       </trans-unit><trans-unit id="5fd244a6f0ca138a98a83f0e0564dfc865148cf4" datatype="html">
-        <source>{VAR_SELECT, select, true {Deposit} false {Withdraw} }</source><target state="new">{VAR_SELECT, select, true {Deposit} false {Withdraw} }</target>
+        <source>{VAR_SELECT, select, true {Deposit} false {Withdraw} }</source>
+        <target state="new">{VAR_SELECT, select, true {充值} false {提现} }</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/account/account-transaction/account-transaction.component.html</context>
           <context context-type="linenumber">15</context>
@@ -1288,17 +1289,11 @@
     </source><target state="new">
       <x id="ICU" equiv-text="{position.instrument, select, lending {...} borrowing {...} swap {...}}"/>
     </target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context>
-          <context context-type="linenumber">61</context>
-        </context-group>
-      </trans-unit><trans-unit id="222b5c15fa854a3f79fd22e06d05f294c60f6229" datatype="html">
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context><context context-type="linenumber">61</context></context-group></trans-unit><trans-unit id="222b5c15fa854a3f79fd22e06d05f294c60f6229" datatype="html">
         <source>{VAR_SELECT, select, lending {Lending} borrowing {Borrowing} swap {Swap} }</source><target state="new">{VAR_SELECT, select, lending {Lending} borrowing {Borrowing} swap {Swap} }</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context>
-          <context context-type="linenumber">62</context>
-        </context-group>
-      </trans-unit>
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context><context context-type="linenumber">62</context></context-group></trans-unit>
       <trans-unit id="52c1447c1ec9570a2a3025c7e566557b8d19ed92" datatype="html">
         <source> Role </source><target state="new"> 角色 </target>
         
@@ -1308,18 +1303,12 @@
     </source><target state="new">
       <x id="ICU" equiv-text="{position.role, select, maker {...} taker {...}}"/>
     </target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context>
-          <context context-type="linenumber">69</context>
-        </context-group>
-      </trans-unit><trans-unit id="ab8016d3f82e79ca8b5aca77935dc63c7d24deaf" datatype="html">
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context><context context-type="linenumber">69</context></context-group></trans-unit><trans-unit id="ab8016d3f82e79ca8b5aca77935dc63c7d24deaf" datatype="html">
         <source>{VAR_SELECT, select, maker {Maker} taker {Taker} }</source>
         <target state="new">{VAR_SELECT, select, maker {卖方} taker {买方} }</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context>
-          <context context-type="linenumber">70</context>
-        </context-group>
-      </trans-unit>
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context><context context-type="linenumber">70</context></context-group></trans-unit>
       <trans-unit id="6d1cddbe2f61020230280a0543a70e48e43d9832" datatype="html">
         <source> Status </source><target state="new"> 状态 </target>
         
@@ -1329,18 +1318,12 @@
     </source><target state="new">
       <x id="ICU" equiv-text="{position.state, select, Engageable {...} Enagaged {...}}"/>
     </target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context>
-          <context context-type="linenumber">77</context>
-        </context-group>
-      </trans-unit><trans-unit id="0cfb0d3b3ffea8e60ae46368b834b5213c92fcc5" datatype="html">
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context><context context-type="linenumber">77</context></context-group></trans-unit><trans-unit id="0cfb0d3b3ffea8e60ae46368b834b5213c92fcc5" datatype="html">
         <source>{VAR_SELECT, select, Engageable {Engageable} Enagaged {Engaged} }</source>
         <target state="new">{VAR_SELECT, select, Engageable {待参与} Enagaged {参与中} }</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context>
-          <context context-type="linenumber">78</context>
-        </context-group>
-      </trans-unit>
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context><context context-type="linenumber">78</context></context-group></trans-unit>
       <trans-unit id="017f0836ba97d8edb7a73c741d5a6d8b9af3b731" datatype="html">
         <source>Repay</source><target state="new">支付</target>
         
@@ -1640,7 +1623,18 @@
       <trans-unit id="dc359d6c62c8790a0d3574bbb8c0a88c76d1e30c" datatype="html">
         <source>You're up to date!</source><target state="new">没有最新消息了！</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">src/app/notification/notification.component.html</context><context context-type="linenumber">16</context></context-group></trans-unit>
+      <context-group purpose="location"><context context-type="sourcefile">src/app/notification/notification.component.html</context><context context-type="linenumber">16</context></context-group></trans-unit><trans-unit id="d2f0e5eeeeb9913b12a75f3b5e54d2587c723d6e" datatype="html">
+        <source>
+                <x id="ICU" equiv-text="{notification.type, select, APPROVE {...} other {...}}"/>
+            </source><target state="new">
+                <x id="ICU" equiv-text="{notification.type, select, APPROVE {...} other {...}}"/>
+            </target>
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/notification/notification-dialog/notification-dialog.component.html</context><context context-type="linenumber">50</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/notification/notification-row/notification-row.component.html</context><context context-type="linenumber">40</context></context-group></trans-unit><trans-unit id="9fdd1816bfcc2305eb9db7ee041e7f815efe1000" datatype="html">
+        <source>{VAR_SELECT, select, APPROVE {Deposit} other {View} }</source>
+        <target state="new">{VAR_SELECT, select, APPROVE {充值} other {查看} }</target>
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/notification/notification-dialog/notification-dialog.component.html</context><context context-type="linenumber">51</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/notification/notification-row/notification-row.component.html</context><context context-type="linenumber">41</context></context-group></trans-unit>
       <trans-unit id="c3bb35125daad277ca9c040f8f47805fd505ab40" datatype="html">
         <source><x id="ICU" equiv-text="{data.instrument, select, lending {...} borrowing {...} swap {...}}"/> A/C Balance</source>
         <target state="new"><x id="ICU" equiv-text="{data.instrument, select, lending {...} borrowing {...} swap {...}}"/> 账户余额</target>
