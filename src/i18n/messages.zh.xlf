@@ -405,7 +405,7 @@
       </trans-unit>
       <trans-unit id="cfc18f82c586d5deb1d3c44e085e845e93f34519" datatype="html">
         <source><x id="ICU" equiv-text="{instrument, select, lending {...} borrowing {...} swap {...}}"/> A/C Balance:</source>
-        <target state="new"><x id="ICU" equiv-text="{instrument, select, lending {...} borrowing {...} swap {...}}"/> 账户余额：</target>
+        <target state="new"><x id="ICU" equiv-text="{instrument, select, lending {...} borrowing {...} swap {...}}"/>账户余额：</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/account/account-deposit/account-deposit.component.html</context>
           <context context-type="linenumber">37</context>
@@ -1282,15 +1282,65 @@
       <trans-unit id="4bea5cb235dec5098d09764a9c7ba0de647c827d" datatype="html">
         <source> Type </source><target state="new"> 类型 </target>
         
-      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context><context context-type="linenumber">60</context></context-group></trans-unit>
+      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context><context context-type="linenumber">60</context></context-group></trans-unit><trans-unit id="d49f347e1902aa3dac8ec6b9e7c1c051f08be45d" datatype="html">
+        <source>
+      <x id="ICU" equiv-text="{position.instrument, select, lending {...} borrowing {...} swap {...}}"/>
+    </source><target state="new">
+      <x id="ICU" equiv-text="{position.instrument, select, lending {...} borrowing {...} swap {...}}"/>
+    </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context>
+          <context context-type="linenumber">61</context>
+        </context-group>
+      </trans-unit><trans-unit id="222b5c15fa854a3f79fd22e06d05f294c60f6229" datatype="html">
+        <source>{VAR_SELECT, select, lending {Lending} borrowing {Borrowing} swap {Swap} }</source><target state="new">{VAR_SELECT, select, lending {Lending} borrowing {Borrowing} swap {Swap} }</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context>
+          <context context-type="linenumber">62</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="52c1447c1ec9570a2a3025c7e566557b8d19ed92" datatype="html">
         <source> Role </source><target state="new"> 角色 </target>
         
-      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context><context context-type="linenumber">68</context></context-group></trans-unit>
+      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context><context context-type="linenumber">68</context></context-group></trans-unit><trans-unit id="c73e52c4361f338fa473d0f0be06afafd918ff24" datatype="html">
+        <source>
+      <x id="ICU" equiv-text="{position.role, select, maker {...} taker {...}}"/>
+    </source><target state="new">
+      <x id="ICU" equiv-text="{position.role, select, maker {...} taker {...}}"/>
+    </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context>
+          <context context-type="linenumber">69</context>
+        </context-group>
+      </trans-unit><trans-unit id="ab8016d3f82e79ca8b5aca77935dc63c7d24deaf" datatype="html">
+        <source>{VAR_SELECT, select, maker {Maker} taker {Taker} }</source>
+        <target state="new">{VAR_SELECT, select, maker {卖方} taker {买方} }</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context>
+          <context context-type="linenumber">70</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="6d1cddbe2f61020230280a0543a70e48e43d9832" datatype="html">
         <source> Status </source><target state="new"> 状态 </target>
         
-      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context><context context-type="linenumber">76</context></context-group></trans-unit>
+      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context><context context-type="linenumber">76</context></context-group></trans-unit><trans-unit id="0d7b7864bbde4184816042fd113bcdbe1f792670" datatype="html">
+        <source>
+      <x id="ICU" equiv-text="{position.state, select, Engageable {...} Enagaged {...}}"/>
+    </source><target state="new">
+      <x id="ICU" equiv-text="{position.state, select, Engageable {...} Enagaged {...}}"/>
+    </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context>
+          <context context-type="linenumber">77</context>
+        </context-group>
+      </trans-unit><trans-unit id="0cfb0d3b3ffea8e60ae46368b834b5213c92fcc5" datatype="html">
+        <source>{VAR_SELECT, select, Engageable {Engageable} Enagaged {Engaged} }</source>
+        <target state="new">{VAR_SELECT, select, Engageable {待参与} Enagaged {参与中} }</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context>
+          <context context-type="linenumber">78</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="017f0836ba97d8edb7a73c741d5a6d8b9af3b731" datatype="html">
         <source>Repay</source><target state="new">支付</target>
         

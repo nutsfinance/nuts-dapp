@@ -58,24 +58,24 @@
   <!-- Type Column -->
   <ng-container matColumnDef="type">
     <mat-header-cell *matHeaderCellDef class="position-header" i18n> Type </mat-header-cell>
-    <mat-cell *matCellDef="let position" class="position-content">
-      {{position.instrument | titlecase}}
+    <mat-cell *matCellDef="let position" class="position-content" i18n>
+      {position.instrument, select, lending{Lending} borrowing{Borrowing} swap{Swap}}
     </mat-cell>
   </ng-container>
 
   <!-- Role Column -->
   <ng-container matColumnDef="role">
     <mat-header-cell *matHeaderCellDef class="position-header" i18n> Role </mat-header-cell>
-    <mat-cell *matCellDef="let position" class="position-content">
-      {{position.role | titlecase}}
+    <mat-cell *matCellDef="let position" class="position-content" i18n>
+      {position.role, select, maker{Maker} taker{Taker}}
     </mat-cell>
   </ng-container>
 
   <!-- Status Column -->
   <ng-container matColumnDef="status">
     <mat-header-cell *matHeaderCellDef class="position-header position-status" i18n> Status </mat-header-cell>
-    <mat-cell *matCellDef="let position" class="position-content position-status">
-      {{position.state}}
+    <mat-cell *matCellDef="let position" class="position-content position-status" i18n>
+      {position.state, select, Engageable{Engageable} Enagaged{Engaged}}
     </mat-cell>
   </ng-container>
 
