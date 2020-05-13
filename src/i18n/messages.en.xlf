@@ -420,6 +420,22 @@
           <context context-type="sourcefile">src/app/common/account-total-balance/account-total-balance.component.html</context>
           <context context-type="linenumber">2</context>
         </context-group>
+      </trans-unit><trans-unit id="1cebde565f668a918d057c49cb8ab5f67c1af425" datatype="html">
+        <source>
+          <x id="ICU" equiv-text="{showApprove, select, true {...} false {...}}"/> <x id="INTERPOLATION" equiv-text="{{selectedToken}}"/>
+        </source><target state="final">
+          <x id="ICU" equiv-text="{showApprove, select, true {...} false {...}}"/> <x id="INTERPOLATION" equiv-text="{{selectedToken}}"/>
+        </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/account/account-deposit/account-deposit.component.html</context>
+          <context context-type="linenumber">49</context>
+        </context-group>
+      </trans-unit><trans-unit id="c1b8b90be09a5cb8983ce862b08b491f6cb9da84" datatype="html">
+        <source>{VAR_SELECT, select, true {Enable} false {Deposit} }</source><target state="final">{VAR_SELECT, select, true {Enable} false {Deposit} }</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/account/account-deposit/account-deposit.component.html</context>
+          <context context-type="linenumber">50</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="0f6865e675bcf6574467ddf8f71191579323c81b" datatype="html">
         <source> Date </source><target state="final"> Date </target>
@@ -433,6 +449,18 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/account/account-transaction/account-transaction.component.html</context>
           <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit><trans-unit id="790589e05b952c02abe0703e9a0681f42cce507d" datatype="html">
+        <source> <x id="ICU" equiv-text="{transaction.deposit, select, true {...} false {...}}"/> </source><target state="final"> <x id="ICU" equiv-text="{transaction.deposit, select, true {...} false {...}}"/> </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/account/account-transaction/account-transaction.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit><trans-unit id="5fd244a6f0ca138a98a83f0e0564dfc865148cf4" datatype="html">
+        <source>{VAR_SELECT, select, true {Deposit} false {Withdraw} }</source><target state="final">{VAR_SELECT, select, true {Deposit} false {Withdraw} }</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/account/account-transaction/account-transaction.component.html</context>
+          <context context-type="linenumber">15</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bb60d279d1b544ae80de6c89297fd454f93844e8" datatype="html">
@@ -1180,9 +1208,24 @@
         </context-group>
       </trans-unit><trans-unit id="44f7feaa6aebe8706b497a75e4b65db682f3b999" datatype="html">
         <source>15D</source><target state="final">15D</target>
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/borrowing/borrowing-create/borrowing-create.component.html</context><context context-type="linenumber">65</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap-create/swap-create.component.html</context><context context-type="linenumber">121</context></context-group></trans-unit><trans-unit id="e2cc5b9ae61823dbb2918680bfca715f597f1be8" datatype="html">
+        <source>30D</source><target state="final">30D</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/swap/swap-create/swap-create.component.html</context>
-          <context context-type="linenumber">121</context>
+          <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-create/borrowing-create.component.html</context>
+          <context context-type="linenumber">66</context>
+        </context-group>
+      </trans-unit><trans-unit id="e62a7a2a76f0ffc0279bb2db2a579aec9568d21a" datatype="html">
+        <source>45D</source><target state="final">45D</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-create/borrowing-create.component.html</context>
+          <context context-type="linenumber">67</context>
+        </context-group>
+      </trans-unit><trans-unit id="675eb600cbbe29a57de4d9f52d61677fadc6461b" datatype="html">
+        <source>60D</source><target state="final">60D</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-create/borrowing-create.component.html</context>
+          <context context-type="linenumber">68</context>
         </context-group>
       </trans-unit>
       <trans-unit id="0be1de3f69293297c5f7e8c2630f73fb2e8c80b6" datatype="html">

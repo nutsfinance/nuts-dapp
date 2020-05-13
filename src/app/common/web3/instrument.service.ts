@@ -325,6 +325,7 @@ export class InstrumentService {
   }
 
   public async reloadIssuances() {
+    console.log('Reloading issuance...');
     await this.reloadLendingIssuances();
     await this.reloadBorrowingIssuances();
     await this.reloadSwapIssuances();

@@ -46,7 +46,7 @@
   <div class="row">
     <div class="col-xs-12">
       <div class="deposit-button-wrapper">
-        <button mat-raised-button color="primary" [ngClass]="{'deposit-button': true, 'valid': showApprove || !depositFormGroup.invalid}">
+        <button mat-raised-button color="primary" [ngClass]="{'deposit-button': true, 'valid': showApprove || !depositFormGroup.invalid}" i18n>
           {showApprove, select, true {Enable} false {Deposit}} {{selectedToken}}
         </button>
         <button mat-icon-button class="tooltip-button" type="button"
