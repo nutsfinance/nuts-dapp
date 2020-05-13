@@ -14,25 +14,31 @@
   <div mat-dialog-content class="content-container">
     <p class="content-text" [ngSwitch]="data.type">
         <span *ngSwitchCase="'approve'">
-            <span i18n>Approval request for</span> <span style="color: blue">{{data.fspName}}</span> <span i18n>to withdraw and spend</span> <span style="color: blue;">{{data.tokenName}}</span> <span i18n>has been initiated.</span>
+            <span i18n>Approval request for {{data.fspName}} to withdraw and spend {{data.tokenName}} has been initiated.</span>
         </span>
         <span *ngSwitchCase="'deposit'">
-            <span i18n>Your deposit request for</span> <span style="color: blue;">{{data.tokenAmount | tokenValue:data.tokenName}} {{data.tokenName}}</span>  <span i18n>has been initiated.</span>
+            <span i18n>Your deposit request for {{data.tokenAmount | tokenValue:data.tokenName}} {{data.tokenName}} has been initiated.</span>
         </span>
         <span *ngSwitchCase="'withdraw'">
-            <span i18n>Your withdrawal request for</span> <span style="color: blue;">{{data.tokenAmount | tokenValue:data.tokenName}} {{data.tokenName}}</span>  <span i18n>has been initiated.</span>
+            <span i18n>Your withdrawal request for {{data.tokenAmount | tokenValue:data.tokenName}} {{data.tokenName}} has been initiated.</span>
         </span>
         <span *ngSwitchCase="'create_issuance'">
-            <span i18n>Your {data.instrument, select, lending{lending} borrowing{borrowing} swap{swap}} offer for</span> <span style="color: blue;">{{data.tokenAmount | tokenValue:data.tokenName}} {{data.tokenName}}</span> <span i18n>has been initiated.</span>
+            <span *ngIf="data.instrument == 'lending'" i18n>Your lending offer for {{data.tokenAmount | tokenValue:data.tokenName}} {{data.tokenName}} has been initiated.</span>
+            <span *ngIf="data.instrument == 'borrowing'" i18n>Your borrowing offer for {{data.tokenAmount | tokenValue:data.tokenName}} {{data.tokenName}} has been initiated.</span>
+            <span *ngIf="data.instrument == 'swap'" i18n>Your swap offer for {{data.tokenAmount | tokenValue:data.tokenName}} {{data.tokenName}} has been initiated.</span>
         </span>
         <span *ngSwitchCase="'engage_issuance'">
-            <span i18n>Your {data.instrument, select, lending{loan} borrowing{lending} swap{swap}} request for</span> <span style="color: blue;">{{data.tokenAmount | tokenValue:data.tokenName}} {{data.tokenName}}</span> <span i18n>has been initiated.</span>
+            <span *ngIf="data.instrument == 'lending'" i18n>Your loan request for {{data.tokenAmount | tokenValue:data.tokenName}} {{data.tokenName}} has been initiated.</span>
+            <span *ngIf="data.instrument == 'borrowing'" i18n>Your lending request for {{data.tokenAmount | tokenValue:data.tokenName}} {{data.tokenName}} has been initiated.</span>
+            <span *ngIf="data.instrument == 'swap'" i18n>Your swap request for {{data.tokenAmount | tokenValue:data.tokenName}} {{data.tokenName}} has been initiated.</span>
         </span>
         <span *ngSwitchCase="'cancel_issuance'">
-            <span i18n>Your cancellation request for {data.instrument, select, lending{lending} borrowing{borrowing} swap{swap}} offer</span> <span style="color: blue;">{{data.issuanceId}}</span> <span i18n>has been initiated.</span>
+            <span *ngIf="data.instrument == 'lending'" i18n>Your cancellation request for lending offer {{data.issuanceId}} has been initiated.</span>
+            <span *ngIf="data.instrument == 'borrowing'" i18n>Your cancellation request for borrowing offer {{data.issuanceId}} has been initiated.</span>
+            <span *ngIf="data.instrument == 'swap'" i18n>Your cancellation request for swap offer {{data.issuanceId}} has been initiated.</span>
         </span>
         <span *ngSwitchCase="'repay_issuance'">
-            <span i18n>Principal and interests repayment</span> <span style="color: blue;">{{data.tokenAmount | tokenValue:data.tokenName}} {{data.tokenName}}</span> <span i18n>has been initiated.</span>
+            <span i18n>Principal and interests repayment {{data.tokenAmount | tokenValue:data.tokenName}} {{data.tokenName}} has been initiated.</span>
         </span>
     </p>
   </div>

@@ -229,123 +229,101 @@
           <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
           <context context-type="linenumber">10</context>
         </context-group>
-      </trans-unit>
-      <trans-unit id="173ef52416a64cd0501b4b77884ab82193f73395" datatype="html">
-        <source>Approval request for</source><target state="final">Approval request for</target>
+      </trans-unit><trans-unit id="60b24882372ecdc06db36e052699cf4a7252eb1e" datatype="html">
+        <source>Approval request for <x id="INTERPOLATION" equiv-text="{{data.fspName}}"/> to withdraw and spend <x id="INTERPOLATION_1" equiv-text="{{data.tokenName}}"/> has been initiated.</source><target state="final">Approval request for <x id="INTERPOLATION" equiv-text="{{data.fspName}}"/> to withdraw and spend <x id="INTERPOLATION_1" equiv-text="{{data.tokenName}}"/> has been initiated.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
           <context context-type="linenumber">17</context>
         </context-group>
-      </trans-unit>
-      <trans-unit id="bd0e9330a3f0f99181210a2a468fd8c6303a35b5" datatype="html">
-        <source>to withdraw and spend</source><target state="final">to withdraw and spend</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
-          <context context-type="linenumber">17</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="1d12ff02f7b950fbee08e0c4f1369bad4cb2f415" datatype="html">
-        <source>has been initiated.</source><target state="final">has been initiated.</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
-          <context context-type="linenumber">17</context>
-        </context-group>
+      </trans-unit><trans-unit id="29dde3dcbc7dad1c2f4da5b31849573318336499" datatype="html">
+        <source>Your deposit request for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.tokenName}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.tokenName}}"/> has been initiated.</source><target state="final">Your deposit request for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.tokenName}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.tokenName}}"/> has been initiated.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
           <context context-type="linenumber">20</context>
         </context-group>
+      </trans-unit><trans-unit id="cab3844d095f34b9553af05a58fda5a642a57166" datatype="html">
+        <source>Your withdrawal request for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.tokenName}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.tokenName}}"/> has been initiated.</source><target state="final">Your withdrawal request for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.tokenName}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.tokenName}}"/> has been initiated.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
           <context context-type="linenumber">23</context>
         </context-group>
+      </trans-unit><trans-unit id="3f81564cd06eedde2683de6cde33fe89181e711a" datatype="html">
+        <source>Your lending offer for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.tokenName}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.tokenName}}"/> has been initiated.</source><target state="final">Your lending offer for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.tokenName}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.tokenName}}"/> has been initiated.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
           <context context-type="linenumber">26</context>
         </context-group>
+      </trans-unit><trans-unit id="61dc9ad95f200304018e0a378570ef2364526397" datatype="html">
+        <source>Your borrowing offer for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.tokenName}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.tokenName}}"/> has been initiated.</source><target state="final">Your borrowing offer for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.tokenName}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.tokenName}}"/> has been initiated.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
-          <context context-type="linenumber">29</context>
+          <context context-type="linenumber">27</context>
         </context-group>
+      </trans-unit><trans-unit id="2758a1a3974f37e4220994d549c08527462ad643" datatype="html">
+        <source>Your swap offer for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.tokenName}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.tokenName}}"/> has been initiated.</source><target state="final">Your swap offer for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.tokenName}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.tokenName}}"/> has been initiated.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
-          <context context-type="linenumber">32</context>
+          <context context-type="linenumber">28</context>
         </context-group>
+      </trans-unit><trans-unit id="fbd0dfa28b51b59652705f79dc267b4b66447819" datatype="html">
+        <source>Your loan request for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.tokenName}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.tokenName}}"/> has been initiated.</source><target state="final">Your loan request for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.tokenName}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.tokenName}}"/> has been initiated.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
-          <context context-type="linenumber">35</context>
+          <context context-type="linenumber">31</context>
         </context-group>
-      </trans-unit>
-      <trans-unit id="ec5ca6b1c7a24aca8c29b4ec90533eeb0def9777" datatype="html">
-        <source>Your deposit request for</source><target state="final">Your deposit request for</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
-          <context context-type="linenumber">20</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="8b1cf454cdb59f34cb2cd44fe6bdb12efe0fc658" datatype="html">
-        <source>Your withdrawal request for</source><target state="final">Your withdrawal request for</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
-          <context context-type="linenumber">23</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="62f79c6655d7c229044a2a7fd462a5a39f77022a" datatype="html">
-        <source>Your <x id="ICU" equiv-text="{data.instrument, select, lending {...} borrowing {...} swap {...}}"/> offer for</source><target state="final">Your <x id="ICU" equiv-text="{data.instrument, select, lending {...} borrowing {...} swap {...}}"/> offer for</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
-          <context context-type="linenumber">26</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="9b5fd3c0a793e5aec9ea40b996b08381e16a6680" datatype="html">
-        <source>{VAR_SELECT, select, lending {lending} borrowing {borrowing} swap {swap} }</source><target state="final">{VAR_SELECT, select, lending {lending} borrowing {borrowing} swap {swap} }</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
-          <context context-type="linenumber">26</context>
-        </context-group>
+      </trans-unit><trans-unit id="6631b8f4944fcc4c18e96ce58ecffda1455c956c" datatype="html">
+        <source>Your lending request for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.tokenName}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.tokenName}}"/> has been initiated.</source><target state="final">Your lending request for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.tokenName}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.tokenName}}"/> has been initiated.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
           <context context-type="linenumber">32</context>
         </context-group>
-      </trans-unit>
-      <trans-unit id="5cd2ee84d05d6988bcdd919de31db2a027a7ceec" datatype="html">
-        <source>Your <x id="ICU" equiv-text="{data.instrument, select, lending {...} borrowing {...} swap {...}}"/> request for</source><target state="final">Your <x id="ICU" equiv-text="{data.instrument, select, lending {...} borrowing {...} swap {...}}"/> request for</target>
+      </trans-unit><trans-unit id="ac44b1b9daf24a9c0c58167d409d4514730e0ddc" datatype="html">
+        <source>Your swap request for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.tokenName}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.tokenName}}"/> has been initiated.</source><target state="final">Your swap request for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.tokenName}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.tokenName}}"/> has been initiated.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
-          <context context-type="linenumber">29</context>
+          <context context-type="linenumber">33</context>
         </context-group>
-      </trans-unit>
-      <trans-unit id="ee796ffec28de5e1f15db22503ae925d4789a11c" datatype="html">
-        <source>{VAR_SELECT, select, lending {loan} borrowing {lending} swap {swap} }</source><target state="final">{VAR_SELECT, select, lending {loan} borrowing {lending} swap {swap} }</target>
+      </trans-unit><trans-unit id="5b79339fcea55f806a6e987a1ef40c64d4757f88" datatype="html">
+        <source>Your cancellation request for lending offer <x id="INTERPOLATION" equiv-text="{{data.issuanceId}}"/> has been initiated.</source><target state="final">Your cancellation request for lending offer <x id="INTERPOLATION" equiv-text="{{data.issuanceId}}"/> has been initiated.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
-          <context context-type="linenumber">29</context>
+          <context context-type="linenumber">36</context>
         </context-group>
-      </trans-unit>
-      <trans-unit id="4c8d275ba1c4565dbcf65f2b32374f1a54274e09" datatype="html">
-        <source>Your cancellation request for <x id="ICU" equiv-text="{data.instrument, select, lending {...} borrowing {...} swap {...}}"/> offer</source><target state="final">Your cancellation request for <x id="ICU" equiv-text="{data.instrument, select, lending {...} borrowing {...} swap {...}}"/> offer</target>
+      </trans-unit><trans-unit id="3b53895a40b7974509d9d03a625b2545a5a772c1" datatype="html">
+        <source>Your cancellation request for borrowing offer <x id="INTERPOLATION" equiv-text="{{data.issuanceId}}"/> has been initiated.</source><target state="final">Your cancellation request for borrowing offer <x id="INTERPOLATION" equiv-text="{{data.issuanceId}}"/> has been initiated.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
-          <context context-type="linenumber">32</context>
+          <context context-type="linenumber">37</context>
         </context-group>
-      </trans-unit>
-      <trans-unit id="7c92f6791d8adabd56d072e1b529e16b1101bc04" datatype="html">
-        <source>Principal and interests repayment</source><target state="final">Principal and interests repayment</target>
+      </trans-unit><trans-unit id="b94eb04e15dcc237f5269d81252ead3353f9973a" datatype="html">
+        <source>Your cancellation request for swap offer <x id="INTERPOLATION" equiv-text="{{data.issuanceId}}"/> has been initiated.</source><target state="final">Your cancellation request for swap offer <x id="INTERPOLATION" equiv-text="{{data.issuanceId}}"/> has been initiated.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
-          <context context-type="linenumber">35</context>
+          <context context-type="linenumber">38</context>
+        </context-group>
+      </trans-unit><trans-unit id="87dbcaefcef71dd239a31c83c61ace2ce2550ebb" datatype="html">
+        <source>Principal and interests repayment <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.tokenName}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.tokenName}}"/> has been initiated.</source><target state="final">Principal and interests repayment <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.tokenName}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.tokenName}}"/> has been initiated.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
+          <context context-type="linenumber">41</context>
         </context-group>
       </trans-unit>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
       <trans-unit id="f4e529ae5ffd73001d1ff4bbdeeb0a72e342e5c8" datatype="html">
         <source>Close</source><target state="final">Close</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
-          <context context-type="linenumber">40</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context>
-          <context context-type="linenumber">97</context>
-        </context-group>
-      </trans-unit>
+        
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context><context context-type="linenumber">46</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/dashboard/dashboard-position-balance/dashboard-position-balance.component.html</context><context context-type="linenumber">97</context></context-group></trans-unit>
       <trans-unit id="84ea0f5d36f1f26b1d8517d87ab18435314cc218" datatype="html">
         <source>Please enter amount.</source><target state="final">Please enter amount.</target>
         <context-group purpose="location">
@@ -1181,6 +1159,30 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/instrument/swap/swap-create/swap-create.component.html</context>
           <context context-type="linenumber">103</context>
+        </context-group>
+      </trans-unit><trans-unit id="4b03875d535c300d85a81c17105d24d85adadbae" datatype="html">
+        <source>3D</source><target state="final">3D</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/swap/swap-create/swap-create.component.html</context>
+          <context context-type="linenumber">118</context>
+        </context-group>
+      </trans-unit><trans-unit id="9e36309e4aa8c7c7a5ef2b4a1106bfb5b0712cf9" datatype="html">
+        <source>7D</source><target state="final">7D</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/swap/swap-create/swap-create.component.html</context>
+          <context context-type="linenumber">119</context>
+        </context-group>
+      </trans-unit><trans-unit id="49824c4e5b2d84639cc852f12e8ec58a5ed30583" datatype="html">
+        <source>10D</source><target state="final">10D</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/swap/swap-create/swap-create.component.html</context>
+          <context context-type="linenumber">120</context>
+        </context-group>
+      </trans-unit><trans-unit id="44f7feaa6aebe8706b497a75e4b65db682f3b999" datatype="html">
+        <source>15D</source><target state="final">15D</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/swap/swap-create/swap-create.component.html</context>
+          <context context-type="linenumber">121</context>
         </context-group>
       </trans-unit>
       <trans-unit id="0be1de3f69293297c5f7e8c2630f73fb2e8c80b6" datatype="html">
