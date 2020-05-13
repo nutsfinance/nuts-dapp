@@ -65,11 +65,10 @@
             },
             "zh": {
               "aot": true,
-              "outputPath": "dist/zh/",
-              "i18nFile": "src/locale/messages.zh.xlf",
+              "outputPath": "dist/nuts-dapp-zh",
+              "i18nFile": "src/i18n/messages.zh.xlf",
               "i18nFormat": "xlf",
-              "i18nLocale": "zh",
-              "i18nMissingTranslation": "error"
+              "i18nLocale": "zh"
             }
           }
         },
@@ -133,6 +132,21 @@
           "configurations": {
             "production": {
               "devServerTarget": "nuts-dapp:serve:production"
+            }
+          }
+        },
+        "xliffmerge": {
+          "builder": "@ngx-i18nsupport/tooling:xliffmerge",
+          "options": {
+            "xliffmergeOptions": {
+              "i18nFormat": "xlf",
+              "srcDir": "src/i18n",
+              "genDir": "src/i18n",
+              "defaultLanguage": "en",
+              "languages": [
+                "en",
+                "zh"
+              ]
             }
           }
         }

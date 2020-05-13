@@ -4,7 +4,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChartsModule } from 'ng2-charts';
-import { TimeAgoPipe } from 'time-ago-pipe';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent, NotificationSnackBar, IncorrectNetworkDialog, DisconnectedDialog } from './app.component';
 import { WalletAddressComponent } from './common/wallet-address/wallet-address.component';
@@ -48,6 +47,7 @@ import { AccountTotalBalanceComponent } from './common/account-total-balance/acc
 import { AccountBalanceDialog } from './common/account-total-balance/account-balance-dialog.component';
 import { AccountTotalBalanceDialog } from './common/account-total-balance/account-total-balance-dialog.component';
 import { TokenValuePipe } from './common/web3/token-value.pipe';
+import { TimeAgoPipe } from './common/web3/time-ago.pipe';
 import { BorrowingCardComponent } from './instrument/borrowing/borrowing-card/borrowing-card.component';
 import { BorrowingDetailComponent } from './instrument/borrowing/borrowing-detail/borrowing-detail.component';
 import { SwapCardComponent } from './instrument/swap/swap-card/swap-card.component';

@@ -40,7 +40,7 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
   public instrumentChartOptions = {
     title: {
       display: true,
-      text: this.languageService.language == 'zh' ? '产品资产分布' : 'Instruments Balance',
+      text: 'Instruments Balance',
     },
     legend: {
       position: 'bottom',
@@ -80,7 +80,7 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
   public assetChartOptions = {
     title: {
       display: true,
-      text: this.languageService.language == 'zh' ? '代币资产分布' : 'Asset Composition',
+      text: 'Asset Composition',
     },
     legend: {
       position: 'bottom',
@@ -110,6 +110,9 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
     private languageService: LanguageService, private zone: NgZone) { }
 
   ngOnInit() {
+    console.log(this.languageService.language);
+    this.instrumentChartOptions.title.text = this.languageService.language == 'zh' ? '产品资产分布' : 'Instruments Balance';
+    this.assetChartOptions.title.text = this.languageService.language == 'zh' ? '代币资产分布' : 'Asset Composition';
     this.updateAccountBalances(this.accountBalanceService.accountBalances);
     this.accountBalancesSubscription = this.accountBalanceService.accountBalancesSubject.subscribe(accountBalances => {
       this.zone.run(() => {
