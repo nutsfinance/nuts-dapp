@@ -45,6 +45,7 @@ export class InstrumentService {
     // We don't initialize the lending issuance list until the platform is initialized!
     this.nutsPlatformService.platformInitializedSubject.subscribe(initialized => {
       if (initialized) {
+        console.log('Platform initialized. Loading issuances.');
         this.reloadIssuances();
         this.nutsPlatformService.currentNetworkSubject.subscribe(currentNetwork => {
           console.log('Network changed. Reloading lending issuances.', currentNetwork);

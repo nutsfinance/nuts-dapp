@@ -15,6 +15,7 @@ import { LanguageService } from '../../../common/web3/language.service';
 })
 export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
   private instruments = ['Lending', 'Borrowing', 'Swap', 'Placeholder'];
+  private instrumentChineseLabels = ['借款', '贷款', '互换', 'Placeholder'];
   private assets = ['ETH', 'USDT', 'USDC', 'NUTS', 'DAI', 'Placeholder'];
 
   public totalValue = 0;
@@ -110,9 +111,12 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
     private languageService: LanguageService, private zone: NgZone) { }
 
   ngOnInit() {
-    console.log(this.languageService.language);
-    this.instrumentChartOptions.title.text = this.languageService.language == 'zh' ? '产品资产分布' : 'Instruments Balance';
-    this.assetChartOptions.title.text = this.languageService.language == 'zh' ? '代币资产分布' : 'Asset Composition';
+    if (this.languageService.language == 'zh') {
+      this.instrumentChartLabels = this.instrumentChineseLabels;
+      this.instrumentChartOptions.title.text = '产品资产分布';
+      this.assetChartOptions.title.text = '代币资产分布';  
+    }
+    
     this.updateAccountBalances(this.accountBalanceService.accountBalances);
     this.accountBalancesSubscription = this.accountBalanceService.accountBalancesSubject.subscribe(accountBalances => {
       this.zone.run(() => {
@@ -132,6 +136,7 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
   }
 
   private async updateAccountBalances(userBalance: AccountBalances) {
+    const instrumentLabels = this.languageService.language === 'zh' ? this.instrumentChineseLabels : this.instruments;
     const instrumentsValue = [0, 0, 0, 0];
     const assetsValue = [0, 0, 0, 0, 0, 0];
     const targetTokenAddress = this.currencyService.currency === 'USD' ? USD_ADDRESS : CNY_ADDRESS;
@@ -164,7 +169,7 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
       }
 
       // Update labels
-      this.instrumentChartLabels = this.instruments.map((value, index) => {
+      this.instrumentChartLabels = instrumentLabels.map((value, index) => {
         return `${value}: ${this.instrumentPercentage[index]}%`;
       })
       this.assetChartLabels = this.assets.map((value, index) => {
@@ -176,7 +181,7 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
       this.assetValue = assetsValue;
     } else {
       // Update labels
-      this.instrumentChartLabels = this.instruments.map((value, index) => {
+      this.instrumentChartLabels = instrumentLabels.map((value, index) => {
         return `${value}: _ _%`;
       })
       this.assetChartLabels = this.assets.map((value, index) => {
@@ -193,7 +198,9 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
   }
 
   private getInstrumentTooltip(tooltipItem, data) {
-    const instrument = this.instruments[tooltipItem.index];
+    const instrument = this.languageService.language == 'zh' ?
+      this.instrumentChineseLabels[tooltipItem.index] :
+      this.instruments[tooltipItem.index];
     const currency = this.currencyService.getCurrencySymbol();
 
     if (instrument.indexOf("Placeholder") >= 0) {
