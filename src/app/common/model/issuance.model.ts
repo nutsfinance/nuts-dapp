@@ -22,4 +22,11 @@ export class IssuanceModel {
     getIssuanceState(): string {
         return IssuanceState[this.state];
     }
+
+    getUserRole(userAddress: string): string {
+        if (this.makerAddress.toLowerCase() == userAddress.toLowerCase())   return 'maker';
+        if (this.takerAddress.toLowerCase() == userAddress.toLowerCase())   return 'taker';
+
+        return 'other';
+    }
 }

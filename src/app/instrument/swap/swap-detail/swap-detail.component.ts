@@ -17,6 +17,7 @@ import { AccountBalanceService } from 'src/app/common/web3/account-balance.servi
   styleUrls: ['./swap-detail.component.scss']
 })
 export class SwapDetailComponent implements OnInit {
+  public currentAccount: string;
   public issuanceId: number;
   public issuance: SwapIssuanceModel;
   public inputToken: string;
@@ -43,7 +44,8 @@ export class SwapDetailComponent implements OnInit {
       this.issuanceId = +params['id'];
       this.updateSwapIssuance();
     });
-    this.accountUpdatedSubscription = this.nutsPlatformService.currentAccountSubject.subscribe(_ => {
+    this.accountUpdatedSubscription = this.nutsPlatformService.currentAccountSubject.subscribe(account => {
+      this.currentAccount = account;
       this.updateSwapIssuance();
     });
     this.swapUpdatedSubscription = this.instrumentService.swapIssuancesUpdatedSubject.subscribe(_ => {

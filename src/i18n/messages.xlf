@@ -1652,24 +1652,44 @@
           <context context-type="linenumber">48</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ec270e51cdbb84aa1f9f497bf7f5d4fb7b0a5bd5" datatype="html">
+      <trans-unit id="997e0543bdd6128066dbef22a9bc8a741a78bf76" datatype="html">
         <source>
-                <x id="ICU" equiv-text="{issuance.makerAddress.toLowerCase() == nutsPlatformService.currentAccount.toLowerCase(), select, true {...} false {...}}"/>
+                <x id="ICU" equiv-text="{issuance.getUserRole(currentAccount), select, maker {...} taker {...}}"/>
             </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/instrument/lending/lending-detail/lending-detail.component.html</context>
           <context context-type="linenumber">96</context>
         </context-group>
         <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/swap/swap-card/swap-card.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+        <context-group purpose="location">
           <context context-type="sourcefile">src/app/instrument/swap/swap-detail/swap-detail.component.html</context>
           <context context-type="linenumber">51</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="d33e88ecb3283055c5f91ac4f06f2090bf383764" datatype="html">
-        <source>{VAR_SELECT, select, true {maker} false {taker} }</source>
+      <trans-unit id="ae8668ebb3c7e9e8701160b00abac163a31ddc0f" datatype="html">
+        <source>{VAR_SELECT, select, maker {maker} taker {taker} }</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/instrument/lending/lending-detail/lending-detail.component.html</context>
           <context context-type="linenumber">97</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/lending/lending-card/lending-card.component.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/swap/swap-card/swap-card.component.html</context>
+          <context context-type="linenumber">18</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/instrument/swap/swap-detail/swap-detail.component.html</context>
@@ -1808,21 +1828,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/instrument/swap/swap-card/swap-card.component.html</context>
           <context context-type="linenumber">15</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="cac3bf6999f32a27ea48c6004f5e843d0a53765f" datatype="html">
-        <source>{VAR_SELECT, select, true {maker} false {taker} }</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/lending/lending-card/lending-card.component.html</context>
-          <context context-type="linenumber">16</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context>
-          <context context-type="linenumber">19</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/swap/swap-card/swap-card.component.html</context>
-          <context context-type="linenumber">18</context>
         </context-group>
       </trans-unit>
       <trans-unit id="def51555c0dc07264e0a3e00b714e447286e4563" datatype="html">
@@ -2063,19 +2068,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context>
           <context context-type="linenumber">4</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="db6a674e3391f7310c3b267573360d493ca3f49c" datatype="html">
-        <source>
-                <x id="ICU" equiv-text="{issuance.makerAddress.toLowerCase() == currentAccount.toLowerCase(), select, true {...} false {...}}"/>
-            </source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context>
-          <context context-type="linenumber">18</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/swap/swap-card/swap-card.component.html</context>
-          <context context-type="linenumber">17</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5bbfaff44bde73248724fe45572a8b287167fff4" datatype="html">

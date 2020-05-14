@@ -18,6 +18,7 @@ import { AccountBalanceService } from 'src/app/common/web3/account-balance.servi
   styleUrls: ['./borrowing-detail.component.scss']
 })
 export class BorrowingDetailComponent implements OnInit, OnDestroy {
+  public currentAccount: string;
   public issuanceId: number;
   public issuance: BorrowingIssuanceModel;
   public borrowingToken: string;
@@ -47,7 +48,8 @@ export class BorrowingDetailComponent implements OnInit, OnDestroy {
       this.issuanceId = +params['id'];
       this.updateBorrowingIssuance();
     });
-    this.accountUpdatedSubscription = this.nutsPlatformService.currentAccountSubject.subscribe(_ => {
+    this.accountUpdatedSubscription = this.nutsPlatformService.currentAccountSubject.subscribe(account => {
+      this.currentAccount = account;
       this.updateBorrowingIssuance();
     });
     this.borrowingUpdatedSubscription = this.instrumentService.borrowingIssuancesUpdatedSubject.subscribe(_ => {
