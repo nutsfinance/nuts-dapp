@@ -118,7 +118,7 @@
   </mat-row>>
 </mat-table>
 
-<mat-paginator [pageSize]="10" hidePageSize *ngIf="activePositions.length > 0"></mat-paginator>
+<mat-paginator [pageSize]="10" hidePageSize [ngClass]="{hidden: activePositions.length == 0}"></mat-paginator>
 
 <div class="no-position-container" *ngIf="activePositions.length == 0" i18n>
   There are currently no active positions.

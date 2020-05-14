@@ -163,7 +163,6 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
         }
       });
 
-      console.log(positions);
       this.activePositions = positions;
       this.dataSource = new MatTableDataSource<Position>(this.activePositions);
       this.dataSource.paginator = this.paginator;
