@@ -2,7 +2,10 @@
   <div class="col-xs-12">
     <div class="dashboard-label">
       <span i18n>Position Balance</span>
-      <button mat-icon-button class="tooltip-button" #titleTooltip="matTooltip" (click)="titleTooltip.toggle()"
+      <button mat-icon-button class="tooltip-button"
+        #titleTooltip="matTooltip"
+        (click)="titleTooltip.toggle()"
+        i18n-matTooltip
         matTooltip="Position Balance provides a balance sheet view of the assets stored in active positions."
         aria-label="Position Balance provides a balance sheet view of the assets stored in active positions.">
         <mat-icon class="tooltip-icon">info_outline</mat-icon>
@@ -28,7 +31,10 @@
       </span>
       <span class="position-label">
         <span i18n>total payables</span>
-          <button mat-icon-button class="tooltip-button" #payableTooltip="matTooltip" (click)="payableTooltip.toggle()"
+          <button mat-icon-button class="tooltip-button"
+            #payableTooltip="matTooltip"
+            (click)="payableTooltip.toggle()"
+            i18n-matTooltip
             matTooltip="Amount to be repaid for active positions."
             aria-label="Amount to be repaid for active positions.">
             <mat-icon class="tooltip-icon">info_outline</mat-icon>
@@ -43,8 +49,11 @@
       </span>
       <span class="position-label">
         <span i18n>total receivables</span>
-        <button mat-icon-button class="tooltip-button" #receivableTooltip="matTooltip"
-          (click)="receivableTooltip.toggle()" matTooltip="Amount to be received for active positions."
+        <button mat-icon-button class="tooltip-button"
+          #receivableTooltip="matTooltip"
+          (click)="receivableTooltip.toggle()"
+          i18n-matTooltip
+          matTooltip="Amount to be received for active positions."
           aria-label="Amount to be received for active positions.">
           <mat-icon class="tooltip-icon">info_outline</mat-icon>
         </button>

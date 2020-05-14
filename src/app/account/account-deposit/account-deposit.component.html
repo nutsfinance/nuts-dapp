@@ -53,7 +53,8 @@
             *ngIf="!showApprove"
             #depositTooltip="matTooltip"
             (click)="depositTooltip.toggle()"
-            [matTooltip]="'Assets are secured in a non-custodial Instrument Account.'"
+            i18n-matTooltip
+            matTooltip="Assets are secured in a non-custodial Instrument Account."
             aria-label="Assets are secured in a non-custodial Instrument Account.">
             <mat-icon class="tooltip-icon">info_outline</mat-icon>
         </button>
@@ -61,6 +62,7 @@
             *ngIf="showApprove"
             #approveTooltip="matTooltip"
             (click)="approveTooltip.toggle()"
+            i18n-matTooltip
             matTooltip="Approval must be granted in order to deposit ERC-20 tokens."
             aria-label="Approval must be granted in order to deposit ERC-20 tokens.">
             <mat-icon class="tooltip-icon">info_outline</mat-icon>

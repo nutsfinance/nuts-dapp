@@ -7,6 +7,7 @@
           <button mat-icon-button class="tooltip-button" type="button"
               #principalTooltip="matTooltip"
               (click)="principalTooltip.toggle()"
+              i18n-matTooltip
               matTooltip="Assets you wish to lend out."
               aria-label="Assets you wish to lend out.">
               <mat-icon class="tooltip-icon">info_outline</mat-icon>
@@ -62,6 +63,7 @@
           <button mat-icon-button class="tooltip-button" type="button"
               #tenorTooltip="matTooltip"
               (click)="tenorTooltip.toggle()"
+              i18n-matTooltip
               matTooltip="The length of time until the loan is due."
               aria-label="The length of time until the loan is due.">
               <mat-icon class="tooltip-icon">info_outline</mat-icon>
@@ -109,6 +111,7 @@
           <button mat-icon-button class="tooltip-button" type="button"
               #collateralTooltip="matTooltip"
               (click)="collateralTooltip.toggle()"
+              i18n-matTooltip
               matTooltip="Assets pledged by the Borrower in order to secure the loan."
               aria-label="Assets pledged by the Borrower in order to secure the loan.">
               <mat-icon class="tooltip-icon">info_outline</mat-icon>
@@ -169,6 +172,7 @@
           <button mat-icon-button class="tooltip-button" type="button"
               #interestTooltip="matTooltip"
               (click)="interestTooltip.toggle()"
+              i18n-matTooltip
               matTooltip="Cost of borrowing, calculated using simple interest."
               aria-label="Cost of borrowing, calculated using simple interest.">
               <mat-icon class="tooltip-icon">info_outline</mat-icon>

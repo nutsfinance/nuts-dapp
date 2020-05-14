@@ -101,7 +101,6 @@ export class NotificationService {
       console.log('Notification not initialized: Current address', currentAddress, 'Current network', currentNetwork);
       return of([]);
     }
-    console.log(environment.language);
     return this.http.get<NotificationModel[]>(`${this.nutsPlatformService.getApiServerHost()}/notifications/${currentAddress}`, {
       params: {
         language: environment.language === 'zh' ? 'zh-CN' : 'en-US'
