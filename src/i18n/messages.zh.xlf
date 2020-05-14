@@ -1593,7 +1593,13 @@
         <source>Value</source><target state="new">价值</target>
         
         
-      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/lending/lending-card/lending-card.component.html</context><context context-type="linenumber">57</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap-card/swap-card.component.html</context><context context-type="linenumber">53</context></context-group></trans-unit>
+      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/lending/lending-card/lending-card.component.html</context><context context-type="linenumber">57</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap-card/swap-card.component.html</context><context context-type="linenumber">53</context></context-group></trans-unit><trans-unit id="b943f661eef981fa1b1e58a10a43d2b7afaa9147" datatype="html">
+        <source>{VAR_SELECT, select, less {Expand} more {Hide} }</source>
+        <target state="new">{VAR_SELECT, select, less {展开} more {收起} }</target>
+        
+        
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/lending/lending-card/lending-card.component.html</context><context context-type="linenumber">78</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context><context context-type="linenumber">82</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap-card/swap-card.component.html</context><context context-type="linenumber">70</context></context-group></trans-unit>
       <trans-unit id="cc55c1500e4186b0339b72b99e8985afb4af1625" datatype="html">
         <source>
             Engage
@@ -1690,11 +1696,7 @@
         <source><x id="INTERPOLATION" equiv-text="{{currencyService.currency}}"/> Value</source><target state="new"><x id="INTERPOLATION" equiv-text="{{currencyService.currency}}"/> Value</target>
         
       <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context><context context-type="linenumber">61</context></context-group></trans-unit>
-      <trans-unit id="2f4c90d0c4fb0cea7aee91bbf8d3846f53bfcaee" datatype="html">
-        <source>{VAR_SELECT, select, true {Hide} false {Expand} }</source>
-        <target state="new">{VAR_SELECT, select, true {收起} false {展开} }</target>
-        
-      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap-card/swap-card.component.html</context><context context-type="linenumber">70</context></context-group></trans-unit>
+      
       <trans-unit id="3e242f213dd1a0754aad9164aa80887d67708500" datatype="html">
         <source>Input</source><target state="new">换出</target>
         

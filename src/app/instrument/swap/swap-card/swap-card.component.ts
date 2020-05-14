@@ -21,7 +21,7 @@ export class SwapCardComponent implements OnInit, OnDestroy {
 
   public convertedInputValue: Promise<number>;
   public convertedOutputValue: Promise<number>;
-  public showMore = false;
+  public showState = 'less';
 
   private currentAccountSubscription: Subscription;
   private currencyUpdatedSubscription: Subscription;

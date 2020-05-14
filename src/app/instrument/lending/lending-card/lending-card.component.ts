@@ -23,7 +23,7 @@ export class LendingCardComponent implements OnInit, OnDestroy {
   public convertedCollateralValue: Promise<number>;
   public convertedPerDayInterestValue: Promise<number>;
   public convertedTotalInterestValue: Promise<number>;
-  public showMore = false;
+  public showState = 'less';
 
   private currentAccountSubscription: Subscription;
   private currencyUpdatedSubscription: Subscription;

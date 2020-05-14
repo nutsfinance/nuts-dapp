@@ -49,7 +49,7 @@
     <div class="issuance-card-notation">
         1 {{inputToken}} &asymp; {{ exchangeRate | number: '1.0-4'}} {{outputToken}}
     </div>
-    <div class="issuance-card-more-content"  *ngIf="showMore">
+    <div class="issuance-card-more-content"  *ngIf="showState == 'more'">
         <div class="more-content-title">{{currencyService.currency}} <span i18n>Value</span></div>
         <div class="more-content-container">
             <div class="content-container">
@@ -67,7 +67,7 @@
         </div>
     </div>
     <div class="issuance-card-actions">
-        <button mat-button color="secondary" class="issuance-action-button" (click)="showMore = !showMore" i18n>{showMore, select, true{Hide} false{Expand}}</button>
+        <button mat-button color="secondary" class="issuance-action-button" (click)="showState = showState == 'more' ? 'less' : 'more'" i18n>{showState, select, less{Expand} more{Hide}}</button>
         <a mat-raised-button color="primary" class="issuance-action-button engage-button" 
             [routerLink]="['/', languageService.language, 'instrument', 'swap', 'positions', issuance.issuanceId]"
             *ngIf="issuance.state == 2 && issuance.getUserRole(currentAccount) != 'maker'" i18n>
