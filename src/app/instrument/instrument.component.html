@@ -5,14 +5,14 @@
           <button mat-icon-button (click)="sidenav.close()" color="primary">
             <mat-icon>close</mat-icon>
           </button>
-          <a [routerLink]="[languageService.language, 'instrument', 'dashboard']">
+          <a [routerLink]="[language, 'instrument', 'dashboard']">
             <img src="../assets/images/logo.png" alt="logo" class="sidenav-logo">
           </a>
       </mat-toolbar>
   
       <mat-nav-list class="nav-list">
   
-        <a [routerLink]="[languageService.language, 'instrument', 'dashboard']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" mat-list-item (click)="sidenav.close()">
+        <a [routerLink]="[language, 'instrument', 'dashboard']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" mat-list-item (click)="sidenav.close()">
           <div class="nav-list-item">
             <span i18n>Dashboard</span>
             <mat-icon class="app-nav-list-icon">chevron_right</mat-icon>
@@ -28,15 +28,15 @@
           </div>
         </mat-list-item>
   
-        <a [routerLink]="['/', languageService.language, 'instrument', 'lending']" routerLinkActive="active" mat-list-item class="nav-sublist-item" (click)="sidenav.close()">
+        <a [routerLink]="['/', language, 'instrument', 'lending']" routerLinkActive="active" mat-list-item class="nav-sublist-item" (click)="sidenav.close()">
           <span i18n>Lending</span>
         </a>
   
-        <a [routerLink]="['/', languageService.language, 'instrument', 'borrowing']" routerLinkActive="active" mat-list-item class="nav-sublist-item" (click)="sidenav.close()">
+        <a [routerLink]="['/', language, 'instrument', 'borrowing']" routerLinkActive="active" mat-list-item class="nav-sublist-item" (click)="sidenav.close()">
           <span i18n>Borrowing</span>
         </a>
   
-        <a [routerLink]="['/', languageService.language, 'instrument', 'swap']" routerLinkActive="active" mat-list-item class="nav-sublist-item" (click)="sidenav.close()">
+        <a [routerLink]="['/', language, 'instrument', 'swap']" routerLinkActive="active" mat-list-item class="nav-sublist-item" (click)="sidenav.close()">
           <span i18n>Swap</span>
         </a>
   
@@ -46,7 +46,7 @@
           <div class="nav-list-item">
             <span i18n>Language</span>
             <div class="nav-language">
-              <span i8n>English</span>
+              <span i18n>{language, select, en{English} zh{Chinese}}</span>
               <mat-icon class="nav-list-icon">chevron_right</mat-icon>
             </div>
           </div>
@@ -62,7 +62,7 @@
           <button mat-icon-button (click)="sidenav.open()" color="primary">
             <mat-icon class="app-toolbar-icon">menu</mat-icon>
           </button>
-          <a [routerLink]="['/', languageService.language, 'instrument', 'dashboard']">
+          <a [routerLink]="['/', language, 'instrument', 'dashboard']">
             <img src="../assets/images/logo.png" alt="logo" class="toolbar-logo">
           </a>
         </div>

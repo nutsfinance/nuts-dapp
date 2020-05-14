@@ -83,22 +83,22 @@
     <div class="issuance-card-actions">
         <button mat-button color="secondary" class="issuance-action-button" (click)="showState = showState == 'more' ? 'less' : 'more'" i18n>{showState, select, less{Expand} more{Hide}}</button>
         <a mat-raised-button color="primary" class="issuance-action-button engage-button" 
-            [routerLink]="['/', languageService.language, 'instrument', 'borrowing', 'positions', issuance.issuanceId]"
+            [routerLink]="['/', language, 'instrument', 'borrowing', 'positions', issuance.issuanceId]"
             *ngIf="issuance.state == 2 && issuance.getUserRole(currentAccount) != 'maker'" i18n>
             Engage
         </a>
         <a mat-stroked-button color="primary" class="issuance-action-button close-button" 
-            [routerLink]="['/', languageService.language, 'instrument', 'borrowing', 'positions', issuance.issuanceId]"
+            [routerLink]="['/', language, 'instrument', 'borrowing', 'positions', issuance.issuanceId]"
             *ngIf="issuance.state == 2 && issuance.getUserRole(currentAccount) == 'maker'" i18n>
             Close Position
         </a>
         <a mat-raised-button color="primary" class="issuance-action-button engage-button" 
-            [routerLink]="['/', languageService.language, 'instrument', 'borrowing', 'positions', issuance.issuanceId]"
+            [routerLink]="['/', language, 'instrument', 'borrowing', 'positions', issuance.issuanceId]"
             *ngIf="issuance.state == 3 && issuance.getUserRole(currentAccount) == 'taker'" i18n>
             Repay
         </a>
         <a mat-stroked-button color="primary" class="issuance-action-button close-button" 
-            [routerLink]="['/', languageService.language, 'instrument', 'borrowing', 'positions', issuance.issuanceId]"
+            [routerLink]="['/', language, 'instrument', 'borrowing', 'positions', issuance.issuanceId]"
             *ngIf="issuance.state != 2 && !(issuance.state == 3 && issuance.getUserRole(currentAccount) == 'taker')" i18n>
             View Position
         </a>

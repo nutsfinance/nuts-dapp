@@ -3,11 +3,11 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
+import { environment } from 'src/environments/environment';
 import { NotificationModel, NotificationReadStatus, NotificationCategory } from '../notification.model';
 import { NutsPlatformService } from 'src/app/common/web3/nuts-platform.service';
 import { TransactionType } from '../transaction.model';
 import { NotificationService } from '../notification.service';
-import { LanguageService } from '../../common/web3/language.service';
 
 @Component({
   selector: 'app-notification-dialog',
@@ -15,10 +15,12 @@ import { LanguageService } from '../../common/web3/language.service';
   styleUrls: ['./notification-dialog.component.scss']
 })
 export class NotificationDialog implements OnInit, OnDestroy {
+  public language = environment.language;
+
   private notificationSubscription: Subscription;
 
   constructor(public dialogRef: MatDialogRef<NotificationDialog>, @Inject(MAT_DIALOG_DATA) public notifications: NotificationModel[],
-    public languageService: LanguageService, private nutsPlatformService: NutsPlatformService, private router: Router,
+    private nutsPlatformService: NutsPlatformService, private router: Router,
     private notificationService: NotificationService) { }
 
   ngOnInit() {
@@ -65,7 +67,7 @@ export class NotificationDialog implements OnInit, OnDestroy {
     notification.readStatus = NotificationReadStatus.READ;
     this.notificationService.updateNotification(notification);
     const instrumentName = this.nutsPlatformService.getInstrumentById(+notification.instrumentId);
-    const language = this.languageService.language;
+    const language = environment.language;
     
     // Note:
     // 1. Transaction initiated has no action

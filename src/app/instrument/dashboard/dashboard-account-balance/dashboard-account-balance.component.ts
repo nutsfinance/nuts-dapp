@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { MultiDataSet, Label } from 'ng2-charts';
 
+import { environment } from 'src/environments/environment';
 import { AccountBalanceService, AccountBalances } from 'src/app/common/web3/account-balance.service';
 import { Subscription } from 'rxjs';
 import { PriceOracleService } from 'src/app/common/web3/price-oracle.service';
 import { NutsPlatformService, USD_ADDRESS, CNY_ADDRESS } from 'src/app/common/web3/nuts-platform.service';
 import { CurrencyService } from 'src/app/common/currency-select/currency.service';
-import { LanguageService } from '../../../common/web3/language.service';
 
 @Component({
   selector: 'app-dashboard-account-balance',
@@ -108,10 +108,10 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
 
   constructor(private accountBalanceService: AccountBalanceService, private priceOracleService: PriceOracleService,
     private nutsPlatformService: NutsPlatformService, public currencyService: CurrencyService,
-    private languageService: LanguageService, private zone: NgZone) { }
+    private zone: NgZone) { }
 
   ngOnInit() {
-    if (this.languageService.language == 'zh') {
+    if (environment.language == 'zh') {
       this.instrumentChartLabels = this.instrumentChineseLabels;
       this.instrumentChartOptions.title.text = '产品资产分布';
       this.assetChartOptions.title.text = '代币资产分布';  
@@ -136,7 +136,7 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
   }
 
   private async updateAccountBalances(userBalance: AccountBalances) {
-    const instrumentLabels = this.languageService.language === 'zh' ? this.instrumentChineseLabels : this.instruments;
+    const instrumentLabels = environment.language === 'zh' ? this.instrumentChineseLabels : this.instruments;
     const instrumentsValue = [0, 0, 0, 0];
     const assetsValue = [0, 0, 0, 0, 0, 0];
     const targetTokenAddress = this.currencyService.currency === 'USD' ? USD_ADDRESS : CNY_ADDRESS;
@@ -198,7 +198,7 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
   }
 
   private getInstrumentTooltip(tooltipItem, data) {
-    const instrument = this.languageService.language == 'zh' ?
+    const instrument = environment.language == 'zh' ?
       this.instrumentChineseLabels[tooltipItem.index] :
       this.instruments[tooltipItem.index];
     const currency = this.currencyService.getCurrencySymbol();

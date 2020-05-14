@@ -58,6 +58,6 @@
 </div>
 <mat-dialog-actions align="end" class="notification-actions">
     <button color="secondary" mat-button cdkFocusInitial *ngIf="notifications.length > 0" (click)="markAllRead()" i18n>Mark all as read</button>
-    <a class="more-button" [routerLink]="['/', languageService.language, 'notification']" color="primary" mat-raised-button mat-dialog-close i18n>More</a>
+    <a class="more-button" [routerLink]="['/', language, 'notification']" color="primary" mat-raised-button mat-dialog-close i18n>More</a>
 </mat-dialog-actions>
 

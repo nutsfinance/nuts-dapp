@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
 
-import { LanguageService } from '../common/web3/language.service';
+import { environment } from '../../environments/environment';
 import { NotificationService } from '../notification/notification.service';
 import { NotificationReadStatus, NotificationModel } from '../notification/notification.model';
 import { NotificationDialog } from '../notification/notification-dialog/notification-dialog.component';
@@ -16,12 +16,12 @@ import { NotificationDialog } from '../notification/notification-dialog/notifica
   styleUrls: ['./instrument.component.scss']
 })
 export class InstrumentComponent implements OnInit, OnDestroy {
-  public language: string = 'English';
+  public language = environment.language;
   public unreadNotifications: NotificationModel[] = [];
 
   private notificationSubscription: Subscription;
 
-  constructor(public languageService: LanguageService, private _bottomSheet: MatBottomSheet, private dialog: MatDialog,
+  constructor(private _bottomSheet: MatBottomSheet, private dialog: MatDialog,
     private zone: NgZone, private notificationService: NotificationService) { }
 
   ngOnInit() {

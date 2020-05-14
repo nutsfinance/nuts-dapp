@@ -1368,7 +1368,14 @@
       <trans-unit id="fe46ccaae902ce974e2441abe752399288298619" datatype="html">
         <source>Language</source><target state="new">语言</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/instrument.component.html</context><context context-type="linenumber">47</context></context-group></trans-unit>
+      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/instrument.component.html</context><context context-type="linenumber">47</context></context-group></trans-unit><trans-unit id="305cce3a95889fb086c774aa76c5e29cb0e89d3c" datatype="html">
+        <source>{VAR_SELECT, select, en {English} zh {Chinese} }</source>
+        <target state="new">{VAR_SELECT, select, en {英文} zh {简体中文} }</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/instrument.component.html</context>
+          <context context-type="linenumber">49</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="16fca0f1eebce8e0eb7b271f96aed96adb07e015" datatype="html">
         <source>Offer Details</source><target state="new">合约细节</target>
         
@@ -1491,34 +1498,16 @@
             </source><target state="new">
                 <x id="ICU" equiv-text="{issuance.getIssuanceState(), select, Engageable {...} Engaged {...} Cancelled {...} Expired {...} Completed {...} Delinquent {...} other {...}}"/>
             </target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/lending/lending-card/lending-card.component.html</context>
-          <context context-type="linenumber">7</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context>
-          <context context-type="linenumber">9</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/swap/swap-card/swap-card.component.html</context>
-          <context context-type="linenumber">8</context>
-        </context-group>
-      </trans-unit><trans-unit id="55c26385ab912d295ff421fd020af24aef3c39fc" datatype="html">
+        
+        
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/lending/lending-card/lending-card.component.html</context><context context-type="linenumber">7</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context><context context-type="linenumber">9</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap-card/swap-card.component.html</context><context context-type="linenumber">8</context></context-group></trans-unit><trans-unit id="55c26385ab912d295ff421fd020af24aef3c39fc" datatype="html">
         <source>{VAR_SELECT, select, Engageable {Engageable} Engaged {Engaged} Cancelled {Cancelled} Expired {Expired} Completed {Completed} Delinquent {Delinquent} other {Unknown} }</source>
         <target state="new">{VAR_SELECT, select, Engageable {待参与} Engaged {参与中} Cancelled {已取消} Expired {已过期} Completed {已完成} Delinquent {逾期} other {未知状态} }</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/lending/lending-card/lending-card.component.html</context>
-          <context context-type="linenumber">8</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context>
-          <context context-type="linenumber">10</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/swap/swap-card/swap-card.component.html</context>
-          <context context-type="linenumber">9</context>
-        </context-group>
-      </trans-unit>
+        
+        
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/lending/lending-card/lending-card.component.html</context><context context-type="linenumber">8</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context><context context-type="linenumber">10</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap-card/swap-card.component.html</context><context context-type="linenumber">9</context></context-group></trans-unit>
       <trans-unit id="dc4fba275819619ee78e8eae14d357ea69ba7477" datatype="html">
         <source>role</source><target state="new">角色</target>
         

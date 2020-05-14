@@ -1,12 +1,12 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { environment } from '../../../environments/environment';
 import { NotificationModel, NotificationReadStatus, NotificationCategory } from '../notification.model';
 import { MatCheckboxChange } from '@angular/material';
 import { NutsPlatformService } from 'src/app/common/web3/nuts-platform.service';
 import { TransactionType } from '../transaction.model';
 import { NotificationService } from '../notification.service';
-import { LanguageService } from '../../common/web3/language.service';
 
 @Component({
   selector: 'app-notification-row',
@@ -20,7 +20,7 @@ export class NotificationRowComponent implements OnInit, OnChanges {
   public notificationStatus: NotificationReadStatus;
 
   constructor(private nutsPlatformService: NutsPlatformService, private notificationService: NotificationService,
-    private languageService: LanguageService, private router: Router) { }
+    private router: Router) { }
 
   ngOnInit() {
     this.notificationStatus = this.notification.readStatus;
@@ -66,7 +66,7 @@ export class NotificationRowComponent implements OnInit, OnChanges {
     this.notification.readStatus = NotificationReadStatus.READ;
     this.notificationService.updateNotification(this.notification);
     const instrumentName = this.nutsPlatformService.getInstrumentById(+this.notification.instrumentId);
-    const language = this.languageService.language;
+    const language = environment.language;
 
     // Note:
     // 1. Transaction initiated has no action

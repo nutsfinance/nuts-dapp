@@ -1,11 +1,11 @@
 import { Component, Input, OnInit, OnDestroy, NgZone } from '@angular/core';
 
+import { environment } from '../../../../environments/environment';
 import { LendingIssuanceModel } from 'src/app/common/model/lending-issuance.model';
 import { NutsPlatformService, USD_ADDRESS, CNY_ADDRESS } from 'src/app/common/web3/nuts-platform.service';
 import { PriceOracleService } from 'src/app/common/web3/price-oracle.service';
 import { Subscription } from 'rxjs';
 import { CurrencyService } from 'src/app/common/currency-select/currency.service';
-import { LanguageService } from '../../../common/web3/language.service';
 
 @Component({
   selector: 'app-lending-card',
@@ -14,6 +14,8 @@ import { LanguageService } from '../../../common/web3/language.service';
 })
 export class LendingCardComponent implements OnInit, OnDestroy {
   @Input() public issuance: LendingIssuanceModel;
+
+  public language = environment.language;
   public currentAccount: string;
   public lendingToken: string;
   public collateralToken: string;
@@ -29,7 +31,7 @@ export class LendingCardComponent implements OnInit, OnDestroy {
   private currencyUpdatedSubscription: Subscription;
 
   constructor(public nutsPlatformService: NutsPlatformService, private priceOracleService: PriceOracleService,
-    public languageService: LanguageService, public currencyService: CurrencyService, private zone: NgZone) { }
+    public currencyService: CurrencyService, private zone: NgZone) { }
 
   ngOnInit() {
     this.currentAccount = this.nutsPlatformService.currentAccount;

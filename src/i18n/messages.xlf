@@ -1555,6 +1555,13 @@
           <context context-type="linenumber">47</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="305cce3a95889fb086c774aa76c5e29cb0e89d3c" datatype="html">
+        <source>{VAR_SELECT, select, en {English} zh {Chinese} }</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/instrument.component.html</context>
+          <context context-type="linenumber">49</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="16fca0f1eebce8e0eb7b271f96aed96adb07e015" datatype="html">
         <source>Offer Details</source>
         <context-group purpose="location">

@@ -1,13 +1,14 @@
 import { DataSource } from '@angular/cdk/table';
 import { Component, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
+
+import { environment } from 'src/environments/environment';
 import { NutsPlatformService, USD_ADDRESS, CNY_ADDRESS } from 'src/app/common/web3/nuts-platform.service';
 import { PriceOracleService } from 'src/app/common/web3/price-oracle.service';
 import { CurrencyService } from 'src/app/common/currency-select/currency.service';
 import { SupplementalLineItemModel, SupplementalLineItemType, SupplementalLineItemState } from 'src/app/common/model/supplemental-line-item.model';
 import { InstrumentService } from 'src/app/common/web3/instrument.service';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
-import { LanguageService } from '../../../common/web3/language.service';
 
 interface Position {
   instrument: string,
@@ -28,6 +29,8 @@ interface Position {
 })
 export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+
+  public language = environment.language;
   public activePositions: Position[] = [];
   public dataSource = new MatTableDataSource<Position>([]);
 
@@ -43,7 +46,7 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
 
   constructor(private nutsPlatformService: NutsPlatformService, private instrumentService: InstrumentService,
     private priceOracleService: PriceOracleService, public currencyService: CurrencyService,
-    public languageService: LanguageService, private zone: NgZone) { }
+    private zone: NgZone) { }
 
   ngOnInit() {
     this.updatePositions();

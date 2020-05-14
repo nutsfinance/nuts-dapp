@@ -3,10 +3,10 @@ import { Injectable } from '@angular/core';
 import { Subject, BehaviorSubject, of } from 'rxjs';
 import * as isEqual from 'lodash.isequal';
 
+import { environment } from '../../environments/environment';
 import { NutsPlatformService } from '../common/web3/nuts-platform.service';
 import { TransactionModel } from './transaction.model';
 import { NotificationModel, NotificationReadStatus } from './notification.model';
-import { LanguageService } from '../common/web3/language.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +16,7 @@ export class NotificationService {
   public notificationUpdatedSubject: Subject<NotificationModel[]> = new BehaviorSubject<NotificationModel[]>([]);
   public newNotificationSubject: Subject<NotificationModel> = new Subject<NotificationModel>();
 
-  constructor(private nutsPlatformService: NutsPlatformService, private languageService: LanguageService,
-    private http: HttpClient) {
+  constructor(private nutsPlatformService: NutsPlatformService, private http: HttpClient) {
     this.nutsPlatformService.platformInitializedSubject.subscribe(initialized => {
       if (initialized) {
         // Need to reload notifications each time there is a change to the network or account
@@ -102,9 +101,10 @@ export class NotificationService {
       console.log('Notification not initialized: Current address', currentAddress, 'Current network', currentNetwork);
       return of([]);
     }
+    console.log(environment.language);
     return this.http.get<NotificationModel[]>(`${this.nutsPlatformService.getApiServerHost()}/notifications/${currentAddress}`, {
       params: {
-        language: this.languageService.language === 'zh' ? 'zh-CN' : 'en-US'
+        language: environment.language === 'zh' ? 'zh-CN' : 'en-US'
       }
     });
   }
@@ -121,18 +121,7 @@ export class NotificationService {
       console.log('Reloaded notifications', reloadedNotifications.length);
 
       // Checks whether the notification list is updated.
-      // If notifications length is not the same, it must be updated.
-      let updated = reloadedNotifications.length !== this.notifications.length;
-      if (!updated) {
-        for (let i = 0; i < reloadedNotifications.length; i++) {
-          if (reloadedNotifications[i].notificationId !== this.notifications[i].notificationId) {
-            updated = true;
-            break;
-          }
-        }
-      }
-
-      if (!updated) {
+      if (isEqual(reloadedNotifications, this.notifications)) {
         return;
       }
 
@@ -145,12 +134,9 @@ export class NotificationService {
         }
       }
 
-      // Updates the notification list if there is a change
-      if (!isEqual(this.notifications, reloadedNotifications)) {
-        console.log('Notification list updated.');
-        this.notifications = reloadedNotifications;
-        this.notificationUpdatedSubject.next(reloadedNotifications);
-      }
+      console.log('Notification list updated.');
+      this.notifications = reloadedNotifications;
+      this.notificationUpdatedSubject.next(reloadedNotifications);
     });
   }
 }

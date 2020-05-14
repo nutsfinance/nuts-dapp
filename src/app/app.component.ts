@@ -2,12 +2,12 @@ import { Component, OnInit, OnDestroy, Inject, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSnackBar, MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 
+import { environment } from '../environments/environment';
 import { NotificationCategory, NotificationModel } from './notification/notification.model';
 import { NotificationService } from './notification/notification.service';
 import { Subscription } from 'rxjs';
 import { NutsPlatformService } from './common/web3/nuts-platform.service';
 import { MatDialogRef, MatDialog } from '@angular/material';
-import { LanguageService } from './common/web3/language.service';
 
 export interface NotificationData {
   category: NotificationCategory,
@@ -25,8 +25,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private networkSubscription: Subscription;
 
   constructor(private notificationService: NotificationService, private nutsPlatformService: NutsPlatformService,
-    private languageService: LanguageService, private snackBar: MatSnackBar, private dialog: MatDialog,
-    private zone: NgZone) { }
+    private snackBar: MatSnackBar, private dialog: MatDialog, private zone: NgZone) { }
 
   ngOnInit() {
     this.newNotificationSubscription = this.notificationService.newNotificationSubject.subscribe(newNotification => {

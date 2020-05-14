@@ -92,12 +92,12 @@
     <mat-header-cell *matHeaderCellDef class="position-header"> </mat-header-cell>
     <mat-cell *matCellDef="let position" class="position-content position-action">
       <a mat-stroked-button color="primary" class="close-button"
-        [routerLink]="['/', languageService.language, 'instrument', position.instrument, 'positions', position.issuanceId]"
+        [routerLink]="['/', language, 'instrument', position.instrument, 'positions', position.issuanceId]"
         *ngIf="position.action == 'close'">
         <span i18n>Close</span>
       </a>
       <a mat-raised-button color="primary" class="repay-button"
-        [routerLink]="['/', languageService.language, 'instrument', position.instrument, 'positions', position.issuanceId]"
+        [routerLink]="['/', language, 'instrument', position.instrument, 'positions', position.issuanceId]"
         *ngIf="position.action == 'repay'">
         <span i18n>Repay</span>
       </a>
