@@ -24,8 +24,9 @@ export class IssuanceModel {
     }
 
     getUserRole(userAddress: string): string {
-        if (this.makerAddress.toLowerCase() == userAddress.toLowerCase())   return 'maker';
-        if (this.takerAddress.toLowerCase() == userAddress.toLowerCase())   return 'taker';
+        if (!userAddress)   return 'other';
+        if (this.makerAddress && this.makerAddress.toLowerCase() == userAddress.toLowerCase())   return 'maker';
+        if (this.takerAddress && this.takerAddress.toLowerCase() == userAddress.toLowerCase())   return 'taker';
 
         return 'other';
     }

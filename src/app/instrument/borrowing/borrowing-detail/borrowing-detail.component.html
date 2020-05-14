@@ -149,7 +149,7 @@
 
     <div class="row">
         <div class="col-xs-12 action-row"
-            *ngIf="issuance.state == 3 && issuance.getUserRole(currentAccount) == 'taker'">
+            *ngIf="issuance.state == 3 && issuance.getUserRole(currentAccount) == 'maker'">
             <button mat-raised-button color="primary"
                 [ngClass]="{'repay-button': true, 'valid': principalSufficient}"
                 (click)="repayIssuance()" i18n>Repay</button>

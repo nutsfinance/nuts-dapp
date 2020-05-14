@@ -78,12 +78,11 @@ export class BorrowingDetailComponent implements OnInit, OnDestroy {
     // 1. Current user is the maker, and the current user is going to repay
     // 2. Current user is the taker, and the current user is going to engage
     let targetAmount = 0;
-    if (this.issuance.makerAddress.toLowerCase() === this.nutsPlatformService.currentAccount.toLowerCase()
-      && this.issuance.state === IssuanceState.Engaged) {
-      targetAmount = this.issuance.borrowingAmount + this.issuance.interestAmount;
-    } else if (this.issuance.makerAddress.toLowerCase() !== this.nutsPlatformService.currentAccount.toLowerCase()
-    && this.issuance.state === IssuanceState.Engageable) {
-      targetAmount = this.issuance.borrowingAmount;
+    const userRole = this.issuance.getUserRole(this.currentAccount);
+    if (userRole === 'maker' && this.issuance.state === IssuanceState.Engaged) {
+      targetAmount = Number(this.issuance.borrowingAmount) + Number(this.issuance.interestAmount);
+    } else if (userRole === 'taker' && this.issuance.state === IssuanceState.Engageable) {
+      targetAmount = Number(this.issuance.borrowingAmount);
     }
 
     setTimeout(() => {
@@ -117,7 +116,7 @@ export class BorrowingDetailComponent implements OnInit, OnDestroy {
   }
 
   repayIssuance() {
-    const totalAmount = this.issuance.borrowingAmount + this.issuance.interestAmount;
+    const totalAmount = Number(this.issuance.borrowingAmount) + Number(this.issuance.interestAmount);
     if (this.borrowingTokenBalance < totalAmount) return;
     this.instrumentService.repayIssuance('borrowing', this.issuanceId, this.issuance.borrowingTokenAddress, totalAmount)
       .on('transactionHash', transactionHash => {
@@ -184,6 +183,7 @@ export class BorrowingDetailComponent implements OnInit, OnDestroy {
     this.zone.run(() => {
       this.issuance = this.instrumentService.getBorrowingIssuanceById(this.issuanceId);
       if (this.issuance) {
+        console.log(this.issuance);
         // Compute issuance token values
         this.borrowingToken = this.nutsPlatformService.getTokenNameByAddress(this.issuance.borrowingTokenAddress);
         this.collateralToken = this.nutsPlatformService.getTokenNameByAddress(this.issuance.collateralTokenAddress);

@@ -26,7 +26,7 @@
 
   </table>
 
-  <mat-paginator [pageSize]="10" hidePageSize></mat-paginator>
+  <mat-paginator [pageSize]="10" hidePageSize *ngIf="accountTransactions.length > 0"></mat-paginator>
 
   <div class="no-transaction-container" *ngIf="accountTransactions.length == 0">
     <p class="no-transaction-title" i18n>There is currently no transaction history.</p>

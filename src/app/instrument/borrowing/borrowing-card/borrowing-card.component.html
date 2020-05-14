@@ -94,12 +94,12 @@
         </a>
         <a mat-raised-button color="primary" class="issuance-action-button engage-button" 
             [routerLink]="['/', language, 'instrument', 'borrowing', 'positions', issuance.issuanceId]"
-            *ngIf="issuance.state == 3 && issuance.getUserRole(currentAccount) == 'taker'" i18n>
+            *ngIf="issuance.state == 3 && issuance.getUserRole(currentAccount) == 'maker'" i18n>
             Repay
         </a>
         <a mat-stroked-button color="primary" class="issuance-action-button close-button" 
             [routerLink]="['/', language, 'instrument', 'borrowing', 'positions', issuance.issuanceId]"
-            *ngIf="issuance.state != 2 && !(issuance.state == 3 && issuance.getUserRole(currentAccount) == 'taker')" i18n>
+            *ngIf="issuance.state != 2 && !(issuance.state == 3 && issuance.getUserRole(currentAccount) == 'maker')" i18n>
             View Position
         </a>
     </div>

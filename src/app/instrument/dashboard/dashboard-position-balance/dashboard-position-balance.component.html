@@ -84,7 +84,7 @@
   <ng-container matColumnDef="status">
     <mat-header-cell *matHeaderCellDef class="position-header position-status" i18n> Status </mat-header-cell>
     <mat-cell *matCellDef="let position" class="position-content position-status" i18n>
-      {position.state, select, Engageable{Engageable} Enagaged{Engaged}}
+      {position.state, select, Engageable{Engageable} Engaged{Engaged}}
     </mat-cell>
   </ng-container>
 
@@ -118,7 +118,7 @@
   </mat-row>>
 </mat-table>
 
-<mat-paginator [pageSize]="10" hidePageSize></mat-paginator>
+<mat-paginator [pageSize]="10" hidePageSize *ngIf="activePositions.length > 0"></mat-paginator>
 
 <div class="no-position-container" *ngIf="activePositions.length == 0" i18n>
   There are currently no active positions.

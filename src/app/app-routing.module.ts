@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
+import { environment } from 'src/environments/environment';
 import { DashboardComponent } from './instrument/dashboard/dashboard.component';
 import { BorrowingComponent } from './instrument/borrowing/borrowing.component';
 import { LendingComponent } from './instrument/lending/lending.component';
@@ -21,12 +23,13 @@ import { CanActivateInstrument } from './instrument/instrument-routing-guard.ser
 import { BorrowingDetailComponent } from './instrument/borrowing/borrowing-detail/borrowing-detail.component';
 import { SwapDetailComponent } from './instrument/swap/swap-detail/swap-detail.component';
 
+const language = environment.language;
 
 const routes: Routes = [
-  { path: ':lang', redirectTo: ':lang/instrument', pathMatch: 'full' },
-  { path: ':lang/notification', component: NotificationComponent },
+  { path: `${language}`, redirectTo: ':lang/instrument', pathMatch: 'full' },
+  { path: `${language}/notification`, component: NotificationComponent },
   {
-    path: ':lang/instrument',
+    path: `${language}/instrument`,
     component: InstrumentComponent,
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -66,7 +69,7 @@ const routes: Routes = [
       },
     ]
   },
-  { path: '**', redirectTo: 'en/instrument' }
+  { path: '**', redirectTo: `${language}/instrument` }
 ];
 
 @NgModule({

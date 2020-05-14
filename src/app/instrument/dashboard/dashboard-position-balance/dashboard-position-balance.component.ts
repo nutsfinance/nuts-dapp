@@ -81,8 +81,8 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
       const positions = [];
       this.instrumentService.lendingIssuances.forEach(issuance => {
         // If the current user is maker and the issuance is engageable.
-        if (issuance.makerAddress.toLowerCase() === this.nutsPlatformService.currentAccount.toLowerCase()
-          && issuance.state === 2) {
+        const userRole = issuance.getUserRole(this.nutsPlatformService.currentAccount);
+        if (userRole === 'maker' && issuance.state === 2) {
           positions.push({
             instrument: 'lending',
             issuanceId: issuance.issuanceId,
@@ -97,8 +97,7 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
         }
 
         // If the current user is taker and the issuance is engaged.
-        if (issuance.takerAddress.toLowerCase() === this.nutsPlatformService.currentAccount.toLowerCase()
-          && issuance.state == 3) {
+        if (userRole === 'taker' && issuance.state == 3) {
           positions.push({
             instrument: 'lending',
             issuanceId: issuance.issuanceId,
@@ -114,9 +113,9 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
       });
 
       this.instrumentService.borrowingIssuances.forEach(issuance => {
+        const userRole = issuance.getUserRole(this.nutsPlatformService.currentAccount);
         // If the current user is maker and the issuance is engageable.
-        if (issuance.makerAddress.toLowerCase() === this.nutsPlatformService.currentAccount.toLowerCase()
-          && issuance.state === 2) {
+        if (userRole === 'maker' && issuance.state === 2) {
           positions.push({
             instrument: 'borrowing',
             issuanceId: issuance.issuanceId,
@@ -130,14 +129,13 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
           });
         }
 
-        // If the current user is taker and the issuance is engaged.
-        if (issuance.takerAddress.toLowerCase() === this.nutsPlatformService.currentAccount.toLowerCase()
-          && issuance.state == 3) {
+        // If the current user is maker and the issuance is engaged.
+        if (userRole === 'maker' && issuance.state == 3) {
           positions.push({
-            instrument: 'lending',
+            instrument: 'borrowing',
             issuanceId: issuance.issuanceId,
             creationTimestamp: issuance.creationTimestamp,
-            role: 'taker',
+            role: 'maker',
             state: issuance.getIssuanceState(),
             token: this.nutsPlatformService.getTokenNameByAddress(issuance.borrowingTokenAddress),
             amount: issuance.borrowingAmount,
@@ -148,9 +146,9 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
       });
 
       this.instrumentService.swapIssuances.forEach(issuance => {
+        const userRole = issuance.getUserRole(this.nutsPlatformService.currentAccount);
         // If the current user is maker and the issuance is engageable.
-        if (issuance.makerAddress.toLowerCase() === this.nutsPlatformService.currentAccount.toLowerCase()
-          && issuance.state === 2) {
+        if (userRole === 'maker' && issuance.state === 2) {
           positions.push({
             instrument: 'swap',
             issuanceId: issuance.issuanceId,
@@ -165,6 +163,7 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
         }
       });
 
+      console.log(positions);
       this.activePositions = positions;
       this.dataSource = new MatTableDataSource<Position>(this.activePositions);
       this.dataSource.paginator = this.paginator;
