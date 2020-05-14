@@ -6,7 +6,9 @@
         </div>
         <div class="col-xs-4 card-state" [ngStyle]="{'color':issuance.state <= 3 ? '#8bc34a' : 'grey'}">
             <span class="card-state-indicator">&#8226;</span>
-            {{issuance.getIssuanceState()}}
+            <span i18n>
+                {issuance.getIssuanceState(), select, Engageable{Engageable} Engaged{Engaged} Cancelled{Cancelled} Expired{Expired} Completed{Completed} Delinquent{Delinquent} other{Unknown}}
+            </span>
         </div>
     </div>
 

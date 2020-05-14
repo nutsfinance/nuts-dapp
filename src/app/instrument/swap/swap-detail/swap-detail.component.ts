@@ -38,6 +38,7 @@ export class SwapDetailComponent implements OnInit {
     private route: ActivatedRoute, private zone: NgZone, private location: Location, private dialog: MatDialog) { }
 
   ngOnInit() {
+    this.currentAccount = this.nutsPlatformService.currentAccount;
     this.issuanceId = this.route.snapshot.params['id'];
     this.updateSwapIssuance();
     this.issuanceIdSubscription = this.route.params.subscribe((params) => {

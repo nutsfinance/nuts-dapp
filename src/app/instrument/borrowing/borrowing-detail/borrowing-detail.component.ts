@@ -42,6 +42,7 @@ export class BorrowingDetailComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute, private zone: NgZone, private location: Location, private dialog: MatDialog) { }
 
   ngOnInit() {
+    this.currentAccount = this.nutsPlatformService.currentAccount;
     this.issuanceId = this.route.snapshot.params['id'];
     this.updateBorrowingIssuance();
     this.issuanceIdSubscription = this.route.params.subscribe((params) => {
