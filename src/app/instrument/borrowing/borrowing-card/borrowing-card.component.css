@@ -11,6 +11,10 @@
   align-items: baseline;
   margin-bottom: 12px;
 }
+.issuance-state-dot {
+  font-size: 20px;
+  margin-right: 5px;
+}
 .issuance-state {
   font-size: 13px;
 }
