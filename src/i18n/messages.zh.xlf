@@ -440,19 +440,19 @@
           <context context-type="sourcefile">src/app/common/account-total-balance/account-total-balance.component.html</context>
           <context context-type="linenumber">2</context>
         </context-group>
-      </trans-unit><trans-unit id="1cebde565f668a918d057c49cb8ab5f67c1af425" datatype="html">
+      </trans-unit><trans-unit id="0c999d3617f2ea76090934769de98e7fd87ae024" datatype="html">
         <source>
-          <x id="ICU" equiv-text="{showApprove, select, true {...} false {...}}"/> <x id="INTERPOLATION" equiv-text="{{selectedToken}}"/>
+          <x id="ICU" equiv-text="{showApprove + '', select, true {...} false {...}}"/> <x id="INTERPOLATION" equiv-text="{{selectedToken}}"/>
         </source><target state="new">
-          <x id="ICU" equiv-text="{showApprove, select, true {...} false {...}}"/> <x id="INTERPOLATION" equiv-text="{{selectedToken}}"/>
+          <x id="ICU" equiv-text="{showApprove + '', select, true {...} false {...}}"/> <x id="INTERPOLATION" equiv-text="{{selectedToken}}"/>
         </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/account/account-deposit/account-deposit.component.html</context>
           <context context-type="linenumber">49</context>
         </context-group>
-      </trans-unit><trans-unit id="c1b8b90be09a5cb8983ce862b08b491f6cb9da84" datatype="html">
+      </trans-unit><trans-unit id="a075ae4fd3a91324a5a07e60f806e07e6293fff6" datatype="html">
         <source>{VAR_SELECT, select, true {Enable} false {Deposit} }</source>
-        <target state="new">{VAR_SELECT, select, true {激活} false {充值} }</target>
+        <target state="new">{VAR_SELECT, select, true {激活} false {充值}} }</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/account/account-deposit/account-deposit.component.html</context>
           <context context-type="linenumber">50</context>
@@ -478,7 +478,8 @@
           <context context-type="linenumber">15</context>
         </context-group>
       </trans-unit><trans-unit id="2d7005c1e978a133d27a1ccae3c99ee9f2c308a8" datatype="html">
-        <source>{VAR_SELECT, select, deposit {Deposit} withdraw {Withdraw} }</source><target state="new">{VAR_SELECT, select, deposit {Deposit} withdraw {Withdraw} }</target>
+        <source>{VAR_SELECT, select, deposit {Deposit} withdraw {Withdraw} }</source>
+        <target state="new">{VAR_SELECT, select, deposit {充值} withdraw {提现} }</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/account/account-transaction/account-transaction.component.html</context>
           <context context-type="linenumber">15</context>
@@ -1638,21 +1639,21 @@
         
         
         
-      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/lending/lending-card/lending-card.component.html</context><context context-type="linenumber">96</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context><context context-type="linenumber">100</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap-card/swap-card.component.html</context><context context-type="linenumber">83</context></context-group></trans-unit>
-      <trans-unit id="0b65c64d647efe3dae2e1aeeb80c86193350505f" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/lending/lending-card/lending-card.component.html</context><context context-type="linenumber">96</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context><context context-type="linenumber">100</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap-card/swap-card.component.html</context><context context-type="linenumber">83</context></context-group></trans-unit><trans-unit id="03f889bd6ac88fc4aef6f25142a4c8b1b9e17599" datatype="html">
         <source>{VAR_SELECT, select, true {Cancel} false {Select} }</source>
         <target state="new">{VAR_SELECT, select, true {取消} false {选择} }</target>
         
       <context-group purpose="location"><context context-type="sourcefile">src/app/notification/notification.component.html</context><context context-type="linenumber">8</context></context-group></trans-unit>
+      
       <trans-unit id="fb55bc908a9ef04a80dcf464cd899a559e579d35" datatype="html">
         <source>Mark as Read</source><target state="new">标为已读</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">src/app/notification/notification.component.html</context><context context-type="linenumber">9</context></context-group></trans-unit>
-      <trans-unit id="696578673e8ea457e4f23f377e50ef2503d876c0" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/notification/notification.component.html</context><context context-type="linenumber">9</context></context-group></trans-unit><trans-unit id="7d1623bc03e390002f09618ecd0fbd15c1dee59f" datatype="html">
         <source>{VAR_SELECT, select, true {Show Unread} false {Show All} }</source>
-        <target state="new">{VAR_SELECT, select, true {展示未读} false {展示所有} }</target>
+        <target state="new">{VAR_SELECT, select, true {展示未读} false {展示全部} }</target>
         
       <context-group purpose="location"><context context-type="sourcefile">src/app/notification/notification.component.html</context><context context-type="linenumber">10</context></context-group></trans-unit>
+      
       <trans-unit id="dc359d6c62c8790a0d3574bbb8c0a88c76d1e30c" datatype="html">
         <source>You're up to date!</source><target state="new">没有最新消息了！</target>
         

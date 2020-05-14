@@ -5,9 +5,9 @@
                 <img src="../../../../assets/images/navigate_back.png" class="navigate-back" (click)="navigateBack()">
                 <span class="title" i18n>Notifications</span>
             </div>
-            <button color="secondary" mat-button (click)="showSelect = !showSelect" *ngIf="notifications.length > 0" i18n>{showSelect, select, true{Cancel} false{Select}}</button>
+            <button color="secondary" mat-button (click)="showSelect = !showSelect" *ngIf="notifications.length > 0" i18n>{showSelect + '', select, true{Cancel} false{Select}}</button>
             <button mat-button (click)="saveNotifications()" *ngIf="showSelect && notifications.length > 0" i18n>Mark as Read</button>
-            <button mat-button (click)="toggleShowAll()" *ngIf="!showSelect" i18n>{showAll, select, true{Show Unread} false{Show All}}</button>
+            <button mat-button (click)="toggleShowAll()" *ngIf="!showSelect" i18n>{showAll + '', select, true{Show Unread} false{Show All}}</button>
         </div>
     </div>
 
