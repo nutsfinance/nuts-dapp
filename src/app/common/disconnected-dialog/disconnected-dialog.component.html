@@ -1,0 +1,24 @@
+<div class="title-container">
+    <button mat-icon-button aria-label="Close notification dialog" mat-dialog-close>
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+
+<div mat-dialog-content class="content-container">
+    <p class="welcome-content" i18n>Welcome to dApp.Finance.</p>
+    <p class="welcome-content" i18n>Start creating and discovering offers by connnecting your wallet.</p>
+    <img src="../assets/images/welcome.png" alt="welcome" class="welcome-image">
+</div>
+
+<div mat-dialog-actions class="action-container">
+    <button mat-raised-button color="primary" class="action-button" (click)="connectWallet()">
+        <img src="../assets/images/metamask.png" alt="Metamask" class="action-image"> 
+        <span i18n>Connect Metamask Wallet</span>
+    </button>
+    <p class="action-notation">
+        <span i18n>By connecting your wallet, your wallet address becomes public to this dApp and you agree to NUTS Finance's </span>
+        <a href="https://nuts.finance/terms-of-service/" i18n>Terms of Service Policy</a>, 
+        <a href="https://nuts.finance/privacy-policy/" i18n>Privacy</a>&nbsp;<span i18n>and</span>&nbsp;
+        <a href="https://nuts.finance/cookies-policy/" i18n>Cookie Policy</a>.
+    </p>
+</div>

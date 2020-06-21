@@ -1,11 +1,13 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { TokenModel } from '../token/token.model';
 
 export interface TransactionData {
   type: string,
   instrument: string,
   fspName?: string,
-  tokenName?: string,
+  companyName?: string,
+  token?: TokenModel,
   tokenAmount?: number,
   issuanceId?: string,
 }

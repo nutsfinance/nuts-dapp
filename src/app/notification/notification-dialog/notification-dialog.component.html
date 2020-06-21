@@ -43,7 +43,7 @@
         <div class="col-xs-3 notification-action" [ngSwitch]="notification.category">
             <mat-spinner *ngSwitchCase="'TRANSACTION_INITIATED'" [diameter]="25"></mat-spinner>
             <button mat-button color="primary" class="notification-button"
-                *ngSwitchCase="'TRANSACTION_FAILED'" (click)="retryTransaction(notification)" i18n>
+                *ngSwitchCase="'TRANSACTION_FAILED'" (click)="onNotificationAction(notification)" i18n>
                 Retry
             </button>
             <button mat-button color="primary" class="notification-button"

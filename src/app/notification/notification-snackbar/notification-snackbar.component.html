@@ -1,0 +1,11 @@
+<div class="content-container">
+    <p class="content">{{notification.snackBarMessage}}</p>
+    <div class="actions">
+        <button class="action-button" mat-button aria-label="View notification detail" (click)="handleNotificationAction()" i18n>
+            {notification.type, select, APPROVE {Deposit} other {View}}
+        </button>
+        <!-- <button class="action-button" mat-icon-button aria-label="Close notification snackbar" (click)="dismiss()">
+            <mat-icon>close</mat-icon>
+        </button> -->
+    </div>
+</div>

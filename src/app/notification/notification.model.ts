@@ -19,6 +19,6 @@ export class NotificationModel {
     public transactionHash: string, public creationTimestamp: number,
     public instrumentId: number, public issuanceId: number,
     public category: NotificationCategory, public readStatus: NotificationReadStatus,
-    public title: string, public message: string,
+    public title: string, public message: string, public snackBarMessage: string,
     public type: TransactionType, public metadata: {[key: string]: string}) {}
 }

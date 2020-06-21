@@ -17,8 +17,19 @@
   margin-bottom: -16px;
   background: rgba(245,166,35,0.2);
   padding: 16px 24px;
-  border-top-right-radius: 4px;
-  border-top-left-radius: 4px;
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
   color: #F5A623;
-  font-family: "GillSans", Helvetica, Arial, serif;
+  font-family: "GillSans-light", Helvetica, Arial, serif;
+  font-size: 12px;
+}
+
+.deposit-info {
+  margin-bottom: -16px;
+  background-color: #ECE5E0;
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
+  padding: 16px 24px;
+  font-family: "GillSans-light", Helvetica, Arial, serif;
+  font-size: 12px;
 }

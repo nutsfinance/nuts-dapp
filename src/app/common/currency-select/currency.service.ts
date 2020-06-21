@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { USD_ADDRESS, CNY_ADDRESS } from '../web3/nuts-platform.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,5 +20,9 @@ export class CurrencyService {
 
   getCurrencySymbol(): string {
     return this.currency === 'USD' ? '$' : '¥';
+  }
+
+  getCurrencyAddress(): string {
+    return this.currency === 'USD' ? USD_ADDRESS : CNY_ADDRESS;
   }
 }

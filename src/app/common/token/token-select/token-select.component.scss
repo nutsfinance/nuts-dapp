@@ -1,0 +1,14 @@
+.select-token-button {
+  height: 50px;
+  margin: 5px 0;
+  padding: 0 10px;
+}
+
+.select-token-button[disabled] {
+  border-color: rgba(0, 0, 0, 0.06);
+}
+
+.token-image {
+  width: 15px;
+  margin-right: 5px;
+}

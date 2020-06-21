@@ -1,10 +1,11 @@
 import { Component, Input, OnInit, ViewChild, NgZone } from '@angular/core';
 import { FormControl, FormGroup, NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material';
-import { AccountService } from '../../common/web3/account.service';
+import { AccountService } from '../account.service';
 import { FSP_NAME, NutsPlatformService } from '../../common/web3/nuts-platform.service';
 import { TransactionInitiatedDialog } from 'src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component';
-import { AccountBalanceService } from 'src/app/common/web3/account-balance.service';
+import { TokenService } from 'src/app/common/token/token.service';
+import { TokenModel } from 'src/app/common/token/token.model';
 
 @Component({
   selector: 'app-account-withdraw',
@@ -13,33 +14,34 @@ import { AccountBalanceService } from 'src/app/common/web3/account-balance.servi
 })
 export class AccountWithdrawComponent implements OnInit {
   @Input() public instrument: string;
-
-  public instrumentName = '';
-  public selectedToken = 'ETH';
-  public accountBalance: number;
+  public selectedToken: TokenModel;
+  public includedTokens: TokenModel[] = [];
+  public accountBalance: string;
   public amountControl: FormControl;
   public withdrawForm: FormGroup;
 
   @ViewChild('form', { static: true }) private form: NgForm;
 
-  constructor(private dialog: MatDialog, private zone: NgZone,
-    private nutsPlatformService: NutsPlatformService, private accountBalanceService: AccountBalanceService,
-    private instrumentEscrowService: AccountService) { }
+  constructor(private dialog: MatDialog, private zone: NgZone, private nutsPlatformService: NutsPlatformService,
+    private accountService: AccountService, private tokenService: TokenService) {
 
-  ngOnInit() {
-    this.instrumentName = this.instrument.charAt(0).toUpperCase() + this.instrument.substring(1);
     this.amountControl = new FormControl('', this.validBalance.bind(this));
     this.withdrawForm = new FormGroup({ amount: this.amountControl });
   }
 
-  onTokenSelected(token: string) {
+  ngOnInit() {
+    this.includedTokens = this.tokenService.tokens.filter(token => token.supportsTransaction);
+    this.selectedToken = this.includedTokens[0];
+  }
+
+  onTokenSelected(token: TokenModel) {
     this.amountControl.reset();
     this.selectedToken = token;
   }
 
   setMaxAmount() {
     this.withdrawForm.patchValue({
-      amount: this.nutsPlatformService.getDisplayValueByName(this.selectedToken, this.accountBalance)
+      amount: this.tokenService.getDisplayValue(this.selectedToken.tokenAddress, this.accountBalance)
     });
   }
 
@@ -47,12 +49,12 @@ export class AccountWithdrawComponent implements OnInit {
     if (!this.withdrawForm.valid) {
       return;
     }
-    const withdrawValue = this.nutsPlatformService.getTokenActualValueByName(this.selectedToken, this.amountControl.value);
+    const withdrawValue = this.tokenService.getActualValue(this.selectedToken.tokenAddress, this.amountControl.value);
     let withdrawPromise;
-    if (this.selectedToken === 'ETH') {
-      withdrawPromise = this.instrumentEscrowService.withdrawETH(this.instrument, withdrawValue);
+    if (this.selectedToken.tokenName === this.nutsPlatformService.getWETH()) {
+      withdrawPromise = this.accountService.withdrawETH(this.instrument, withdrawValue);
     } else {
-      withdrawPromise = this.instrumentEscrowService.withdrawToken(this.instrument, this.selectedToken, withdrawValue);
+      withdrawPromise = this.accountService.withdrawToken(this.instrument, this.selectedToken.tokenAddress, withdrawValue);
     }
 
     withdrawPromise.on('transactionHash', transactionHash => {
@@ -60,12 +62,7 @@ export class AccountWithdrawComponent implements OnInit {
         // Opens Withdraw Initiated dialog.
         const transactionInitiatedDialog = this.dialog.open(TransactionInitiatedDialog, {
           width: '90%',
-          data: {
-            type: 'withdraw',
-            fspName: FSP_NAME,
-            tokenName: this.selectedToken,
-            tokenAmount: this.amountControl.value,
-          },
+          data: { type: 'withdraw', fspName: FSP_NAME, token: this.selectedToken, tokenAmount: withdrawValue },
         });
 
         transactionInitiatedDialog.afterClosed().subscribe(() => {
@@ -82,7 +79,7 @@ export class AccountWithdrawComponent implements OnInit {
         console.log(receipt);
 
         // Update instrument balance
-        this.accountBalanceService.getUserBalanceFromBackend(5, 3000);
+        this.accountService.getUserBalanceFromBackend(5, 3000);
         this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
         clearInterval(interval);
       }, 4000);
@@ -94,14 +91,14 @@ export class AccountWithdrawComponent implements OnInit {
     if (!control.value) {
       return { 'required': true };
     }
-    if (this.accountBalance < Number(control.value)) {
-      return { 'insufficientBalance': true };
-    }
-    if ((this.selectedToken === 'ETH' && Number.isNaN(Number(control.value))) || Number(control.value) <= 0) {
+    const value = Number(control.value);
+    if (Number.isNaN(value) || value <= 0) {
       return { 'nonPositiveAmount': true };
     }
-    if (this.selectedToken !== 'ETH' && !/^[1-9][0-9]*$/.test(control.value)) {
-      return { 'nonIntegerAmount': true };
+
+    const BN = this.nutsPlatformService.web3.utils.BN;
+    if (new BN(this.accountBalance).lt(new BN(this.tokenService.getActualValue(this.selectedToken.tokenAddress, control.value)))) {
+      return { 'insufficientBalance': true };
     }
   }
 }

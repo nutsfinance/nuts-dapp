@@ -15,6 +15,5 @@ export enum NotificationRole {
 
 export class TransactionModel {
   constructor(public transactionHash: string, public type: TransactionType, public role: NotificationRole,
-    public userAddress: string, public instrumentId: number, public issuanceId: number,
-    public metadata: {[key: string]: string}) {}
+    public userAddress: string, public issuanceId: number, public metadata: {[key: string]: string}) {}
 }

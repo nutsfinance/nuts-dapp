@@ -1,0 +1,4 @@
+<p class="instrument-balance" (click)="openDialog()">
+    <span i18n>Account Balance:</span>
+    <span class="balance-content">{{ currencyService.getCurrencySymbol() }} {{instrumentBalance | async | number: '1.0-2' }}</span>
+</p>

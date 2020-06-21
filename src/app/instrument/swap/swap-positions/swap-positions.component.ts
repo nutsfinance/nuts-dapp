@@ -1,9 +1,9 @@
 import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NutsPlatformService } from '../../../common/web3/nuts-platform.service';
-import { SwapIssuanceModel } from 'src/app/common/model/swap-issuance.model';
-import { InstrumentService } from 'src/app/common/web3/instrument.service';
 import { ActivatedRoute } from '@angular/router';
+import { IssuanceModel } from '../../issuance.model';
+import { InstrumentService } from '../../instrument.service';
 
 @Component({
   selector: 'app-swap-positions',
@@ -12,8 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class SwapPositionsComponent implements OnInit {
   public selectedTab = 'all';
-  public currentAccount: string;
-  public issuances: SwapIssuanceModel[] = [];
+  public issuances: IssuanceModel[] = [];
   
   private accountUpdatedSubscription: Subscription;
   private swapIssuancesUpdatedSubscription: Subscription;
@@ -23,7 +22,6 @@ export class SwapPositionsComponent implements OnInit {
     private route: ActivatedRoute, private zone: NgZone) { }
 
   ngOnInit() {
-    this.currentAccount = this.nutsPlatformService.currentAccount;
     // Filters on maker and taker
     this.updateSwapIssuances();
     this.swapIssuancesUpdatedSubscription = this.instrumentService.swapIssuancesUpdatedSubject.subscribe(_ => {

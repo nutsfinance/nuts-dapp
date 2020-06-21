@@ -1,0 +1,5 @@
+<button type="button" mat-stroked-button [disabled]="disabled"
+  [ngStyle]="{'border-width': borderless ? '0' : '1px'}" class="select-token-button" (click)="openBottomSheet()">
+  <img [src]="tokenIconUrl" class="token-image">{{selectedToken.tokenSymbol}}
+  <mat-icon class="currency-select-icon" color="primary">expand_more</mat-icon>
+</button>

@@ -1,11 +1,14 @@
 import { Component, Input, OnInit, OnDestroy, NgZone } from '@angular/core';
 
 import { environment } from '../../../../environments/environment';
-import { BorrowingIssuanceModel } from 'src/app/common/model/borrowing-issuance.model';
+import { IssuanceModel } from '../../issuance.model';
 import { NutsPlatformService, USD_ADDRESS, CNY_ADDRESS } from 'src/app/common/web3/nuts-platform.service';
 import { PriceOracleService } from 'src/app/common/web3/price-oracle.service';
 import { Subscription } from 'rxjs';
 import { CurrencyService } from 'src/app/common/currency-select/currency.service';
+import { BorrowingIssuanceModel } from '../borrowing-issuance.model';
+import { TokenModel } from 'src/app/common/token/token.model';
+import { TokenService } from 'src/app/common/token/token.service';
 
 @Component({
   selector: 'app-borrowing-card',
@@ -13,11 +16,12 @@ import { CurrencyService } from 'src/app/common/currency-select/currency.service
   styleUrls: ['./borrowing-card.component.scss']
 })
 export class BorrowingCardComponent implements OnInit, OnDestroy {
-  @Input() public issuance: BorrowingIssuanceModel;
+  @Input() public issuance: IssuanceModel;
+  public borrowingIssuance: BorrowingIssuanceModel;
   public language = environment.language;
   public currentAccount: string;
-  public borrowingToken: string;
-  public collateralToken: string;
+  public borrowingToken: TokenModel;
+  public collateralToken: TokenModel;
   public collateralValue = 0;
 
   public convertedBorrowingValue: Promise<number>;
@@ -26,28 +30,24 @@ export class BorrowingCardComponent implements OnInit, OnDestroy {
   public convertedTotalInterestValue: Promise<number>;
   public showState = 'less';
 
-  private currentAccountSubscription: Subscription;
   private currencyUpdatedSubscription: Subscription;
 
   constructor(public nutsPlatformService: NutsPlatformService, private priceOracleService: PriceOracleService,
-    public currencyService: CurrencyService, private zone: NgZone) { }
+    private tokenService: TokenService, public currencyService: CurrencyService, private zone: NgZone) { }
 
   ngOnInit() {
     this.currentAccount = this.nutsPlatformService.currentAccount;
-    this.currentAccountSubscription = this.nutsPlatformService.currentAccountSubject.subscribe((account) => {
-      this.zone.run(() => {
-        this.currentAccount = account;
-      });
-    });
-    this.borrowingToken = this.nutsPlatformService.getTokenNameByAddress(this.issuance.borrowingTokenAddress);
-    this.collateralToken = this.nutsPlatformService.getTokenNameByAddress(this.issuance.collateralTokenAddress);
+    this.borrowingIssuance = this.issuance.issuancecustomproperty as BorrowingIssuanceModel;
+    this.borrowingToken = this.tokenService.getTokenByAddress(this.borrowingIssuance.borrowingtokenaddress);
+    this.collateralToken = this.tokenService.getTokenByAddress(this.borrowingIssuance.collateraltokenaddress);
     // If the collateral value is not set
-    if (this.issuance.collateralAmount == 0) {
+    if (this.borrowingIssuance.collateralamount == 0) {
+      const collateralDisplayValue = this.tokenService.getDisplayValue
       this.priceOracleService.getConvertedValue(this.issuance.collateralTokenAddress, this.issuance.borrowingTokenAddress, this.issuance.borrowingAmount * this.issuance.collateralRatio, 10000).then(value => {
         this.collateralValue = value;
       });
     } else {
-      this.collateralValue = this.issuance.collateralAmount;
+      this.collateralValue = this.borrowingIssuance.collateralamount;
     }
 
     // Compute issuance converted token values
@@ -58,7 +58,6 @@ export class BorrowingCardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.currentAccountSubscription.unsubscribe();
     this.currencyUpdatedSubscription.unsubscribe();
   }
 

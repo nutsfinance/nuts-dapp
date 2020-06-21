@@ -1,12 +1,10 @@
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
-import { NotificationModel, NotificationReadStatus, NotificationCategory } from '../notification.model';
+import { NotificationModel, NotificationReadStatus } from '../notification.model';
 import { NutsPlatformService } from 'src/app/common/web3/nuts-platform.service';
-import { TransactionType } from '../transaction.model';
 import { NotificationService } from '../notification.service';
 
 @Component({
@@ -20,13 +18,12 @@ export class NotificationDialog implements OnInit, OnDestroy {
   private notificationSubscription: Subscription;
 
   constructor(public dialogRef: MatDialogRef<NotificationDialog>, @Inject(MAT_DIALOG_DATA) public notifications: NotificationModel[],
-    private nutsPlatformService: NutsPlatformService, private router: Router,
-    private notificationService: NotificationService) { }
+    private nutsPlatformService: NutsPlatformService, private notificationService: NotificationService) { }
 
   ngOnInit() {
     this.notificationSubscription = this.notificationService.notificationUpdatedSubject.subscribe((notifications) => {
       this.notifications = notifications.filter(notification => notification.readStatus === NotificationReadStatus.NEW)
-      .sort((n1, n2) => n2.creationTimestamp - n1.creationTimestamp);
+        .sort((n1, n2) => n2.creationTimestamp - n1.creationTimestamp);
     });
   }
 
@@ -39,7 +36,7 @@ export class NotificationDialog implements OnInit, OnDestroy {
   }
 
   getEtherscanLink(transactionHash: string): string {
-    switch(this.nutsPlatformService.currentNetwork) {
+    switch (this.nutsPlatformService.currentNetwork) {
       case '1':
         return `https://etherscan.io/tx/${transactionHash}`;
       case '3':
@@ -57,48 +54,9 @@ export class NotificationDialog implements OnInit, OnDestroy {
     return `[${transactionHash.slice(0, 6)}...${transactionHash.slice(transactionHash.length - 4)}]`;
   }
 
-  retryTransaction(notification: NotificationModel) {
-
-  }
-
   onNotificationAction(notification: NotificationModel) {
     this.dialogRef.close();
-    // Mark the notification as READ
-    notification.readStatus = NotificationReadStatus.READ;
-    this.notificationService.updateNotification(notification);
-    const instrumentName = this.nutsPlatformService.getInstrumentById(+notification.instrumentId);
-    const language = environment.language;
-    
-    // Note:
-    // 1. Transaction initiated has no action
-    // 2. Transaction failed is handled by retryTransaction()
-    // 3. Transaction confirmed should redirect to issuance page
-    // 4. All others should redirect to issuance page
-    if (notification.category !== NotificationCategory.TRANSACTION_CONFIRMED) {
-      this.router.navigate([`/${language}/instrument/${instrumentName}/positions/${notification.issuanceId}`]);
-      return;
-    }
-
-    switch (notification.type) {
-      case TransactionType.APPROVE:
-        this.router.navigate([`/${language}/instrument/${instrumentName}/account`], {
-          queryParams: {
-            panel: 'deposit',
-            token: notification.metadata['tokenName'],
-          }
-        });
-        break;
-      case TransactionType.DEPOSIT:
-      case TransactionType.WITHDRAW:
-        this.router.navigate([`/${language}/instrument/${instrumentName}/account`], { queryParams: { panel: 'transactions' } });
-        break;
-      case TransactionType.CREATE_OFFER:
-        this.router.navigate([`/${language}/instrument/${instrumentName}/positions`], { queryParams: { tab: 'engageable' } });
-        break;
-      case TransactionType.CANCEL_OFFER:
-        this.router.navigate([`/${language}/instrument/${instrumentName}/positions`], { queryParams: { tab: 'inactive' } });
-        break;
-    }
+    this.notificationService.handleNotificationAction(notification);
   }
 
   markAllRead() {

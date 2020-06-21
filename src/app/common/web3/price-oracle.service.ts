@@ -1,32 +1,38 @@
 import { Injectable } from '@angular/core';
 import { NutsPlatformService } from './nuts-platform.service';
+import { HttpClient } from '@angular/common/http';
+
+export interface Price {
+  priceId: string,
+  input: string,
+  output: string,
+  rate: number,
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class PriceOracleService {
-  // Cached prices: <source-target>: [numerator, denominator]
+  // Cached prices: <source-target>: rate
   private prices = {};
 
-  USD_ADDRESS = '0x3EfC5E3c4CFFc638E9C506bb0F040EA0d8d3D094';
+  constructor(private nutsPlatformService: NutsPlatformService, private http: HttpClient) { }
 
-  constructor(private nutsPlatformService: NutsPlatformService) { }
+  async getConvertedValue(inputTokenName: string, outputTokenName: string, inputValue: number, refresh = false): Promise<number> {
+    if (inputTokenName === outputTokenName) return inputValue;
 
-  async getPrice(baseTokenAddress: string, quoteTokenAddress: string, refresh?: boolean) {
-    if (baseTokenAddress === quoteTokenAddress) return Promise.resolve([1, 1]);
-    const priceKey = `${baseTokenAddress}-${quoteTokenAddress}`;
+    // If the price is cached and there is no need to get the latest price, simply return it!
+    const priceKey = `${inputTokenName}-${outputTokenName}`;
     if (this.prices[priceKey] && !refresh) {
-      return Promise.resolve(this.prices[priceKey]);
+      return this.prices[priceKey] * inputValue;
     }
-    const priceOracleContract = this.nutsPlatformService.getPriceOracleContract();
-    const result = await priceOracleContract.methods.getRate(baseTokenAddress, quoteTokenAddress).call({from: this.nutsPlatformService.currentAccount});
-    this.prices[priceKey] = result;
 
-    return result;
-  }
-
-  async getConvertedValue(baseTokenAddress: string, quoteTokenAddress: string, numerator: number, denominator = 1) {
-    const result = await this.getPrice(baseTokenAddress, quoteTokenAddress);
-    return numerator * result[1] / (result[0] * denominator);
+    const price = await this.http.get<Price>(`${this.nutsPlatformService.getApiServerHost()}/prices`, {
+      params: {
+        inputToken: inputTokenName, outputToken: outputTokenName
+      }
+    }).toPromise();
+    this.prices[priceKey] = price.rate;
+    return price.rate * inputValue;
   }
 }

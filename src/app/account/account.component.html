@@ -1,7 +1,10 @@
 <mat-accordion>
 
   <div class="deposit-warning" *ngIf="panel == 'deposit' && approveToken" i18n>
-    Please enable {{approveToken}} before deposit.
+    Please enable {{approveToken.tokenSymbol}} before deposit.
+  </div>
+  <div class="deposit-info" *ngIf="panel == 'deposit' && !approveToken" i18n>
+    NUTS Platform is new technology and security audits don't completely eliminate risks. Please don't supply assets you can't afford to lose.
   </div>
   <mat-expansion-panel [expanded]="panel == 'deposit'" (afterExpand)="panel = 'deposit'">
     <mat-expansion-panel-header>

@@ -7,11 +7,10 @@
         <mat-error *ngIf="amountControl.errors && amountControl.errors.required" i18n>Please enter amount.</mat-error>
         <mat-error *ngIf="amountControl.errors && amountControl.errors.insufficientBalance" i18n>Insufficient balance.</mat-error>
         <mat-error *ngIf="amountControl.errors && amountControl.errors.nonPositiveAmount" i18n>The amount must be positive number.</mat-error>
-        <mat-error *ngIf="amountControl.errors && amountControl.errors.nonIntegerAmount" i18n>The amount must be integer.</mat-error>
       </mat-form-field>
     </div>
-    <div class="col-xs-4">
-      <app-token-select [selectedToken]="selectedToken" (tokenSelected)="onTokenSelected($event)"></app-token-select>
+    <div class="col-xs-4" style="margin-left: -10px;">
+      <app-token-select [selectedToken]="selectedToken" [includedTokens]="includedTokens" (tokenSelected)="onTokenSelected($event)"></app-token-select>
     </div>
   </div>
 
@@ -20,10 +19,10 @@
       <div class="balance-container">
         <img src="../../../../assets/images/wallet-balance.png" class="balance-icon">
         <span class="balance-content">
-          <span i18n>Wallet Balance:</span>
-          <app-wallet-balance [selectedToken]="selectedToken" (balanceUpdated)="walletBalance = $event">
+          <span i18n>Wallet Balance: </span>
+          <app-wallet-balance [tokenAddress]="selectedToken.tokenAddress" (balanceUpdated)="walletBalance = $event">
           </app-wallet-balance>
-          {{selectedToken}}
+          {{selectedToken.tokenSymbol}}
         </span>
       </div>
     </div>
@@ -34,10 +33,10 @@
       <div class="balance-container">
         <img src="../../../../assets/images/account-balance.png" class="balance-icon">
         <span class="balance-content">
-          <span i18n>{instrument, select, lending {Lending} borrowing {Borrowing} swap {Swap}} A/C Balance:</span>
-          <app-account-balance [instrument]="instrument" [selectedToken]="selectedToken">
+          <span i18n>Account Balance: </span>
+          <app-account-balance [instrument]="instrument" [tokenAddress]="selectedToken.tokenAddress">
           </app-account-balance>
-          {{selectedToken}}
+          {{selectedToken.tokenSymbol}}
         </span>
       </div>
     </div>
@@ -47,7 +46,7 @@
     <div class="col-xs-12">
       <div class="deposit-button-wrapper">
         <button mat-raised-button color="primary" [ngClass]="{'deposit-button': true, 'valid': showApprove || !depositFormGroup.invalid}" i18n>
-          {showApprove + '', select, true {Enable} false {Deposit}} {{selectedToken}}
+          {showApprove + '', select, true {Enable} false {Deposit}} {{selectedToken.tokenSymbol}}
         </button>
         <button mat-icon-button class="tooltip-button" type="button"
             *ngIf="!showApprove"

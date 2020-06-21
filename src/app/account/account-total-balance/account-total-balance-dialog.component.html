@@ -1,0 +1,9 @@
+<div *ngFor="let token of tokens" class="row">
+    <div class="col-xs-6 token-name">
+        {{token.tokenSymbol}}
+        <app-token-image [token]="token"></app-token-image>
+    </div>
+    <div class="col-xs-6 token-percentage">
+        {{getTokenPercentage(token.tokenAddress)}}%
+    </div>
+</div>

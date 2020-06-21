@@ -1,0 +1,7 @@
+<div class="banner-container" *ngIf="globalNotifications.length > 0">
+    <div class="banner-content">{{globalNotifications[0].message}}</div>
+    <div class="banner-action">
+        <button mat-button color="primary" (click)="viewSubscription()" i18n>View More</button>
+        <button mat-button (click)="dismiss()" i18n>Dismiss</button>
+    </div>
+</div>
