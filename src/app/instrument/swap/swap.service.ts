@@ -13,7 +13,7 @@ import * as isEqual from 'lodash.isequal';
 })
 export class SwapService extends InstrumentService {
     public swapIssuances: IssuanceModel[] = [];
-    public swapIssuancesUpdate: Subject<IssuanceModel[]> = new Subject();
+    public swapIssuancesUpdated: Subject<IssuanceModel[]> = new Subject();
 
     constructor(nutsPlatformService: NutsPlatformService, notificationService: NotificationService,
         tokenService: TokenService, http: HttpClient) {
@@ -43,7 +43,7 @@ export class SwapService extends InstrumentService {
                 if (!isEqual(swapIssuances, this.swapIssuances)) {
                     console.log('Swap issuance list updated.');
                     this.swapIssuances = swapIssuances;
-                    this.swapIssuancesUpdate.next(this.swapIssuances);
+                    this.swapIssuancesUpdated.next(this.swapIssuances);
 
                     // We could stop prematurally once we get an update!
                     clearInterval(intervalId);

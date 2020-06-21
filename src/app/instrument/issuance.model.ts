@@ -11,7 +11,7 @@ export enum EngagementState {
     Initiated = 1,
     Active = 2,
     Cancelled = 3,
-    complete = 4,
+    Complete = 4,
 }
 
 export class PayableModel {
