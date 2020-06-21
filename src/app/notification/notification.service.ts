@@ -1,14 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject, BehaviorSubject, of } from 'rxjs';
+import { Subject, BehaviorSubject, of, forkJoin } from 'rxjs';
 import * as isEqual from 'lodash.isequal';
 
 import { environment } from '../../environments/environment';
-import { IPO_SUBSCRIPTION_NAME, NutsPlatformService } from '../common/web3/nuts-platform.service';
+import { NutsPlatformService, LENDING_NAME, BORROWING_NAME, SWAP_NAME } from '../common/web3/nuts-platform.service';
 import { TransactionModel, TransactionType } from './transaction.model';
 import { NotificationModel, NotificationReadStatus, NotificationCategory } from './notification.model';
 import { GlobalNotificationModel } from './global-notification.model';
 import { Router } from '@angular/router';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -113,34 +114,58 @@ export class NotificationService {
       console.log('Notification not initialized: Current address', currentAddress, 'Current network', currentNetwork);
       return of([]);
     }
-    const instrumentId = this.nutsPlatformService.getInstrumentId(IPO_SUBSCRIPTION_NAME);
-    return this.http.get<NotificationModel[]>(`${this.nutsPlatformService.getApiServerHost()}/instruments/${instrumentId}/notifications/${currentAddress}`, {
-      params: {
-        language: environment.languageCode
-      }
-    });
+    const instrumentNames = [LENDING_NAME, BORROWING_NAME, SWAP_NAME];
+    const notifications = [];
+    for (const instrumentName of instrumentNames) {
+      const instrumentId = this.nutsPlatformService.getInstrumentId(instrumentName);
+      notifications.push(this.http.get<NotificationModel[]>(`${this.nutsPlatformService.getApiServerHost()}/instruments/${instrumentId}/notifications/${currentAddress}`, {
+        params: { language: environment.languageCode
+      }}));
+    }
+
+    return forkJoin(notifications).pipe(map((results: NotificationModel[][]) => {
+      return results.reduce((acc, val) => acc.concat(val), [])
+        .sort((n1, n2) => n2.creationTimestamp - n1.creationTimestamp);
+    }));
+    
   }
 
   /**
-   * Get global notifications
+   * Get global notifications from the backend
    */
-  getGlobalNotification() {
+  private getGlobalNotificationFromBackend() {
     const currentAddress = this.nutsPlatformService.currentAccount;
     const currentNetwork = this.nutsPlatformService.currentNetwork;
     if (!this.nutsPlatformService.isFullyLoaded()) {
       console.log('Notification not initialized: Current address', currentAddress, 'Current network', currentNetwork);
       return of([]);
     }
-    const instrumentId = this.nutsPlatformService.getInstrumentId(IPO_SUBSCRIPTION_NAME);
-    this.http.get<GlobalNotificationModel[]>(`${this.nutsPlatformService.getApiServerHost()}/instruments/${instrumentId}/global-notifications/${currentAddress}`, {
-      params: {
-        language: environment.languageCode
-      }
-    }).subscribe(globalNotifications => {
-      if (isEqual(globalNotifications, this.globalNotifications)) return;
-      this.globalNotifications = globalNotifications;
-      this.globalNotificationUpdatedSubject.next(globalNotifications);
-    });
+    const instrumentNames = [LENDING_NAME, BORROWING_NAME, SWAP_NAME];
+    let globalNotifications = [];
+    for (const instrumentName of instrumentNames) {
+      const instrumentId = this.nutsPlatformService.getInstrumentId(instrumentName);
+      globalNotifications.push(this.http.get<GlobalNotificationModel[]>(`${this.nutsPlatformService.getApiServerHost()}/instruments/${instrumentId}/global-notifications/${currentAddress}`, {
+        params: { language: environment.languageCode
+      }}));
+    }
+
+    return forkJoin(globalNotifications).pipe(map((results: GlobalNotificationModel[][]) => {
+      return results.reduce((acc, val) => acc.concat(val), [])
+        .sort((n1, n2) => n2.creationTimestamp - n1.creationTimestamp);
+    }));
+  }
+
+  /**
+   * Get global notifications
+   */
+  async getGlobalNotification() {
+    this.getGlobalNotificationFromBackend().subscribe(
+      globalNotifications => {
+        if (isEqual(globalNotifications, this.globalNotifications)) return;
+        this.globalNotifications = globalNotifications;
+        this.globalNotificationUpdatedSubject.next(globalNotifications);
+      },
+    );
   }
 
   updateGlobalNotification(globalNotification: GlobalNotificationModel) {

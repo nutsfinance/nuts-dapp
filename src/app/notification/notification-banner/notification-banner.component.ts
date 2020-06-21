@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { NotificationService } from '../notification.service';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
-import { IPO_SUBSCRIPTION_NAME } from 'src/app/common/web3/nuts-platform.service';
+import { NutsPlatformService } from 'src/app/common/web3/nuts-platform.service';
 
 @Component({
   selector: 'app-notification-banner',
@@ -16,7 +16,8 @@ export class NotificationBannerComponent implements OnInit, OnDestroy {
 
   private globalNotificationSubscription: Subscription;
 
-  constructor(private notificationService: NotificationService, private router: Router) { }
+  constructor(private notificationService: NotificationService, private nutsPlatformService: NutsPlatformService,
+    private router: Router) { }
 
   ngOnInit() {
     this.globalNotificationSubscription = this.notificationService.globalNotificationUpdatedSubject
@@ -27,8 +28,9 @@ export class NotificationBannerComponent implements OnInit, OnDestroy {
     this.globalNotificationSubscription.unsubscribe();
   }
 
-  viewSubscription() {
-    this.router.navigate([`/${environment.language}/instrument/${IPO_SUBSCRIPTION_NAME}/marketplace`],
+  viewSubscription(globalNotification: GlobalNotificationModel) {
+    const instrumentName = this.nutsPlatformService.getInstrumentById(+globalNotification.instrumentId);
+    this.router.navigate([`/${environment.language}/instrument/${instrumentName}/marketplace`],
       { fragment: `ipo-${this.globalNotifications[0].subscriptionId}` });
     this.notificationService.updateGlobalNotification(this.globalNotifications[0]);
   }
