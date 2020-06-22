@@ -7,6 +7,7 @@ import { NotificationService } from 'src/app/notification/notification.service';
 import { TokenService } from 'src/app/common/token/token.service';
 import { HttpClient } from '@angular/common/http';
 import * as isEqual from 'lodash.isequal';
+import { AccountService } from 'src/app/account/account.service';
 
 @Injectable({
     providedIn: 'root'
@@ -14,9 +15,10 @@ import * as isEqual from 'lodash.isequal';
 export class SwapService extends InstrumentService {
     public swapIssuances: IssuanceModel[] = [];
     public swapIssuancesUpdated: Subject<IssuanceModel[]> = new Subject();
+    private swapIssuanceMap = {};
 
     constructor(nutsPlatformService: NutsPlatformService, notificationService: NotificationService,
-        tokenService: TokenService, http: HttpClient) {
+        tokenService: TokenService, http: HttpClient, private accountService: AccountService) {
         super(nutsPlatformService, notificationService, tokenService, http);
 
         this.reloadSwapIssuances();
@@ -44,6 +46,10 @@ export class SwapService extends InstrumentService {
                     console.log('Swap issuance list updated.');
                     this.swapIssuances = swapIssuances;
                     this.swapIssuancesUpdated.next(this.swapIssuances);
+                    this.swapIssuanceMap = {};
+                    for (const issuance of swapIssuances) {
+                        this.swapIssuanceMap[issuance.issuanceid] = issuance;
+                    }
 
                     // We could stop prematurally once we get an update!
                     clearInterval(intervalId);
@@ -52,4 +58,34 @@ export class SwapService extends InstrumentService {
             if (++count >= times) clearInterval(intervalId);
         }, interval);
     }
+
+    public getSwapIssuance(issuanceId): IssuanceModel {
+        return this.swapIssuanceMap[issuanceId];
+    }
+
+    public engageSwapIssuance(issuanceId) {
+        return this.engageIssuance(SWAP_NAME, issuanceId)
+            .on('transactionHash', transactionHash => this.monitorSwapTransaction(transactionHash));
+    }
+
+    public cancelSwapIssuance(issuanceId) {
+        return this.cancelIssuance(SWAP_NAME, issuanceId)
+            .on('transactionHash', transactionHash => this.monitorSwapTransaction(transactionHash));
+    }
+
+    private monitorSwapTransaction(transactionHash) {
+        // Monitoring transaction status(work around for Metamask mobile)
+        const interval = setInterval(async () => {
+          const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
+          if (!receipt || !receipt.blockNumber) return;
+    
+          console.log('Swap receipt', receipt);
+          // New swap issuance created. Need to refresh the swap issuance list.
+          this.reloadSwapIssuances(5, 3000);
+          // New swap issuance created. Need to update the input token balance as well.
+          this.accountService.getUserBalanceFromBackend(5, 3000);
+          this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
+          clearInterval(interval);
+        }, 2000);
+      }
 }

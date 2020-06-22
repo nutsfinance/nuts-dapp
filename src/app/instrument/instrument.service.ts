@@ -3,6 +3,10 @@ import { NotificationService } from 'src/app/notification/notification.service';
 import { TokenService } from '../common/token/token.service';
 import { HttpClient } from '@angular/common/http';
 import { IssuanceModel, IssuanceState, EngagementState } from './issuance.model';
+import { TransactionModel, TransactionType, NotificationRole } from '../notification/transaction.model';
+
+const CANCEL_ISSUANCE_EVENT = "cancel_issuance";
+const REPAY_ISSUANCE_EVENT = "repay_full";
 
 /**
  * Base class for instrument services.
@@ -33,6 +37,35 @@ export class InstrumentService {
       default:
         return true;
     }
+  }
+
+  protected engageIssuance(instrumentName: string, issuanceId: number) {
+    const instrumentManagerContract = this.nutsPlatformService.getInstrumentManagerContract(instrumentName);
+    return instrumentManagerContract.methods.engageIssuance(issuanceId, this.nutsPlatformService.web3.utils.fromAscii("")).send({ from: this.nutsPlatformService.currentAccount, gas: 6721975 })
+      .on('transactionHash', (transactionHash) => {
+        // Records the transaction
+        const depositTransaction = new TransactionModel(transactionHash, TransactionType.ACCEPT_OFFER, NotificationRole.TAKER,
+          this.nutsPlatformService.currentAccount, issuanceId, {});
+        this.notificationService.addTransaction(instrumentName, depositTransaction).subscribe(result => {
+          // Note: Transaction Sent event is not sent until the transaction is recored in notification server!
+          this.nutsPlatformService.transactionSentSubject.next(transactionHash);
+        });
+      });
+  }
+
+  protected cancelIssuance(instrumentName: string, issuanceId: number) {
+    const instrumentManagerContract = this.nutsPlatformService.getInstrumentManagerContract(instrumentName);
+    return instrumentManagerContract.methods.notifyCustomEvent(issuanceId, this.nutsPlatformService.web3.utils.fromAscii(CANCEL_ISSUANCE_EVENT),
+      this.nutsPlatformService.web3.utils.fromAscii("")).send({ from: this.nutsPlatformService.currentAccount, gas: 6721975 })
+      .on('transactionHash', (transactionHash) => {
+        // Records the transaction
+        const depositTransaction = new TransactionModel(transactionHash, TransactionType.CANCEL_OFFER, NotificationRole.MAKER,
+          this.nutsPlatformService.currentAccount, issuanceId, {});
+        this.notificationService.addTransaction(instrumentName, depositTransaction).subscribe(result => {
+          // Note: Transaction Sent event is not sent until the transaction is recored in notification server!
+          this.nutsPlatformService.transactionSentSubject.next(transactionHash);
+        });
+      });
   }
   
   protected getIssuances(instrumentId: number) {

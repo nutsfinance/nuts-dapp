@@ -1,33 +1,30 @@
 import { Component, OnDestroy, OnInit, NgZone } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NutsPlatformService } from '../../../common/web3/nuts-platform.service';
-import { SwapIssuanceModel } from 'src/app/common/model/swap-issuance.model';
-import { InstrumentService } from 'src/app/common/web3/instrument.service';
+import { IssuanceModel, IssuanceState } from '../../issuance.model';
+import { SwapService } from '../swap.service';
 
 @Component({
   selector: 'app-swap-engage',
   templateUrl: './swap-engage.component.html',
   styleUrls: ['./swap-engage.component.scss']
 })
-export class SwapEngageComponent implements OnInit {
-  public currentAccount: string;
-  public issuances: SwapIssuanceModel[] = [];
+export class SwapEngageComponent implements OnInit, OnDestroy {
+  public issuances: IssuanceModel[] = [];
   
   private accountUpdatedSubscription: Subscription;
   private swapIssuancesUpdatedSubscription: Subscription;
 
-  constructor(private nutsPlatformService: NutsPlatformService, private instrumentService: InstrumentService,
+  constructor(private nutsPlatformService: NutsPlatformService, private swapService: SwapService,
     private zone: NgZone) { }
 
   ngOnInit() {
-    this.currentAccount = this.nutsPlatformService.currentAccount;
     // Filters on maker and taker
     this.updateSwapIssuances();
-    this.swapIssuancesUpdatedSubscription = this.instrumentService.swapIssuancesUpdatedSubject.subscribe(_ => {
+    this.swapIssuancesUpdatedSubscription = this.swapService.swapIssuancesUpdated.subscribe(_ => {
       this.updateSwapIssuances();
     });
     this.accountUpdatedSubscription = this.nutsPlatformService.currentAccountSubject.subscribe(_ => {
-      this.currentAccount = this.nutsPlatformService.currentAccount;
       this.updateSwapIssuances();
     });
   }
@@ -38,12 +35,13 @@ export class SwapEngageComponent implements OnInit {
   }
 
   updateSwapIssuances() {
+    const currentAccount = this.nutsPlatformService.currentAccount.toLowerCase();
     this.zone.run(() => {
-      const swapIssuances = this.instrumentService.swapIssuances.filter(issuance => {
+      const swapIssuances = this.swapService.swapIssuances.filter(issuance => {
         // Issuances in Engageable state and the maker is not current user.
-        return issuance.state === 2 && issuance.makerAddress.toLowerCase() !== this.currentAccount.toLowerCase();
+        return issuance.issuancestate === IssuanceState.Engageable && issuance.makeraddress.toLowerCase() !== currentAccount;
       });
-      console.log('Engage: Filtered issuance', swapIssuances.map(issuance => issuance.issuanceId));
+      console.log('Engage: Filtered issuance', swapIssuances.map(issuance => issuance.issuanceid));
       this.issuances = swapIssuances;
     });
   }
