@@ -178,7 +178,7 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
 
   private updateConvertedValue() {
     // Compute converted issuance token values
-    this.convertedCollateralValue = this.priceOracleService.getConvertedCurrencyValue(this.lendingToken, this.collateralValue);
+    this.convertedCollateralValue = this.priceOracleService.getConvertedCurrencyValue(this.collateralToken, this.collateralValue);
     this.convertedLendingValue = this.priceOracleService.getConvertedCurrencyValue(this.lendingToken, this.lendingIssuance.lendingamount);
     this.convertedPerDayInterestValue = this.priceOracleService.getConvertedCurrencyValue(this.lendingToken,
       this.lendingService.getPerDayInterest(this.lendingIssuance));
