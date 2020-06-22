@@ -8,6 +8,8 @@ import { TokenService } from 'src/app/common/token/token.service';
 import { HttpClient } from '@angular/common/http';
 import * as isEqual from 'lodash.isequal';
 import { AccountService } from 'src/app/account/account.service';
+import { TokenModel } from 'src/app/common/token/token.model';
+import { TransactionType, NotificationRole, TransactionModel } from 'src/app/notification/transaction.model';
 
 @Injectable({
     providedIn: 'root'
@@ -63,6 +65,30 @@ export class SwapService extends InstrumentService {
         return this.swapIssuanceMap[issuanceId];
     }
 
+    public createSwapIssuance(inputToken: TokenModel, outputToken: TokenModel, inputAmount: string, outputAmount: string, duration: number) {
+        const issuanceDuration = duration * 24 * 3600;  // Duration is in days
+        const makerData = this.nutsPlatformService.web3.eth.abi.encodeParameters(['uint256', 'uint256', 'address', 'address', 'uint256'],
+            [issuanceDuration, inputToken.tokenAddress, outputToken.tokenAddress, inputAmount, outputAmount]);
+
+        const instrumentManagerContract = this.nutsPlatformService.getInstrumentManagerContract(SWAP_NAME);
+        return instrumentManagerContract.methods.createIssuance(makerData).send({ from: this.nutsPlatformService.currentAccount, gas: 6721975 })
+            .on('transactionHash', (transactionHash) => {
+                // Records the transaction
+                const depositTransaction = new TransactionModel(transactionHash, TransactionType.CREATE_OFFER, NotificationRole.MAKER,
+                    this.nutsPlatformService.currentAccount, 0,
+                    {
+                        inputTokenName: inputToken.tokenSymbol, inputTokenAddress: inputToken.tokenAddress,
+                        outputTokenName: outputToken.tokenSymbol, outputTokenAddress: outputToken.tokenAddress,
+                        inputAmount: inputAmount, outputAmount: outputAmount, duration: `${duration}`,
+                    }
+                );
+                this.notificationService.addTransaction(SWAP_NAME, depositTransaction).subscribe(result => {
+                    // Note: Transaction Sent event is not sent until the transaction is recored in notification server!
+                    this.nutsPlatformService.transactionSentSubject.next(transactionHash);
+                });
+            });
+    }
+
     public engageSwapIssuance(issuanceId) {
         return this.engageIssuance(SWAP_NAME, issuanceId)
             .on('transactionHash', transactionHash => this.monitorSwapTransaction(transactionHash));
@@ -76,16 +102,16 @@ export class SwapService extends InstrumentService {
     private monitorSwapTransaction(transactionHash) {
         // Monitoring transaction status(work around for Metamask mobile)
         const interval = setInterval(async () => {
-          const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
-          if (!receipt || !receipt.blockNumber) return;
-    
-          console.log('Swap receipt', receipt);
-          // New swap issuance created. Need to refresh the swap issuance list.
-          this.reloadSwapIssuances(5, 3000);
-          // New swap issuance created. Need to update the input token balance as well.
-          this.accountService.getUserBalanceFromBackend(5, 3000);
-          this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
-          clearInterval(interval);
+            const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
+            if (!receipt || !receipt.blockNumber) return;
+
+            console.log('Swap receipt', receipt);
+            // New swap issuance created. Need to refresh the swap issuance list.
+            this.reloadSwapIssuances(5, 3000);
+            // New swap issuance created. Need to update the input token balance as well.
+            this.accountService.getUserBalanceFromBackend(5, 3000);
+            this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
+            clearInterval(interval);
         }, 2000);
-      }
+    }
 }

@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild, NgZone } from '@angular/core';
 import { FormControl, FormGroup, NgForm } from '@angular/forms';
 import { MatButtonToggleChange, MatDialog } from '@angular/material';
-import { NutsPlatformService } from '../../../common/web3/nuts-platform.service';
-import { PriceOracleService } from '../../../common/web3/price-oracle.service';
-import { InstrumentService } from 'src/app/common/web3/instrument.service';
+import { NutsPlatformService, SWAP_NAME } from '../../../common/web3/nuts-platform.service';
 import { TransactionInitiatedDialog } from 'src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component';
-import { AccountBalanceService } from 'src/app/common/web3/account-balance.service';
+import { TokenModel } from 'src/app/common/token/token.model';
+import { SwapService } from '../swap.service';
+import { TokenService } from 'src/app/common/token/token.service';
 
 @Component({
   selector: 'app-swap-create',
@@ -13,23 +13,22 @@ import { AccountBalanceService } from 'src/app/common/web3/account-balance.servi
   styleUrls: ['./swap-create.component.scss']
 })
 export class SwapCreateComponent implements OnInit {
-  private tokens = ["ETH", "USDC", "USDT", "DAI", "NUTS"];
   @ViewChild('form', { static: true }) private form: NgForm;
+  private tokens: TokenModel[] = [];
 
   public createFormGroup: FormGroup;
-  public inputToken = this.tokens[0];
-  public outputToken = this.tokens[1];
-  public inputAmount: number;
-  public inputTokenBalance: number;
-  public outputAmount: number;
-  public duration: number;
+  public inputToken: TokenModel;
+  public outputToken: TokenModel;
+  public inputTokenBalance = '';
   public showAlternativeTenor = false;
 
-  constructor(private nutsPlatformService: NutsPlatformService, private instrumentService: InstrumentService,
-    private priceOracleSercvice: PriceOracleService, private accountBalanceService: AccountBalanceService,
-    private zone: NgZone, private dialog: MatDialog) { }
+  constructor(private nutsPlatformService: NutsPlatformService, private swapService: SwapService,
+    private tokenService: TokenService, private zone: NgZone, private dialog: MatDialog) { }
 
   ngOnInit() {
+    this.tokens = this.tokenService.tokens.filter(token => token.supportsTransaction);
+    this.inputToken = this.tokens[0];
+    this.outputToken = this.tokens[1];
     this.createFormGroup = new FormGroup({
       'inputAmount': new FormControl('', this.validInputAmount.bind(this)),
       'outputAmount': new FormControl('', this.validOutputAmount.bind(this)),
@@ -37,15 +36,15 @@ export class SwapCreateComponent implements OnInit {
     });
   }
 
-  onInputTokenSelected(token: string) {
-    this.inputToken = token;
+  onInputTokenSelected(tokenAddress: string) {
+    this.inputToken = this.tokenService.getTokenByAddress(tokenAddress);
     this.createFormGroup.controls['inputAmount'].reset();
-    // Update collaterals
-    this.outputToken = token === this.tokens[0] ? this.tokens[1] : this.tokens[0];
+    // Update output token selection
+    this.outputToken = tokenAddress === this.tokens[0].tokenAddress ? this.tokens[1] : this.tokens[0];
   }
 
-  onOutputTokenSelected(token: string) {
-    this.outputToken = token;
+  onOutputTokenSelected(tokenAddress: string) {
+    this.outputToken = this.tokenService.getTokenByAddress(tokenAddress);
   }
 
   onTenorChange(tenorChange: MatButtonToggleChange) {
@@ -71,10 +70,9 @@ export class SwapCreateComponent implements OnInit {
       return;
     }
 
-    const inputAmount = this.nutsPlatformService.getTokenActualValueByName(this.inputToken, this.createFormGroup.value['inputAmount']);
-    const outputAmount = this.nutsPlatformService.getTokenActualValueByName(this.outputToken, this.createFormGroup.value['outputAmount']);
-    this.instrumentService.createSwapIssuance(this.inputToken, this.outputToken, inputAmount, outputAmount,
-      this.createFormGroup.value['duration'])
+    const inputAmount = this.tokenService.getActualValue(this.inputToken.tokenAddress, this.createFormGroup.value['inputAmount']);
+    const outputAmount = this.tokenService.getActualValue(this.outputToken.tokenAddress, this.createFormGroup.value['outputAmount']);
+    this.swapService.createSwapIssuance(this.inputToken, this.outputToken, inputAmount, outputAmount, this.createFormGroup.value['duration'])
       .on('transactionHash', transactionHash => {
         // Show Transaction Initiated dialog
         this.zone.run(() => {
@@ -82,10 +80,7 @@ export class SwapCreateComponent implements OnInit {
           const transactionInitiatedDialog = this.dialog.open(TransactionInitiatedDialog, {
             width: '90%',
             data: {
-              type: 'create_issuance',
-              instrument: 'swap',
-              tokenName: this.inputToken,
-              tokenAmount: inputAmount,
+              type: 'create_issuance', instrument: SWAP_NAME, tokenName: this.inputToken.tokenSymbol, tokenAmount: inputAmount,
             },
           });
           transactionInitiatedDialog.afterClosed().subscribe(() => {
@@ -94,26 +89,7 @@ export class SwapCreateComponent implements OnInit {
             document.body.scrollTop = document.documentElement.scrollTop = 0;
           });
         });
-
-        this.monitorSwapTransaction(transactionHash);
       });
-  }
-
-  private monitorSwapTransaction(transactionHash) {
-    // Monitoring transaction status(work around for Metamask mobile)
-    const interval = setInterval(async () => {
-      const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
-      if (!receipt || !receipt.blockNumber) return;
-
-      console.log('Create receipt', receipt);
-      // New swap issuance created. Need to refresh the swap issuance list.
-      this.instrumentService.reloadSwapIssuances(5, 3000);
-      // New swap issuance created. Need to update the input token balance as well.
-      this.accountBalanceService.getUserBalanceFromBackend(5, 3000);
-
-      this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
-      clearInterval(interval);
-    }, 2000);
   }
 
   resetForm() {
@@ -126,14 +102,13 @@ export class SwapCreateComponent implements OnInit {
     if (!control.value) {
       return { 'required': true };
     }
-    if (this.inputTokenBalance < this.nutsPlatformService.getTokenActualValueByName(this.inputToken, control.value)) {
+    const inputAmount = this.tokenService.getActualValue(this.inputToken.tokenAddress, control.value);
+    const BN = this.nutsPlatformService.web3.utils.BN;
+    if (new BN(this.inputTokenBalance).lt(inputAmount)) {
       return { 'insufficientBalance': true };
     }
-    if ((this.inputToken === 'ETH' && Number.isNaN(Number(control.value))) || Number(control.value) <= 0) {
+    if ((Number.isNaN(Number(control.value))) || Number(control.value) <= 0) {
       return { 'nonPositiveAmount': true };
-    }
-    if (this.inputToken !== 'ETH' && !/^[1-9][0-9]*$/.test(control.value)) {
-      return { 'nonIntegerAmount': true };
     }
     return null;
   }
@@ -142,11 +117,8 @@ export class SwapCreateComponent implements OnInit {
     if (!control.value) {
       return { 'required': true };
     }
-    if ((this.outputToken === 'ETH' && Number.isNaN(Number(control.value))) || Number(control.value) <= 0) {
+    if ((Number.isNaN(Number(control.value))) || Number(control.value) <= 0) {
       return { 'nonPositiveAmount': true };
-    }
-    if (this.outputToken !== 'ETH' && !/^[1-9][0-9]*$/.test(control.value)) {
-      return { 'nonIntegerAmount': true };
     }
     return null;
   }

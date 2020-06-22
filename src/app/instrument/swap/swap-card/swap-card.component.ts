@@ -1,10 +1,13 @@
 import { Component, Input, OnInit, OnDestroy, NgZone } from '@angular/core';
 
 import { environment } from '../../../../environments/environment';
-import { SwapIssuanceModel } from 'src/app/common/model/swap-issuance.model';
 import { NutsPlatformService, USD_ADDRESS, CNY_ADDRESS } from 'src/app/common/web3/nuts-platform.service';
 import { PriceOracleService } from 'src/app/common/web3/price-oracle.service';
 import { Subscription } from 'rxjs';
+import { TokenModel } from 'src/app/common/token/token.model';
+import { TokenService } from 'src/app/common/token/token.service';
+import { IssuanceModel } from '../../issuance.model';
+import { SwapIssuanceModel } from '../swap-issuance.model';
 import { CurrencyService } from 'src/app/common/currency-select/currency.service';
 
 @Component({
@@ -13,34 +16,28 @@ import { CurrencyService } from 'src/app/common/currency-select/currency.service
   styleUrls: ['./swap-card.component.scss']
 })
 export class SwapCardComponent implements OnInit, OnDestroy {
-  @Input() public issuance: SwapIssuanceModel;
-
+  @Input() public issuance: IssuanceModel;
+  public swapIssuance: SwapIssuanceModel;
   public language = environment.language;
-  public currentAccount: string;
-  public inputToken: string;
-  public outputToken: string;
+  public inputToken: TokenModel;
+  public outputToken: TokenModel;
   public exchangeRate: number;
 
   public convertedInputValue: Promise<number>;
   public convertedOutputValue: Promise<number>;
   public showState = 'less';
 
-  private currentAccountSubscription: Subscription;
   private currencyUpdatedSubscription: Subscription;
 
   constructor(public nutsPlatformService: NutsPlatformService, private priceOracleService: PriceOracleService,
-    public currencyService: CurrencyService, private zone: NgZone) { }
+    public tokenService: TokenService, private currencyService: CurrencyService, private zone: NgZone) { }
 
   ngOnInit() {
-    this.currentAccount = this.nutsPlatformService.currentAccount;
-    this.currentAccountSubscription = this.nutsPlatformService.currentAccountSubject.subscribe((account) => {
-      this.zone.run(() => {
-        this.currentAccount = account;
-      });
-    });
-    this.inputToken = this.nutsPlatformService.getTokenNameByAddress(this.issuance.inputTokenAddress);
-    this.outputToken = this.nutsPlatformService.getTokenNameByAddress(this.issuance.outputTokenAddress);
-    this.exchangeRate = 1.0 * this.nutsPlatformService.getDisplayValueByName(this.outputToken, this.issuance.outputAmount) / this.nutsPlatformService.getDisplayValueByName(this.inputToken, this.issuance.inputAmount);
+    this.swapIssuance = this.issuance.issuancecustomproperty as SwapIssuanceModel;
+    this.inputToken = this.tokenService.getTokenByAddress(this.swapIssuance.inputtokenaddress);
+    this.outputToken = this.tokenService.getTokenByAddress(this.swapIssuance.outputtokenaddress);
+    this.exchangeRate = 1.0 * this.tokenService.getDisplayValue(this.outputToken.tokenAddress, this.swapIssuance.outputamount)
+      / this.tokenService.getDisplayValue(this.inputToken.tokenAddress, this.swapIssuance.inputamount);
 
     // Compute issuance converted token values
     this.updateConvertedValues();
@@ -50,15 +47,13 @@ export class SwapCardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.currentAccountSubscription.unsubscribe();
     this.currencyUpdatedSubscription.unsubscribe();
   }
 
   private updateConvertedValues() {
-    const targetTokenAddress = this.currencyService.currency === 'USD' ? USD_ADDRESS : CNY_ADDRESS;
-    this.convertedInputValue = this.priceOracleService.getConvertedValue(targetTokenAddress,
-      this.issuance.inputTokenAddress, this.issuance.inputAmount);
-    this.convertedOutputValue = this.priceOracleService.getConvertedValue(targetTokenAddress,
-      this.issuance.outputTokenAddress, this.issuance.outputAmount);
+    this.convertedInputValue = this.priceOracleService.getConvertedCurrencyValue(this.inputToken,
+      this.swapIssuance.inputamount);
+    this.convertedOutputValue = this.priceOracleService.getConvertedCurrencyValue(this.outputToken,
+      this.swapIssuance.outputamount);
   }
 }
