@@ -1,11 +1,13 @@
 import { Component, OnInit, ViewChild, NgZone } from '@angular/core';
 import { FormControl, FormGroup, NgForm } from '@angular/forms';
 import { MatButtonToggleChange, MatDialog } from '@angular/material';
-import { NutsPlatformService } from '../../../common/web3/nuts-platform.service';
+import { NutsPlatformService, LENDING_NAME } from '../../../common/web3/nuts-platform.service';
 import { PriceOracleService } from '../../../common/web3/price-oracle.service';
-import { InstrumentService } from 'src/app/common/web3/instrument.service';
 import { TransactionInitiatedDialog } from 'src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component';
-import { AccountBalanceService } from 'src/app/common/web3/account-balance.service';
+import { TokenModel } from 'src/app/common/token/token.model';
+import { LendingService } from '../lending.service';
+import { AccountService } from 'src/app/account/account.service';
+import { TokenService } from 'src/app/common/token/token.service';
 
 
 @Component({
@@ -14,25 +16,26 @@ import { AccountBalanceService } from 'src/app/common/web3/account-balance.servi
   styleUrls: ['./lending-create.component.scss']
 })
 export class LendingCreateComponent implements OnInit {
-  private tokens = ["ETH", "USDC", "USDT", "DAI", "NUTS"];
   @ViewChild('form', { static: true }) private form: NgForm;
+  private tokens: TokenModel[] = [];
 
   public createFormGroup: FormGroup;
   public showAlternativeTenor = false;
   public showAlternativeColleral = false;
   public showAlternativeInterest = false;
-  public principalToken = this.tokens[0];
-  public principalTokenBalance: number;
-  public principalValue = 0;
-  public collateralToken = this.tokens[1];
-  public collateralValue = 0;
-  public interestValue = 0;
+  public principalToken: TokenModel;
+  public principalTokenBalance = '0';
+  public principalValue = '0';
+  public collateralToken: TokenModel;
+  public collateralValue = '0';
+  public interestValue = '0';
 
-  constructor(private nutsPlatformService: NutsPlatformService, private instrumentService: InstrumentService,
-    private priceOracleSercvice: PriceOracleService, private accountBalanceService: AccountBalanceService,
-    private zone: NgZone, private dialog: MatDialog) { }
+  constructor(private nutsPlatformService: NutsPlatformService, private lendingService: LendingService,
+    private priceOracleSercvice: PriceOracleService, private accountService: AccountService,
+    private tokenService: TokenService, private zone: NgZone, private dialog: MatDialog) { }
 
   ngOnInit() {
+    this.tokens = this.tokenService.tokens.filter(token => token.supportsTransaction);
     this.createFormGroup = new FormGroup({
       'principalAmount': new FormControl('', this.validPrincipalAmount.bind(this)),
       'tenor': new FormControl('', this.validTenor),
@@ -40,26 +43,27 @@ export class LendingCreateComponent implements OnInit {
       'interestRate': new FormControl('', this.validInterestRate),
     });
     this.createFormGroup.valueChanges.subscribe(_ => {
-      this.principalValue = this.nutsPlatformService.getTokenActualValueByName(this.principalToken, this.createFormGroup.value['principalAmount']);
+      this.principalValue = this.tokenService.getActualValue(this.principalToken.tokenAddress, this.createFormGroup.value['principalAmount']);
       this.computeCollateralValue();
-      this.computeInterestValue();
+      this.interestValue = this.lendingService.getInterestValue(this.principalValue, this.createFormGroup.value['interestRate'],
+        this.createFormGroup.value['tenor']);
     });
   }
 
-  onPrincipalTokenSelected(token: string) {
+  onPrincipalTokenSelected(tokenAddress: string) {
     // Update principals
-    this.principalToken = token;
+    this.principalToken = this.tokenService.getTokenByAddress(tokenAddress);
     this.createFormGroup.controls['principalAmount'].reset();
-    // Update collaterals
-    this.collateralToken = token === this.tokens[0] ? this.tokens[1] : this.tokens[0];
+    // Update collateral token
+    this.collateralToken = tokenAddress === this.tokens[0].tokenAddress ? this.tokens[1] : this.tokens[0];
   }
 
   onTenorChange(tenorChange: MatButtonToggleChange) {
     this.createFormGroup.patchValue({ 'tenor': tenorChange.value });
   }
 
-  onCollateralTokenSelected(token: string) {
-    this.collateralToken = token;
+  onCollateralTokenSelected(tokenAddress: string) {
+    this.collateralToken = this.tokenService.getTokenByAddress(tokenAddress);
     this.createFormGroup.controls['collateralRatio'].reset();
   }
 
@@ -72,15 +76,8 @@ export class LendingCreateComponent implements OnInit {
   }
 
   computeCollateralValue() {
-    const principalTokenAddress = this.nutsPlatformService.getTokenAddressByName(this.principalToken);
-    const collateralTokenAddress = this.nutsPlatformService.getTokenAddressByName(this.collateralToken);
-    if (!this.createFormGroup.value['principalAmount']) {
-      this.collateralValue = 0;
-      return;
-    }
-
-    this.priceOracleSercvice.getConvertedValue(collateralTokenAddress, principalTokenAddress,
-      this.principalValue * this.createFormGroup.value['collateralRatio'], 100).then(value => {
+    this.lendingService.getCollateralValue(this.principalToken, this.collateralToken, this.principalValue,
+      this.createFormGroup.value['collateralRatio']).then(value => {
         this.collateralValue = value;
       });
   }
@@ -89,7 +86,7 @@ export class LendingCreateComponent implements OnInit {
     if (!this.createFormGroup.valid) {
       return;
     }
-    this.instrumentService.createLendingIssuance(this.principalToken, this.principalValue,
+    this.lendingService.createLendingIssuance(this.principalToken, this.principalValue,
       this.collateralToken, this.createFormGroup.value['collateralRatio'], this.createFormGroup.value['tenor'],
       this.createFormGroup.value['interestRate'])
       .on('transactionHash', transactionHash => {
@@ -99,10 +96,8 @@ export class LendingCreateComponent implements OnInit {
           const transactionInitiatedDialog = this.dialog.open(TransactionInitiatedDialog, {
             width: '90%',
             data: {
-              type: 'create_issuance',
-              instrument: 'lending',
-              tokenAmount: this.principalValue,
-              tokenName: this.principalToken,
+              type: 'create_issuance', instrument: LENDING_NAME,
+              tokenAmount: this.principalValue, tokenName: this.principalToken.tokenSymbol,
             },
           });
           transactionInitiatedDialog.afterClosed().subscribe(() => {
@@ -111,41 +106,13 @@ export class LendingCreateComponent implements OnInit {
             document.body.scrollTop = document.documentElement.scrollTop = 0;
           });
         });
-
-        this.monitorLendingTransaction(transactionHash);
       });
-  }
-
-  private monitorLendingTransaction(transactionHash) {
-    // Monitoring transaction status(work around for Metamask mobile)
-    const interval = setInterval(async () => {
-      const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
-      if (!receipt || !receipt.blockNumber) return;
-
-      console.log('Create receipt', receipt);
-      // New lending issuance created. Need to refresh the lending issuance list.
-      this.instrumentService.reloadLendingIssuances(5, 3000);
-      // New lending issuance created. Need to update the principal balance as well.
-      this.accountBalanceService.getUserBalanceFromBackend(5, 3000);
-    
-      this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
-      clearInterval(interval);
-    }, 2000);
   }
 
   resetForm() {
     this.principalToken = this.tokens[0];
     this.collateralToken = this.tokens[1];
     this.form.resetForm();
-  }
-
-  computeInterestValue() {
-    const principalAmount = Math.floor(this.createFormGroup.value['principalAmount'] * 10000);
-    const interestRate = Math.floor(this.createFormGroup.value['interestRate'] * 10000);
-    const tenor = this.createFormGroup.value['tenor'];
-    const interest = principalAmount * interestRate * tenor / 10000000000;
-
-    this.interestValue = interest;
   }
 
   /**
@@ -166,14 +133,13 @@ export class LendingCreateComponent implements OnInit {
     if (!control.value) {
       return { 'required': true };
     }
-    if (this.principalTokenBalance < this.nutsPlatformService.getTokenActualValueByName(this.principalToken, control.value)) {
-      return { 'insufficientBalance': true };
-    }
-    if ((this.principalToken === 'ETH' && Number.isNaN(Number(control.value))) || Number(control.value) <= 0) {
+    if (Number.isNaN(Number(control.value)) || Number(control.value) <= 0) {
       return { 'nonPositiveAmount': true };
     }
-    if (this.principalToken !== 'ETH' && !/^[1-9][0-9]*$/.test(control.value)) {
-      return { 'nonIntegerAmount': true };
+    const BN = this.nutsPlatformService.web3.utils.BN;
+    const principalValue = this.tokenService.getActualValue(this.principalToken.tokenAddress, control.value);
+    if (new BN(this.principalTokenBalance).lt(new BN(principalValue))) {
+      return { 'insufficientBalance': true };
     }
     return null;
   }

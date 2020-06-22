@@ -10,6 +10,7 @@ import * as isEqual from 'lodash.isequal';
 import { AccountService } from 'src/app/account/account.service';
 import { TokenModel } from 'src/app/common/token/token.model';
 import { TransactionType, NotificationRole, TransactionModel } from 'src/app/notification/transaction.model';
+import { PriceOracleService } from 'src/app/common/web3/price-oracle.service';
 
 @Injectable({
     providedIn: 'root'
@@ -20,8 +21,8 @@ export class SwapService extends InstrumentService {
     private swapIssuanceMap = {};
 
     constructor(nutsPlatformService: NutsPlatformService, notificationService: NotificationService,
-        tokenService: TokenService, http: HttpClient, private accountService: AccountService) {
-        super(nutsPlatformService, notificationService, tokenService, http);
+        priceOracleService: PriceOracleService, tokenService: TokenService, http: HttpClient, private accountService: AccountService) {
+        super(nutsPlatformService, notificationService, priceOracleService, tokenService, http);
 
         this.reloadSwapIssuances();
         this.nutsPlatformService.platformInitializedSubject.subscribe(initialized => {

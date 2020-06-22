@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { IssuanceModel, IssuanceState, EngagementState } from './issuance.model';
 import { TransactionModel, TransactionType, NotificationRole } from '../notification/transaction.model';
 import { TokenModel } from '../common/token/token.model';
+import { PriceOracleService } from '../common/web3/price-oracle.service';
 
 const CANCEL_ISSUANCE_EVENT = "cancel_issuance";
 const REPAY_ISSUANCE_EVENT = "repay_full";
@@ -14,7 +15,7 @@ const REPAY_ISSUANCE_EVENT = "repay_full";
  */
 export class InstrumentService {
   constructor(protected nutsPlatformService: NutsPlatformService, protected notificationService: NotificationService,
-    protected tokenService: TokenService, protected http: HttpClient) { }
+    protected priceOracleService: PriceOracleService, protected tokenService: TokenService, protected http: HttpClient) { }
 
   /**
    * Checks whether the current user is in position with the specific category.
@@ -38,6 +39,17 @@ export class InstrumentService {
       default:
         return true;
     }
+  }
+
+  public getCollateralValue(principalToken: TokenModel, collateralToken: TokenModel, inputAmount: string, collateralRatio: number) {
+    const BN = this.nutsPlatformService.web3.utils.BN;
+    const collateralAmountInPrincipal = new BN(inputAmount).mul(new BN(collateralRatio)).div(new BN(10000));
+    return this.priceOracleService.getConvertedActualValue(principalToken, collateralToken, collateralAmountInPrincipal);
+  }
+
+  public getInterestValue(inputAmount: string, interestRate: number, tenorDays: number) {
+    const BN = this.nutsPlatformService.web3.utils.BN;
+    return new BN(inputAmount).mul(new BN(interestRate * 10000 * tenorDays)).div(new BN(10000)).toString();
   }
 
   protected engageIssuance(instrumentName: string, issuanceId: number) {

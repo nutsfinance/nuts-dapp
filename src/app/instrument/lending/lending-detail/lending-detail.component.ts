@@ -163,7 +163,7 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
         this.collateralToken = this.tokenService.getTokenByAddress(this.lendingIssuance.collateraltokenaddress);
         // If the collateral value is not set
         if (this.lendingIssuance.collateralamount === '0') {
-          this.lendingService.getCollateralValue(this.lendingIssuance).then(value => {
+          this.lendingService.getLendingCollateralValue(this.lendingIssuance).then(value => {
             this.collateralValue = value;
             this.collateralSufficient = new BN(this.collateralTokenBalance).gte(new BN(this.collateralValue));
           });

@@ -23,8 +23,8 @@ export class LendingService extends InstrumentService {
 
     constructor(nutsPlatformService: NutsPlatformService, notificationService: NotificationService,
         tokenService: TokenService, http: HttpClient, private accountService: AccountService,
-        private priceOracleService: PriceOracleService) {
-        super(nutsPlatformService, notificationService, tokenService, http);
+        priceOracleService: PriceOracleService) {
+        super(nutsPlatformService, notificationService, priceOracleService, tokenService, http);
 
         this.reloadLendingIssuances();
         this.nutsPlatformService.platformInitializedSubject.subscribe(initialized => {
@@ -111,12 +111,11 @@ export class LendingService extends InstrumentService {
             .on('transactionHash', transactionHash => this.monitorLendingTransaction(transactionHash));
     }
 
-    public getCollateralValue(lendingIssuance: LendingIssuanceModel) {
+    public getLendingCollateralValue(lendingIssuance: LendingIssuanceModel) {
         const lendingToken = this.tokenService.getTokenByAddress(lendingIssuance.lendingtokenaddress);
         const collateralToken = this.tokenService.getTokenByAddress(lendingIssuance.collateraltokenaddress);
-        const BN = this.nutsPlatformService.web3.utils.BN;
-        const inputAmount = new BN(lendingIssuance.lendingamount).mul(new BN(lendingIssuance.collateralratio)).div(new BN(10000));
-        return this.priceOracleService.getConvertedActualValue(lendingToken, collateralToken, inputAmount);
+
+        return this.getCollateralValue(lendingToken, collateralToken, lendingIssuance.lendingamount, lendingIssuance.collateralratio);
     }
 
     public getPerDayInterest(lendingIssuance: LendingIssuanceModel) {
