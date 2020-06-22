@@ -67,7 +67,7 @@ export class SwapService extends InstrumentService {
 
     public createSwapIssuance(inputToken: TokenModel, outputToken: TokenModel, inputAmount: string, outputAmount: string, duration: number) {
         const issuanceDuration = duration * 24 * 3600;  // Duration is in days
-        const makerData = this.nutsPlatformService.web3.eth.abi.encodeParameters(['uint256', 'uint256', 'address', 'address', 'uint256'],
+        const makerData = this.nutsPlatformService.web3.eth.abi.encodeParameters(['uint256', 'address', 'address', 'uint256', 'uint256'],
             [issuanceDuration, inputToken.tokenAddress, outputToken.tokenAddress, inputAmount, outputAmount]);
 
         const instrumentManagerContract = this.nutsPlatformService.getInstrumentManagerContract(SWAP_NAME);
