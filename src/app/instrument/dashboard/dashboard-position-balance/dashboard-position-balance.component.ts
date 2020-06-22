@@ -3,12 +3,18 @@ import { Component, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
-import { NutsPlatformService, USD_ADDRESS, CNY_ADDRESS } from 'src/app/common/web3/nuts-platform.service';
+import { NutsPlatformService, USD_ADDRESS, CNY_ADDRESS, LENDING_NAME, BORROWING_NAME, SWAP_NAME } from 'src/app/common/web3/nuts-platform.service';
 import { PriceOracleService } from 'src/app/common/web3/price-oracle.service';
 import { CurrencyService } from 'src/app/common/currency-select/currency.service';
-import { SupplementalLineItemModel, SupplementalLineItemType, SupplementalLineItemState } from 'src/app/common/model/supplemental-line-item.model';
-import { InstrumentService } from 'src/app/common/web3/instrument.service';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { LendingService } from '../../lending/lending.service';
+import { BorrowingService } from '../../borrowing/borrowing.service';
+import { SwapService } from '../../swap/swap.service';
+import { UserRole, IssuanceState, EngagementState, PayableModel } from '../../issuance.model';
+import { TokenService } from 'src/app/common/token/token.service';
+import { LendingIssuanceModel } from '../../lending/lending-issuance.model';
+import { BorrowingIssuanceModel } from '../../borrowing/borrowing-issuance.model';
+import { SwapIssuanceModel } from '../../swap/swap-issuance.model';
 
 interface Position {
   instrument: string,
@@ -19,7 +25,7 @@ interface Position {
   token: string,
   amount: number,
   action: string,
-  supplementalLineItems: SupplementalLineItemModel[]
+  payables: PayableModel[]
 }
 
 @Component({
@@ -44,19 +50,20 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
   private currentAccountSubscription: Subscription;
   private currencySubscription: Subscription;
 
-  constructor(private nutsPlatformService: NutsPlatformService, private instrumentService: InstrumentService,
+  constructor(private nutsPlatformService: NutsPlatformService, private lendingService: LendingService,
+    private borrowingService: BorrowingService, private swapService: SwapService,
     private priceOracleService: PriceOracleService, public currencyService: CurrencyService,
-    private zone: NgZone) { }
+    private tokenService: TokenService, private zone: NgZone) { }
 
   ngOnInit() {
     this.updatePositions();
-    this.lendingIssuanceSubscription = this.instrumentService.lendingIssuancesUpdatedSubject.subscribe(_ => {
+    this.lendingIssuanceSubscription = this.lendingService.lendingIssuancesUpdated.subscribe(_ => {
       this.updatePositions();
     });
-    this.borrowingIssuanceSubscription = this.instrumentService.borrowingIssuancesUpdatedSubject.subscribe(_ => {
+    this.borrowingIssuanceSubscription = this.borrowingService.borrowingIssuancesUpdated.subscribe(_ => {
       this.updatePositions();
     });
-    this.swapIssuanceSubscription = this.instrumentService.swapIssuancesUpdatedSubject.subscribe(_ => {
+    this.swapIssuanceSubscription = this.swapService.swapIssuancesUpdated.subscribe(_ => {
       this.updatePositions();
     })
     this.currentAccountSubscription = this.nutsPlatformService.currentAccountSubject.subscribe(_ => {
@@ -79,86 +86,89 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
   private updatePositions() {
     this.zone.run(() => {
       const positions = [];
-      this.instrumentService.lendingIssuances.forEach(issuance => {
+      this.lendingService.lendingIssuances.forEach(issuance => {
         // If the current user is maker and the issuance is engageable.
-        const userRole = issuance.getUserRole(this.nutsPlatformService.currentAccount);
-        if (userRole === 'maker' && issuance.state === 2) {
+        const userRole = this.lendingService.getUserRole(issuance);
+        const lendingIssuance = issuance.issuancecustomproperty as LendingIssuanceModel;
+        if (userRole === UserRole.Maker && issuance.issuancestate === IssuanceState.Engageable) {
           positions.push({
-            instrument: 'lending',
-            issuanceId: issuance.issuanceId,
-            creationTimestamp: issuance.creationTimestamp,
-            role: 'maker',
-            state: issuance.getIssuanceState(),
-            token: this.nutsPlatformService.getTokenNameByAddress(issuance.lendingTokenAddress),
-            amount: issuance.lendingAmount,
+            instrument: LENDING_NAME,
+            issuanceId: issuance.issuanceid,
+            creationTimestamp: issuance.issuancecreationtimestamp,
+            role: userRole,
+            state: issuance.issuancestate,
+            token: this.tokenService.getTokenByAddress(lendingIssuance.lendingtokenaddress),
+            amount: lendingIssuance.lendingamount,
             action: 'close',
-            supplementalLineItems: issuance.supplementalLineItems,
+            payables: issuance.payables,
           });
         }
 
         // If the current user is taker and the issuance is engaged.
-        if (userRole === 'taker' && issuance.state == 3) {
+        if (userRole === UserRole.Taker && issuance.engagements[0].engagementstate === EngagementState.Active) {
           positions.push({
-            instrument: 'lending',
-            issuanceId: issuance.issuanceId,
-            creationTimestamp: issuance.creationTimestamp,
-            role: 'taker',
-            state: issuance.getIssuanceState(),
-            token: this.nutsPlatformService.getTokenNameByAddress(issuance.lendingTokenAddress),
-            amount: issuance.lendingAmount,
+            instrument: LENDING_NAME,
+            issuanceId: issuance.issuanceid,
+            creationTimestamp: issuance.issuancecreationtimestamp,
+            role: userRole,
+            state: issuance.issuancestate,
+            token: this.tokenService.getTokenByAddress(lendingIssuance.lendingtokenaddress),
+            amount: lendingIssuance.lendingamount,
             action: 'repay',
-            supplementalLineItems: issuance.supplementalLineItems,
+            payables: issuance.payables,
           });
         }
       });
 
-      this.instrumentService.borrowingIssuances.forEach(issuance => {
-        const userRole = issuance.getUserRole(this.nutsPlatformService.currentAccount);
-        // If the current user is maker and the issuance is engageable.
-        if (userRole === 'maker' && issuance.state === 2) {
+      this.borrowingService.borrowingIssuances.forEach(issuance => {
+        const userRole = this.lendingService.getUserRole(issuance);
+        const borrowingIssuance = issuance.issuancecustomproperty as BorrowingIssuanceModel;
+        // If the current user is the maker and the issuance is engageable
+        if (userRole === UserRole.Maker && issuance.issuancestate === IssuanceState.Engageable) {
           positions.push({
-            instrument: 'borrowing',
-            issuanceId: issuance.issuanceId,
-            creationTimestamp: issuance.creationTimestamp,
-            role: 'maker',
-            state: issuance.getIssuanceState(),
-            token: this.nutsPlatformService.getTokenNameByAddress(issuance.borrowingTokenAddress),
-            amount: issuance.borrowingAmount,
+            instrument: BORROWING_NAME,
+            issuanceId: issuance.issuanceid,
+            creationTimestamp: issuance.issuancecreationtimestamp,
+            role: userRole,
+            state: issuance.issuancestate,
+            token: this.tokenService.getTokenByAddress(borrowingIssuance.borrowingtokenaddress),
+            amount: borrowingIssuance.borrowingamount,
             action: 'close',
-            supplementalLineItems: issuance.supplementalLineItems,
+            payables: issuance.payables,
           });
         }
 
         // If the current user is maker and the issuance is engaged.
-        if (userRole === 'maker' && issuance.state == 3) {
+        if (userRole === UserRole.Maker && issuance.engagements[0].engagementstate === EngagementState.Active) {
           positions.push({
-            instrument: 'borrowing',
-            issuanceId: issuance.issuanceId,
-            creationTimestamp: issuance.creationTimestamp,
-            role: 'maker',
-            state: issuance.getIssuanceState(),
-            token: this.nutsPlatformService.getTokenNameByAddress(issuance.borrowingTokenAddress),
-            amount: issuance.borrowingAmount,
+            instrument: BORROWING_NAME,
+            issuanceId: issuance.issuanceid,
+            creationTimestamp: issuance.issuancecreationtimestamp,
+            role: userRole,
+            state: issuance.issuancestate,
+            token: this.tokenService.getTokenByAddress(borrowingIssuance.borrowingtokenaddress),
+            amount: borrowingIssuance.borrowingamount,
             action: 'repay',
-            supplementalLineItems: issuance.supplementalLineItems,
+            payables: issuance.payables,
           });
         }
       });
 
-      this.instrumentService.swapIssuances.forEach(issuance => {
-        const userRole = issuance.getUserRole(this.nutsPlatformService.currentAccount);
+      this.swapService.swapIssuances.forEach(issuance => {
+        const userRole = this.swapService.getUserRole(issuance);
+        const swapIssuance = issuance.issuancecustomproperty as SwapIssuanceModel;
         // If the current user is maker and the issuance is engageable.
-        if (userRole === 'maker' && issuance.state === 2) {
+        if (userRole === UserRole.Maker && issuance.issuancestate === IssuanceState.Engageable) {
           positions.push({
-            instrument: 'swap',
-            issuanceId: issuance.issuanceId,
-            creationTimestamp: issuance.creationTimestamp,
-            role: 'maker',
-            state: issuance.getIssuanceState(),
-            token: this.nutsPlatformService.getTokenNameByAddress(issuance.inputTokenAddress),
-            amount: issuance.inputAmount,
+            instrument: SWAP_NAME,
+            issuanceId: issuance.issuanceid,
+            creationTimestamp: issuance.issuancecreationtimestamp,
+            role: userRole,
+            state: issuance.issuancestate,
+            token: this.tokenService.getTokenByAddress(swapIssuance.inputtokenaddress),
+            amount: swapIssuance.inputamount,
             action: 'close',
-            supplementalLineItems: issuance.supplementalLineItems,
+            supplementalLineItems: issuance.payables,
           });
         }
       });
@@ -173,14 +183,13 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
 
   private async getTotalPayable() {
     let totalPayable = 0;
-    const targetTokenAddress = this.currencyService.currency === 'USD' ? USD_ADDRESS : CNY_ADDRESS;
+    const currentAccount = this.nutsPlatformService.currentAccount.toLowerCase();
     for (let position of this.activePositions) {
-      if (!position.supplementalLineItems) continue;
-      for (let item of position.supplementalLineItems) {
-        if (item.type !== SupplementalLineItemType.Payable
-          || item.state !== SupplementalLineItemState.Unpaid
-          || item.obligatorAddress.toLowerCase() !== this.nutsPlatformService.currentAccount.toLowerCase()) continue;
-        totalPayable += await this.priceOracleService.getConvertedValue(targetTokenAddress, item.tokenAddress, item.amount);
+      if (!position.payables) continue;
+      for (let payable of position.payables) {
+        if (payable.obligatoraddress.toLowerCase() !== currentAccount) continue;
+        const payableToken = this.tokenService.getTokenByAddress(payable.tokenaddress);
+        totalPayable += await this.priceOracleService.getConvertedCurrencyValue(payableToken, payable.amount);
       }
     }
 
@@ -189,14 +198,13 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
 
   private async getTotalReceivable() {
     let totalReceivable = 0;
-    const targetTokenAddress = this.currencyService.currency === 'USD' ? USD_ADDRESS : CNY_ADDRESS;
+    const currentAccount = this.nutsPlatformService.currentAccount.toLowerCase();
     for (let position of this.activePositions) {
-      if (!position.supplementalLineItems) continue;
-      for (let item of position.supplementalLineItems) {
-        if (item.type !== SupplementalLineItemType.Payable
-          || item.state !== SupplementalLineItemState.Unpaid
-          || item.claimorAddress.toLowerCase() !== this.nutsPlatformService.currentAccount.toLowerCase()) continue;
-        totalReceivable += await this.priceOracleService.getConvertedValue(targetTokenAddress, item.tokenAddress, item.amount);
+      if (!position.payables) continue;
+      for (let payable of position.payables) {
+        if (payable.claimoraddress.toLowerCase() !== currentAccount) continue;
+        const payableToken = this.tokenService.getTokenByAddress(payable.tokenaddress);
+        totalReceivable += await this.priceOracleService.getConvertedCurrencyValue(payableToken, payable.amount);
       }
     }
 

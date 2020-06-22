@@ -1,3 +1,9 @@
+export enum UserRole {
+    Maker = 'maker',
+    Taker = 'taker',
+    Other = 'other',
+}
+
 export enum IssuanceState {
     Unknown = 0,
     Initiated = 1,
@@ -16,7 +22,8 @@ export enum EngagementState {
 
 export class PayableModel {
     constructor(public payableid: number, public engagementid: number, public obligatoraddress: string,
-        public claimoraddress: string, public tokenaddress: string, public amount: number, public payableduetimestamp: number) {}
+        public claimoraddress: string, public tokenaddress: string, public amount: string,
+        public payableduetimestamp: number) {}
 }
 
 export class EngagementModel {

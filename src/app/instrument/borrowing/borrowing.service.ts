@@ -1,0 +1,141 @@
+import { Injectable } from "@angular/core";
+import { InstrumentService } from '../instrument.service';
+import { IssuanceModel } from '../issuance.model';
+import { Subject } from 'rxjs';
+import { NutsPlatformService, LENDING_NAME } from 'src/app/common/web3/nuts-platform.service';
+import { NotificationService } from 'src/app/notification/notification.service';
+import { TokenService } from 'src/app/common/token/token.service';
+import { HttpClient } from '@angular/common/http';
+import * as isEqual from 'lodash.isequal';
+import { AccountService } from 'src/app/account/account.service';
+import { TokenModel } from 'src/app/common/token/token.model';
+import { TransactionType, NotificationRole, TransactionModel } from 'src/app/notification/transaction.model';
+import { BorrowingIssuanceModel } from './borrowing-issuance.model';
+import { PriceOracleService } from 'src/app/common/web3/price-oracle.service';
+
+@Injectable({
+    providedIn: 'root'
+})
+export class BorrowingService extends InstrumentService {
+    public borrowingIssuances: IssuanceModel[] = [];
+    public borrowingIssuancesUpdated: Subject<IssuanceModel[]> = new Subject();
+    private borrowingIssuanceMap = {};
+
+    constructor(nutsPlatformService: NutsPlatformService, notificationService: NotificationService,
+        tokenService: TokenService, http: HttpClient, private accountService: AccountService,
+        priceOracleService: PriceOracleService) {
+        super(nutsPlatformService, notificationService, priceOracleService, tokenService, http);
+
+        this.reloadBorrowingIssuances();
+        this.nutsPlatformService.platformInitializedSubject.subscribe(initialized => {
+            if (!initialized) return;
+            console.log('Platform initialized. Reloading borrowing issuances.');
+            this.reloadBorrowingIssuances();
+        });
+        this.nutsPlatformService.currentNetworkSubject.subscribe(currentNetwork => {
+            console.log('Network changed. Reloading borrowing issuances.', currentNetwork);
+            this.reloadBorrowingIssuances();
+        });
+
+        // Reloads issuances every 30s.
+        setInterval(this.reloadBorrowingIssuances.bind(this), 30000);
+    }
+
+    public async reloadBorrowingIssuances(times: number = 1, interval: number = 1000) {
+        const instrumentId = this.nutsPlatformService.getInstrumentId(LENDING_NAME);
+        let count = 0;
+        let intervalId = setInterval(() => {
+            this.getIssuances(instrumentId).subscribe(borrowingIssuances => {
+                // Update the borrowing issuance list if there is a change
+                if (!isEqual(borrowingIssuances, this.borrowingIssuances)) {
+                    console.log('Borrowing issuance list updated.');
+                    this.borrowingIssuances = borrowingIssuances;
+                    this.borrowingIssuancesUpdated.next(this.borrowingIssuances);
+                    this.borrowingIssuanceMap = {};
+                    for (const issuance of borrowingIssuances) {
+                        this.borrowingIssuanceMap[issuance.issuanceid] = issuance;
+                    }
+
+                    // We could stop prematurally once we get an update!
+                    clearInterval(intervalId);
+                }
+            });
+            if (++count >= times) clearInterval(intervalId);
+        }, interval);
+    }
+
+    public getBorrowingIssuance(issuanceId): IssuanceModel {
+        return this.borrowingIssuanceMap[issuanceId];
+    }
+
+    public createBorrowingIssuance(principalToken: TokenModel, principalAmount: string, collateralToken: TokenModel,
+        collateralRatio: number, tenor: number, interestRate: number) {
+
+        const issuanceDuration = 14 * 24 * 3600;   // Hard-coded 14 days duration
+        const makerData = this.nutsPlatformService.web3.eth.abi.encodeParameters(['uint256', 'address', 'address', 'uint256', 'uint256', 'uint256', 'uint256'],
+            [issuanceDuration, principalToken.tokenAddress, collateralToken.tokenAddress, principalAmount, tenor, collateralRatio, interestRate]);
+
+        const instrumentManagerContract = this.nutsPlatformService.getInstrumentManagerContract(LENDING_NAME);
+        return instrumentManagerContract.methods.createIssuance(makerData).send({ from: this.nutsPlatformService.currentAccount, gas: 6721975 })
+            .on('transactionHash', (transactionHash) => {
+                // Records the transaction
+                const depositTransaction = new TransactionModel(transactionHash, TransactionType.CREATE_OFFER, NotificationRole.MAKER,
+                    this.nutsPlatformService.currentAccount, 0,
+                    {
+                        principalTokenName: principalToken.tokenSymbol, principalTokenAddress: principalToken.tokenAddress,
+                        principalAmount: principalAmount, collateralTokenName: collateralToken.tokenSymbol,
+                        collateralTokenAddress: collateralToken.tokenAddress, collateralRatio: `${collateralRatio}`,
+                        tenor: `${tenor}`, interestRate: `${interestRate}`,
+                    }
+                );
+                this.notificationService.addTransaction(LENDING_NAME, depositTransaction).subscribe(result => {
+                    console.log(result);
+                    // Note: Transaction Sent event is not sent until the transaction is recored in notification server!
+                    this.nutsPlatformService.transactionSentSubject.next(transactionHash);
+                });
+            });
+    }
+
+    public engageBorrowingIssuance(issuanceId) {
+        return this.engageIssuance(LENDING_NAME, issuanceId)
+            .on('transactionHash', transactionHash => this.monitorBorrowingTransaction(transactionHash));
+    }
+
+    public cancelBorrowingIssuance(issuanceId) {
+        return this.cancelIssuance(LENDING_NAME, issuanceId)
+            .on('transactionHash', transactionHash => this.monitorBorrowingTransaction(transactionHash));
+    }
+
+    public repayBorrowingIssuance(issuanceId: number, principalToken: TokenModel, tokenAmount: string) {
+        return this.repayIssuance(LENDING_NAME, issuanceId, principalToken, tokenAmount)
+            .on('transactionHash', transactionHash => this.monitorBorrowingTransaction(transactionHash));
+    }
+
+    public getBorrowingCollateralValue(borrowingIssuance: BorrowingIssuanceModel) {
+        const borrowingToken = this.tokenService.getTokenByAddress(borrowingIssuance.borrowingtokenaddress);
+        const collateralToken = this.tokenService.getTokenByAddress(borrowingIssuance.collateraltokenaddress);
+
+        return this.getCollateralValue(borrowingToken, collateralToken, borrowingIssuance.borrowingamount, borrowingIssuance.collateralratio);
+    }
+
+    public getPerDayInterest(borrowingIssuance: BorrowingIssuanceModel) {
+        const BN = this.nutsPlatformService.web3.utils.BN;
+        return new BN(borrowingIssuance.borrowingamount).mul(new BN(borrowingIssuance.interestrate)).div(new BN(1000000)).toString();
+    }
+
+    private monitorBorrowingTransaction(transactionHash) {
+        // Monitoring transaction status(work around for Metamask mobile)
+        const interval = setInterval(async () => {
+            const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
+            if (!receipt || !receipt.blockNumber) return;
+
+            console.log('Borrowing receipt', receipt);
+            // New borrowing issuance created. Need to refresh the borrowing issuance list.
+            this.reloadBorrowingIssuances(5, 3000);
+            // New borrowing issuance created. Need to update the input token balance as well.
+            this.accountService.getUserBalanceFromBackend(5, 3000);
+            this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
+            clearInterval(interval);
+        }, 2000);
+    }
+}

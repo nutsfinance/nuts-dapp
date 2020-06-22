@@ -2,7 +2,7 @@ import { NutsPlatformService } from '../common/web3/nuts-platform.service';
 import { NotificationService } from 'src/app/notification/notification.service';
 import { TokenService } from '../common/token/token.service';
 import { HttpClient } from '@angular/common/http';
-import { IssuanceModel, IssuanceState, EngagementState } from './issuance.model';
+import { IssuanceModel, IssuanceState, EngagementState, UserRole } from './issuance.model';
 import { TransactionModel, TransactionType, NotificationRole } from '../notification/transaction.model';
 import { TokenModel } from '../common/token/token.model';
 import { PriceOracleService } from '../common/web3/price-oracle.service';
@@ -16,6 +16,14 @@ const REPAY_ISSUANCE_EVENT = "repay_full";
 export class InstrumentService {
   constructor(protected nutsPlatformService: NutsPlatformService, protected notificationService: NotificationService,
     protected priceOracleService: PriceOracleService, protected tokenService: TokenService, protected http: HttpClient) { }
+
+  public getUserRole(issuance: IssuanceModel): UserRole {
+    const currentAccount = this.nutsPlatformService.currentAccount.toLowerCase();
+    if (currentAccount === issuance.makeraddress.toLowerCase()) return UserRole.Maker;
+    if (issuance.engagements.length > 0 && issuance.engagements[0].takeraddress.toLowerCase() === currentAccount)
+      return UserRole.Taker;
+    return UserRole.Other;
+  }
 
   /**
    * Checks whether the current user is in position with the specific category.
