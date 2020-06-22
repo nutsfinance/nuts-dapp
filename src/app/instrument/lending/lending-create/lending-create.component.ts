@@ -44,7 +44,10 @@ export class LendingCreateComponent implements OnInit {
     });
     this.createFormGroup.valueChanges.subscribe(_ => {
       this.principalValue = this.tokenService.getActualValue(this.principalToken.tokenAddress, this.createFormGroup.value['principalAmount']);
-      this.computeCollateralValue();
+      this.lendingService.getCollateralValue(this.principalToken, this.collateralToken, this.principalValue,
+        this.createFormGroup.value['collateralRatio']).then(value => {
+          this.collateralValue = value;
+        });
       this.interestValue = this.lendingService.getInterestValue(this.principalValue, this.createFormGroup.value['interestRate'],
         this.createFormGroup.value['tenor']);
     });
@@ -73,13 +76,6 @@ export class LendingCreateComponent implements OnInit {
 
   onInterestRateChange(interestRateChange: MatButtonToggleChange) {
     this.createFormGroup.patchValue({ 'interestRate': interestRateChange.value });
-  }
-
-  computeCollateralValue() {
-    this.lendingService.getCollateralValue(this.principalToken, this.collateralToken, this.principalValue,
-      this.createFormGroup.value['collateralRatio']).then(value => {
-        this.collateralValue = value;
-      });
   }
 
   async createLendingIssuance() {
