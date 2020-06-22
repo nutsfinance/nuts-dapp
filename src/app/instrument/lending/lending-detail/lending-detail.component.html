@@ -151,13 +151,13 @@
             [ngClass]="{'col-xs-12': true, 'hidden': collateralSufficient}">
             <span style="color: red;" i18n>Insufficient balance</span>
             (<span style="color: blue;">
-                <app-account-balance [instrument]="'lending'" [selectedToken]="collateralToken"
+                <app-account-balance [instrument]="'lending'" [tokenAddress]="collateralToken.tokenAddress"
                     (balanceUpdated)="onCollateralTokenBalanceUpdated($event)">
                 </app-account-balance>
                 {{collateralToken}}
             </span> 
             <span i18n>available</span>)
-            <a class="deposit-button" routerLink="../../account" [queryParams]="{ token: collateralToken}" i18n>Deposit</a>
+            <a class="deposit-button" routerLink="../../account" [queryParams]="{ tokenAddress: collateralToken.tokenAddress }" i18n>Deposit</a>
         </div>
     </div>
 
@@ -175,13 +175,13 @@
             [ngClass]="{'col-xs-12': true, 'hidden': principalSufficient}">
             <span style="color: red;" i18n>Insufficient balance</span>
             (<span style="color: blue;">
-                <app-account-balance [instrument]="'lending'" [selectedToken]="lendingToken"
+                <app-account-balance [instrument]="'lending'" [tokenAddress]="lendingToken.tokenAddress"
                     (balanceUpdated)="onPrincipalTokenBalanceUpdated($event)">
                 </app-account-balance>
                 {{lendingToken}}
             </span> 
             <span i18n>available</span>)
-            <a class="deposit-button" routerLink="../../account" [queryParams]="{ token: lendingToken}" i18n>Deposit</a>
+            <a class="deposit-button" routerLink="../../account" [queryParams]="{ tokenAddress: lendingToken.tokenAddress }" i18n>Deposit</a>
         </div>
     </div>
 
@@ -194,5 +194,3 @@
         </div>
     </div>
 </mat-card>
-
-<app-issuance-transfers [instrument]="'lending'" [issuance]="issuance"></app-issuance-transfers>

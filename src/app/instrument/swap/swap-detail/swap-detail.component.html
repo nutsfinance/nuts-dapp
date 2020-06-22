@@ -106,12 +106,12 @@
             [ngClass]="{'col-xs-12': true, 'hidden': outputSufficient}">
             <span style="color: red;" i18n>Insufficient balance</span>
             (<span style="color: blue;">
-                <app-account-balance [instrument]="'swap'" [selectedToken]="outputToken"
+                <app-account-balance [instrument]="'swap'" [tokenAddress]="outputToken.tokenAddress"
                     (balanceUpdated)="onOutputTokenBalanceUpdated($event)">
                 </app-account-balance>
                 {{outputToken}}
             </span> <span i18n>available</span>)
-            <a class="deposit-button" routerLink="../../account" [queryParams]="{ token: outputToken}" i18n>Deposit</a>
+            <a class="deposit-button" routerLink="../../account" [queryParams]="{ tokenAddress: outputToken.tokenAddress }" i18n>Deposit</a>
         </div>
     </div>
 
@@ -124,5 +124,3 @@
         </div>
     </div>
 </mat-card>
-
-<app-issuance-transfers [instrument]="'swap'" [issuance]="issuance"></app-issuance-transfers>

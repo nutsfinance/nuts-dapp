@@ -118,7 +118,7 @@
           <mat-button-toggle value="150">150%</mat-button-toggle>
           <mat-button-toggle value="200">200%</mat-button-toggle>
         </mat-button-toggle-group>
-        <app-token-select [selectedToken]="collateralToken" [excludedTokens]="[principalToken]" (tokenSelected)="onCollateralTokenSelected($event)">
+        <app-token-select [selectedToken]="collateralToken" [includedTokens]="collateralTokenList" (tokenSelected)="onCollateralTokenSelected($event)">
         </app-token-select>
       </div>
     </div>
@@ -152,7 +152,7 @@
         </span>
         <div class="balance-content">
           <span i18n>Borrowing A/C Balance:</span>
-          <app-account-balance [instrument]="'borrowing'" [selectedToken]="collateralToken"
+          <app-account-balance [instrument]="'borrowing'" [tokenAddress]="collateralToken.tokenAddress"
             (balanceUpdated)="collateralTokenBalance = $event">
           </app-account-balance>
           {{collateralToken}}

@@ -160,12 +160,12 @@
         <div [ngClass]="{'col-xs-12': true, 'hidden': principalSufficient}">
             <span style="color: red;" i18n>Insufficient balance</span>
             (<span style="color: blue;">
-                <app-account-balance [instrument]="'borrowing'" [selectedToken]="borrowingToken"
+                <app-account-balance [instrument]="'borrowing'" [tokenAddress]="borrowingToken.tokenAddress"
                     (balanceUpdated)="onPrincipalTokenBalanceUpdated($event)">
                 </app-account-balance>
                 {{borrowingToken}}
             </span> <span i18n>available</span>)
-            <a class="deposit-button" routerLink="../../account" [queryParams]="{ token: borrowingToken}" i18n>Deposit</a>
+            <a class="deposit-button" routerLink="../../account" [queryParams]="{ tokenAddress: borrowingToken.tokenAddress}" i18n>Deposit</a>
         </div>
     </div>
 
@@ -178,5 +178,3 @@
         </div>
     </div>
 </mat-card>
-
-<app-issuance-transfers [instrument]="'borrowing'" [issuance]="issuance"></app-issuance-transfers>

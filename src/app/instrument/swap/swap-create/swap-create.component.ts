@@ -18,6 +18,7 @@ export class SwapCreateComponent implements OnInit {
 
   public createFormGroup: FormGroup;
   public inputToken: TokenModel;
+  public outputTokenList: TokenModel[] = [];
   public outputToken: TokenModel;
   public inputTokenBalance = '';
   public showAlternativeTenor = false;
@@ -39,8 +40,9 @@ export class SwapCreateComponent implements OnInit {
   onInputTokenSelected(tokenAddress: string) {
     this.inputToken = this.tokenService.getTokenByAddress(tokenAddress);
     this.createFormGroup.controls['inputAmount'].reset();
-    // Update output token selection
-    this.outputToken = tokenAddress === this.tokens[0].tokenAddress ? this.tokens[1] : this.tokens[0];
+    // Update output tokens
+    this.outputTokenList = this.tokens.filter(token => token.tokenAddress !== tokenAddress);
+    this.outputToken = this.outputTokenList[0];
   }
 
   onOutputTokenSelected(tokenAddress: string) {
@@ -94,6 +96,7 @@ export class SwapCreateComponent implements OnInit {
 
   resetForm() {
     this.inputToken = this.tokens[0];
+    this.outputTokenList = this.tokens.slice(1);
     this.outputToken = this.tokens[1];
     this.form.resetForm();
   }

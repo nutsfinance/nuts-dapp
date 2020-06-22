@@ -24,7 +24,7 @@
         <mat-form-field appearance="outline" class="amount-input">
           <input matInput type="number" placeholder="Enter Amount" formControlName="principalAmount" i18n-placeholder>
         </mat-form-field>
-        <app-token-select [selectedToken]="principalToken" (tokenSelected)="onPrincipalTokenSelected($event)">
+        <app-token-select [selectedToken]="principalToken" [includedTokens]="tokens" (tokenSelected)="onPrincipalTokenSelected($event)">
         </app-token-select>
       </div>
     </div>
@@ -48,7 +48,7 @@
         </div>
         <div class="balance-content">
           <span i18n>Lending A/C Balance:</span>
-          <app-account-balance [instrument]="'lending'" [selectedToken]="principalToken"
+          <app-account-balance [instrument]="'lending'" [tokenAddress]="principalToken.tokenAddress"
             (balanceUpdated)="principalTokenBalance = $event">
           </app-account-balance>
           {{principalToken}}
@@ -129,7 +129,7 @@
           <mat-button-toggle value="150">150%</mat-button-toggle>
           <mat-button-toggle value="200">200%</mat-button-toggle>
         </mat-button-toggle-group>
-        <app-token-select [selectedToken]="collateralToken" [excludedTokens]="[principalToken]" (tokenSelected)="onCollateralTokenSelected($event)">
+        <app-token-select [selectedToken]="collateralToken" [includedTokens]="collateralTokenList" (tokenSelected)="onCollateralTokenSelected($event)">
         </app-token-select>
       </div>
     </div>

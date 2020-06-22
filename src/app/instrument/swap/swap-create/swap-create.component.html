@@ -24,7 +24,7 @@
                 <mat-form-field appearance="outline" class="amount-input">
                     <input matInput type="number" placeholder="Enter Amount" formControlName="inputAmount" i18n-placeholder>
                 </mat-form-field>
-                <app-token-select [selectedToken]="inputToken" (tokenSelected)="onInputTokenSelected($event)"></app-token-select>
+                <app-token-select [selectedToken]="inputToken" [includedTokens]="tokens" (tokenSelected)="onInputTokenSelected($event)"></app-token-select>
             </div>
         </div>
 
@@ -47,7 +47,7 @@
               </div>
               <div class="balance-content">
                 <span i18n>Swap A/C Balance:</span>
-                <app-account-balance [instrument]="'swap'" [selectedToken]="inputToken"
+                <app-account-balance [instrument]="'swap'" [tokenAddress]="inputToken.tokenAddress"
                   (balanceUpdated)="inputTokenBalance = $event">
                 </app-account-balance>
                 {{inputToken}}
@@ -76,7 +76,7 @@
                 <mat-form-field appearance="outline" class="amount-input">
                     <input matInput type="number" placeholder="Amount" formControlName="outputAmount">
                 </mat-form-field>
-                <app-token-select [selectedToken]="outputToken" (tokenSelected)="onOutputTokenSelected($event)"></app-token-select>
+                <app-token-select [selectedToken]="outputToken" [includedTokens]="collateralTokenList" (tokenSelected)="onOutputTokenSelected($event)"></app-token-select>
             </div>
         </div>
 

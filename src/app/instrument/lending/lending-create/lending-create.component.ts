@@ -26,6 +26,7 @@ export class LendingCreateComponent implements OnInit {
   public principalToken: TokenModel;
   public principalTokenBalance = '0';
   public principalValue = '0';
+  public collateralTokenList: TokenModel[] = [];
   public collateralToken: TokenModel;
   public collateralValue = '0';
   public interestValue = '0';
@@ -57,8 +58,9 @@ export class LendingCreateComponent implements OnInit {
     // Update principals
     this.principalToken = this.tokenService.getTokenByAddress(tokenAddress);
     this.createFormGroup.controls['principalAmount'].reset();
-    // Update collateral token
-    this.collateralToken = tokenAddress === this.tokens[0].tokenAddress ? this.tokens[1] : this.tokens[0];
+    // Update collateral tokens
+    this.collateralTokenList = this.tokens.filter(token => token.tokenAddress !== tokenAddress);
+    this.collateralToken = this.collateralTokenList[0];
   }
 
   onTenorChange(tenorChange: MatButtonToggleChange) {
