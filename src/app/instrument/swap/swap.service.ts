@@ -110,7 +110,7 @@ export class SwapService extends InstrumentService {
             // New swap issuance created. Need to refresh the swap issuance list.
             this.reloadSwapIssuances(5, 3000);
             // New swap issuance created. Need to update the input token balance as well.
-            this.accountService.getUserBalanceFromBackend(5, 3000);
+            this.accountService.refreshAccountBalance(SWAP_NAME, 5, 3000);
             this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
             clearInterval(interval);
         }, 2000);

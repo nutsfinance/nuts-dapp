@@ -169,7 +169,7 @@ export class AccountDepositComponent implements OnInit, OnChanges {
         console.log('Deposit ETH receipt', receipt);
 
         // Update instrument balance
-        this.accountService.getUserBalanceFromBackend(5, 3000);
+        this.accountService.refreshAccountBalance(this.instrument, 5, 3000);
         this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
         clearInterval(interval);
       }, 4000);

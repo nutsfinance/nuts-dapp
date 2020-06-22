@@ -133,7 +133,7 @@ export class LendingService extends InstrumentService {
             // New lending issuance created. Need to refresh the lending issuance list.
             this.reloadLendingIssuances(5, 3000);
             // New lending issuance created. Need to update the input token balance as well.
-            this.accountService.getUserBalanceFromBackend(5, 3000);
+            this.accountService.refreshAccountBalance(LENDING_NAME, 5, 3000);
             this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
             clearInterval(interval);
         }, 2000);

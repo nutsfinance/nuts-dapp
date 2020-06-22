@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { InstrumentService } from '../instrument.service';
 import { IssuanceModel } from '../issuance.model';
 import { Subject } from 'rxjs';
-import { NutsPlatformService, LENDING_NAME } from 'src/app/common/web3/nuts-platform.service';
+import { NutsPlatformService, LENDING_NAME, BORROWING_NAME } from 'src/app/common/web3/nuts-platform.service';
 import { NotificationService } from 'src/app/notification/notification.service';
 import { TokenService } from 'src/app/common/token/token.service';
 import { HttpClient } from '@angular/common/http';
@@ -133,7 +133,7 @@ export class BorrowingService extends InstrumentService {
             // New borrowing issuance created. Need to refresh the borrowing issuance list.
             this.reloadBorrowingIssuances(5, 3000);
             // New borrowing issuance created. Need to update the input token balance as well.
-            this.accountService.getUserBalanceFromBackend(5, 3000);
+            this.accountService.refreshAccountBalance(BORROWING_NAME, 5, 3000);
             this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
             clearInterval(interval);
         }, 2000);

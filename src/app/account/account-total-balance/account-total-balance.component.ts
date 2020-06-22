@@ -63,8 +63,7 @@ export class AccountTotalBalanceComponent implements OnInit, OnDestroy {
       if (!token.supportsTransaction) continue;
       if (!accountBalance || !accountBalance[token.tokenAddress]) continue;
 
-      const assetDisplayValue = this.tokenService.getDisplayValue(token.tokenAddress, accountBalance[token.tokenAddress]);
-      const convertedValue = await this.priceOracleService.getConvertedValue(token.tokenSymbol, targetToken, assetDisplayValue);
+      const convertedValue = await this.priceOracleService.getConvertedCurrencyValue(token, accountBalance[token.tokenAddress]);
       // After converting into USD values, we should not see overflow now!
       totalValue += convertedValue;
     }

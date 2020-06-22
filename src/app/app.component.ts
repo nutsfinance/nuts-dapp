@@ -1,18 +1,15 @@
-import { Component, OnInit, OnDestroy, Inject, NgZone } from '@angular/core';
-import { Router } from '@angular/router';
-import { MatSnackBar, MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
+import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { environment } from '../environments/environment';
 import { NotificationCategory, NotificationModel } from './notification/notification.model';
 import { NotificationService } from './notification/notification.service';
 import { Subscription } from 'rxjs';
 import { NutsPlatformService } from './common/web3/nuts-platform.service';
-import { MatDialogRef, MatDialog } from '@angular/material';
-
-export interface NotificationData {
-  category: NotificationCategory,
-  content: string,
-}
+import { MatDialog } from '@angular/material';
+import { TokenService } from './common/token/token.service';
+import { NotificationSnackbarComponent } from './notification/notification-snackbar/notification-snackbar.component';
+import { DisconnectedDialog } from './common/disconnected-dialog/disconnected-dialog.component';
+import { IncorrectNetworkDialog } from './common/incorrect-network-dialog/incorrect-network-dialog.component';
 
 @Component({
   selector: 'app-root',
@@ -29,11 +26,12 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.newNotificationSubscription = this.notificationService.newNotificationSubject.subscribe(newNotification => {
+      // Don't show snack bar if it's a transaction initiated notification.
+      if (newNotification.category === NotificationCategory.TRANSACTION_INITIATED)  return;
+      // Don't show snack bar if there is no snack message
+      if (!newNotification.snackBarMessage) return;
       this.zone.run(() => {
-        // Don't show snack bar if it's a transaction initiated notification.
-        if (newNotification.category !== NotificationCategory.TRANSACTION_INITIATED) {
-          this.openSnackBar(newNotification);
-        }
+        this.openSnackBar(newNotification);
       });
     });
 
@@ -55,6 +53,12 @@ export class AppComponent implements OnInit, OnDestroy {
         });
       }
     });
+
+    // this.notificationService.notificationUpdatedSubject.subscribe(_ => {
+    //   console.log('Updated');
+    //   if (this.notificationService.notifications.length == 0) return;
+    //   this.openSnackBar(this.notificationService.notifications[0]);
+    // });
   
     // this.openSnackBar(new NotificationModel('', '', '', 0, 0, 0, NotificationCategory.TRANSACTION_CONFIRMED, NotificationStatus.NEW,
     //   'Offer Creation Successful', '', TransactionType.CREATE_OFFER, {}));
@@ -95,70 +99,12 @@ export class AppComponent implements OnInit, OnDestroy {
     //   }
     // });
     this.zone.run(() => {
-      this.snackBar.openFromComponent(NotificationSnackBar, {
-        data: {
-          category: notification.category,
-          content: `${notification.title}!`,
-        },
+      this.snackBar.openFromComponent(NotificationSnackbarComponent, {
+        data: notification,
         panelClass: snackBarPanelClass,
         duration: 5000,
       });
     });
   }
 
-}
-
-@Component({
-  selector: 'notification-snack-bar',
-  templateUrl: 'notification-snack-bar.html',
-  styleUrls: ['./notification-snack-bar.scss'],
-})
-export class NotificationSnackBar {
-  constructor(public snackBarRef: MatSnackBarRef<NotificationSnackBar>,
-    @Inject(MAT_SNACK_BAR_DATA) public data: NotificationData, private router: Router,
-    private zone: NgZone) { }
-
-  dismiss() {
-    this.snackBarRef.dismiss();
-  }
-
-  viewMore() {
-    this.zone.run(() => {
-      this.snackBarRef.dismiss();
-      this.router.navigate(['/notification']);
-    });
-  }
-}
-
-
-@Component({
-  selector: 'app-incorrect-network-dialog',
-  templateUrl: './incorrect-network-dialog.component.html',
-  styleUrls: ['./incorrect-network-dialog.component.scss']
-})
-export class IncorrectNetworkDialog implements OnInit {
-
-  constructor(public dialogRef: MatDialogRef<IncorrectNetworkDialog>, public nutsPlatformService: NutsPlatformService) { }
-
-  ngOnInit() {
-  }
-
-}
-
-@Component({
-  selector: 'app-disconnected-dialog',
-  templateUrl: './disconnected-dialog.component.html',
-  styleUrls: ['./disconnected-dialog.component.scss']
-})
-export class DisconnectedDialog implements OnInit {
-
-  constructor(public dialogRef: MatDialogRef<DisconnectedDialog>, private nutsPlatformService: NutsPlatformService) { }
-
-  ngOnInit() {
-  }
-
-  connectWallet() {
-    this.dialogRef.close();
-    this.nutsPlatformService.connectToEthereum();
-  }
 }

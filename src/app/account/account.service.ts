@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { NotificationService } from '../notification/notification.service';
 import { TransactionModel, TransactionType, NotificationRole } from '../notification/transaction.model';
-import { IPO_SUBSCRIPTION_NAME, FSP_NAME, NutsPlatformService } from '../common/web3/nuts-platform.service';
+import { FSP_NAME, NutsPlatformService, LENDING_NAME, BORROWING_NAME, SWAP_NAME } from '../common/web3/nuts-platform.service';
 import { Subject } from 'rxjs';
 import * as isEqual from 'lodash.isequal';
 import { TokenService } from '../common/token/token.service';
@@ -37,32 +37,39 @@ export class AccountService {
 
   constructor(private nutsPlatformService: NutsPlatformService, private notificationService: NotificationService,
     private tokenService: TokenService, private http: HttpClient) {
-    this.getUserBalanceFromBackend();
+    this.refreshAccountsBalance();
     this.nutsPlatformService.platformInitializedSubject.subscribe(initialized => {
       if (!initialized) return;
       console.log('Platform initialized. Reloading lending issuances.');
-      this.getUserBalanceFromBackend();
+      this.refreshAccountsBalance();
     });
 
     this.nutsPlatformService.currentNetworkSubject.subscribe(_ => {
-      this.getUserBalanceFromBackend();
+      this.refreshAccountsBalance();
     });
     this.nutsPlatformService.currentAccountSubject.subscribe(_ => {
-      this.getUserBalanceFromBackend();
+      this.refreshAccountsBalance();
     });
     // Reloads account every 20s.
-    setInterval(this.getUserBalanceFromBackend.bind(this), 20000);
+    setInterval(this.refreshAccountsBalance.bind(this), 20000);
   }
 
-  getUserBalanceFromBackend(times: number = 1, interval: number = 1000) {
-    const currentAddress = this.nutsPlatformService.currentAccount;
+  refreshAccountsBalance(times: number = 1, interval: number = 1000) {
     if (!this.nutsPlatformService.isFullyLoaded()) {
       console.log('Either network or account is not loaded.');
       return;
     }
 
+    const instruments = [LENDING_NAME, BORROWING_NAME, SWAP_NAME];
+    for (const instrument of instruments) {
+      this.refreshAccountBalance(instrument, times, interval);
+    }
+  }
+
+  refreshAccountBalance(instrumentName: string, times: number = 1, interval: number = 1000) {
     let count = 0;
-    const instrumentId = this.nutsPlatformService.getInstrumentId(IPO_SUBSCRIPTION_NAME);
+    const currentAddress = this.nutsPlatformService.currentAccount;
+    const instrumentId = this.nutsPlatformService.getInstrumentId(instrumentName);
     let intervalId = setInterval(() => {
       console.log('Loading account balance. Time = ' + count);
       this.http.get<AccountBalance>(`${this.nutsPlatformService.getApiServerHost()}/instruments/${instrumentId}/balance`, { params: { user: currentAddress } }).subscribe(accountBalance => {
@@ -71,6 +78,9 @@ export class AccountService {
           console.log('Account balanes updated.');
           this.accountsBalance[instrumentId] = accountBalance;
           this.accountsBalanceSubject.next(instrumentId);
+
+          // If a change is found, stops the polling pre-maturely!
+          clearInterval(intervalId);
         }
       });
       if (++count >= times) clearInterval(intervalId);
