@@ -1,36 +1,33 @@
 import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NutsPlatformService } from '../../../common/web3/nuts-platform.service';
-import { BorrowingIssuanceModel } from 'src/app/common/model/borrowing-issuance.model';
-import { InstrumentService } from 'src/app/common/web3/instrument.service';
 import { ActivatedRoute } from '@angular/router';
+import { IssuanceModel } from '../../issuance.model';
+import { BorrowingService } from '../borrowing.service';
 
 @Component({
   selector: 'app-borrowing-positions',
   templateUrl: './borrowing-positions.component.html',
   styleUrls: ['./borrowing-positions.component.scss']
 })
-export class BorrowingPositionsComponent implements OnInit {
+export class BorrowingPositionsComponent implements OnInit, OnDestroy {
   public selectedTab = 'all';
-  public currentAccount: string;
-  public issuances: BorrowingIssuanceModel[] = [];
-  
+  public issuances: IssuanceModel[] = [];
+
   private accountUpdatedSubscription: Subscription;
   private borrowingIssuancesUpdatedSubscription: Subscription;
   private routeParamSubscription: Subscription;
 
-  constructor(private nutsPlatformService: NutsPlatformService, private instrumentService: InstrumentService,
+  constructor(private nutsPlatformService: NutsPlatformService, private borrowingService: BorrowingService,
     private route: ActivatedRoute, private zone: NgZone) { }
 
   ngOnInit() {
-    this.currentAccount = this.nutsPlatformService.currentAccount;
     // Filters on maker and taker
     this.updateBorrowingIssuances();
-    this.borrowingIssuancesUpdatedSubscription = this.instrumentService.borrowingIssuancesUpdatedSubject.subscribe(_ => {
+    this.borrowingIssuancesUpdatedSubscription = this.borrowingService.borrowingIssuancesUpdated.subscribe(_ => {
       this.updateBorrowingIssuances();
     });
     this.accountUpdatedSubscription = this.nutsPlatformService.currentAccountSubject.subscribe(_ => {
-      this.currentAccount = this.nutsPlatformService.currentAccount;
       this.updateBorrowingIssuances();
     });
     this.selectedTab = this.route.snapshot.queryParams['tab'] || 'all';
@@ -52,25 +49,14 @@ export class BorrowingPositionsComponent implements OnInit {
   }
 
   updateBorrowingIssuances() {
+    const currentAccount = this.nutsPlatformService.currentAccount.toLowerCase();
     this.zone.run(() => {
-      const borrowingIssuances = this.instrumentService.borrowingIssuances
-        .filter(issuance => {
-          let inState = true;
-          if (this.selectedTab === 'engageable') {
-            inState = issuance.state === 2;
-          } else if (this.selectedTab === 'engaged') {
-            inState = issuance.state === 3;
-          } else if (this.selectedTab === 'inactive') {
-            inState = issuance.state > 3;
-          }
-          const inPosition = issuance.makerAddress.toLowerCase() === this.currentAccount.toLowerCase() ||
-            issuance.takerAddress.toLowerCase() === this.currentAccount.toLowerCase();
-          return inState && inPosition;
-        })
+      const borrowingIssuances = this.borrowingService.borrowingIssuances
+        .filter(issuance => this.borrowingService.isIssuanceInPosition(issuance, this.selectedTab))
         .sort((l1, l2) => {
-          return l1.state === l2.state ? l2.creationTimestamp - l1.creationTimestamp : l1.state - l2.state;
+          return l1.issuancestate === l2.issuancestate ? l2.issuancecreationtimestamp - l1.issuancecreationtimestamp : l1.issuancestate - l2.issuancestate;
         });
-      console.log('Filtered issuances', borrowingIssuances.map(issuance => issuance.issuanceId));
+      console.log('Filtered issuance', borrowingIssuances.map(issuance => issuance.issuanceid));
       this.issuances = borrowingIssuances;
     });
   }
