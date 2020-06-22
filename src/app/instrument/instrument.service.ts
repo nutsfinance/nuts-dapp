@@ -1,9 +1,10 @@
-import {  NutsPlatformService } from '../common/web3/nuts-platform.service';
+import { NutsPlatformService } from '../common/web3/nuts-platform.service';
 import { NotificationService } from 'src/app/notification/notification.service';
 import { TokenService } from '../common/token/token.service';
 import { HttpClient } from '@angular/common/http';
 import { IssuanceModel, IssuanceState, EngagementState } from './issuance.model';
 import { TransactionModel, TransactionType, NotificationRole } from '../notification/transaction.model';
+import { TokenModel } from '../common/token/token.model';
 
 const CANCEL_ISSUANCE_EVENT = "cancel_issuance";
 const REPAY_ISSUANCE_EVENT = "repay_full";
@@ -13,7 +14,7 @@ const REPAY_ISSUANCE_EVENT = "repay_full";
  */
 export class InstrumentService {
   constructor(protected nutsPlatformService: NutsPlatformService, protected notificationService: NotificationService,
-    protected tokenService: TokenService, protected http: HttpClient) {}
+    protected tokenService: TokenService, protected http: HttpClient) { }
 
   /**
    * Checks whether the current user is in position with the specific category.
@@ -67,7 +68,26 @@ export class InstrumentService {
         });
       });
   }
-  
+
+  protected repayIssuance(instrumentName: string, issuanceId: number, principalToken: TokenModel, tokenAmount: string) {
+    const instrumentManagerContract = this.nutsPlatformService.getInstrumentManagerContract(instrumentName);
+
+    return instrumentManagerContract.methods.notifyCustomEvent(issuanceId, this.nutsPlatformService.web3.utils.fromAscii(REPAY_ISSUANCE_EVENT),
+      this.nutsPlatformService.web3.utils.fromAscii("")).send({ from: this.nutsPlatformService.currentAccount, gas: 6721975 })
+      .on('transactionHash', (transactionHash) => {
+        // Records the transaction
+        const depositTransaction = new TransactionModel(transactionHash, TransactionType.PAY_OFFER, NotificationRole.TAKER,
+          this.nutsPlatformService.currentAccount, issuanceId,
+          {
+            principalTokenName: principalToken.tokenSymbol, principalTokenAddress: principalToken.tokenAddress, totalAmount: tokenAmount,
+          }
+        );
+        this.notificationService.addTransaction(instrumentName, depositTransaction).subscribe(result => {
+          this.nutsPlatformService.transactionSentSubject.next(transactionHash);
+        });
+      });
+  }
+
   protected getIssuances(instrumentId: number) {
     return this.http.get<IssuanceModel[]>(`${this.nutsPlatformService.getApiServerHost()}/instruments/${instrumentId}/issuances`);
   }

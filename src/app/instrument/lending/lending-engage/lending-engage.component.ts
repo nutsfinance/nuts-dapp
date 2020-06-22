@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit, NgZone } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NutsPlatformService } from '../../../common/web3/nuts-platform.service';
-import { LendingIssuanceModel } from 'src/app/common/model/lending-issuance.model';
-import { InstrumentService } from 'src/app/common/web3/instrument.service';
+import { IssuanceModel, IssuanceState } from '../../issuance.model';
+import { LendingService } from '../lending.service';
 
 @Component({
   selector: 'app-lending-engage',
@@ -10,24 +10,21 @@ import { InstrumentService } from 'src/app/common/web3/instrument.service';
   styleUrls: ['./lending-engage.component.scss']
 })
 export class LendingEngageComponent implements OnInit, OnDestroy {
-  public currentAccount: string;
-  public issuances: LendingIssuanceModel[] = [];
+  public issuances: IssuanceModel[] = [];
   
   private accountUpdatedSubscription: Subscription;
   private lendingIssuancesUpdatedSubscription: Subscription;
 
-  constructor(private nutsPlatformService: NutsPlatformService, private instrumentService: InstrumentService,
+  constructor(private nutsPlatformService: NutsPlatformService, private lendingService: LendingService,
     private zone: NgZone) { }
 
   ngOnInit() {
-    this.currentAccount = this.nutsPlatformService.currentAccount;
     // Filters on maker and taker
     this.updateLendingIssuances();
-    this.lendingIssuancesUpdatedSubscription = this.instrumentService.lendingIssuancesUpdatedSubject.subscribe(_ => {
+    this.lendingIssuancesUpdatedSubscription = this.lendingService.lendingIssuancesUpdated.subscribe(_ => {
       this.updateLendingIssuances();
     });
     this.accountUpdatedSubscription = this.nutsPlatformService.currentAccountSubject.subscribe(_ => {
-      this.currentAccount = this.nutsPlatformService.currentAccount;
       this.updateLendingIssuances();
     });
   }
@@ -38,12 +35,13 @@ export class LendingEngageComponent implements OnInit, OnDestroy {
   }
 
   updateLendingIssuances() {
+    const currentAccount = this.nutsPlatformService.currentAccount.toLowerCase();
     this.zone.run(() => {
-      const lendingIssuances = this.instrumentService.lendingIssuances.filter(issuance => {
+      const lendingIssuances = this.lendingService.lendingIssuances.filter(issuance => {
         // Issuances in Engageable state and the maker is not current user.
-        return issuance.state === 2 && issuance.makerAddress.toLowerCase() !== this.currentAccount.toLowerCase();
+        return issuance.issuancestate === IssuanceState.Engageable && issuance.makeraddress.toLowerCase() !== currentAccount;
       });
-      console.log('Engage: Filtered issuance', lendingIssuances.map(issuance => issuance.issuanceId));
+      console.log('Engage: Filtered issuance', lendingIssuances.map(issuance => issuance.issuanceid));
       this.issuances = lendingIssuances;
     });
   }

@@ -2,14 +2,17 @@ import { Location } from '@angular/common';
 import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { LendingIssuanceModel } from 'src/app/common/model/lending-issuance.model';
-import { NutsPlatformService, USD_ADDRESS, CNY_ADDRESS } from 'src/app/common/web3/nuts-platform.service';
+import { NutsPlatformService, USD_ADDRESS, CNY_ADDRESS, LENDING_NAME } from 'src/app/common/web3/nuts-platform.service';
 import { PriceOracleService } from 'src/app/common/web3/price-oracle.service';
 import { CurrencyService } from 'src/app/common/currency-select/currency.service';
-import { InstrumentService, IssuanceTransfer } from 'src/app/common/web3/instrument.service';
 import { MatDialog } from '@angular/material';
 import { TransactionInitiatedDialog } from 'src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component';
-import { AccountBalanceService } from 'src/app/common/web3/account-balance.service';
+import { TokenModel } from 'src/app/common/token/token.model';
+import { IssuanceModel } from '../../issuance.model';
+import { LendingIssuanceModel } from '../lending-issuance.model';
+import { LendingService } from '../lending.service';
+import { AccountService } from 'src/app/account/account.service';
+import { TokenService } from 'src/app/common/token/token.service';
 
 @Component({
   selector: 'app-lending-detail',
@@ -17,14 +20,13 @@ import { AccountBalanceService } from 'src/app/common/web3/account-balance.servi
   styleUrls: ['./lending-detail.component.scss']
 })
 export class LendingDetailComponent implements OnInit, OnDestroy {
-  public currentAccount: string;
-  public issuanceId: number;
-  public issuance: LendingIssuanceModel;
-  public lendingToken: string;
-  public collateralToken: string;
-  public lendingTokenBalance = -1;
-  public collateralTokenBalance = -1;
-  public collateralValue = 0;
+  public issuance: IssuanceModel;
+  public lendingIssuance: LendingIssuanceModel;
+  public lendingToken: TokenModel;
+  public collateralToken: TokenModel;
+  public lendingTokenBalance = '0';
+  public collateralTokenBalance = '0';
+  public collateralValue = '0';
   public principalSufficient = true;
   public collateralSufficient = true;
 
@@ -33,32 +35,26 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
   public convertedPerDayInterestValue: Promise<number>;
   public convertedTotalInterestValue: Promise<number>;
 
-  public columns: string[] = ['action', 'from', 'to', 'amount', 'date'];
-  public transactions: IssuanceTransfer[] = [];
-
   private accountUpdatedSubscription: Subscription;
   private issuanceIdSubscription: Subscription;
   private lendingUpdatedSubscription: Subscription;
   private currencyUpdatedSubscription: Subscription;
 
-  constructor(public nutsPlatformService: NutsPlatformService, private instrumentService: InstrumentService,
-    private priceOracleService: PriceOracleService, public currencyService: CurrencyService, private accountBalanceService: AccountBalanceService,
-    private route: ActivatedRoute, private zone: NgZone, private location: Location, private dialog: MatDialog) { }
+  constructor(public nutsPlatformService: NutsPlatformService, private lendingService: LendingService,
+    private priceOracleService: PriceOracleService, public currencyService: CurrencyService, private accountService: AccountService,
+    private tokenService: TokenService, private route: ActivatedRoute, private zone: NgZone,
+    private location: Location, private dialog: MatDialog) { }
 
   ngOnInit() {
-    this.currentAccount = this.nutsPlatformService.currentAccount;
-    this.issuanceId = this.route.snapshot.params['id'];
-    this.updateLendingIssuance();
+    this.updateLendingIssuance(this.route.snapshot.params['id']);
     this.issuanceIdSubscription = this.route.params.subscribe((params) => {
-      this.issuanceId = +params['id'];
-      this.updateLendingIssuance();
+      this.updateLendingIssuance(+params['id']);
     });
     this.accountUpdatedSubscription = this.nutsPlatformService.currentAccountSubject.subscribe(account => {
-      this.currentAccount = account;
-      this.updateLendingIssuance();
+      this.updateLendingIssuance(this.issuance.issuanceid);
     });
-    this.lendingUpdatedSubscription = this.instrumentService.lendingIssuancesUpdatedSubject.subscribe(_ => {
-      this.updateLendingIssuance();
+    this.lendingUpdatedSubscription = this.lendingService.lendingIssuancesUpdated.subscribe(_ => {
+      this.updateLendingIssuance(this.issuance.issuanceid);
     });
     this.currencyUpdatedSubscription = this.currencyService.currencyUpdatedSubject.subscribe(_ => {
       this.updateConvertedValue();
@@ -79,32 +75,31 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
   onPrincipalTokenBalanceUpdated(balance) {
     this.lendingTokenBalance = balance;
     setTimeout(() => {
-      const repayAmount = this.issuance.lendingAmount + this.issuance.lendingAmount * this.issuance.interestRate * this.issuance.tenorDays / 1000000;
-      this.principalSufficient = this.lendingTokenBalance >= repayAmount;
+      const BN = this.nutsPlatformService.web3.utils.BN;
+      const repayAmount = new BN(this.lendingIssuance.lendingamount).add(new BN(this.lendingIssuance.interestamount));
+      this.principalSufficient = new BN(this.lendingTokenBalance).gte(repayAmount);
     });
   }
 
   onCollateralTokenBalanceUpdated(balance) {
     this.collateralTokenBalance = balance;
     setTimeout(() => {
-      this.collateralSufficient = this.collateralTokenBalance >= this.collateralValue;
+      const BN = this.nutsPlatformService.web3.utils.BN;
+      this.collateralSufficient = new BN(this.collateralTokenBalance).gte(new BN(this.collateralValue));
     });
   }
 
   engageIssuance() {
-    if (this.collateralTokenBalance < this.collateralValue) return;
-    this.instrumentService.engageIssuance('lending', this.issuanceId)
+    if (!this.collateralSufficient) return;
+    this.lendingService.engageLendingIssuance(this.issuance.issuanceid)
       .on('transactionHash', transactionHash => {
         this.zone.run(() => {
           // Opens Engagement Initiated dialog.
           const transactionInitiatedDialog = this.dialog.open(TransactionInitiatedDialog, {
             width: '90%',
             data: {
-              type: 'engage_issuance',
-              instrument: 'lending',
-              issuanceId: this.issuance.issuanceId,
-              tokenAmount: this.issuance.lendingAmount,
-              tokenName: this.nutsPlatformService.getTokenNameByAddress(this.issuance.lendingTokenAddress),
+              type: 'engage_issuance', instrument: LENDING_NAME, issuanceId: this.issuance.issuanceid,
+              tokenAmount: this.lendingIssuance.lendingamount, tokenName: this.lendingToken.tokenSymbol,
             },
           });
           transactionInitiatedDialog.afterClosed().subscribe(() => {
@@ -112,25 +107,23 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
           });
         });
 
-        this.monitorLendingTransaction(transactionHash);
       });
   }
 
   repayIssuance() {
-    const totalAmount = this.issuance.lendingAmount + this.issuance.lendingAmount * this.issuance.interestAmount;
-    if (this.lendingTokenBalance < totalAmount) return;
-    this.instrumentService.repayIssuance('lending', this.issuanceId, this.issuance.lendingTokenAddress, totalAmount)
+    if (!this.principalSufficient) return;
+    const BN = this.nutsPlatformService.web3.utils.BN;
+    const repayAmount = new BN(this.lendingIssuance.lendingamount).add(new BN(this.lendingIssuance.interestamount));
+
+    this.lendingService.repayLendingIssuance(this.issuance.issuanceid, this.lendingToken, repayAmount)
       .on('transactionHash', transactionHash => {
         this.zone.run(() => {
           // Opens Engagement Initiated dialog.
           const transactionInitiatedDialog = this.dialog.open(TransactionInitiatedDialog, {
             width: '90%',
             data: {
-              type: 'repay_issuance',
-              instrument: 'lending',
-              issuanceId: this.issuance.issuanceId,
-              tokenAmount: totalAmount,
-              tokenName: this.nutsPlatformService.getTokenNameByAddress(this.issuance.lendingTokenAddress),
+              type: 'repay_issuance', instrument: LENDING_NAME, issuanceId: this.issuance.issuanceid,
+              tokenAmount: repayAmount, tokenName: this.lendingToken.tokenSymbol,
             },
           });
           transactionInitiatedDialog.afterClosed().subscribe(() => {
@@ -138,64 +131,45 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
           });
         });
 
-        this.monitorLendingTransaction(transactionHash);
       });
   }
 
   cancelIssuance() {
-    this.instrumentService.cancelIssuance('lending', this.issuanceId)
+    this.lendingService.cancelLendingIssuance(this.issuance.issuanceid)
       .on('transactionHash', transactionHash => {
         this.zone.run(() => {
           // Opens Cancel Initiated dialog.
           const transactionInitiatedDialog = this.dialog.open(TransactionInitiatedDialog, {
             width: '90%',
             data: {
-              type: 'cancel_issuance',
-              instrument: 'lending',
-              issuanceId: this.issuance.issuanceId,
+              type: 'cancel_issuance', instrument: LENDING_NAME, issuanceId: this.issuance.issuanceid,
             },
           });
           transactionInitiatedDialog.afterClosed().subscribe(() => {
             this.location.back();
           });
         });
-
-        this.monitorLendingTransaction(transactionHash);
       });
   }
 
-  private monitorLendingTransaction(transactionHash) {
-    // Monitoring transaction status(work around for Metamask mobile)
-    const interval = setInterval(async () => {
-      const receipt = await this.nutsPlatformService.web3.eth.getTransactionReceipt(transactionHash);
-      if (!receipt || !receipt.blockNumber) return;
-
-      console.log('Lending receipt', receipt);
-      // New lending issuance created. Need to refresh the lending issuance list.
-      this.instrumentService.reloadLendingIssuances(5, 3000);
-      // New lending issuance created. Need to update the principal balance as well.
-      this.accountBalanceService.getUserBalanceFromBackend(5, 3000);
-      this.nutsPlatformService.transactionConfirmedSubject.next(receipt.transactionHash);
-      clearInterval(interval);
-    }, 2000);
-  }
-
-  private updateLendingIssuance() {
+  private updateLendingIssuance(issuanceId) {
+    const BN = this.nutsPlatformService.web3.utils.BN;
     this.zone.run(() => {
-      this.issuance = this.instrumentService.getLendingIssuanceById(this.issuanceId);
+      this.issuance = this.lendingService.getLendingIssuance(issuanceId);
       if (this.issuance) {
+        this.lendingIssuance = this.issuance.issuancecustomproperty as LendingIssuanceModel;
         // Compute issuance token values
-        this.lendingToken = this.nutsPlatformService.getTokenNameByAddress(this.issuance.lendingTokenAddress);
-        this.collateralToken = this.nutsPlatformService.getTokenNameByAddress(this.issuance.collateralTokenAddress);
+        this.lendingToken = this.tokenService.getTokenByAddress(this.lendingIssuance.lendingtokenaddress);
+        this.collateralToken = this.tokenService.getTokenByAddress(this.lendingIssuance.collateraltokenaddress);
         // If the collateral value is not set
-        if (this.issuance.collateralAmount == 0) {
-          this.priceOracleService.getConvertedValue(this.issuance.collateralTokenAddress, this.issuance.lendingTokenAddress, this.issuance.lendingAmount * this.issuance.collateralRatio, 10000).then(value => {
+        if (this.lendingIssuance.collateralamount === '0') {
+          this.lendingService.getCollateralValue(this.lendingIssuance).then(value => {
             this.collateralValue = value;
-            this.collateralSufficient = this.collateralTokenBalance === -1 || this.collateralTokenBalance >= this.collateralValue;
+            this.collateralSufficient = new BN(this.collateralTokenBalance).gte(new BN(this.collateralValue));
           });
         } else {
-          this.collateralValue = this.issuance.collateralAmount;
-          this.collateralSufficient = this.collateralTokenBalance === -1 || this.collateralTokenBalance >= this.collateralValue;
+          this.collateralValue = this.lendingIssuance.collateralamount;
+          this.collateralSufficient = new BN(this.collateralTokenBalance).gte(new BN(this.collateralValue));
         }
         this.updateConvertedValue();
       }
@@ -204,14 +178,11 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
 
   private updateConvertedValue() {
     // Compute converted issuance token values
-    const targetTokenAddress = this.currencyService.currency === 'USD' ? USD_ADDRESS : CNY_ADDRESS;
-    this.convertedCollateralValue = this.priceOracleService.getConvertedValue(targetTokenAddress,
-      this.issuance.lendingTokenAddress, this.issuance.lendingAmount * this.issuance.collateralRatio, 10000);
-    this.convertedLendingValue = this.priceOracleService.getConvertedValue(targetTokenAddress,
-      this.issuance.lendingTokenAddress, this.issuance.lendingAmount);
-    this.convertedPerDayInterestValue = this.priceOracleService.getConvertedValue(targetTokenAddress,
-      this.issuance.lendingTokenAddress, this.issuance.lendingAmount * this.issuance.interestRate, 1000000);
-    this.convertedTotalInterestValue = this.priceOracleService.getConvertedValue(targetTokenAddress,
-      this.issuance.lendingTokenAddress, this.issuance.lendingAmount * this.issuance.interestRate * this.issuance.tenorDays, 1000000);
+    this.convertedCollateralValue = this.priceOracleService.getConvertedCurrencyValue(this.lendingToken, this.collateralValue);
+    this.convertedLendingValue = this.priceOracleService.getConvertedCurrencyValue(this.lendingToken, this.lendingIssuance.lendingamount);
+    this.convertedPerDayInterestValue = this.priceOracleService.getConvertedCurrencyValue(this.lendingToken,
+      this.lendingService.getPerDayInterest(this.lendingIssuance));
+    this.convertedTotalInterestValue = this.priceOracleService.getConvertedCurrencyValue(this.lendingToken,
+      this.lendingIssuance.interestamount);
   }
 }

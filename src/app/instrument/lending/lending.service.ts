@@ -10,6 +10,8 @@ import * as isEqual from 'lodash.isequal';
 import { AccountService } from 'src/app/account/account.service';
 import { TokenModel } from 'src/app/common/token/token.model';
 import { TransactionType, NotificationRole, TransactionModel } from 'src/app/notification/transaction.model';
+import { LendingIssuanceModel } from './lending-issuance.model';
+import { PriceOracleService } from 'src/app/common/web3/price-oracle.service';
 
 @Injectable({
     providedIn: 'root'
@@ -20,7 +22,8 @@ export class LendingService extends InstrumentService {
     private lendingIssuanceMap = {};
 
     constructor(nutsPlatformService: NutsPlatformService, notificationService: NotificationService,
-        tokenService: TokenService, http: HttpClient, private accountService: AccountService) {
+        tokenService: TokenService, http: HttpClient, private accountService: AccountService,
+        private priceOracleService: PriceOracleService) {
         super(nutsPlatformService, notificationService, tokenService, http);
 
         this.reloadLendingIssuances();
@@ -101,6 +104,24 @@ export class LendingService extends InstrumentService {
     public cancelLendingIssuance(issuanceId) {
         return this.cancelIssuance(LENDING_NAME, issuanceId)
             .on('transactionHash', transactionHash => this.monitorLendingTransaction(transactionHash));
+    }
+
+    public repayLendingIssuance(issuanceId: number, principalToken: TokenModel, tokenAmount: string) {
+        return this.repayIssuance(LENDING_NAME, issuanceId, principalToken, tokenAmount)
+            .on('transactionHash', transactionHash => this.monitorLendingTransaction(transactionHash));
+    }
+
+    public getCollateralValue(lendingIssuance: LendingIssuanceModel) {
+        const lendingToken = this.tokenService.getTokenByAddress(lendingIssuance.lendingtokenaddress);
+        const collateralToken = this.tokenService.getTokenByAddress(lendingIssuance.collateraltokenaddress);
+        const BN = this.nutsPlatformService.web3.utils.BN;
+        const inputAmount = new BN(lendingIssuance.lendingamount).mul(new BN(lendingIssuance.collateralratio)).div(new BN(10000));
+        return this.priceOracleService.getConvertedActualValue(lendingToken, collateralToken, inputAmount);
+    }
+
+    public getPerDayInterest(lendingIssuance: LendingIssuanceModel) {
+        const BN = this.nutsPlatformService.web3.utils.BN;
+        return new BN(lendingIssuance.lendingamount).mul(new BN(lendingIssuance.interestrate)).div(new BN(1000000)).toString();
     }
 
     private monitorLendingTransaction(transactionHash) {

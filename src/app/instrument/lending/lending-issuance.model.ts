@@ -1,7 +1,7 @@
 export class LendingIssuanceModel {
     constructor(public lendingtokenaddress: string, public collateraltokenaddress: string,
-        public LendingAmount: number, public collateralratio: number, public collateralamount: number,
-        public interestrate: number, public interestamount: number, public tenordays: number) {}
+        public lendingamount: string, public collateralratio: number, public collateralamount: string,
+        public interestrate: number, public interestamount: string, public tenordays: number) {}
 }
 
 export enum LendingEngagementState {
