@@ -115,7 +115,7 @@ export class BorrowingService extends InstrumentService {
         const borrowingToken = this.tokenService.getTokenByAddress(borrowingIssuance.borrowingtokenaddress);
         const collateralToken = this.tokenService.getTokenByAddress(borrowingIssuance.collateraltokenaddress);
 
-        return this.getCollateralValue(borrowingToken, collateralToken, borrowingIssuance.borrowingamount, borrowingIssuance.collateralratio);
+        return this.getCollateralValue(borrowingToken, collateralToken, borrowingIssuance.borrowingamount, Number(borrowingIssuance.collateralratio) / 10000);
     }
 
     public getPerDayInterest(borrowingIssuance: BorrowingIssuanceModel) {

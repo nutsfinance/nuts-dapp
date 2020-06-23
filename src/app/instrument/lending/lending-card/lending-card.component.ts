@@ -43,7 +43,7 @@ export class LendingCardComponent implements OnInit, OnDestroy {
     // If the collateral value is not set
     if (this.lendingIssuance.collateralamount === '0') {
       this.lendingService.getCollateralValue(this.lendingToken, this.collateralToken, this.lendingIssuance.lendingamount,
-        this.lendingIssuance.collateralratio).then(value => {
+        Number(this.lendingIssuance.collateralratio) / 10000).then(value => {
           this.collateralValue = value;
         });
     } else {

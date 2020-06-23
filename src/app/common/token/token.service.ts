@@ -101,7 +101,6 @@ export class TokenService {
     if (tokenAddress === this.nutsPlatformService.getWETH()) {
       return await this.nutsPlatformService.web3.eth.getBalance(currentAccount);
     } else {
-      if (!tokenAddress) return 0;
       return this.nutsPlatformService.getERC20TokenContract(tokenAddress).methods.balanceOf(currentAccount).call();
     }
   }

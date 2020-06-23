@@ -72,8 +72,10 @@ export class LendingService extends InstrumentService {
         collateralRatio: number, tenor: number, interestRate: number) {
 
         const issuanceDuration = 14 * 24 * 3600;   // Hard-coded 14 days duration
+        const collateralRatioValue = '' + Math.floor(collateralRatio * 10000);   // Collateral ratio has 4 decimals
+        const interestRateValue = '' + Math.floor(interestRate * 1000000);  // Interest rate has 6 decimals
         const makerData = this.nutsPlatformService.web3.eth.abi.encodeParameters(['uint256', 'address', 'address', 'uint256', 'uint256', 'uint256', 'uint256'],
-            [issuanceDuration, principalToken.tokenAddress, collateralToken.tokenAddress, principalAmount, tenor, collateralRatio, interestRate]);
+            [issuanceDuration, principalToken.tokenAddress, collateralToken.tokenAddress, principalAmount, tenor, collateralRatioValue, interestRateValue]);
 
         const instrumentManagerContract = this.nutsPlatformService.getInstrumentManagerContract(LENDING_NAME);
         return instrumentManagerContract.methods.createIssuance(makerData).send({ from: this.nutsPlatformService.currentAccount, gas: 6721975 })
@@ -84,8 +86,8 @@ export class LendingService extends InstrumentService {
                     {
                         principalTokenName: principalToken.tokenSymbol, principalTokenAddress: principalToken.tokenAddress,
                         principalAmount: principalAmount, collateralTokenName: collateralToken.tokenSymbol,
-                        collateralTokenAddress: collateralToken.tokenAddress, collateralRatio: `${collateralRatio}`,
-                        tenor: `${tenor}`, interestRate: `${interestRate}`,
+                        collateralTokenAddress: collateralToken.tokenAddress, collateralRatio: collateralRatioValue,
+                        tenor: `${tenor}`, interestRate: interestRateValue,
                     }
                 );
                 this.notificationService.addTransaction(LENDING_NAME, depositTransaction).subscribe(result => {
@@ -115,7 +117,7 @@ export class LendingService extends InstrumentService {
         const lendingToken = this.tokenService.getTokenByAddress(lendingIssuance.lendingtokenaddress);
         const collateralToken = this.tokenService.getTokenByAddress(lendingIssuance.collateraltokenaddress);
 
-        return this.getCollateralValue(lendingToken, collateralToken, lendingIssuance.lendingamount, lendingIssuance.collateralratio);
+        return this.getCollateralValue(lendingToken, collateralToken, lendingIssuance.lendingamount, Number(lendingIssuance.collateralratio) / 10000);
     }
 
     public getPerDayInterest(lendingIssuance: LendingIssuanceModel) {

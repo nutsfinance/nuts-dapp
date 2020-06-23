@@ -182,6 +182,8 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
   }
 
   private async getTotalPayable() {
+    if (!this.nutsPlatformService.currentAccount) return 0;
+
     let totalPayable = 0;
     const currentAccount = this.nutsPlatformService.currentAccount.toLowerCase();
     for (let position of this.activePositions) {
@@ -197,6 +199,8 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
   }
 
   private async getTotalReceivable() {
+    if (!this.nutsPlatformService.currentAccount) return 0;
+    
     let totalReceivable = 0;
     const currentAccount = this.nutsPlatformService.currentAccount.toLowerCase();
     for (let position of this.activePositions) {

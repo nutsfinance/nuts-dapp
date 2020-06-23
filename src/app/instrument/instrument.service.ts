@@ -49,15 +49,17 @@ export class InstrumentService {
     }
   }
 
-  public getCollateralValue(principalToken: TokenModel, collateralToken: TokenModel, inputAmount: string, collateralRatio: number) {
+  public getCollateralValue(principalToken: TokenModel, collateralToken: TokenModel, inputAmount: string, collateralRatio: number): Promise<string> {
+    if (!inputAmount || !collateralRatio) return Promise.resolve('0');
     const BN = this.nutsPlatformService.web3.utils.BN;
-    const collateralAmountInPrincipal = new BN(inputAmount).mul(new BN(collateralRatio)).div(new BN(10000));
+    const collateralAmountInPrincipal = new BN(inputAmount).mul(new BN(collateralRatio * 10000)).div(new BN(10000));
     return this.priceOracleService.getConvertedActualValue(principalToken, collateralToken, collateralAmountInPrincipal);
   }
 
-  public getInterestValue(inputAmount: string, interestRate: number, tenorDays: number) {
+  public getInterestValue(inputAmount: string, interestRate: number, tenorDays: number): string {
+    if (!inputAmount || !interestRate || !tenorDays) return '0';
     const BN = this.nutsPlatformService.web3.utils.BN;
-    return new BN(inputAmount).mul(new BN(interestRate * 10000 * tenorDays)).div(new BN(10000)).toString();
+    return new BN(inputAmount).mul(new BN(interestRate * 1000000 * tenorDays)).div(new BN(1000000)).toString();
   }
 
   protected engageIssuance(instrumentName: string, issuanceId: number) {

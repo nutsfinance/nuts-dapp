@@ -32,11 +32,14 @@ export class LendingCreateComponent implements OnInit {
   public interestValue = '0';
 
   constructor(private nutsPlatformService: NutsPlatformService, private lendingService: LendingService,
-    private priceOracleSercvice: PriceOracleService, private accountService: AccountService,
     private tokenService: TokenService, private zone: NgZone, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.tokens = this.tokenService.tokens.filter(token => token.supportsTransaction);
+    this.principalToken = this.tokens[0];
+    this.collateralTokenList = this.tokens.slice(1);
+    this.collateralToken = this.tokens[1];
+
     this.createFormGroup = new FormGroup({
       'principalAmount': new FormControl('', this.validPrincipalAmount.bind(this)),
       'tenor': new FormControl('', this.validTenor),
@@ -46,20 +49,20 @@ export class LendingCreateComponent implements OnInit {
     this.createFormGroup.valueChanges.subscribe(_ => {
       this.principalValue = this.tokenService.getActualValue(this.principalToken.tokenAddress, this.createFormGroup.value['principalAmount']);
       this.lendingService.getCollateralValue(this.principalToken, this.collateralToken, this.principalValue,
-        this.createFormGroup.value['collateralRatio']).then(value => {
+        +this.createFormGroup.value['collateralRatio'] / 100).then(value => {
           this.collateralValue = value;
         });
-      this.interestValue = this.lendingService.getInterestValue(this.principalValue, this.createFormGroup.value['interestRate'],
-        this.createFormGroup.value['tenor']);
+      this.interestValue = this.lendingService.getInterestValue(this.principalValue,
+        +this.createFormGroup.value['interestRate'] / 100, this.createFormGroup.value['tenor']);
     });
   }
 
-  onPrincipalTokenSelected(tokenAddress: string) {
+  onPrincipalTokenSelected(selectedToken: TokenModel) {
     // Update principals
-    this.principalToken = this.tokenService.getTokenByAddress(tokenAddress);
+    this.principalToken = selectedToken;
     this.createFormGroup.controls['principalAmount'].reset();
     // Update collateral tokens
-    this.collateralTokenList = this.tokens.filter(token => token.tokenAddress !== tokenAddress);
+    this.collateralTokenList = this.tokens.filter(token => token.tokenAddress !== selectedToken.tokenAddress);
     this.collateralToken = this.collateralTokenList[0];
   }
 
@@ -67,8 +70,8 @@ export class LendingCreateComponent implements OnInit {
     this.createFormGroup.patchValue({ 'tenor': tenorChange.value });
   }
 
-  onCollateralTokenSelected(tokenAddress: string) {
-    this.collateralToken = this.tokenService.getTokenByAddress(tokenAddress);
+  onCollateralTokenSelected(selectedToken: TokenModel) {
+    this.collateralToken = selectedToken;
     this.createFormGroup.controls['collateralRatio'].reset();
   }
 
@@ -84,9 +87,10 @@ export class LendingCreateComponent implements OnInit {
     if (!this.createFormGroup.valid) {
       return;
     }
-    this.lendingService.createLendingIssuance(this.principalToken, this.principalValue,
-      this.collateralToken, this.createFormGroup.value['collateralRatio'], this.createFormGroup.value['tenor'],
-      this.createFormGroup.value['interestRate'])
+    this.lendingService.createLendingIssuance(this.principalToken, this.principalValue, this.collateralToken,
+      +this.createFormGroup.value['collateralRatio'] / 100,
+      +this.createFormGroup.value['tenor'],
+      +this.createFormGroup.value['interestRate'] / 100)
       .on('transactionHash', transactionHash => {
         // Show Transaction Initiated dialog
         this.zone.run(() => {
@@ -109,6 +113,7 @@ export class LendingCreateComponent implements OnInit {
 
   resetForm() {
     this.principalToken = this.tokens[0];
+    this.collateralTokenList = this.tokens.slice(1);
     this.collateralToken = this.tokens[1];
     this.form.resetForm();
   }

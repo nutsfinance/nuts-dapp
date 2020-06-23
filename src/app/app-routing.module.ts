@@ -22,6 +22,7 @@ import { NotificationComponent } from './notification/notification.component';
 import { CanActivateInstrument } from './instrument/instrument-routing-guard.service';
 import { BorrowingDetailComponent } from './instrument/borrowing/borrowing-detail/borrowing-detail.component';
 import { SwapDetailComponent } from './instrument/swap/swap-detail/swap-detail.component';
+import { TokenResolver } from './common/token/token.resolver';
 
 const language = environment.language;
 
@@ -35,7 +36,9 @@ const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent},
       {
-        path: 'lending', component: LendingComponent, canActivateChild: [ CanActivateInstrument ],
+        path: 'lending', component: LendingComponent,
+        canActivateChild: [ CanActivateInstrument ],
+        resolve: { tokens: TokenResolver },
         children: [
           { path: '', redirectTo: 'account', pathMatch: 'full' },
           { path: 'account', component: AccountComponent, data: { instrument: 'lending' } },
@@ -46,7 +49,9 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'borrowing', component: BorrowingComponent, canActivateChild: [ CanActivateInstrument ],
+        path: 'borrowing', component: BorrowingComponent,
+        canActivateChild: [ CanActivateInstrument ],
+        resolve: { tokens: TokenResolver },
         children: [
           { path: '', redirectTo: 'account', pathMatch: 'full' },
           { path: 'account', component: AccountComponent, data: { instrument: 'borrowing' } },
@@ -57,7 +62,9 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'swap', component: SwapComponent, canActivateChild: [ CanActivateInstrument ],
+        path: 'swap', component: SwapComponent,
+        canActivateChild: [ CanActivateInstrument ],
+        resolve: { tokens: TokenResolver },
         children: [
           { path: '', redirectTo: 'account', pathMatch: 'full' },
           { path: 'account', component: AccountComponent, data: { instrument: 'swap' } },

@@ -55,6 +55,7 @@ export class PriceOracleService {
     if (inputToken.tokenSymbol === outputToken.tokenSymbol) return inputValue;
 
     const inputDisplayValue = this.tokenService.getDisplayValue(inputToken.tokenAddress, inputValue);
+    console.log(inputDisplayValue);
     // If the price is cached and there is no need to get the latest price, simply return it!
     const priceKey = `${inputToken.tokenSymbol}-${outputToken.tokenSymbol}`;
     if (this.prices[priceKey] && !refresh) {

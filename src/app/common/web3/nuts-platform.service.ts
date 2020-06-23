@@ -45,8 +45,8 @@ export const NUTS_PLATFORM_ADDRESSES = {
         instrumentEscrow: '0x4B22d4181Ea2D526C479d3D10571BA22F1B6dD2f',
         instrumentId: 3
       },
-      weth: '0x8018b912dddfc0cf7bc33ae72ccb326541518c17',
-    }
+    },
+    weth: '0x8018b912dddfc0cf7bc33ae72ccb326541518c17',
   }
 };
 
