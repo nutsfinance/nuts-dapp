@@ -4,8 +4,10 @@
         <span *ngSwitchCase="'approve'" i18n>Approval Initiated</span>
         <span *ngSwitchCase="'deposit'" i18n>Deposit Initiated</span>
         <span *ngSwitchCase="'withdraw'" i18n>Withdrawal Initiated</span>
-        <span *ngSwitchCase="'subscribe_offer'" i18n>Subscription initiated</span>
-        <span *ngSwitchCase="'redeem_offer'" i18n>Redemption initiated</span>
+        <span *ngSwitchCase="'create_issuance'" i18n>Offer Creation Initiated</span>
+        <span *ngSwitchCase="'engage_issuance'" i18n>Engagement Initiated</span>
+        <span *ngSwitchCase="'cancel_issuance'" i18n>Cancellation Initiated</span>
+        <span *ngSwitchCase="'repay_issuance'" i18n>Repayment Initiated</span>
     </p>
   </div>
   <hr class="divider">
@@ -20,11 +22,23 @@
         <span *ngSwitchCase="'withdraw'">
             <span i18n>Your withdrawal request for {{data.tokenAmount | tokenValue:data.token.tokenAddress}} {{data.token.tokenSymbol}} has been initiated.</span>
         </span>
-        <span *ngSwitchCase="'subscribe_offer'">
-            <span i18n>Your {{data.companyName}} IPO subscription request for {{data.tokenAmount | tokenValue:data.token.tokenAddress}} {{data.token.tokenSymbol}} has been initiated.</span>
+        <span *ngSwitchCase="'create_issuance'">
+            <span *ngIf="data.instrument == 'lending'" i18n>Your lending offer for {{data.tokenAmount | tokenValue:data.token.tokenAddress}} {{data.token.tokenSymbol}} has been initiated.</span>
+            <span *ngIf="data.instrument == 'borrowing'" i18n>Your borrowing offer for {{data.tokenAmount | tokenValue:data.token.tokenAddress}} {{data.token.tokenSymbol}} has been initiated.</span>
+            <span *ngIf="data.instrument == 'swap'" i18n>Your swap offer for {{data.tokenAmount | tokenValue:data.token.tokenAddress}} {{data.token.tokenSymbol}} has been initiated.</span>
         </span>
-        <span *ngSwitchCase="'redeem_offer'">
-            <span i18n>Your {{data.companyName}} rights redemption for for {{data.tokenAmount | tokenValue:data.token.tokenAddress}} {{data.token.tokenSymbol}} has been initiated.</span>
+        <span *ngSwitchCase="'engage_issuance'">
+            <span *ngIf="data.instrument == 'lending'" i18n>Your loan request for {{data.tokenAmount | tokenValue:data.token.tokenAddress}} {{data.token.tokenSymbol}} has been initiated.</span>
+            <span *ngIf="data.instrument == 'borrowing'" i18n>Your lending request for {{data.tokenAmount | tokenValue:data.token.tokenAddress}} {{data.token.tokenSymbol}} has been initiated.</span>
+            <span *ngIf="data.instrument == 'swap'" i18n>Your swap request for {{data.tokenAmount | tokenValue:data.token.tokenAddress}} {{data.token.tokenSymbol}} has been initiated.</span>
+        </span>
+        <span *ngSwitchCase="'cancel_issuance'">
+            <span *ngIf="data.instrument == 'lending'" i18n>Your cancellation request for lending offer {{data.issuanceId}} has been initiated.</span>
+            <span *ngIf="data.instrument == 'borrowing'" i18n>Your cancellation request for borrowing offer {{data.issuanceId}} has been initiated.</span>
+            <span *ngIf="data.instrument == 'swap'" i18n>Your cancellation request for swap offer {{data.issuanceId}} has been initiated.</span>
+        </span>
+        <span *ngSwitchCase="'repay_issuance'">
+            <span i18n>Principal and interests repayment {{data.tokenAmount | tokenValue:data.token.tokenAddress}} {{data.token.tokenSymbol}} has been initiated.</span>
         </span>
     </p>
   </div>

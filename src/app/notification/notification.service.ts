@@ -118,9 +118,10 @@ export class NotificationService {
     const notifications = [];
     for (const instrumentName of instrumentNames) {
       const instrumentId = this.nutsPlatformService.getInstrumentId(instrumentName);
-      notifications.push(this.http.get<NotificationModel[]>(`${this.nutsPlatformService.getApiServerHost()}/instruments/${instrumentId}/notifications/${currentAddress}`, {
-        params: { language: environment.languageCode
-      }}));
+      notifications.push(this.http.get<NotificationModel[]>(`${this.nutsPlatformService.getApiServerHost()}/instruments/${instrumentId}/notifications/`, 
+      {
+        params: { user: currentAddress, language: environment.languageCode }
+      }));
     }
 
     return forkJoin(notifications).pipe(map((results: NotificationModel[][]) => {
@@ -144,8 +145,8 @@ export class NotificationService {
     let globalNotifications = [];
     for (const instrumentName of instrumentNames) {
       const instrumentId = this.nutsPlatformService.getInstrumentId(instrumentName);
-      globalNotifications.push(this.http.get<GlobalNotificationModel[]>(`${this.nutsPlatformService.getApiServerHost()}/instruments/${instrumentId}/global-notifications/${currentAddress}`, {
-        params: { language: environment.languageCode
+      globalNotifications.push(this.http.get<GlobalNotificationModel[]>(`${this.nutsPlatformService.getApiServerHost()}/instruments/${instrumentId}/global-notifications/`, {
+        params: { user: currentAddress, language: environment.languageCode
       }}));
     }
 
@@ -170,7 +171,8 @@ export class NotificationService {
 
   updateGlobalNotification(globalNotification: GlobalNotificationModel) {
     const currentAddress = this.nutsPlatformService.currentAccount;
-    this.http.put(`${this.nutsPlatformService.getApiServerHost()}/instruments/${globalNotification.instrumentId}/global-notifications/${currentAddress}/${globalNotification.notificationId}`, globalNotification)
+    this.http.put(`${this.nutsPlatformService.getApiServerHost()}/instruments/${globalNotification.instrumentId}/global-notifications/${globalNotification.notificationId}`,
+      globalNotification, { params: { user: currentAddress } })
       .subscribe(_ => this.getGlobalNotification());
   }
 
