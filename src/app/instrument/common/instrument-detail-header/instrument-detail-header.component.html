@@ -1,0 +1,15 @@
+<div class="row">
+    <div class="col-xs-8 detail-title">
+        <img src="../../../../assets/images/navigate_back.png" class="navigate-back" (click)="navigateBack()">
+        <span i18n>Offer Details</span>
+    </div>
+    <div class="col-xs-4">
+        <span [ngSwitch]="instrumentService.getOfferState(issuance)">
+            <a class="offer-state engageable" *ngSwitchCase="'Engageable'" i18n>Engageable</a>
+            <a class="offer-state engaged" *ngSwitchCase="'Engaged'" i18n>Engaged</a>
+            <a class="offer-state cancelled" *ngSwitchCase="'Cancelled'" i18n>Cancelled</a>
+            <a class="offer-state expired" *ngSwitchCase="'Expired'" i18n>Expired</a>
+            <a class="offer-state complete" *ngSwitchCase="'Complete'" i18n>Complete</a>
+        </span>
+    </div>
+</div>

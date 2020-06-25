@@ -6,7 +6,7 @@ import { PriceOracleService } from 'src/app/common/web3/price-oracle.service';
 import { Subscription } from 'rxjs';
 import { CurrencyService } from 'src/app/common/currency-select/currency.service';
 import { TokenModel } from 'src/app/common/token/token.model';
-import { IssuanceModel } from '../../issuance.model';
+import { IssuanceModel, UserRole, OfferState } from '../../issuance.model';
 import { LendingIssuanceModel } from '../lending-issuance.model';
 import { TokenService } from 'src/app/common/token/token.service';
 import { LendingService } from '../lending.service';
@@ -19,6 +19,8 @@ import { LendingService } from '../lending.service';
 export class LendingCardComponent implements OnInit, OnDestroy {
   @Input() public issuance: IssuanceModel;
   public lendingIssuance: LendingIssuanceModel;
+  public role: UserRole;
+  public offerState: OfferState;
   public language = environment.language;
   public lendingToken: TokenModel;
   public collateralToken: TokenModel;
@@ -33,18 +35,21 @@ export class LendingCardComponent implements OnInit, OnDestroy {
   private currencyUpdatedSubscription: Subscription;
 
   constructor(public nutsPlatformService: NutsPlatformService, private priceOracleService: PriceOracleService,
-    private lendingService: LendingService, private tokenService: TokenService,
+    public lendingService: LendingService, private tokenService: TokenService,
     public currencyService: CurrencyService, private zone: NgZone) { }
 
   ngOnInit() {
     this.lendingIssuance = this.issuance.issuancecustomproperty as LendingIssuanceModel;
+    this.role = this.lendingService.getUserRole(this.issuance);
+    this.offerState = this.lendingService.getOfferState(this.issuance);
     this.lendingToken = this.tokenService.getTokenByAddress(this.lendingIssuance.lendingtokenaddress);
     this.collateralToken = this.tokenService.getTokenByAddress(this.lendingIssuance.collateraltokenaddress);
     // If the collateral value is not set
-    if (this.lendingIssuance.collateralamount === '0') {
+    if (!this.lendingIssuance.collateralamount || this.lendingIssuance.collateralamount === '0') {
       this.lendingService.getCollateralValue(this.lendingToken, this.collateralToken, this.lendingIssuance.lendingamount,
-        Number(this.lendingIssuance.collateralratio) / 10000).then(value => {
+        +this.lendingIssuance.collateralratio / 10000).then(value => {
           this.collateralValue = value;
+          this.convertedCollateralValue = this.priceOracleService.getConvertedCurrencyValue(this.collateralToken, value);
         });
     } else {
       this.collateralValue = this.lendingIssuance.collateralamount;
@@ -62,7 +67,7 @@ export class LendingCardComponent implements OnInit, OnDestroy {
   }
 
   private updateConvertedValues() {
-    this.convertedCollateralValue = this.priceOracleService.getConvertedCurrencyValue(this.lendingToken, this.collateralValue);
+    this.convertedCollateralValue = this.priceOracleService.getConvertedCurrencyValue(this.collateralToken, this.collateralValue);
     this.convertedLendingValue = this.priceOracleService.getConvertedCurrencyValue(this.lendingToken, this.lendingIssuance.lendingamount);
     this.convertedPerDayInterestValue = this.priceOracleService.getConvertedCurrencyValue(this.lendingToken,
       this.lendingService.getPerDayInterest(this.lendingIssuance));

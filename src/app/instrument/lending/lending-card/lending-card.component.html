@@ -1,101 +1,100 @@
 <mat-card class="issuance-card">
-    <div class="issuance-title-container">
-        <div class="issuance-title">
-            <span i18n>Issuance ID:</span> {{nutsPlatformService.getInstrumentId("lending")}}-{{issuance.issuanceId}}</div>
-        <div [ngStyle]="{'color':issuance.state <= 3 ? '#8bc34a' : 'grey'}" class="issuance-state">
-            <span class="issuance-state-dot">&#8226;</span>
-            <span i18n>
-                {issuance.getIssuanceState(), select, Engageable{Engageable} Engaged{Engaged} Cancelled{Cancelled} Expired{Expired} Completed{Completed} Delinquent{Delinquent} other{Unknown}}
-            </span>
-        </div>
-    </div>
-    <div class="issuance-card-subtitle">
-        <div class="subtitle-container" *ngIf="issuance.getUserRole(currentAccount) != 'other'">
-            <div class="subtitle-icon">
-                <img src="../../../../assets/images/role.png" alt="role" class="subtitle-icon-image">
-                <span i18n>role</span>
-            </div>
-            <span i18n>{issuance.getUserRole(currentAccount), select, maker{maker} taker{taker}}</span>
-        </div>
 
-        <div class="subtitle-container">
-            <div class="subtitle-icon">
-                <img src="../../../../assets/images/calendar.png" alt="expiry" class="subtitle-icon-image">
-                <span i18n>expiry</span>
-            </div>
-            {{(issuance.state == 2 || issuance.state == 5 || issuance.state == 6? issuance.engagementDueTimestamp * 1000 : issuance.issuanceDueTimestamp * 1000) | date: 'MM-dd-yyyy'}}
-        </div>
-
-        <div class="subtitle-container">
-            <div class="subtitle-icon">
-                <img src="../../../../assets/images/clock.png" alt="tenor" class="subtitle-icon-image">
-                <span i18n>tenor</span>
-            </div>
-            {{issuance.tenorDays}} <span i18n>days</span>
-        </div>
-    </div>
+    <app-instrument-card-header
+        [instrumentName]="'lending'"
+        [issuance]="issuance">
+    </app-instrument-card-header>
+    
     <div class="issuance-card-content">
-        <div class="content-container">
-            <div class="content-label" i18n>Principal</div>
-            <div class="content-sublabel" i18n>lending</div>
-            <div class="content-value">{{issuance.lendingAmount | tokenValue:lendingToken | number: '1.0-4'}} {{lendingToken}}</div>
+        <div class="col-xs-4 content-container">
+            <div class="card-label" i18n>Principal</div>
+            <div class="card-sublabel" i18n>lending</div>
+            <div class="card-value">
+                {{lendingIssuance.lendingamount | tokenValue:lendingToken.tokenAddress | number: '1.0-4'}} 
+                <span class="card-value-uint">{{lendingToken.tokenSymbol}}</span>
+            </div>
         </div>
-        <div class="content-container">
-            <div class="content-label" i18n>Collateral</div>
-            <div class="content-sublabel" i18n>required</div>
-            <div class="content-value">{{ collateralValue | tokenValue:collateralToken | number: '1.0-4' }} {{collateralToken}}</div>
-            <div class="content-sublabel" i18n>ratio</div>
-            <div class="content-value">{{ issuance.collateralRatio / 100 }} %</div>
+        <div class="col-xs-4 content-container">
+            <div class="card-label" i18n>Collateral</div>
+            <div class="card-sublabel" i18n>required</div>
+            <div class="card-value">
+                {{ collateralValue | tokenValue:collateralToken.tokenAddress | number: '1.0-4' }} 
+                <span class="card-value-uint">{{collateralToken.tokenSymbol}}</span>
+            </div>
+            <div class="card-sublabel" i18n>ratio</div>
+            <div class="card-value">{{ lendingIssuance.collateralratio / 100 }} 
+                <span class="card-value-uint">%</span>
+            </div>
         </div>
-        <div class="content-container">
-            <div class="content-label" i18n>Interest</div>
-            <div class="content-sublabel" i18n>per day</div>
-            <div class="content-value">{{ (issuance.lendingAmount * issuance.interestRate / 1000000) | tokenValue:lendingToken | number: '1.0-6' }} {{lendingToken}}</div>
-            <div class="content-sublabel" i18n>total</div>
-            <div class="content-value">{{ (issuance.lendingAmount * issuance.interestRate * issuance.tenorDays / 1000000) | tokenValue:lendingToken | number: '1.0-4' }} {{lendingToken}}</div>
+        <div class="col-xs-4 content-container">
+            <div class="card-label" i18n>Interest</div>
+            <div class="card-sublabel" i18n>per day</div>
+            <div class="card-value">
+                {{ lendingService.getPerDayInterest(lendingIssuance) | tokenValue:lendingToken.tokenAddress | number: '1.0-6' }} 
+                <span class="card-value-uint">{{lendingToken.tokenSymbol}}</span>
+            </div>
+            <div class="card-sublabel" i18n>total</div>
+            <div class="card-value">
+                {{ (lendingIssuance.interestamount) | tokenValue:lendingToken.tokenAddress | number: '1.0-4' }} 
+                <span class="card-value-uint">{{lendingToken.tokenSymbol}}</span>
+            </div>
         </div>
     </div>
     <div class="issuance-card-more-content"  *ngIf="showState == 'more'">
         <div class="more-content-title">{{currencyService.currency}} <span i18n>Value</span></div>
         <div class="more-content-container">
-            <div class="content-container">
-                <div class="content-sublabel" i18n>lending</div>
-                <div class="content-value">{{currencyService.getCurrencySymbol()}} {{ convertedLendingValue | async | number: '1.0-4' }}</div>
+            <div class="col-xs-4 content-container">
+                <div class="card-sublabel" i18n>lending</div>
+                <div class="card-value">
+                    <span class="card-value-uint">{{currencyService.getCurrencySymbol()}} </span>
+                    {{ convertedLendingValue | async | number: '1.0-4' }}
+                </div>
             </div>
-            <div class="content-container">
-                <div class="content-sublabel" i18n>required</div>
-                <div class="content-value">{{currencyService.getCurrencySymbol()}} {{ convertedCollateralValue | async | number: '1.0-2' }}</div>
-                <div class="content-sublabel" i18n>ratio</div>
-                <div class="content-value">{{ issuance.collateralRatio / 100 }} %</div>
+            <div class="col-xs-4 content-container">
+                <div class="card-sublabel" i18n>required</div>
+                <div class="card-value">
+                    <span class="card-value-uint">{{currencyService.getCurrencySymbol()}} </span>
+                    {{ convertedCollateralValue | async | number: '1.0-2' }}
+                </div>
+                <div class="card-sublabel" i18n>ratio</div>
+                <div class="card-value">{{ lendingIssuance.collateralratio / 100 }} 
+                    <span class="card-value-uint">%</span>
+                </div>
             </div>
-            <div class="content-container">
-                <div class="content-sublabel" i18n>per day</div>
-                <div class="content-value">{{currencyService.getCurrencySymbol()}} {{ convertedPerDayInterestValue | async | number: '1.0-2' }}</div>
-                <div class="content-sublabel" i18n>total</div>
-                <div class="content-value">{{currencyService.getCurrencySymbol()}} {{ convertedTotalInterestValue | async | number: '1.0-2' }}</div>
+            <div class="col-xs-4 content-container">
+                <div class="card-sublabel" i18n>per day</div>
+                <div class="card-value">
+                    <span class="card-value-uint">{{currencyService.getCurrencySymbol()}} </span>
+                    {{ convertedPerDayInterestValue | async | number: '1.0-2' }}
+                </div>
+                <div class="card-sublabel" i18n>total</div>
+                <div class="card-value">
+                    <span class="card-value-uint">{{currencyService.getCurrencySymbol()}} </span>
+                    {{ convertedTotalInterestValue | async | number: '1.0-2' }}
+                </div>
             </div>
         </div>
     </div>
     <div class="issuance-card-actions">
         <button mat-button color="secondary" class="issuance-action-button" (click)="showState = showState == 'more' ? 'less' : 'more'" i18n>{showState, select, less{Expand} more{Hide}}</button>
         <a mat-raised-button color="primary" class="issuance-action-button engage-button" 
-            [routerLink]="['/', language, 'instrument', 'lending', 'positions', issuance.issuanceId]"
-            *ngIf="issuance.state == 2 && issuance.getUserRole(currentAccount) != 'maker'" i18n>
+            [routerLink]="['/', language, 'instrument', 'lending', 'positions', issuance.issuanceid]"
+            *ngIf="offerState == 'Engageable' && role != 'maker'" i18n>
             Engage
         </a>
         <a mat-stroked-button color="primary" class="issuance-action-button close-button" 
-            [routerLink]="['/', language, 'instrument', 'lending', 'positions', issuance.issuanceId]"
-            *ngIf="issuance.state == 2 && issuance.getUserRole(currentAccount) == 'maker'" i18n>
+            [routerLink]="['/', language, 'instrument', 'lending', 'positions', issuance.issuanceid]"
+            *ngIf="offerState == 'Engageable' && role == 'maker'" i18n>
             Close Position
         </a>
         <a mat-raised-button color="primary" class="issuance-action-button engage-button" 
-            [routerLink]="['/', language, 'instrument', 'lending', 'positions', issuance.issuanceId]"
-            *ngIf="issuance.state == 3 && issuance.getUserRole(currentAccount) == 'taker'" i18n>
+            [routerLink]="['/', language, 'instrument', 'lending', 'positions', issuance.issuanceid]"
+            *ngIf="offerState == 'Engaged' && role == 'taker'" i18n>
             Repay
         </a>
         <a mat-stroked-button color="primary" class="issuance-action-button close-button" 
             [routerLink]="['/', language, 'instrument', 'lending', 'positions', issuance.issuanceId]"
-            *ngIf="issuance.state != 2 && !(issuance.state == 3 && issuance.getUserRole(currentAccount) == 'taker')" i18n>
+            *ngIf="offerState != 'Engageable' && !(offerState == 'Engaged' && role == 'taker')" i18n>
             View Position
         </a>
     </div>

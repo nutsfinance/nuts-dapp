@@ -55,6 +55,8 @@ import { TokenImageComponent } from './common/token/token-image/token-image.comp
 import { NotificationSnackbarComponent } from './notification/notification-snackbar/notification-snackbar.component';
 import { IncorrectNetworkDialog } from './common/incorrect-network-dialog/incorrect-network-dialog.component';
 import { DisconnectedDialog } from './common/disconnected-dialog/disconnected-dialog.component';
+import { InstrumentCardHeaderComponent } from './instrument/common/instrument-card-header/instrument-card-header.component';
+import { InstrumentDetailHeaderComponent } from './instrument/common/instrument-detail-header/instrument-detail-header.component';
 
 
 @NgModule({
@@ -109,6 +111,8 @@ import { DisconnectedDialog } from './common/disconnected-dialog/disconnected-di
     SwapCardComponent,
     SwapDetailComponent,
     TokenImageComponent,
+    InstrumentCardHeaderComponent,
+    InstrumentDetailHeaderComponent,
   ],
   entryComponents: [
     CurrencySelectSheetComponent,

@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { InstrumentService } from '../instrument.service';
 import { IssuanceModel } from '../issuance.model';
-import { Subject } from 'rxjs';
+import { Subject, Observable, of } from 'rxjs';
 import { NutsPlatformService, LENDING_NAME } from 'src/app/common/web3/nuts-platform.service';
 import { NotificationService } from 'src/app/notification/notification.service';
 import { TokenService } from 'src/app/common/token/token.service';
@@ -12,6 +12,7 @@ import { TokenModel } from 'src/app/common/token/token.model';
 import { TransactionType, NotificationRole, TransactionModel } from 'src/app/notification/transaction.model';
 import { LendingIssuanceModel } from './lending-issuance.model';
 import { PriceOracleService } from 'src/app/common/web3/price-oracle.service';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -46,22 +47,30 @@ export class LendingService extends InstrumentService {
         let count = 0;
         let intervalId = setInterval(() => {
             this.getIssuances(instrumentId).subscribe(lendingIssuances => {
+                if (isEqual(lendingIssuances, this.lendingIssuances))   return;
                 // Update the lending issuance list if there is a change
-                if (!isEqual(lendingIssuances, this.lendingIssuances)) {
-                    console.log('Lending issuance list updated.');
-                    this.lendingIssuances = lendingIssuances;
-                    this.lendingIssuancesUpdated.next(this.lendingIssuances);
-                    this.lendingIssuanceMap = {};
-                    for (const issuance of lendingIssuances) {
-                        this.lendingIssuanceMap[issuance.issuanceid] = issuance;
-                    }
-
-                    // We could stop prematurally once we get an update!
-                    clearInterval(intervalId);
-                }
+                this.updateLendingIssuance(lendingIssuances);
+                // We could stop prematurally once we get an update!
+                clearInterval(intervalId);
             });
             if (++count >= times) clearInterval(intervalId);
         }, interval);
+    }
+
+    public getLendingIssuances(): Observable<IssuanceModel[]> {
+        if (this.lendingIssuances.length > 0) return of(this.lendingIssuances);
+        const instrumentId = this.nutsPlatformService.getInstrumentId(LENDING_NAME);
+        return this.getIssuances(instrumentId).pipe(tap(lendingIssuances => this.updateLendingIssuance(lendingIssuances)));
+    }
+
+    private updateLendingIssuance(lendingIssuances: IssuanceModel[]) {
+        console.log('Lending issuance list updated.');
+        this.lendingIssuances = lendingIssuances;
+        this.lendingIssuancesUpdated.next(this.lendingIssuances);
+        this.lendingIssuanceMap = {};
+        for (const issuance of lendingIssuances) {
+            this.lendingIssuanceMap[issuance.issuanceid] = issuance;
+        }
     }
 
     public getLendingIssuance(issuanceId): IssuanceModel {

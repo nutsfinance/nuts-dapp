@@ -23,6 +23,7 @@ import { CanActivateInstrument } from './instrument/instrument-routing-guard.ser
 import { BorrowingDetailComponent } from './instrument/borrowing/borrowing-detail/borrowing-detail.component';
 import { SwapDetailComponent } from './instrument/swap/swap-detail/swap-detail.component';
 import { TokenResolver } from './common/token/token.resolver';
+import { LendingResolver } from './instrument/lending/lending.resolver';
 
 const language = environment.language;
 
@@ -38,7 +39,7 @@ const routes: Routes = [
       {
         path: 'lending', component: LendingComponent,
         canActivateChild: [ CanActivateInstrument ],
-        resolve: { tokens: TokenResolver },
+        resolve: { tokens: TokenResolver, lendingIssuances: LendingResolver },
         children: [
           { path: '', redirectTo: 'account', pathMatch: 'full' },
           { path: 'account', component: AccountComponent, data: { instrument: 'lending' } },

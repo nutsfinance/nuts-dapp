@@ -2,10 +2,11 @@ import { NutsPlatformService } from '../common/web3/nuts-platform.service';
 import { NotificationService } from 'src/app/notification/notification.service';
 import { TokenService } from '../common/token/token.service';
 import { HttpClient } from '@angular/common/http';
-import { IssuanceModel, IssuanceState, EngagementState, UserRole } from './issuance.model';
+import { IssuanceModel, IssuanceState, EngagementState, UserRole, OfferState } from './issuance.model';
 import { TransactionModel, TransactionType, NotificationRole } from '../notification/transaction.model';
 import { TokenModel } from '../common/token/token.model';
 import { PriceOracleService } from '../common/web3/price-oracle.service';
+import { Injectable } from '@angular/core';
 
 const CANCEL_ISSUANCE_EVENT = "cancel_issuance";
 const REPAY_ISSUANCE_EVENT = "repay_full";
@@ -13,6 +14,9 @@ const REPAY_ISSUANCE_EVENT = "repay_full";
 /**
  * Base class for instrument services.
  */
+@Injectable({
+    providedIn: 'root'
+})
 export class InstrumentService {
   constructor(protected nutsPlatformService: NutsPlatformService, protected notificationService: NotificationService,
     protected priceOracleService: PriceOracleService, protected tokenService: TokenService, protected http: HttpClient) { }
@@ -23,6 +27,19 @@ export class InstrumentService {
     if (issuance.engagements.length > 0 && issuance.engagements[0].takeraddress.toLowerCase() === currentAccount)
       return UserRole.Taker;
     return UserRole.Other;
+  }
+
+  public getOfferState(issuance: IssuanceModel): OfferState {
+    switch (issuance.issuancestate) {
+      case IssuanceState.Engageable:
+        return OfferState.Engageable;
+      case IssuanceState.Cancelled:
+        return OfferState.Cancelled;
+      default:
+        if (issuance.engagements.length === 0)  return OfferState.Expired;
+        const engagement = issuance.engagements[0];
+        return engagement.engagementstate === EngagementState.Active ? OfferState.Engaged : OfferState.Complete;
+    }
   }
 
   /**

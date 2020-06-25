@@ -1,0 +1,85 @@
+.issuance-title {
+    display: inline-block;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.offer-state {
+    color: white;
+    height: 30px;
+    font-weight: 600;
+    font-size: 13px;
+
+    text-align: left;
+    transform: translateX(-100%);
+    border-radius: .28571429rem 0 0 .28571429rem;
+    left: calc(100% + 1.6rem + 1.55em);
+    width: 100px;
+    padding-left: 16px;
+    padding-right: 30px;
+    margin-right: -1.2em;
+    position: relative;
+    margin: 0;
+    display: inline-block;
+    line-height: 1;
+    vertical-align: baseline;
+    background-image: none;
+    padding: .5833em .833em;
+    border: 0 solid transparent;
+    transition: background .1s ease;
+    white-space: nowrap;
+}
+
+.offer-state::after {
+    left: auto;
+    right: 0;
+    border-style: solid;
+    border-width: 1.2em 1.2em 0 0;
+    border-color: transparent;
+    border-top-color: inherit;
+    position: absolute;
+    content: '';
+    top: 100%;
+    background-color: transparent!important;
+    width: 0;
+    height: 0;
+}
+
+.offer-state.engageable,
+.offer-state.engaged {
+    background-color: #82C24C;
+    border-color: #68993d;
+}
+
+.offer-state.expired,
+.offer-state.cancelled,
+.offer-state.complete {
+    background-color: #4D82C3;
+    border-color: #335987;
+}
+
+.subtitle-container-group {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.subtitle-container {
+    display: flex;
+    margin-right: 20px;
+    font-size: 12px;
+    align-items: center;
+}
+
+.subtitle-icon {
+    display: flex;
+    flex-direction: column;
+    color: rgba(155, 154, 155, 1.0);
+    font-size: 10.0px;
+    margin-right: 7px;
+    align-items: center;
+}
+
+.subtitle-icon-image {
+    width: 12px;
+    height: 12px;
+}

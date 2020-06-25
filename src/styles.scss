@@ -52,3 +52,23 @@ $custom-typography: mat-typography-config(
   font-size: 25px !important;
   line-height: 25px !important;
 }
+
+.card-label {
+  font-size: 13px;
+  margin-bottom: 5px;
+}
+
+.card-sublabel {
+  color: rgba(155, 154, 155, 1.0);
+  font-size: 12px;
+}
+
+.card-value {
+  font-family: "GillSans", Helvetica, Arial, serif;
+  font-size: 13px;
+  margin-bottom: 3px;
+}
+
+.card-value-uint {
+  color: rgba(0, 0, 0, 0.50);
+}

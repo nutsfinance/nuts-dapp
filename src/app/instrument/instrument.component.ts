@@ -9,6 +9,8 @@ import { environment } from '../../environments/environment';
 import { NotificationService } from '../notification/notification.service';
 import { NotificationReadStatus, NotificationModel } from '../notification/notification.model';
 import { NotificationDialog } from '../notification/notification-dialog/notification-dialog.component';
+import { LendingService } from './lending/lending.service';
+import { BorrowingService } from './borrowing/borrowing.service';
 
 @Component({
   selector: 'app-instrument',

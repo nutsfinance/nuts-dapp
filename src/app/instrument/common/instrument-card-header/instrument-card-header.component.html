@@ -1,0 +1,41 @@
+<div class="row">
+    <div class="col-xs-7">
+        <span class="issuance-title" i18n>Issuance ID: {{issuanceId}}</span>
+    </div>
+    <div class="col-xs-5">
+        <span [ngSwitch]="instrumentService.getOfferState(issuance)">
+            <a class="offer-state engageable" *ngSwitchCase="'Engageable'" i18n>Engageable</a>
+            <a class="offer-state engaged" *ngSwitchCase="'Engaged'" i18n>Engaged</a>
+            <a class="offer-state cancelled" *ngSwitchCase="'Cancelled'" i18n>Cancelled</a>
+            <a class="offer-state expired" *ngSwitchCase="'Expired'" i18n>Expired</a>
+            <a class="offer-state complete" *ngSwitchCase="'Complete'" i18n>Complete</a>
+        </span>
+    </div>
+</div>
+<div class="row">
+    <div class="subtitle-container-group col-xs-12">
+        <div class="subtitle-container" *ngIf="role != 'other'">
+            <div class="subtitle-icon">
+                <img src="../../../../assets/images/role.png" alt="role" class="subtitle-icon-image">
+                <span i18n>role</span>
+            </div>
+            <span i18n>{role, select, maker{maker} taker{taker}}</span>
+        </div>
+    
+        <div class="subtitle-container">
+            <div class="subtitle-icon">
+                <img src="../../../../assets/images/calendar.png" alt="expiry" class="subtitle-icon-image">
+                <span i18n>expiry</span>
+            </div>
+            {{(issuance.engagements.length == 0 ? issuance.issuanceduetimestamp * 1000 : issuance.engagements[0].engagementduetimestamp * 1000) | date: 'MM-dd-yyyy'}}
+        </div>
+    
+        <div class="subtitle-container" *ngIf="tenor">
+            <div class="subtitle-icon">
+                <img src="../../../../assets/images/clock.png" alt="tenor" class="subtitle-icon-image">
+                <span i18n>tenor</span>
+            </div>
+            {{tenor}} <span i18n> days</span>
+        </div>
+    </div>
+</div>

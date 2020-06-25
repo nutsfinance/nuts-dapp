@@ -8,7 +8,7 @@ import { CurrencyService } from 'src/app/common/currency-select/currency.service
 import { MatDialog } from '@angular/material';
 import { TransactionInitiatedDialog } from 'src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component';
 import { TokenModel } from 'src/app/common/token/token.model';
-import { IssuanceModel } from '../../issuance.model';
+import { IssuanceModel, UserRole, OfferState } from '../../issuance.model';
 import { LendingIssuanceModel } from '../lending-issuance.model';
 import { LendingService } from '../lending.service';
 import { AccountService } from 'src/app/account/account.service';
@@ -22,6 +22,9 @@ import { TokenService } from 'src/app/common/token/token.service';
 export class LendingDetailComponent implements OnInit, OnDestroy {
   public issuance: IssuanceModel;
   public lendingIssuance: LendingIssuanceModel;
+  public userRole: UserRole;
+  public offerState: OfferState;
+
   public lendingToken: TokenModel;
   public collateralToken: TokenModel;
   public lendingTokenBalance = '0';
@@ -51,10 +54,10 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
       this.updateLendingIssuance(+params['id']);
     });
     this.accountUpdatedSubscription = this.nutsPlatformService.currentAccountSubject.subscribe(account => {
-      this.updateLendingIssuance(this.issuance.issuanceid);
+      this.updateLendingIssuance(this.route.snapshot.params['id']);
     });
     this.lendingUpdatedSubscription = this.lendingService.lendingIssuancesUpdated.subscribe(_ => {
-      this.updateLendingIssuance(this.issuance.issuanceid);
+      this.updateLendingIssuance(this.route.snapshot.params['id']);
     });
     this.currencyUpdatedSubscription = this.currencyService.currencyUpdatedSubject.subscribe(_ => {
       this.updateConvertedValue();
@@ -158,14 +161,18 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
       this.issuance = this.lendingService.getLendingIssuance(issuanceId);
       if (this.issuance) {
         this.lendingIssuance = this.issuance.issuancecustomproperty as LendingIssuanceModel;
+        this.userRole = this.lendingService.getUserRole(this.issuance);
+        this.offerState = this.lendingService.getOfferState(this.issuance);
+
         // Compute issuance token values
         this.lendingToken = this.tokenService.getTokenByAddress(this.lendingIssuance.lendingtokenaddress);
         this.collateralToken = this.tokenService.getTokenByAddress(this.lendingIssuance.collateraltokenaddress);
         // If the collateral value is not set
-        if (this.lendingIssuance.collateralamount === '0') {
+        if (!this.lendingIssuance.collateralamount || this.lendingIssuance.collateralamount === '0') {
           this.lendingService.getLendingCollateralValue(this.lendingIssuance).then(value => {
             this.collateralValue = value;
             this.collateralSufficient = new BN(this.collateralTokenBalance).gte(new BN(this.collateralValue));
+            this.convertedCollateralValue = this.priceOracleService.getConvertedCurrencyValue(this.collateralToken, this.collateralValue);
           });
         } else {
           this.collateralValue = this.lendingIssuance.collateralamount;

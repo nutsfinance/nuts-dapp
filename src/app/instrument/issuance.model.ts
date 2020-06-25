@@ -4,6 +4,14 @@ export enum UserRole {
     Other = 'other',
 }
 
+export enum OfferState {
+    Engageable = 'Engageable',
+    Engaged = 'Engaged',
+    Cancelled = 'Cancelled',
+    Expired = 'Expired',
+    Complete = 'Complete',
+}
+
 export enum IssuanceState {
     Unknown = 0,
     Initiated = 1,
