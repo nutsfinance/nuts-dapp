@@ -32,10 +32,15 @@ export class BorrowingCreateComponent implements OnInit {
   public interestValue = '0';
 
   constructor(private nutsPlatformService: NutsPlatformService, private borrowingService: BorrowingService,
-    private priceOracleSercvice: PriceOracleService, private accountService: AccountService,
-    private tokenService: TokenService, private zone: NgZone, private dialog: MatDialog) { }
+    private accountService: AccountService, private tokenService: TokenService, private zone: NgZone,
+    private dialog: MatDialog) { }
 
   ngOnInit() {
+    this.tokens = this.tokenService.tokens.filter(token => token.supportsTransaction);
+    this.principalToken = this.tokens[0];
+    this.collateralTokenList = this.tokens.slice(1);
+    this.collateralToken = this.tokens[1];
+
     this.createFormGroup = new FormGroup({
       'principalAmount': new FormControl('', this.validPrincipalAmount.bind(this)),
       'tenor': new FormControl('', this.validTenor),
@@ -45,11 +50,14 @@ export class BorrowingCreateComponent implements OnInit {
     this.createFormGroup.valueChanges.subscribe(_ => {
       this.principalValue = this.tokenService.getActualValue(this.principalToken.tokenAddress, this.createFormGroup.value['principalAmount']);
       this.borrowingService.getCollateralValue(this.principalToken, this.collateralToken, this.principalValue,
-        this.createFormGroup.value['collateralRatio']).then(value => {
+        +this.createFormGroup.value['collateralRatio'] / 100).then(value => {
           this.collateralValue = value;
+          const BN = this.nutsPlatformService.web3.utils.BN;
+          const collateralSufficient = new BN(value).lte(new BN(this.collateralTokenBalance));
+          this.createFormGroup.setErrors(collateralSufficient ? null : {insufficientCollateralBalance: true});
         });
-      this.interestValue = this.borrowingService.getInterestValue(this.principalValue, this.createFormGroup.value['interestRate'],
-        this.createFormGroup.value['tenor']);
+      this.interestValue = this.borrowingService.getInterestValue(this.principalValue,
+        +this.createFormGroup.value['interestRate'] / 100, this.createFormGroup.value['tenor']);
     });
   }
 
@@ -58,7 +66,7 @@ export class BorrowingCreateComponent implements OnInit {
     this.principalToken = this.tokenService.getTokenByAddress(tokenAddress);
     this.createFormGroup.controls['principalAmount'].reset();
     // Update collateral tokens
-    this.collateralTokenList = this.tokens.filter(token => token.tokenAddress !== tokenAddress)
+    this.collateralTokenList = this.tokens.filter(token => token.tokenAddress !== tokenAddress);
     this.collateralToken = this.collateralTokenList[0];
   }
 
@@ -81,12 +89,14 @@ export class BorrowingCreateComponent implements OnInit {
   }
 
   async createBorrowingIssuance() {
-    if (!this.createFormGroup.valid || this.collateralTokenBalance < this.collateralValue) {
+    console.log(this.createFormGroup);
+    if (!this.createFormGroup.valid) {
       return;
     }
-    this.borrowingService.createBorrowingIssuance(this.principalToken, this.principalValue,
-      this.collateralToken, this.createFormGroup.value['collateralRatio'], this.createFormGroup.value['tenor'],
-      this.createFormGroup.value['interestRate'])
+    this.borrowingService.createBorrowingIssuance(this.principalToken, this.principalValue, this.collateralToken,
+      +this.createFormGroup.value['collateralRatio'] / 100,
+      +this.createFormGroup.value['tenor'],
+      +this.createFormGroup.value['interestRate'] / 100)
       .on('transactionHash', transactionHash => {
         // Show Transaction Initiated dialog
         this.zone.run(() => {
@@ -94,7 +104,8 @@ export class BorrowingCreateComponent implements OnInit {
           const transactionInitiatedDialog = this.dialog.open(TransactionInitiatedDialog, {
             width: '90%',
             data: {
-              type: 'create_issuance', instrument: BORROWING_NAME, tokenAmount: this.principalValue, tokenName: this.principalToken.tokenSymbol,
+              type: 'create_issuance', instrument: BORROWING_NAME,
+              tokenAmount: this.principalValue, tokenName: this.principalToken.tokenSymbol,
             },
           });
           transactionInitiatedDialog.afterClosed().subscribe(() => {

@@ -42,9 +42,6 @@
           <div *ngIf="createFormGroup.controls['principalAmount'].errors.nonPositiveAmount" i18n>
             The amount must be positive number.
           </div>
-          <div *ngIf="createFormGroup.controls['principalAmount'].errors.nonIntegerAmount" i18n>
-            The amount must be integer.
-          </div>
         </div>
         <div class="balance-content">
           <span i18n>Lending A/C Balance: </span>

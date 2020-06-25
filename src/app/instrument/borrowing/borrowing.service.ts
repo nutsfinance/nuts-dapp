@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { InstrumentService } from '../instrument.service';
 import { IssuanceModel } from '../issuance.model';
-import { Subject } from 'rxjs';
+import { Subject, Observable, of } from 'rxjs';
 import { NutsPlatformService, BORROWING_NAME } from 'src/app/common/web3/nuts-platform.service';
 import { NotificationService } from 'src/app/notification/notification.service';
 import { TokenService } from 'src/app/common/token/token.service';
@@ -12,6 +12,7 @@ import { TokenModel } from 'src/app/common/token/token.model';
 import { TransactionType, NotificationRole, TransactionModel } from 'src/app/notification/transaction.model';
 import { BorrowingIssuanceModel } from './borrowing-issuance.model';
 import { PriceOracleService } from 'src/app/common/web3/price-oracle.service';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -46,22 +47,29 @@ export class BorrowingService extends InstrumentService {
         let count = 0;
         let intervalId = setInterval(() => {
             this.getIssuances(instrumentId).subscribe(borrowingIssuances => {
-                // Update the borrowing issuance list if there is a change
-                if (!isEqual(borrowingIssuances, this.borrowingIssuances)) {
-                    console.log('Borrowing issuance list updated.');
-                    this.borrowingIssuances = borrowingIssuances;
+                if (isEqual(borrowingIssuances, this.borrowingIssuances))   return;
+                this.updateBorrowingIssuance(borrowingIssuances);
+                // We could stop prematurally once we get an update!
+                clearInterval(intervalId);
+            });
+            if (++count >= times) clearInterval(intervalId);
+        }, interval);
+    }
+
+    public getBorrowingIssuances(): Observable<IssuanceModel[]> {
+        if (this.borrowingIssuances.length > 0) return of(this.borrowingIssuances);
+        const instrumentId = this.nutsPlatformService.getInstrumentId(BORROWING_NAME);
+        return this.getIssuances(instrumentId).pipe(tap(borrowingIssuances => this.updateBorrowingIssuance(borrowingIssuances)));
+    }
+
+    private updateBorrowingIssuance(borrowingIssuances: IssuanceModel[]) {
+        console.log('Borrowing issuance list updated.');
+        this.borrowingIssuances = borrowingIssuances;
                     this.borrowingIssuancesUpdated.next(this.borrowingIssuances);
                     this.borrowingIssuanceMap = {};
                     for (const issuance of borrowingIssuances) {
                         this.borrowingIssuanceMap[issuance.issuanceid] = issuance;
                     }
-
-                    // We could stop prematurally once we get an update!
-                    clearInterval(intervalId);
-                }
-            });
-            if (++count >= times) clearInterval(intervalId);
-        }, interval);
     }
 
     public getBorrowingIssuance(issuanceId): IssuanceModel {
@@ -72,8 +80,10 @@ export class BorrowingService extends InstrumentService {
         collateralRatio: number, tenor: number, interestRate: number) {
 
         const issuanceDuration = 14 * 24 * 3600;   // Hard-coded 14 days duration
+        const collateralRatioValue = '' + Math.floor(collateralRatio * 10000);   // Collateral ratio has 4 decimals
+        const interestRateValue = '' + Math.floor(interestRate * 1000000);  // Interest rate has 6 decimals
         const makerData = this.nutsPlatformService.web3.eth.abi.encodeParameters(['uint256', 'address', 'address', 'uint256', 'uint256', 'uint256', 'uint256'],
-            [issuanceDuration, principalToken.tokenAddress, collateralToken.tokenAddress, principalAmount, tenor, collateralRatio, interestRate]);
+            [issuanceDuration, principalToken.tokenAddress, collateralToken.tokenAddress, principalAmount, tenor, collateralRatioValue, interestRateValue]);
 
         const instrumentManagerContract = this.nutsPlatformService.getInstrumentManagerContract(BORROWING_NAME);
         return instrumentManagerContract.methods.createIssuance(makerData).send({ from: this.nutsPlatformService.currentAccount, gas: 6721975 })

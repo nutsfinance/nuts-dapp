@@ -24,7 +24,7 @@
         <mat-form-field appearance="outline" class="amount-input">
           <input matInput type="number" placeholder="Enter Amount" formControlName="principalAmount" i18n-placeholder>
         </mat-form-field>
-        <app-token-select [selectedToken]="principalToken" (tokenSelected)="onPrincipalTokenSelected($event)">
+        <app-token-select [selectedToken]="principalToken" [includedTokens]="tokens" (tokenSelected)="onPrincipalTokenSelected($event)">
         </app-token-select>
       </div>
     </div>
@@ -37,9 +37,6 @@
           </div>
           <div *ngIf="createFormGroup.controls['principalAmount'].errors.nonPositiveAmount" i18n>
             The amount must be positive number.
-          </div>
-          <div *ngIf="createFormGroup.controls['principalAmount'].errors.nonIntegerAmount" i18n>
-            The amount must be integer.
           </div>
         </div>
       </div>
@@ -148,18 +145,18 @@
     <div class="row">
       <div class="col-xs-12">
         <span class="balance-content" i18n>
-          Projected collateral cost: {{ collateralValue | tokenValue:collateralToken | number: '1.0-4' }} {{collateralToken}}
+          Projected collateral cost: {{ collateralValue | tokenValue:collateralToken.tokenAddress | number: '1.0-4' }} {{collateralToken.tokenSymbol}}
         </span>
         <div class="balance-content">
-          <span i18n>Borrowing A/C Balance:</span>
+          <span i18n>Borrowing A/C Balance: </span>
           <app-account-balance [instrument]="'borrowing'" [tokenAddress]="collateralToken.tokenAddress"
             (balanceUpdated)="collateralTokenBalance = $event">
           </app-account-balance>
-          {{collateralToken}}
+          {{collateralToken.tokenSymbol}}
         </div>
-        <div class="error-content" *ngIf="collateralTokenBalance < collateralValue">
+        <div class="error-content" *ngIf="createFormGroup.errors && createFormGroup.errors.insufficientCollateralBalance">
           <span i18n>Insufficient balance.</span>
-          <a class="deposit-button" routerLink="../account" [queryParams]="{ token: collateralToken}" i18n>Deposit</a>
+          <a class="deposit-button" routerLink="../account" [queryParams]="{ tokenAddress: collateralToken.tokenAddress}" i18n>Deposit</a>
         </div>
       </div>
     </div>
@@ -219,7 +216,7 @@
     <div class="row">
       <div class="col-xs-12">
         <span class="balance-content">
-          <span i18n>Projected interest cost:</span> {{interestValue}} {{principalToken}}
+          Projected interest cost: {{ interestValue | tokenValue:principalToken.tokenAddress | number: '1.0-4' }} {{principalToken.tokenSymbol}}
         </span>
       </div>
     </div>
@@ -228,7 +225,7 @@
       <div class="col-xs-12">
         <div class="create-button-wrapper">
           <button mat-raised-button color="primary"
-            [ngClass]="{'create-button': true, 'valid': createFormGroup.valid && collateralTokenBalance >= collateralValue}" i18n>Create</button>
+            [ngClass]="{'create-button': true, 'valid': createFormGroup.valid}" i18n>Create</button>
         </div>
       </div>
     </div>
