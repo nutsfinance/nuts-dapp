@@ -89,7 +89,6 @@ export class BorrowingCreateComponent implements OnInit {
   }
 
   async createBorrowingIssuance() {
-    console.log(this.createFormGroup);
     if (!this.createFormGroup.valid) {
       return;
     }
@@ -105,7 +104,7 @@ export class BorrowingCreateComponent implements OnInit {
             width: '90%',
             data: {
               type: 'create_issuance', instrument: BORROWING_NAME,
-              tokenAmount: this.principalValue, tokenName: this.principalToken.tokenSymbol,
+              tokenAmount: this.principalValue, token: this.principalToken,
             },
           });
           transactionInitiatedDialog.afterClosed().subscribe(() => {

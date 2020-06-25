@@ -99,7 +99,7 @@ export class LendingCreateComponent implements OnInit {
             width: '90%',
             data: {
               type: 'create_issuance', instrument: LENDING_NAME,
-              tokenAmount: this.principalValue, tokenName: this.principalToken.tokenSymbol,
+              tokenAmount: this.principalValue, token: this.principalToken,
             },
           });
           transactionInitiatedDialog.afterClosed().subscribe(() => {
