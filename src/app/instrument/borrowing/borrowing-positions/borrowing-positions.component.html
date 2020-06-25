@@ -35,6 +35,6 @@
     </div>
   </div>
   
-  <app-borrowing-card *ngFor="let issuance of issuances" [issuance]="issuance"></app-borrowing-card>
+  <app-borrowing-card *ngFor="let issuance of issuances" [issuance]="issuance" [id]="'position-' + issuance.issuanceid"></app-borrowing-card>
   
   

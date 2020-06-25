@@ -40,5 +40,5 @@
   </div>
 </div>
 
-<app-lending-card *ngFor="let issuance of issuances" [issuance]="issuance"></app-lending-card>
+<app-lending-card *ngFor="let issuance of issuances" [issuance]="issuance" [id]="'position-' + issuance.issuanceid"></app-lending-card>
 

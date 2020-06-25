@@ -181,6 +181,7 @@ export class NotificationService {
    * @param notification 
    */
   handleNotificationAction(notification: NotificationModel) {
+    console.log(notification);
     // Mark notification as READ
     notification.readStatus = NotificationReadStatus.READ;
     this.updateNotification(notification);
@@ -199,8 +200,10 @@ export class NotificationService {
         break;
       // Expiration should redirect to my positions
       case NotificationCategory.EXPIRATION:
+      case NotificationCategory.DUE:
+      case NotificationCategory.ASSETS:
         this.router.navigate([`/${language}/instrument/${instrumentName}/positions`],
-          { fragment: `ipo-${notification.metadata['ipoSubscriptionId']}` });
+          { fragment: `position-${notification.issuanceId}` });
         break;
       // Transaction confirmed should redirect based on transaction type
       case NotificationCategory.TRANSACTION_CONFIRMED:
@@ -229,9 +232,9 @@ export class NotificationService {
         this.router.navigate([`/${language}/instrument/${instrumentName}/account`],
           { queryParams: { panel: 'transactions' } });
         break;
-      case TransactionType.ACCEPT_OFFER:
+      default:
         this.router.navigate([`/${language}/instrument/${instrumentName}/positions`],
-          { fragment: `ipo-${notification.metadata['ipoSubscriptionId']}` });
+          { fragment: `position-${notification.issuanceId}` });
         break;
     }
   }

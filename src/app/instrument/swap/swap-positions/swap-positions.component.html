@@ -40,6 +40,6 @@
     </div>
   </div>
   
-  <app-swap-card *ngFor="let issuance of issuances" [issuance]="issuance"></app-swap-card>
+  <app-swap-card *ngFor="let issuance of issuances" [issuance]="issuance" [id]="'position-' + issuance.issuanceid"></app-swap-card>
   
   

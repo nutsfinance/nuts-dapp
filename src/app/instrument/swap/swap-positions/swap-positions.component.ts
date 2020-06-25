@@ -1,4 +1,4 @@
-import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
+import { Component, NgZone, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NutsPlatformService } from '../../../common/web3/nuts-platform.service';
 import { ActivatedRoute } from '@angular/router';
@@ -10,7 +10,7 @@ import { SwapService } from '../swap.service';
   templateUrl: './swap-positions.component.html',
   styleUrls: ['./swap-positions.component.scss']
 })
-export class SwapPositionsComponent implements OnInit, OnDestroy {
+export class SwapPositionsComponent implements OnInit, OnDestroy, AfterViewInit {
   public selectedTab = 'all';
   public issuances: IssuanceModel[] = [];
   
@@ -41,6 +41,18 @@ export class SwapPositionsComponent implements OnInit, OnDestroy {
     this.swapIssuancesUpdatedSubscription.unsubscribe();
     this.accountUpdatedSubscription.unsubscribe();
     this.routeParamSubscription.unsubscribe();
+  }
+
+  ngAfterViewInit() {
+    const fragment = this.route.snapshot.fragment;
+    try {
+      const element = document.querySelector(`#${fragment}`);
+      if (element) {
+        element.scrollIntoView();
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   selectTab(tab: string) {
