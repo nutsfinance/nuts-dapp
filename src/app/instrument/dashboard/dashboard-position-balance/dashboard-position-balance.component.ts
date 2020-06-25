@@ -10,7 +10,7 @@ import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { LendingService } from '../../lending/lending.service';
 import { BorrowingService } from '../../borrowing/borrowing.service';
 import { SwapService } from '../../swap/swap.service';
-import { UserRole, IssuanceState, EngagementState, PayableModel } from '../../issuance.model';
+import { UserRole, IssuanceState, EngagementState, PayableModel, OfferState } from '../../issuance.model';
 import { TokenService } from 'src/app/common/token/token.service';
 import { LendingIssuanceModel } from '../../lending/lending-issuance.model';
 import { BorrowingIssuanceModel } from '../../borrowing/borrowing-issuance.model';
@@ -21,7 +21,7 @@ interface Position {
   issuanceId: number,
   creationTimestamp: number,
   role: string,
-  state: string,
+  state: OfferState,
   token: string,
   amount: number,
   action: string,
@@ -50,10 +50,10 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
   private currentAccountSubscription: Subscription;
   private currencySubscription: Subscription;
 
-  constructor(private nutsPlatformService: NutsPlatformService, private lendingService: LendingService,
-    private borrowingService: BorrowingService, private swapService: SwapService,
-    private priceOracleService: PriceOracleService, public currencyService: CurrencyService,
-    private tokenService: TokenService, private zone: NgZone) { }
+  constructor(private nutsPlatformService: NutsPlatformService, private tokenService: TokenService, 
+    private lendingService: LendingService, private borrowingService: BorrowingService,
+    private swapService: SwapService, private priceOracleService: PriceOracleService,
+    public currencyService: CurrencyService, private zone: NgZone) { }
 
   ngOnInit() {
     this.updatePositions();
@@ -84,19 +84,21 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
   }
 
   private updatePositions() {
+    if (this.tokenService.tokens.length === 0)  return;
     this.zone.run(() => {
       const positions = [];
       this.lendingService.lendingIssuances.forEach(issuance => {
         // If the current user is maker and the issuance is engageable.
         const userRole = this.lendingService.getUserRole(issuance);
+        const offerState = this.lendingService.getOfferState(issuance);
         const lendingIssuance = issuance.issuancecustomproperty as LendingIssuanceModel;
-        if (userRole === UserRole.Maker && issuance.issuancestate === IssuanceState.Engageable) {
+        if (userRole === UserRole.Maker && offerState === OfferState.Engageable) {
           positions.push({
             instrument: LENDING_NAME,
             issuanceId: issuance.issuanceid,
             creationTimestamp: issuance.issuancecreationtimestamp,
             role: userRole,
-            state: issuance.issuancestate,
+            state: offerState,
             token: this.tokenService.getTokenByAddress(lendingIssuance.lendingtokenaddress),
             amount: lendingIssuance.lendingamount,
             action: 'close',
@@ -105,13 +107,13 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
         }
 
         // If the current user is taker and the issuance is engaged.
-        if (userRole === UserRole.Taker && issuance.engagements[0].engagementstate === EngagementState.Active) {
+        if (userRole === UserRole.Taker && offerState === OfferState.Engaged) {
           positions.push({
             instrument: LENDING_NAME,
             issuanceId: issuance.issuanceid,
             creationTimestamp: issuance.issuancecreationtimestamp,
             role: userRole,
-            state: issuance.issuancestate,
+            state: offerState,
             token: this.tokenService.getTokenByAddress(lendingIssuance.lendingtokenaddress),
             amount: lendingIssuance.lendingamount,
             action: 'repay',
@@ -121,16 +123,17 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
       });
 
       this.borrowingService.borrowingIssuances.forEach(issuance => {
-        const userRole = this.lendingService.getUserRole(issuance);
+        const userRole = this.borrowingService.getUserRole(issuance);
+        const offerState = this.borrowingService.getOfferState(issuance);
         const borrowingIssuance = issuance.issuancecustomproperty as BorrowingIssuanceModel;
         // If the current user is the maker and the issuance is engageable
-        if (userRole === UserRole.Maker && issuance.issuancestate === IssuanceState.Engageable) {
+        if (userRole === UserRole.Maker && offerState === OfferState.Engageable) {
           positions.push({
             instrument: BORROWING_NAME,
             issuanceId: issuance.issuanceid,
             creationTimestamp: issuance.issuancecreationtimestamp,
             role: userRole,
-            state: issuance.issuancestate,
+            state: offerState,
             token: this.tokenService.getTokenByAddress(borrowingIssuance.borrowingtokenaddress),
             amount: borrowingIssuance.borrowingamount,
             action: 'close',
@@ -139,13 +142,13 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
         }
 
         // If the current user is maker and the issuance is engaged.
-        if (userRole === UserRole.Maker && issuance.engagements[0].engagementstate === EngagementState.Active) {
+        if (userRole === UserRole.Maker && offerState === OfferState.Engaged) {
           positions.push({
             instrument: BORROWING_NAME,
             issuanceId: issuance.issuanceid,
             creationTimestamp: issuance.issuancecreationtimestamp,
             role: userRole,
-            state: issuance.issuancestate,
+            state: offerState,
             token: this.tokenService.getTokenByAddress(borrowingIssuance.borrowingtokenaddress),
             amount: borrowingIssuance.borrowingamount,
             action: 'repay',
@@ -156,15 +159,16 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
 
       this.swapService.swapIssuances.forEach(issuance => {
         const userRole = this.swapService.getUserRole(issuance);
+        const offerState = this.swapService.getOfferState(issuance);
         const swapIssuance = issuance.issuancecustomproperty as SwapIssuanceModel;
         // If the current user is maker and the issuance is engageable.
-        if (userRole === UserRole.Maker && issuance.issuancestate === IssuanceState.Engageable) {
+        if (userRole === UserRole.Maker && offerState === OfferState.Engageable) {
           positions.push({
             instrument: SWAP_NAME,
             issuanceId: issuance.issuanceid,
             creationTimestamp: issuance.issuancecreationtimestamp,
             role: userRole,
-            state: issuance.issuancestate,
+            state: offerState,
             token: this.tokenService.getTokenByAddress(swapIssuance.inputtokenaddress),
             amount: swapIssuance.inputamount,
             action: 'close',

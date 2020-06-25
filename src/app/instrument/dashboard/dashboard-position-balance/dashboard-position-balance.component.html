@@ -92,7 +92,7 @@
   <ng-container matColumnDef="amount">
     <mat-header-cell *matHeaderCellDef class="position-header position-amount" i18n> Amount </mat-header-cell>
     <mat-cell *matCellDef="let position" class="position-content position-amount">
-      {{position.amount | tokenValue:(position.token)}} {{position.token}}
+      {{position.amount | tokenValue:(position.token.tokenAddress)}} {{position.token.tokenSymbol}}
     </mat-cell>
   </ng-container>
 

@@ -42,7 +42,7 @@ export class BorrowingService extends InstrumentService {
     }
 
     public async reloadBorrowingIssuances(times: number = 1, interval: number = 1000) {
-        const instrumentId = this.nutsPlatformService.getInstrumentId(LENDING_NAME);
+        const instrumentId = this.nutsPlatformService.getInstrumentId(BORROWING_NAME);
         let count = 0;
         let intervalId = setInterval(() => {
             this.getIssuances(instrumentId).subscribe(borrowingIssuances => {
