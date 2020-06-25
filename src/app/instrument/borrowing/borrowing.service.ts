@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { InstrumentService } from '../instrument.service';
 import { IssuanceModel } from '../issuance.model';
 import { Subject } from 'rxjs';
-import { NutsPlatformService, LENDING_NAME, BORROWING_NAME } from 'src/app/common/web3/nuts-platform.service';
+import { NutsPlatformService, BORROWING_NAME } from 'src/app/common/web3/nuts-platform.service';
 import { NotificationService } from 'src/app/notification/notification.service';
 import { TokenService } from 'src/app/common/token/token.service';
 import { HttpClient } from '@angular/common/http';
@@ -75,7 +75,7 @@ export class BorrowingService extends InstrumentService {
         const makerData = this.nutsPlatformService.web3.eth.abi.encodeParameters(['uint256', 'address', 'address', 'uint256', 'uint256', 'uint256', 'uint256'],
             [issuanceDuration, principalToken.tokenAddress, collateralToken.tokenAddress, principalAmount, tenor, collateralRatio, interestRate]);
 
-        const instrumentManagerContract = this.nutsPlatformService.getInstrumentManagerContract(LENDING_NAME);
+        const instrumentManagerContract = this.nutsPlatformService.getInstrumentManagerContract(BORROWING_NAME);
         return instrumentManagerContract.methods.createIssuance(makerData).send({ from: this.nutsPlatformService.currentAccount, gas: 6721975 })
             .on('transactionHash', (transactionHash) => {
                 // Records the transaction
@@ -88,7 +88,7 @@ export class BorrowingService extends InstrumentService {
                         tenor: `${tenor}`, interestRate: `${interestRate}`,
                     }
                 );
-                this.notificationService.addTransaction(LENDING_NAME, depositTransaction).subscribe(result => {
+                this.notificationService.addTransaction(BORROWING_NAME, depositTransaction).subscribe(result => {
                     console.log(result);
                     // Note: Transaction Sent event is not sent until the transaction is recored in notification server!
                     this.nutsPlatformService.transactionSentSubject.next(transactionHash);
@@ -97,17 +97,18 @@ export class BorrowingService extends InstrumentService {
     }
 
     public engageBorrowingIssuance(issuanceId) {
-        return this.engageIssuance(LENDING_NAME, issuanceId)
+        return this.engageIssuance(BORROWING_NAME, issuanceId)
             .on('transactionHash', transactionHash => this.monitorBorrowingTransaction(transactionHash));
     }
 
     public cancelBorrowingIssuance(issuanceId) {
-        return this.cancelIssuance(LENDING_NAME, issuanceId)
+        return this.cancelIssuance(BORROWING_NAME, issuanceId)
             .on('transactionHash', transactionHash => this.monitorBorrowingTransaction(transactionHash));
     }
 
     public repayBorrowingIssuance(issuanceId: number, principalToken: TokenModel, tokenAmount: string) {
-        return this.repayIssuance(LENDING_NAME, issuanceId, principalToken, tokenAmount)
+        const engagementId = this.borrowingIssuanceMap[issuanceId].engagements[0].engagementid;
+        return this.repayIssuance(BORROWING_NAME, issuanceId, engagementId, principalToken, tokenAmount)
             .on('transactionHash', transactionHash => this.monitorBorrowingTransaction(transactionHash));
     }
 

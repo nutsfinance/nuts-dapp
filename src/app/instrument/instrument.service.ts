@@ -95,7 +95,7 @@ export class InstrumentService {
 
   protected cancelIssuance(instrumentName: string, issuanceId: number) {
     const instrumentManagerContract = this.nutsPlatformService.getInstrumentManagerContract(instrumentName);
-    return instrumentManagerContract.methods.notifyCustomEvent(issuanceId, this.nutsPlatformService.web3.utils.fromAscii(CANCEL_ISSUANCE_EVENT),
+    return instrumentManagerContract.methods.processEvent(issuanceId, 0, this.nutsPlatformService.web3.utils.fromAscii(CANCEL_ISSUANCE_EVENT),
       this.nutsPlatformService.web3.utils.fromAscii("")).send({ from: this.nutsPlatformService.currentAccount, gas: 6721975 })
       .on('transactionHash', (transactionHash) => {
         // Records the transaction
@@ -108,10 +108,9 @@ export class InstrumentService {
       });
   }
 
-  protected repayIssuance(instrumentName: string, issuanceId: number, principalToken: TokenModel, tokenAmount: string) {
+  protected repayIssuance(instrumentName: string, issuanceId: number, engagementId: number, principalToken: TokenModel, tokenAmount: string) {
     const instrumentManagerContract = this.nutsPlatformService.getInstrumentManagerContract(instrumentName);
-
-    return instrumentManagerContract.methods.notifyCustomEvent(issuanceId, this.nutsPlatformService.web3.utils.fromAscii(REPAY_ISSUANCE_EVENT),
+    return instrumentManagerContract.methods.processEvent(issuanceId, engagementId, this.nutsPlatformService.web3.utils.fromAscii(REPAY_ISSUANCE_EVENT),
       this.nutsPlatformService.web3.utils.fromAscii("")).send({ from: this.nutsPlatformService.currentAccount, gas: 6721975 })
       .on('transactionHash', (transactionHash) => {
         // Records the transaction

@@ -1,35 +1,34 @@
 [
   {
+    "anonymous": false,
     "inputs": [
       {
+        "indexed": true,
         "internalType": "uint256",
         "name": "instrumentId",
         "type": "uint256"
       },
       {
+        "indexed": true,
         "internalType": "address",
         "name": "fspAddress",
         "type": "address"
       },
       {
+        "indexed": true,
         "internalType": "address",
         "name": "instrumentAddress",
         "type": "address"
       },
       {
+        "indexed": false,
         "internalType": "address",
-        "name": "instrumentConfigAddress",
+        "name": "instrumentEscrowAddress",
         "type": "address"
-      },
-      {
-        "internalType": "bytes",
-        "name": "instrumentParameters",
-        "type": "bytes"
       }
     ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "constructor"
+    "name": "InstrumentActivated",
+    "type": "event"
   },
   {
     "anonymous": false,
@@ -62,7 +61,7 @@
       {
         "indexed": false,
         "internalType": "address",
-        "name": "issuanceProxyAddress",
+        "name": "issuanceAddress",
         "type": "address"
       },
       {
@@ -83,23 +82,10 @@
         "internalType": "uint256",
         "name": "issuanceId",
         "type": "uint256"
-      }
-    ],
-    "name": "IssuanceTerminated",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "issuanceId",
-        "type": "uint256"
       },
       {
         "indexed": false,
-        "internalType": "enum Transfer.Type",
+        "internalType": "enum Transfers.TransferType",
         "name": "transferType",
         "type": "uint8"
       },
@@ -126,107 +112,23 @@
         "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "bytes32",
-        "name": "action",
-        "type": "bytes32"
       }
     ],
     "name": "TokenTransferred",
     "type": "event"
   },
   {
-    "payable": true,
-    "stateMutability": "payable",
-    "type": "fallback"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "getInstrumentEscrowAddress",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "getLastIssuanceId",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
     "inputs": [],
     "name": "deactivate",
     "outputs": [],
-    "payable": false,
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "constant": false,
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "makerAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "bool",
-        "name": "allowed",
-        "type": "bool"
-      }
-    ],
-    "name": "setMakerWhitelist",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "takerAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "bool",
-        "name": "allowed",
-        "type": "bool"
-      }
-    ],
-    "name": "setTakerWhitelist",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
     "inputs": [
       {
         "internalType": "bytes",
-        "name": "makerParameters",
+        "name": "makerData",
         "type": "bytes"
       }
     ],
@@ -234,16 +136,14 @@
     "outputs": [
       {
         "internalType": "uint256",
-        "name": "",
+        "name": "issuanceId",
         "type": "uint256"
       }
     ],
-    "payable": false,
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "constant": false,
     "inputs": [
       {
         "internalType": "uint256",
@@ -252,43 +152,22 @@
       },
       {
         "internalType": "bytes",
-        "name": "takerParameters",
+        "name": "takerData",
         "type": "bytes"
       }
     ],
     "name": "engageIssuance",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
+    "outputs": [
       {
         "internalType": "uint256",
-        "name": "issuanceId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "tokenAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
+        "name": "engagementId",
         "type": "uint256"
       }
     ],
-    "name": "depositToIssuance",
-    "outputs": [],
-    "payable": false,
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "constant": false,
     "inputs": [
       {
         "internalType": "uint256",
@@ -296,28 +175,8 @@
         "type": "uint256"
       },
       {
-        "internalType": "address",
-        "name": "tokenAddress",
-        "type": "address"
-      },
-      {
         "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "withdrawFromIssuance",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "issuanceId",
+        "name": "engagementId",
         "type": "uint256"
       },
       {
@@ -327,39 +186,115 @@
       },
       {
         "internalType": "bytes",
-        "name": "eventPayload",
+        "name": "eventData",
         "type": "bytes"
       }
     ],
-    "name": "notifyCustomEvent",
+    "name": "processEvent",
     "outputs": [],
-    "payable": false,
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "constant": true,
+    "inputs": [],
+    "name": "getInstrumentAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getFspAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getInstrumentId",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getInstrumentEscrow",
+    "outputs": [
+      {
+        "internalType": "contract InstrumentEscrowInterface",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getIssuanceCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "uint256",
         "name": "issuanceId",
         "type": "uint256"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "dataName",
-        "type": "bytes32"
       }
     ],
-    "name": "getCustomData",
+    "name": "getIssuance",
     "outputs": [
       {
-        "internalType": "bytes",
+        "internalType": "contract IssuanceInterface",
         "name": "",
-        "type": "bytes"
+        "type": "address"
       }
     ],
-    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "issuanceId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getIssuanceEscrow",
+    "outputs": [
+      {
+        "internalType": "contract IssuanceEscrowInterface",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   }

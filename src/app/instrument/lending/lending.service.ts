@@ -118,7 +118,8 @@ export class LendingService extends InstrumentService {
     }
 
     public repayLendingIssuance(issuanceId: number, principalToken: TokenModel, tokenAmount: string) {
-        return this.repayIssuance(LENDING_NAME, issuanceId, principalToken, tokenAmount)
+        const engagementId = this.lendingIssuanceMap[issuanceId].engagements[0].engagementid;
+        return this.repayIssuance(LENDING_NAME, issuanceId, engagementId, principalToken, tokenAmount)
             .on('transactionHash', transactionHash => this.monitorLendingTransaction(transactionHash));
     }
 
