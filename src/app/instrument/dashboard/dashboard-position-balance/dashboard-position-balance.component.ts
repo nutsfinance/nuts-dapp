@@ -172,7 +172,7 @@ export class DashboardPositionBalanceComponent implements OnInit, OnDestroy {
             token: this.tokenService.getTokenByAddress(swapIssuance.inputtokenaddress),
             amount: swapIssuance.inputamount,
             action: 'close',
-            supplementalLineItems: issuance.payables,
+            payables: issuance.payables,
           });
         }
       });

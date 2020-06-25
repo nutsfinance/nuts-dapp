@@ -6,7 +6,7 @@
             <mat-icon>close</mat-icon>
           </button>
           <a [routerLink]="[language, 'instrument', 'dashboard']">
-            <img src="../assets/images/logo.png" alt="logo" class="sidenav-logo">
+            <img src="../../assets/images/logo.png" alt="logo" class="sidenav-logo">
           </a>
       </mat-toolbar>
   
@@ -63,7 +63,7 @@
             <mat-icon class="app-toolbar-icon">menu</mat-icon>
           </button>
           <a [routerLink]="['/', language, 'instrument', 'dashboard']">
-            <img src="../assets/images/logo.png" alt="logo" class="toolbar-logo">
+            <img src="../../assets/images/logo.png" alt="logo" class="toolbar-logo">
           </a>
         </div>
         <div class="app-toolbar-right">
@@ -79,6 +79,10 @@
       </div>
       <div class="app-container">
         <router-outlet></router-outlet>
+        <div class="disclaimer-container">
+          <img src="../../assets/images/nuts.png" alt="NUTS Platform" class="disclaimer-icon">
+          <span class="disclaimer-content" i18n>Powered by NUTS Platform</span>
+        </div>
       </div>
     </mat-sidenav-content>
   
