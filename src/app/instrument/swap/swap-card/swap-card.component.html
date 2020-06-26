@@ -1,39 +1,14 @@
 <mat-card class="issuance-card">
-    <div class="issuance-title-container">
-        <div class="issuance-title">
-            <span i18n>Issuance ID:</span>
-             {{nutsPlatformService.getInstrumentId("swap")}}-{{issuance.issuanceId}}</div>
-        <div [ngStyle]="{'color':issuance.state <= 3 ? '#8bc34a' : 'grey'}" class="issuance-state">
-            <span class="issuance-state-dot">&#8226;</span>
-            <span i18n>
-                {issuance.getIssuanceState(), select, Engageable{Engageable} Engaged{Engaged} Cancelled{Cancelled} Expired{Expired} Completed{Completed} Delinquent{Delinquent} other{Unknown}}
-            </span>
-        </div>
-    </div>
-    <div class="issuance-card-subtitle">
-        <div class="subtitle-container" *ngIf="issuance.getUserRole(currentAccount) != 'other'">
-            <div class="subtitle-icon">
-                <img src="../../../../assets/images/role.png" alt="role" class="subtitle-icon-image">
-                <span i18n>role</span>
-            </div>
-            <span i18n>
-                {issuance.getUserRole(currentAccount), select, maker{maker} taker{taker}}
-            </span>
-        </div>
+    <app-instrument-card-header
+        [instrumentName]="'borrowing'"
+        [issuance]="issuance">
+    </app-instrument-card-header>
 
-        <div class="subtitle-container">
-            <div class="subtitle-icon">
-                <img src="../../../../assets/images/calendar.png" alt="expiry" class="subtitle-icon-image">
-                <span i18n>expiry</span>
-            </div>
-            {{(issuance.state == 2 || issuance.state == 5 || issuance.state == 6? issuance.engagementDueTimestamp * 1000 : issuance.issuanceDueTimestamp * 1000) | date: 'MM-dd-yyyy'}}
-        </div>
-    </div>
     <div class="issuance-card-content">
         <div class="content-container">
             <div class="content-label" i18n>Input Token</div>
             <div class="content-value">
-                {{issuance.inputAmount | tokenValue:inputToken | number: '1.0-4'}} {{inputToken}}
+                {{swapIssuance.inputamount | tokenValue:inputToken.tokenAddress | number: '1.0-4'}} {{inputToken.tokenSymbol}}
                 <app-token-image [token]="inputToken"></app-token-image>
             </div>
         </div>
@@ -43,13 +18,13 @@
         <div class="content-container">
             <div class="content-label" i18n>Output Token</div>
             <div class="content-value">
-                {{issuance.outputAmount | tokenValue:outputToken | number: '1.0-4'}} {{outputToken}}
+                {{swapIssuance.outputamount | tokenValue:outputToken.tokenAddress | number: '1.0-4'}} {{outputToken.tokenSymbol}}
                 <app-token-image [token]="outputToken"></app-token-image>
             </div>
         </div>
     </div>
     <div class="issuance-card-notation">
-        1 {{inputToken}} &asymp; {{ exchangeRate | number: '1.0-4'}} {{outputToken}}
+        1 {{inputToken.tokenSymbol}} &asymp; {{ exchangeRate | number: '1.0-4'}} {{outputToken.tokenSymbol}}
     </div>
     <div class="issuance-card-more-content"  *ngIf="showState == 'more'">
         <div class="more-content-title">{{currencyService.currency}} <span i18n>Value</span></div>
@@ -71,18 +46,18 @@
     <div class="issuance-card-actions">
         <button mat-button color="secondary" class="issuance-action-button" (click)="showState = showState == 'more' ? 'less' : 'more'" i18n>{showState, select, less{Expand} more{Hide}}</button>
         <a mat-raised-button color="primary" class="issuance-action-button engage-button" 
-            [routerLink]="['/', language, 'instrument', 'swap', 'positions', issuance.issuanceId]"
-            *ngIf="issuance.state == 2 && issuance.getUserRole(currentAccount) != 'maker'" i18n>
+            [routerLink]="['/', language, 'instrument', 'swap', 'positions', issuance.issuanceid]"
+            *ngIf="offerState == 'Engageable' && userRole != 'maker'" i18n>
             Engage
         </a>
         <a mat-stroked-button color="primary" class="issuance-action-button close-button" 
-            [routerLink]="['/', language, 'instrument', 'swap', 'positions', issuance.issuanceId]"
-            *ngIf="issuance.state == 2 && issuance.getUserRole(currentAccount) == 'maker'" i18n>
+            [routerLink]="['/', language, 'instrument', 'swap', 'positions', issuance.issuanceid]"
+            *ngIf="offerState == 'Engageable' && userRole == 'maker'" i18n>
             Close Position
         </a>
         <a mat-stroked-button color="primary" class="issuance-action-button close-button" 
-            [routerLink]="['/', language, 'instrument', 'swap', 'positions', issuance.issuanceId]"
-            *ngIf="issuance.state != 2 && !(issuance.state == 3 && issuance.getUserRole(currentAccount) == 'taker')" i18n>
+            [routerLink]="['/', language, 'instrument', 'swap', 'positions', issuance.issuanceid]"
+            *ngIf="offerState != 'Engageable' && !(offerState == 'Engaged' && userRole == 'taker')" i18n>
             View Position
         </a>
     </div>

@@ -25,6 +25,7 @@ import { SwapDetailComponent } from './instrument/swap/swap-detail/swap-detail.c
 import { TokenResolver } from './common/token/token.resolver';
 import { LendingResolver } from './instrument/lending/lending.resolver';
 import { BorrowingResolver } from './instrument/borrowing/borrowing.resolver';
+import { SwapResolver } from './instrument/swap/swap.resolver';
 
 const language = environment.language;
 
@@ -66,7 +67,7 @@ const routes: Routes = [
       {
         path: 'swap', component: SwapComponent,
         canActivateChild: [ CanActivateInstrument ],
-        resolve: { tokens: TokenResolver },
+        resolve: { tokens: TokenResolver, swapIssuances: SwapResolver },
         children: [
           { path: '', redirectTo: 'account', pathMatch: 'full' },
           { path: 'account', component: AccountComponent, data: { instrument: 'swap' } },

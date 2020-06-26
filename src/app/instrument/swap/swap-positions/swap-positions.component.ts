@@ -61,6 +61,7 @@ export class SwapPositionsComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   updateSwapIssuances() {
+    console.log(this.swapService.swapIssuances);
     const currentAccount = this.nutsPlatformService.currentAccount.toLowerCase();
     this.zone.run(() => {
       const swapIssuances = this.swapService.swapIssuances

@@ -6,9 +6,10 @@ import { PriceOracleService } from 'src/app/common/web3/price-oracle.service';
 import { Subscription } from 'rxjs';
 import { TokenModel } from 'src/app/common/token/token.model';
 import { TokenService } from 'src/app/common/token/token.service';
-import { IssuanceModel } from '../../issuance.model';
+import { IssuanceModel, UserRole, OfferState } from '../../issuance.model';
 import { SwapIssuanceModel } from '../swap-issuance.model';
 import { CurrencyService } from 'src/app/common/currency-select/currency.service';
+import { SwapService } from '../swap.service';
 
 @Component({
   selector: 'app-swap-card',
@@ -19,6 +20,9 @@ export class SwapCardComponent implements OnInit, OnDestroy {
   @Input() public issuance: IssuanceModel;
   public swapIssuance: SwapIssuanceModel;
   public language = environment.language;
+  public userRole: UserRole;
+  public offerState: OfferState;
+
   public inputToken: TokenModel;
   public outputToken: TokenModel;
   public exchangeRate: number;
@@ -30,10 +34,12 @@ export class SwapCardComponent implements OnInit, OnDestroy {
   private currencyUpdatedSubscription: Subscription;
 
   constructor(public nutsPlatformService: NutsPlatformService, private priceOracleService: PriceOracleService,
-    public tokenService: TokenService, private currencyService: CurrencyService, private zone: NgZone) { }
+    private swapService: SwapService, public tokenService: TokenService, private currencyService: CurrencyService, private zone: NgZone) { }
 
   ngOnInit() {
     this.swapIssuance = this.issuance.issuancecustomproperty as SwapIssuanceModel;
+    this.userRole = this.swapService.getUserRole(this.issuance);
+    this.offerState = this.swapService.getOfferState(this.issuance);
     this.inputToken = this.tokenService.getTokenByAddress(this.swapIssuance.inputtokenaddress);
     this.outputToken = this.tokenService.getTokenByAddress(this.swapIssuance.outputtokenaddress);
     this.exchangeRate = 1.0 * this.tokenService.getDisplayValue(this.outputToken.tokenAddress, this.swapIssuance.outputamount)
