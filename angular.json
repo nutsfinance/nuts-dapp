@@ -163,7 +163,8 @@
               "defaultLanguage": "en",
               "languages": [
                 "en",
-                "zh"
+                "zh",
+                "zh-hk"
               ]
             }
           }
