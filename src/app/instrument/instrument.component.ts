@@ -79,4 +79,8 @@ export class LanguageSelectSheet {
     event.preventDefault();
   }
 
+  navigate(path: string) {
+    window.location.href = path;
+  }
+
 }
