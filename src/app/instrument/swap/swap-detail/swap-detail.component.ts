@@ -7,7 +7,7 @@ import { PriceOracleService } from 'src/app/common/web3/price-oracle.service';
 import { CurrencyService } from 'src/app/common/currency-select/currency.service';
 import { MatDialog } from '@angular/material';
 import { TransactionInitiatedDialog } from 'src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component';
-import { IssuanceModel } from '../../issuance.model';
+import { IssuanceModel, UserRole, OfferState } from '../../issuance.model';
 import { TokenModel } from 'src/app/common/token/token.model';
 import { SwapService } from '../swap.service';
 import { AccountService } from 'src/app/account/account.service';
@@ -22,6 +22,9 @@ import { TokenService } from 'src/app/common/token/token.service';
 export class SwapDetailComponent implements OnInit {
   public issuance: IssuanceModel;
   public swapIssuance: SwapIssuanceModel;
+  public userRole: UserRole;
+  public offerState: OfferState;
+
   public inputToken: TokenModel;
   public outputToken: TokenModel;
   public outputTokenBalance = '';
@@ -117,6 +120,8 @@ export class SwapDetailComponent implements OnInit {
       this.issuance = this.swapService.getSwapIssuance(issuanceId);
       if (this.issuance) {
         this.swapIssuance = this.issuance.issuancecustomproperty as SwapIssuanceModel;
+        this.userRole = this.swapService.getUserRole(this.issuance);
+        this.offerState = this.swapService.getOfferState(this.issuance);
         // Compute issuance token values
         this.inputToken = this.tokenService.getTokenByAddress(this.swapIssuance.inputtokenaddress);
         this.outputToken = this.tokenService.getTokenByAddress(this.swapIssuance.outputtokenaddress);

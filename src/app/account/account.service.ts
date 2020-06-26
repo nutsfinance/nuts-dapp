@@ -40,7 +40,7 @@ export class AccountService {
     this.refreshAccountsBalance();
     this.nutsPlatformService.platformInitializedSubject.subscribe(initialized => {
       if (!initialized) return;
-      console.log('Platform initialized. Reloading lending issuances.');
+      console.log('Platform initialized. Reloading accounts balance.');
       this.refreshAccountsBalance();
     });
 

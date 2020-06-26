@@ -111,12 +111,12 @@
         <div class="col-xs-2"></div>
     </div>
 
-    <div class="row detail-row" *ngIf="issuance.engagementTimestamp > 0">
+    <div class="row detail-row" *ngIf="issuance.engagements.length > 0">
         <div class="col-xs-3 detail-label" i18n>Engaged</div>
 
         <div class="col-xs-6 detail-value">
             <div class="detail-value-content">
-                {{issuance.engagementTimestamp * 1000 | date: 'MM-dd-yyyy'}}
+                {{issuance.engagements[0].engagementcreationtimestamp * 1000 | date: 'MM-dd-yyyy'}}
             </div>
         </div>
 
@@ -126,8 +126,8 @@
     <div class="row detail-row" *ngIf="offerState == 'Engageable' || offerState == 'Engaged'">
         <div class="col-xs-3 detail-label" i18n>Due Date</div>
 
-        <div class="col-xs-6">
-            <div class="detail-value">
+        <div class="col-xs-6 detail-value">
+            <div class="detail-value-content">
                 {{ (offerState == 'Engageable'? issuance.issuanceduetimestamp * 1000 : issuance.engagements[0].engagementduetimestamp * 1000) | date: 'MM-dd-yyyy'}}
             </div>
         </div>

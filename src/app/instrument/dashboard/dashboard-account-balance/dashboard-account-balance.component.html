@@ -14,6 +14,7 @@
         <p class="dashboard-value">
             {{ currencyService.getCurrencySymbol() }} {{totalValue | number: '1.0-2' }}
         </p>
+        <div class="dashboard-title" i18n>Instruments Balance</div>
         <canvas baseChart 
             [data]="instrumentChartData" 
             [labels]="instrumentChartLabels" 
@@ -22,6 +23,7 @@
             [colors]="instrumentChartColors">
         </canvas>
         <hr class="divider"/>
+        <div class="dashboard-title" i18n>Assets Composition</div>
         <canvas baseChart
             [data]="tokenChartData"
             [labels]="tokenChartLabels"

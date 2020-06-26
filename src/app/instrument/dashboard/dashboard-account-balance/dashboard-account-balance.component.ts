@@ -41,10 +41,6 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
     [350, 450, 100],
   ];
   public instrumentChartOptions = {
-    title: {
-      display: true,
-      text: 'Instruments Balance',
-    },
     legend: {
       position: 'bottom',
       labels: {
@@ -81,10 +77,6 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
     [10, 20, 30, 40, 50]
   ];
   public tokenChartOptions = {
-    title: {
-      display: true,
-      text: 'Asset Composition',
-    },
     legend: {
       position: 'bottom',
       padding: 16,
@@ -105,6 +97,7 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
     }
   }
 
+  private tokenSubscription: Subscription;
   private accountBalancesSubscription: Subscription;
   private currencySubscription: Subscription;
 
@@ -113,45 +106,42 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
     private tokenService: TokenService, private zone: NgZone) { }
 
   ngOnInit() {
-    this.tokens = this.tokenService.tokens.filter(token => token.supportsTransaction);
-    this.tokenChartLabels = this.tokens.map(token => token.tokenSymbol);
     if (environment.language == 'zh') {
       this.instrumentChartLabels = this.instrumentChineseLabels;
-      this.instrumentChartOptions.title.text = '产品资产分布';
-      this.tokenChartOptions.title.text = '代币资产分布';  
     }
     
     this.updateAccountBalances();
-    this.accountBalancesSubscription = this.accountService.accountsBalanceSubject.subscribe(_ => {
-      this.zone.run(() => {
-        this.updateAccountBalances();
-      });
-    });
-    this.currencySubscription = this.currencyService.currencyUpdatedSubject.subscribe(_ => {
-      this.zone.run(() => {
-        this.updateAccountBalances();
-      });
-    });
+    this.tokenSubscription = this.tokenService.tokensUpdatedSubject
+      .subscribe(_ => this.updateAccountBalances());
+
+    this.accountBalancesSubscription = this.accountService.accountsBalanceSubject
+      .subscribe(_ => this.updateAccountBalances());
+    this.currencySubscription = this.currencyService.currencyUpdatedSubject
+      .subscribe(_ => this.updateAccountBalances());
   }
 
   ngOnDestroy() {
+    this.tokenSubscription.unsubscribe();
     this.accountBalancesSubscription.unsubscribe();
     this.currencySubscription.unsubscribe();
   }
 
   private async updateAccountBalances() {
+    this.tokens = this.tokenService.tokens.filter(token => token.supportsTransaction);
+    this.tokenChartLabels = this.tokens.map(token => token.tokenSymbol);
+
     const accountsBalance = this.accountService.accountsBalance;
     const instrumentLabels = environment.language === 'zh' ? this.instrumentChineseLabels : this.instruments;
     const instrumentsValue = [0, 0, 0, 0];
     const tokenValue = [0, 0, 0, 0, 0, 0];
     let totalValue = 0;
     // For each instrument
-    for (let i = 0; i < 3; i++) {
-      for (let j = 0; j < 5; j++) {
-        const instrument = this.instruments[i].toLowerCase();
-        if (!accountsBalance[instrument] || !accountsBalance[instrument][this.tokens[j].tokenAddress]) continue;
+    for (let i = 0; i < this.instruments.length - 1; i++) {
+      for (let j = 0; j < this.tokens.length - 1; j++) {
+        const instrumentId = this.nutsPlatformService.getInstrumentId(this.instruments[i].toLowerCase());
+        if (!accountsBalance[instrumentId] || !accountsBalance[instrumentId][this.tokens[j].tokenAddress]) continue;
         const tokenConvertedValue = await this.priceOracleService.getConvertedCurrencyValue(this.tokens[j],
-          accountsBalance[instrument][this.tokens[j].tokenAddress]);
+          accountsBalance[instrumentId][this.tokens[j].tokenAddress]);
 
         instrumentsValue[i] += tokenConvertedValue;
         tokenValue[j] += tokenConvertedValue;
