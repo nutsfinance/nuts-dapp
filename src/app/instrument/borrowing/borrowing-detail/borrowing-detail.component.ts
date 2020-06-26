@@ -7,7 +7,7 @@ import { PriceOracleService } from 'src/app/common/web3/price-oracle.service';
 import { CurrencyService } from 'src/app/common/currency-select/currency.service';
 import { MatDialog } from '@angular/material';
 import { TransactionInitiatedDialog } from 'src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component';
-import { IssuanceModel, UserRole, IssuanceState, EngagementState } from '../../issuance.model';
+import { IssuanceModel, UserRole, IssuanceState, EngagementState, OfferState } from '../../issuance.model';
 import { BorrowingIssuanceModel } from '../borrowing-issuance.model';
 import { TokenModel } from 'src/app/common/token/token.model';
 import { BorrowingService } from '../borrowing.service';
@@ -20,7 +20,10 @@ import { TokenService } from 'src/app/common/token/token.service';
 })
 export class BorrowingDetailComponent implements OnInit, OnDestroy {
   public issuance: IssuanceModel;
-  public borrowingIssuance: BorrowingIssuanceModel
+  public borrowingIssuance: BorrowingIssuanceModel;
+  public userRole: UserRole;
+  public offerState: OfferState;
+
   public borrowingToken: TokenModel;
   public collateralToken: TokenModel;
   public borrowingTokenBalance = '0';
@@ -156,13 +159,16 @@ export class BorrowingDetailComponent implements OnInit, OnDestroy {
       this.issuance = this.borrowingService.getBorrowingIssuance(issuanceId);
       if (this.issuance) {
         this.borrowingIssuance = this.issuance.issuancecustomproperty as BorrowingIssuanceModel;
+        this.userRole = this.borrowingService.getUserRole(this.issuance);
+        this.offerState = this.borrowingService.getOfferState(this.issuance);
         // Compute issuance token values
         this.borrowingToken = this.tokenService.getTokenByAddress(this.borrowingIssuance.borrowingtokenaddress);
         this.collateralToken = this.tokenService.getTokenByAddress(this.borrowingIssuance.collateraltokenaddress);
         // If the collateral value is not set
-        if (this.borrowingIssuance.collateralamount === '0') {
+        if (!this.borrowingIssuance.collateralamount || this.borrowingIssuance.collateralamount === '0') {
           this.borrowingService.getBorrowingCollateralValue(this.borrowingIssuance).then(value => {
             this.collateralValue = value;
+            this.convertedCollateralValue = this.priceOracleService.getConvertedCurrencyValue(this.collateralToken, value);
           });
         } else {
           this.collateralValue = this.borrowingIssuance.collateralamount;
