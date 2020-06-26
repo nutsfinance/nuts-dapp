@@ -36,21 +36,18 @@
                 </div>
                 <div *ngIf="createFormGroup.controls['inputAmount'].errors.insufficientBalance">
                   <span i18n>Insufficient balance.</span>
-                  <a class="deposit-button" routerLink="../account" [queryParams]="{ token: inputToken}" i18n>Deposit</a>
+                  <a class="deposit-button" routerLink="../account" [queryParams]="{ tokenAddress: inputToken.tokenAddress}" i18n>Deposit</a>
                 </div>
                 <div *ngIf="createFormGroup.controls['inputAmount'].errors.nonPositiveAmount" i18n>
                   The amount must be positive number.
                 </div>
-                <div *ngIf="createFormGroup.controls['inputAmount'].errors.nonIntegerAmount" i18n>
-                  The amount must be integer.
-                </div>
               </div>
               <div class="balance-content">
-                <span i18n>Swap A/C Balance:</span>
+                <span i18n>Swap A/C Balance: </span>
                 <app-account-balance [instrument]="'swap'" [tokenAddress]="inputToken.tokenAddress"
                   (balanceUpdated)="inputTokenBalance = $event">
                 </app-account-balance>
-                {{inputToken}}
+                {{inputToken.tokenSymbol}}
               </div>
             </div>
         </div>
@@ -89,12 +86,9 @@
                 <div *ngIf="createFormGroup.controls['outputAmount'].errors.nonPositiveAmount" i18n>
                   The amount must be positive number.
                 </div>
-                <div *ngIf="createFormGroup.controls['outputAmount'].errors.nonIntegerAmount" i18n>
-                  The amount must be integer.
-                </div>
               </div>
               <div class="balance-content">
-                <span i18n>Exchange Rate</span>: 1 {{inputToken}} &asymp; {{(createFormGroup.controls['inputAmount'].value ? createFormGroup.controls['outputAmount'].value / createFormGroup.controls['inputAmount'].value : 0) | number: '1.0-4'}} {{outputToken}}
+                <span i18n>Exchange Rate</span>: 1 {{inputToken.tokenSymbol}} &asymp; {{(createFormGroup.controls['inputAmount'].value ? createFormGroup.controls['outputAmount'].value / createFormGroup.controls['inputAmount'].value : 0) | number: '1.0-4'}} {{outputToken.tokenSymbol}}
               </div>
             </div>
         </div>

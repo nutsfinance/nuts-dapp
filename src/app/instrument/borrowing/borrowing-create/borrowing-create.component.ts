@@ -61,12 +61,12 @@ export class BorrowingCreateComponent implements OnInit {
     });
   }
 
-  onPrincipalTokenSelected(tokenAddress: string) {
+  onPrincipalTokenSelected(token: TokenModel) {
     // Update principals
-    this.principalToken = this.tokenService.getTokenByAddress(tokenAddress);
+    this.principalToken = token;
     this.createFormGroup.controls['principalAmount'].reset();
     // Update collateral tokens
-    this.collateralTokenList = this.tokens.filter(token => token.tokenAddress !== tokenAddress);
+    this.collateralTokenList = this.tokens.filter(token => token.tokenAddress !== token.tokenAddress);
     this.collateralToken = this.collateralTokenList[0];
   }
 
@@ -74,8 +74,8 @@ export class BorrowingCreateComponent implements OnInit {
     this.createFormGroup.patchValue({ 'tenor': tenorChange.value });
   }
 
-  onCollateralTokenSelected(tokenAddress: string) {
-    this.collateralToken = this.tokenService.getTokenByAddress(tokenAddress);
+  onCollateralTokenSelected(token: TokenModel) {
+    this.collateralToken = token;
     this.collateralTokenBalance = this.accountService.getAccountBalance(BORROWING_NAME, this.collateralToken.tokenAddress);
     this.createFormGroup.controls['collateralRatio'].reset();
   }

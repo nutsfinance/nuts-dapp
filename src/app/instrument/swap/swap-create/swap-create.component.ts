@@ -29,6 +29,7 @@ export class SwapCreateComponent implements OnInit {
   ngOnInit() {
     this.tokens = this.tokenService.tokens.filter(token => token.supportsTransaction);
     this.inputToken = this.tokens[0];
+    this.outputTokenList = this.tokens.slice(1);
     this.outputToken = this.tokens[1];
     this.createFormGroup = new FormGroup({
       'inputAmount': new FormControl('', this.validInputAmount.bind(this)),
@@ -37,16 +38,16 @@ export class SwapCreateComponent implements OnInit {
     });
   }
 
-  onInputTokenSelected(tokenAddress: string) {
-    this.inputToken = this.tokenService.getTokenByAddress(tokenAddress);
+  onInputTokenSelected(tokenSelected: TokenModel) {
+    this.inputToken = tokenSelected;
     this.createFormGroup.controls['inputAmount'].reset();
     // Update output tokens
-    this.outputTokenList = this.tokens.filter(token => token.tokenAddress !== tokenAddress);
+    this.outputTokenList = this.tokens.filter(token => token.tokenAddress !== tokenSelected.tokenAddress);
     this.outputToken = this.outputTokenList[0];
   }
 
-  onOutputTokenSelected(tokenAddress: string) {
-    this.outputToken = this.tokenService.getTokenByAddress(tokenAddress);
+  onOutputTokenSelected(token: TokenModel) {
+    this.outputToken = token;
   }
 
   onTenorChange(tenorChange: MatButtonToggleChange) {
@@ -68,6 +69,7 @@ export class SwapCreateComponent implements OnInit {
   }
 
   async createSwapIssuance() {
+    console.log(this.createFormGroup);
     if (!this.createFormGroup.valid) {
       return;
     }
@@ -82,7 +84,7 @@ export class SwapCreateComponent implements OnInit {
           const transactionInitiatedDialog = this.dialog.open(TransactionInitiatedDialog, {
             width: '90%',
             data: {
-              type: 'create_issuance', instrument: SWAP_NAME, tokenName: this.inputToken.tokenSymbol, tokenAmount: inputAmount,
+              type: 'create_issuance', instrument: SWAP_NAME, token: this.inputToken, tokenAmount: inputAmount,
             },
           });
           transactionInitiatedDialog.afterClosed().subscribe(() => {
@@ -107,7 +109,7 @@ export class SwapCreateComponent implements OnInit {
     }
     const inputAmount = this.tokenService.getActualValue(this.inputToken.tokenAddress, control.value);
     const BN = this.nutsPlatformService.web3.utils.BN;
-    if (new BN(this.inputTokenBalance).lt(inputAmount)) {
+    if (new BN(this.inputTokenBalance).lt(new BN(inputAmount))) {
       return { 'insufficientBalance': true };
     }
     if ((Number.isNaN(Number(control.value))) || Number(control.value) <= 0) {
