@@ -6,10 +6,9 @@ import { TokenModel } from '../token/token.model';
 import { TokenService } from '../token/token.service';
 
 export interface Price {
-  priceId: string,
-  input: string,
-  output: string,
-  rate: number,
+  rate?: number,
+  numerator?: string,
+  denominator?: string,
 }
 
 @Injectable({
@@ -30,48 +29,42 @@ export class PriceOracleService {
       return this.prices[priceKey] * inputDisplayValue;
     }
 
-    const price = await this.getPrice(inputToken.tokenSymbol, currency);
+    const price = await this.getPriceFromBackend(inputToken.tokenSymbol, currency);
     this.prices[priceKey] = price.rate;
     return price.rate * inputDisplayValue;
   }
 
   async getConvertedDisplayValue(inputToken: TokenModel, outputToken: TokenModel, inputValue: string, refresh = false): Promise<number> {
-    const inputDisplayValue = this.tokenService.getDisplayValue(inputToken.tokenAddress, inputValue);
-    if (inputToken.tokenSymbol === outputToken.tokenSymbol) return inputDisplayValue;
+    const convertedActualValue = await this.getConvertedActualValue(inputToken, outputToken, inputValue, refresh);
 
-    // If the price is cached and there is no need to get the latest price, simply return it!
-    const priceKey = `${inputToken.tokenSymbol}-${outputToken.tokenSymbol}`;
-    if (this.prices[priceKey] && !refresh) {
-      return this.prices[priceKey] * inputDisplayValue;
-    }
-
-    const price = await this.getPrice(inputToken.tokenSymbol, outputToken.tokenSymbol);
-    this.prices[priceKey] = price.rate;
-    return price.rate * inputDisplayValue;
+    return this.tokenService.getDisplayValue(outputToken.tokenAddress, convertedActualValue);
   }
 
   async getConvertedActualValue(inputToken: TokenModel, outputToken: TokenModel, inputValue: string, refresh = false): Promise<string> {
     
     if (inputToken.tokenSymbol === outputToken.tokenSymbol) return inputValue;
 
-    const inputDisplayValue = this.tokenService.getDisplayValue(inputToken.tokenAddress, inputValue);
-    console.log(inputDisplayValue);
-    // If the price is cached and there is no need to get the latest price, simply return it!
     const priceKey = `${inputToken.tokenSymbol}-${outputToken.tokenSymbol}`;
-    if (this.prices[priceKey] && !refresh) {
-      return this.tokenService.getActualValue(outputToken.tokenAddress, this.prices[priceKey] * inputDisplayValue + '');
+    const BN = this.nutsPlatformService.web3.utils.BN;
+    if (!this.prices[priceKey] || refresh) {
+      const chainPrice = await this.getPriceFromChain(inputToken, outputToken);
+      console.log(inputToken.tokenSymbol, outputToken.tokenSymbol, chainPrice);
+      this.prices[priceKey] = chainPrice;
     }
-
-    const price = await this.getPrice(inputToken.tokenSymbol, outputToken.tokenSymbol);
-    this.prices[priceKey] = price.rate;
-    return this.tokenService.getActualValue(outputToken.tokenAddress, price.rate * inputDisplayValue + '');
+    
+    return new BN(inputValue).mul(new BN(this.prices[priceKey].denominator)).div(new BN(this.prices[priceKey].numerator)).toString();
   }
 
-  private getPrice(inputTokenName: string, outputTokenName: string): Promise<Price> {
+  private getPriceFromBackend(inputTokenName: string, outputTokenName: string): Promise<Price> {
     return this.http.get<Price>(`${this.nutsPlatformService.getApiServerHost()}/prices`, {
       params: {
         inputToken: inputTokenName, outputToken: outputTokenName
       }
     }).toPromise();
+  }
+
+  private async getPriceFromChain(inputToken: TokenModel, outputToken: TokenModel): Promise<{numerator: string, denominator: string}> {
+    const priceOracle = this.nutsPlatformService.getPriceOracleContract();
+    return priceOracle.methods.getRate(inputToken.tokenAddress, outputToken.tokenAddress).call();
   }
 }

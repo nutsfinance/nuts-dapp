@@ -3,6 +3,7 @@ import { Subject } from 'rxjs';
 
 const Web3 = require('web3');
 const ERC20 = require('./abi/IERC20.json');
+const PriceOracle = require('./abi/PriceOracle.json');
 const InstrumentEscrow = require('./abi/InstrumentEscrowInterface.json');
 const InstrumentManager = require('./abi/InstrumentManagerInterface.json');
 
@@ -16,15 +17,26 @@ export const BORROWING_NAME = 'borrowing';
 export const SWAP_NAME = 'swap';
 export const NUTS_PLATFORM_ADDRESSES = {
   1: {
-    instrumentRegistry: '',
-    priceOracle: '',
+    instrumentRegistry: '0x885C7604445E98d6b0b91d494c268399BB24E5Aa',
+    priceOracle: '0x42DEcc65FFF4Ee75A81Ba0520C7393bAD8C567fd',
     instruments: {
-      ipoSubscription: {
-        instrumentId: 1,
-        instrumentManager: '',
-        instrumentEscrow: '',
-      }
-    }
+      lending: {
+        instrumentManager: '0x627871D7fE1F0b085f70618b44396C27107a4c20',
+        instrumentEscrow: '0xc234D8d05508ef00961258061EB4392FEeEA6c16',
+        instrumentId: 1
+      },
+      borrowing: {
+        instrumentManager: '0x176B8FE7694e90ec7aE45fB11273428434DAFC7d',
+        instrumentEscrow: '0x231284AB8500C026CEe01c224f3fA20f66D28D0B',
+        instrumentId: 2
+      },
+      swap: {
+        instrumentManager: '0xAd499f619BE1C3e5628840A74080b69ba015eAd5',
+        instrumentEscrow: '0x4B22d4181Ea2D526C479d3D10571BA22F1B6dD2f',
+        instrumentId: 3
+      },
+    },
+    weth: '0x14c4D3EC9F0788d4e5092b0D94728AD807e64992',
   },
   42: {
     instrumentRegistry: '0xB2175E8B1432Be81a2F52835eC7ea6b740db6bE7',
@@ -39,8 +51,8 @@ export const NUTS_PLATFORM_ADDRESSES = {
         instrumentManager: '0x176B8FE7694e90ec7aE45fB11273428434DAFC7d',
         instrumentEscrow: '0x231284AB8500C026CEe01c224f3fA20f66D28D0B',
         instrumentId: 2
-      }, swap:
-      {
+      },
+      swap: {
         instrumentManager: '0xAd499f619BE1C3e5628840A74080b69ba015eAd5',
         instrumentEscrow: '0x4B22d4181Ea2D526C479d3D10571BA22F1B6dD2f',
         instrumentId: 3
@@ -83,15 +95,13 @@ export class NutsPlatformService {
   }
 
   public isNetworkValid(): boolean {
-    return this.currentNetwork === '1' || this.currentNetwork === '4' || this.currentNetwork === '42';
+    return this.currentNetwork === '1' || this.currentNetwork === '42';
   }
 
   public getApiServerHost(): string {
     switch (this.currentNetwork) {
       case '1':
         return 'https://main-api.dapp.finance';
-      case '4':
-        return 'https://rinkeby-api.dapp.finance';
       case '42':
         return 'https://kovan-api.dapp.finance';
       default:
@@ -194,6 +204,10 @@ export class NutsPlatformService {
 
   public getERC20TokenContract(tokenAddress: string) {
     return new this.web3.eth.Contract(ERC20, tokenAddress);
+  }
+
+  public getPriceOracleContract() {
+    return new this.web3.eth.Contract(PriceOracle, NUTS_PLATFORM_ADDRESSES[this.currentNetwork].priceOracle);
   }
 
   public getInstrumentManagerContract(instrument: string) {
