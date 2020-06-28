@@ -42,7 +42,21 @@
         
         
         
-      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/lending/lending.component.html</context><context context-type="linenumber">7</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/borrowing/borrowing.component.html</context><context context-type="linenumber">7</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap.component.html</context><context context-type="linenumber">7</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/lending/lending-create/lending-create.component.html</context><context context-type="linenumber">229</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/lending/lending-positions/lending-positions.component.html</context><context context-type="linenumber">31</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/lending/lending-positions/lending-positions.component.html</context><context context-type="linenumber">39</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/borrowing/borrowing-create/borrowing-create.component.html</context><context context-type="linenumber">228</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/borrowing/borrowing-engage/borrowing-engage.component.html</context><context context-type="linenumber">5</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/borrowing/borrowing-positions/borrowing-positions.component.html</context><context context-type="linenumber">26</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/borrowing/borrowing-positions/borrowing-positions.component.html</context><context context-type="linenumber">34</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap-create/swap-create.component.html</context><context context-type="linenumber">148</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap-engage/swap-engage.component.html</context><context context-type="linenumber">5</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap-positions/swap-positions.component.html</context><context context-type="linenumber">31</context></context-group></trans-unit>
+      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/lending/lending.component.html</context><context context-type="linenumber">7</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/borrowing/borrowing.component.html</context><context context-type="linenumber">7</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap.component.html</context><context context-type="linenumber">7</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/lending/lending-create/lending-create.component.html</context><context context-type="linenumber">229</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/lending/lending-positions/lending-positions.component.html</context><context context-type="linenumber">31</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/lending/lending-positions/lending-positions.component.html</context><context context-type="linenumber">39</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/borrowing/borrowing-create/borrowing-create.component.html</context><context context-type="linenumber">228</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/borrowing/borrowing-engage/borrowing-engage.component.html</context><context context-type="linenumber">5</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/borrowing/borrowing-positions/borrowing-positions.component.html</context><context context-type="linenumber">26</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/borrowing/borrowing-positions/borrowing-positions.component.html</context><context context-type="linenumber">34</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap-create/swap-create.component.html</context><context context-type="linenumber">148</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap-engage/swap-engage.component.html</context><context context-type="linenumber">5</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap-positions/swap-positions.component.html</context><context context-type="linenumber">31</context></context-group></trans-unit><trans-unit id="975d7a14bb4b923caf6fff68273730235ebeaf2d" datatype="html">
+        <source>Marketplace</source><target state="new">市场</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/lending/lending.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/borrowing/borrowing.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/swap/swap.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="3825509103f65210c19e24ffaba8089bdcc933d3" datatype="html">
         <source>Engage</source><target state="new">参与</target>
         
@@ -56,7 +70,7 @@
         
         
         
-      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/lending/lending.component.html</context><context context-type="linenumber">8</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/borrowing/borrowing.component.html</context><context context-type="linenumber">8</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap.component.html</context><context context-type="linenumber">8</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/lending/lending-positions/lending-positions.component.html</context><context context-type="linenumber">25</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/lending/lending-positions/lending-positions.component.html</context><context context-type="linenumber">37</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/borrowing/borrowing-positions/borrowing-positions.component.html</context><context context-type="linenumber">20</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/borrowing/borrowing-positions/borrowing-positions.component.html</context><context context-type="linenumber">32</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap-positions/swap-positions.component.html</context><context context-type="linenumber">25</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/lending/lending-detail/lending-detail.component.html</context><context context-type="linenumber">142</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/borrowing/borrowing-detail/borrowing-detail.component.html</context><context context-type="linenumber">140</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap-detail/swap-detail.component.html</context><context context-type="linenumber">80</context></context-group></trans-unit>
+      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/lending/lending-positions/lending-positions.component.html</context><context context-type="linenumber">25</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/lending/lending-positions/lending-positions.component.html</context><context context-type="linenumber">37</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/borrowing/borrowing-positions/borrowing-positions.component.html</context><context context-type="linenumber">20</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/borrowing/borrowing-positions/borrowing-positions.component.html</context><context context-type="linenumber">32</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap-positions/swap-positions.component.html</context><context context-type="linenumber">25</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/lending/lending-detail/lending-detail.component.html</context><context context-type="linenumber">142</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/borrowing/borrowing-detail/borrowing-detail.component.html</context><context context-type="linenumber">140</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap-detail/swap-detail.component.html</context><context context-type="linenumber">80</context></context-group></trans-unit>
       <trans-unit id="00cd2b405ad7bf3cef0017bf927068bc08beba54" datatype="html">
         <source>My Positions</source><target state="new">我的订单</target>
         <context-group purpose="location">
@@ -894,11 +908,8 @@
         
       <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap-create/swap-create.component.html</context><context context-type="linenumber">41</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap-create/swap-create.component.html</context><context context-type="linenumber">86</context></context-group></trans-unit><trans-unit id="917381dd50afa92dfd6580a1a4daf07c2cf5534d" datatype="html">
         <source>Swap A/C Balance: </source><target state="new">互换账户余额： </target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/swap/swap-create/swap-create.component.html</context>
-          <context context-type="linenumber">46</context>
-        </context-group>
-      </trans-unit>
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap-create/swap-create.component.html</context><context context-type="linenumber">46</context></context-group></trans-unit>
       
       
       <trans-unit id="b6945affb8b166ecb4ac823d725a3fb94311f800" datatype="html">
@@ -1017,17 +1028,11 @@
         
       <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/dashboard/dashboard-account-balance/dashboard-account-balance.component.html</context><context context-type="linenumber">9</context></context-group></trans-unit><trans-unit id="313d03a8f3b4589c894dc0417d225eff28153ad2" datatype="html">
         <source>Instruments Balance</source><target state="new">产品资产分布</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/dashboard/dashboard-account-balance/dashboard-account-balance.component.html</context>
-          <context context-type="linenumber">17</context>
-        </context-group>
-      </trans-unit><trans-unit id="acbf700f1c778cbdccb86f4a748279d5f9d2583b" datatype="html">
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/dashboard/dashboard-account-balance/dashboard-account-balance.component.html</context><context context-type="linenumber">17</context></context-group></trans-unit><trans-unit id="acbf700f1c778cbdccb86f4a748279d5f9d2583b" datatype="html">
         <source>Assets Composition</source><target state="new">代币资产分布</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/dashboard/dashboard-account-balance/dashboard-account-balance.component.html</context>
-          <context context-type="linenumber">26</context>
-        </context-group>
-      </trans-unit>
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/dashboard/dashboard-account-balance/dashboard-account-balance.component.html</context><context context-type="linenumber">26</context></context-group></trans-unit>
       <trans-unit id="540c47c4a05a58e297605f91898d3cf80454c70f" datatype="html">
         <source>Position Balance</source><target state="new">订单详情</target>
         
@@ -1176,11 +1181,8 @@
         
       <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/instrument.component.html</context><context context-type="linenumber">49</context></context-group></trans-unit><trans-unit id="8ffaf467b6be871e718d3821947a00180db87562" datatype="html">
         <source>Powered by NUTS Platform</source><target state="new">Powered by NUTS Platform</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/instrument.component.html</context>
-          <context context-type="linenumber">84</context>
-        </context-group>
-      </trans-unit>
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/instrument.component.html</context><context context-type="linenumber">84</context></context-group></trans-unit>
       <trans-unit id="16fca0f1eebce8e0eb7b271f96aed96adb07e015" datatype="html">
         <source>Offer Details</source><target state="new">合约细节</target>
         
@@ -1240,33 +1242,15 @@
             </source><target state="new">
                 <x id="ICU" equiv-text="{userRole, select, maker {...} taker {...}}"/>
             </target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/lending/lending-detail/lending-detail.component.html</context>
-          <context context-type="linenumber">93</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-detail/borrowing-detail.component.html</context>
-          <context context-type="linenumber">91</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/swap/swap-detail/swap-detail.component.html</context>
-          <context context-type="linenumber">44</context>
-        </context-group>
-      </trans-unit><trans-unit id="5ba0fb7965f82b266936c46f9e1a7ebcfcf7cd28" datatype="html">
+        
+        
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/lending/lending-detail/lending-detail.component.html</context><context context-type="linenumber">93</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/borrowing/borrowing-detail/borrowing-detail.component.html</context><context context-type="linenumber">91</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap-detail/swap-detail.component.html</context><context context-type="linenumber">44</context></context-group></trans-unit><trans-unit id="5ba0fb7965f82b266936c46f9e1a7ebcfcf7cd28" datatype="html">
         <source>{VAR_SELECT, select, maker {maker} taker {taker} }</source><target state="new">{VAR_SELECT, select, maker {卖方} taker {买方} }</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/lending/lending-detail/lending-detail.component.html</context>
-          <context context-type="linenumber">94</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-detail/borrowing-detail.component.html</context>
-          <context context-type="linenumber">92</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/swap/swap-detail/swap-detail.component.html</context>
-          <context context-type="linenumber">45</context>
-        </context-group>
-      </trans-unit>
+        
+        
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/lending/lending-detail/lending-detail.component.html</context><context context-type="linenumber">94</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/borrowing/borrowing-detail/borrowing-detail.component.html</context><context context-type="linenumber">92</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap-detail/swap-detail.component.html</context><context context-type="linenumber">45</context></context-group></trans-unit>
       
       
       <trans-unit id="fc34f2683c4cb526ed7095c5b1cdd66d672ba932" datatype="html">
@@ -1321,11 +1305,8 @@
         
       <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/common/instrument-card-header/instrument-card-header.component.html</context><context context-type="linenumber">20</context></context-group></trans-unit><trans-unit id="ac60db775d7929e2076523b29f449dbff5623f6e" datatype="html">
         <source>{VAR_SELECT, select, maker {maker} taker {taker} }</source><target state="new">{VAR_SELECT, select, maker {卖方} taker {买方} }</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/common/instrument-card-header/instrument-card-header.component.html</context>
-          <context context-type="linenumber">22</context>
-        </context-group>
-      </trans-unit>
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/common/instrument-card-header/instrument-card-header.component.html</context><context context-type="linenumber">22</context></context-group></trans-unit>
       
       <trans-unit id="def51555c0dc07264e0a3e00b714e447286e4563" datatype="html">
         <source>expiry</source><target state="new">到期日</target>
@@ -1338,11 +1319,8 @@
         
       <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/common/instrument-card-header/instrument-card-header.component.html</context><context context-type="linenumber">36</context></context-group></trans-unit><trans-unit id="ecdf6a93a5ad16130d1938a7e794dd9a2a6e80e9" datatype="html">
         <source> days</source><target state="new"> days</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/common/instrument-card-header/instrument-card-header.component.html</context>
-          <context context-type="linenumber">38</context>
-        </context-group>
-      </trans-unit>
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/common/instrument-card-header/instrument-card-header.component.html</context><context context-type="linenumber">38</context></context-group></trans-unit>
       <trans-unit id="447a7f7fe432e4b5b32c4b724472349594318b57" datatype="html">
         <source>lending</source><target state="new">借入</target>
         
@@ -1445,23 +1423,14 @@
         
       <context-group purpose="location"><context context-type="sourcefile">src/app/notification/notification.component.html</context><context context-type="linenumber">16</context></context-group></trans-unit><trans-unit id="05738562bcafdd131d91e8b376e1ed0f3ae99ab5" datatype="html">
         <source>View More</source><target state="new">查看更多</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/notification/notification-banner/notification-banner.component.html</context>
-          <context context-type="linenumber">4</context>
-        </context-group>
-      </trans-unit><trans-unit id="ea4d9fe61420a3fce81cf54c4c615e3c19c646a6" datatype="html">
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/notification/notification-banner/notification-banner.component.html</context><context context-type="linenumber">4</context></context-group></trans-unit><trans-unit id="ea4d9fe61420a3fce81cf54c4c615e3c19c646a6" datatype="html">
         <source>Dismiss</source><target state="new">关闭</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/notification/notification-banner/notification-banner.component.html</context>
-          <context context-type="linenumber">5</context>
-        </context-group>
-      </trans-unit><trans-unit id="2b61dd024dbe52f7221f9603fe59a1ef388c2687" datatype="html">
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/notification/notification-banner/notification-banner.component.html</context><context context-type="linenumber">5</context></context-group></trans-unit><trans-unit id="2b61dd024dbe52f7221f9603fe59a1ef388c2687" datatype="html">
         <source>Account Balance:</source><target state="new">账户余额：</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/account/account-total-balance/account-total-balance.component.html</context>
-          <context context-type="linenumber">2</context>
-        </context-group>
-      </trans-unit><trans-unit id="d2f0e5eeeeb9913b12a75f3b5e54d2587c723d6e" datatype="html">
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/account/account-total-balance/account-total-balance.component.html</context><context context-type="linenumber">2</context></context-group></trans-unit><trans-unit id="d2f0e5eeeeb9913b12a75f3b5e54d2587c723d6e" datatype="html">
         <source>
                 <x id="ICU" equiv-text="{notification.type, select, APPROVE {...} other {...}}"/>
             </source><target state="new">
@@ -1538,51 +1507,24 @@
       <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap-detail/swap-detail.component.html</context><context context-type="linenumber">26</context></context-group></trans-unit><trans-unit id="2f1fd62c29abb6f851a1e35f4ef9c5e961935405" datatype="html">
         <source>Issuance ID: <x id="INTERPOLATION" equiv-text="{{issuanceId}}"/></source>
         <target state="new">合约 ID: <x id="INTERPOLATION" equiv-text="{{issuanceId}}"/></target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/common/instrument-card-header/instrument-card-header.component.html</context>
-          <context context-type="linenumber">3</context>
-        </context-group>
-      </trans-unit><trans-unit id="ab9d6dbcc34105e0de4def8ab6a53cb43771a559" datatype="html">
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/common/instrument-card-header/instrument-card-header.component.html</context><context context-type="linenumber">3</context></context-group></trans-unit><trans-unit id="ab9d6dbcc34105e0de4def8ab6a53cb43771a559" datatype="html">
         <source>Engageable</source><target state="new">待参与</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/common/instrument-card-header/instrument-card-header.component.html</context>
-          <context context-type="linenumber">7</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/common/instrument-detail-header/instrument-detail-header.component.html</context>
-          <context context-type="linenumber">8</context>
-        </context-group>
-      </trans-unit><trans-unit id="4d589b093da58dfb8ac9299aa7a82b5b6ccb87f2" datatype="html">
+        
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/common/instrument-card-header/instrument-card-header.component.html</context><context context-type="linenumber">7</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/common/instrument-detail-header/instrument-detail-header.component.html</context><context context-type="linenumber">8</context></context-group></trans-unit><trans-unit id="4d589b093da58dfb8ac9299aa7a82b5b6ccb87f2" datatype="html">
         <source>Cancelled</source><target state="new">已取消</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/common/instrument-card-header/instrument-card-header.component.html</context>
-          <context context-type="linenumber">9</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/common/instrument-detail-header/instrument-detail-header.component.html</context>
-          <context context-type="linenumber">10</context>
-        </context-group>
-      </trans-unit><trans-unit id="ffde7468d7b5cad6990095ed68ddee3d67cd02f8" datatype="html">
+        
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/common/instrument-card-header/instrument-card-header.component.html</context><context context-type="linenumber">9</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/common/instrument-detail-header/instrument-detail-header.component.html</context><context context-type="linenumber">10</context></context-group></trans-unit><trans-unit id="ffde7468d7b5cad6990095ed68ddee3d67cd02f8" datatype="html">
         <source>Expired</source><target state="new">已过期</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/common/instrument-card-header/instrument-card-header.component.html</context>
-          <context context-type="linenumber">10</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/common/instrument-detail-header/instrument-detail-header.component.html</context>
-          <context context-type="linenumber">11</context>
-        </context-group>
-      </trans-unit><trans-unit id="bf612b44e3ba6c05c219aceac6a6ed6c37df1dc4" datatype="html">
+        
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/common/instrument-card-header/instrument-card-header.component.html</context><context context-type="linenumber">10</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/common/instrument-detail-header/instrument-detail-header.component.html</context><context context-type="linenumber">11</context></context-group></trans-unit><trans-unit id="bf612b44e3ba6c05c219aceac6a6ed6c37df1dc4" datatype="html">
         <source>Complete</source><target state="new">已完成</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/common/instrument-card-header/instrument-card-header.component.html</context>
-          <context context-type="linenumber">11</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/common/instrument-detail-header/instrument-detail-header.component.html</context>
-          <context context-type="linenumber">12</context>
-        </context-group>
-      </trans-unit>
+        
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/common/instrument-card-header/instrument-card-header.component.html</context><context context-type="linenumber">11</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/common/instrument-detail-header/instrument-detail-header.component.html</context><context context-type="linenumber">12</context></context-group></trans-unit>
       
       
     

@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { Component, NgZone, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { NutsPlatformService, USD_ADDRESS, CNY_ADDRESS, SWAP_NAME } from 'src/app/common/web3/nuts-platform.service';
+import { NutsPlatformService, SWAP_NAME } from 'src/app/common/web3/nuts-platform.service';
 import { PriceOracleService } from 'src/app/common/web3/price-oracle.service';
 import { CurrencyService } from 'src/app/common/currency-select/currency.service';
 import { MatDialog } from '@angular/material';
@@ -87,7 +87,7 @@ export class SwapDetailComponent implements OnInit {
             width: '90%',
             data: {
               type: 'engage_issuance', instrument: SWAP_NAME, issuanceId: this.issuance.issuanceid,
-              tokenName: this.inputToken, tokenAmount: this.swapIssuance.inputamount,
+              token: this.inputToken, tokenAmount: this.swapIssuance.inputamount,
             },
           });
           transactionInitiatedDialog.afterClosed().subscribe(() => {

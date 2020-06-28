@@ -46,7 +46,7 @@ const routes: Routes = [
           { path: '', redirectTo: 'account', pathMatch: 'full' },
           { path: 'account', component: AccountComponent, data: { instrument: 'lending' } },
           { path: 'create', component: LendingCreateComponent },
-          { path: 'engage', component: LendingEngageComponent },
+          { path: 'marketplace', component: LendingEngageComponent },
           { path: 'positions', component: LendingPositionsComponent },
           { path: 'positions/:id', component: LendingDetailComponent }
         ]
@@ -59,7 +59,7 @@ const routes: Routes = [
           { path: '', redirectTo: 'account', pathMatch: 'full' },
           { path: 'account', component: AccountComponent, data: { instrument: 'borrowing' } },
           { path: 'create', component: BorrowingCreateComponent },
-          { path: 'engage', component: BorrowingEngageComponent },
+          { path: 'marketplace', component: BorrowingEngageComponent },
           { path: 'positions', component: BorrowingPositionsComponent },
           { path: 'positions/:id', component: BorrowingDetailComponent }
         ]
@@ -72,7 +72,7 @@ const routes: Routes = [
           { path: '', redirectTo: 'account', pathMatch: 'full' },
           { path: 'account', component: AccountComponent, data: { instrument: 'swap' } },
           { path: 'create', component: SwapCreateComponent },
-          { path: 'engage', component: SwapEngageComponent },
+          { path: 'marketplace', component: SwapEngageComponent },
           { path: 'positions', component: SwapPositionsComponent },
           { path: 'positions/:id', component: SwapDetailComponent }
         ]

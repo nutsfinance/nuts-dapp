@@ -102,7 +102,7 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
             width: '90%',
             data: {
               type: 'engage_issuance', instrument: LENDING_NAME, issuanceId: this.issuance.issuanceid,
-              tokenAmount: this.lendingIssuance.lendingamount, tokenName: this.lendingToken.tokenSymbol,
+              tokenAmount: this.lendingIssuance.lendingamount, token: this.lendingToken,
             },
           });
           transactionInitiatedDialog.afterClosed().subscribe(() => {
@@ -126,7 +126,7 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
             width: '90%',
             data: {
               type: 'repay_issuance', instrument: LENDING_NAME, issuanceId: this.issuance.issuanceid,
-              tokenAmount: repayAmount, tokenName: this.lendingToken.tokenSymbol,
+              tokenAmount: repayAmount, token: this.lendingToken,
             },
           });
           transactionInitiatedDialog.afterClosed().subscribe(() => {

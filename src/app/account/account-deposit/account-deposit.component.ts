@@ -42,6 +42,10 @@ export class AccountDepositComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     this.depositFormGroup.patchValue({ amount: this.amount });
+    // If no token is selected, select the first one!
+    if (!this.selectedToken) {
+      this.selectedToken = this.includedTokens[0];
+    }
   }
 
   onTokenSelected(token: TokenModel) {
