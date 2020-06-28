@@ -958,11 +958,8 @@
         </source><target state="new">
           Projected interest cost: <x id="INTERPOLATION" equiv-text="{{ interestValue | tokenValue:principalToken.tokenAddress | number: '1.0-4' }}"/> <x id="INTERPOLATION_1" equiv-text="{{principalToken.tokenSymbol}}"/>
         </target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/lending/lending-create/lending-create.component.html</context>
-          <context context-type="linenumber">219</context>
-        </context-group>
-      </trans-unit>
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/lending/lending-create/lending-create.component.html</context><context context-type="linenumber">219</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/borrowing/borrowing-create/borrowing-create.component.html</context><context context-type="linenumber">218</context></context-group></trans-unit>
       <trans-unit id="401939a7fc0922e7fa4b08a23d48803cf86f6765" datatype="html">
         <source>There are currently no available offers.</source><target state="new">There are currently no available offers.</target>
         <context-group purpose="location">
