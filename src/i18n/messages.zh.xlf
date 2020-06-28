@@ -13,7 +13,7 @@
           <context context-type="linenumber">4</context>
         </context-group>
       </trans-unit><trans-unit id="71a0805cbb874804c2f123295876cc568c4350f9" datatype="html">
-        <source>Funding</source><target state="new">冲提</target>
+        <source>Funding</source><target state="new">充提</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/instrument/lending/lending.component.html</context>
           <context context-type="linenumber">6</context>
@@ -82,7 +82,7 @@
         <source>
     Please enable <x id="INTERPOLATION" equiv-text="{{approveToken.tokenSymbol}}"/> before deposit.
   </source><target state="new">
-    Please enable <x id="INTERPOLATION" equiv-text="{{approveToken.tokenSymbol}}"/> before deposit.
+    请先授权 <x id="INTERPOLATION" equiv-text="{{approveToken.tokenSymbol}}"/> 充值。
   </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/account/account.component.html</context>
@@ -92,7 +92,7 @@
         <source>
     NUTS Platform is new technology and security audits don't completely eliminate risks. Please don't supply assets you can't afford to lose.
   </source><target state="new">
-    NUTS Platform is new technology and security audits don't completely eliminate risks. Please don't supply assets you can't afford to lose.
+    NUTS Platform是一个崭新的技术平台，通过安全审计不代表能避免所有攻击风险。如果您担心资产丢失，请停止充值。
   </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/account/account.component.html</context>
@@ -114,7 +114,7 @@
         
       <context-group purpose="location"><context context-type="sourcefile">src/app/account/account.component.html</context><context context-type="linenumber">31</context></context-group></trans-unit>
       <trans-unit id="b59ea65c89a5ae15b787d8318fdad9edd6fec243" datatype="html">
-        <source>Transaction</source><target state="new">冲提记录</target>
+        <source>Transaction</source><target state="new">充提记录</target>
         
       <context-group purpose="location"><context context-type="sourcefile">src/app/account/account.component.html</context><context context-type="linenumber">43</context></context-group></trans-unit>
       <trans-unit id="b7b22aa7bb952cd386daa986840f815b1ecd8230" datatype="html">
@@ -166,55 +166,64 @@
           <context context-type="linenumber">10</context>
         </context-group>
       </trans-unit><trans-unit id="71e7a6acbe743a162390b46360ed568f6f3d3c8e" datatype="html">
-        <source>Approval request for <x id="INTERPOLATION" equiv-text="{{data.fspName}}"/> to withdraw and spend <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> has been initiated.</source><target state="new">Approval request for <x id="INTERPOLATION" equiv-text="{{data.fspName}}"/> to withdraw and spend <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> has been initiated.</target>
+        <source>Approval request for <x id="INTERPOLATION" equiv-text="{{data.fspName}}"/> to withdraw and spend <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> has been initiated.</source>
+        <target state="new">授权 <x id="INTERPOLATION" equiv-text="{{data.fspName}}"/> 提现并支付 <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> 的申请已发起。</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
           <context context-type="linenumber">17</context>
         </context-group>
       </trans-unit><trans-unit id="ca884c3c56722980f71d79faee3c6c065f7d434c" datatype="html">
-        <source>Your deposit request for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.token.tokenAddress}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> has been initiated.</source><target state="new">Your deposit request for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.token.tokenAddress}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> has been initiated.</target>
+        <source>Your deposit request for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.token.tokenAddress}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> has been initiated.</source>
+        <target state="new">您 <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.token.tokenAddress}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> 的充值申请已发起。</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
           <context context-type="linenumber">20</context>
         </context-group>
       </trans-unit><trans-unit id="cad99a96e1071edd8c75bc9654b268abd92219f1" datatype="html">
-        <source>Your withdrawal request for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.token.tokenAddress}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> has been initiated.</source><target state="new">Your withdrawal request for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.token.tokenAddress}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> has been initiated.</target>
+        <source>Your withdrawal request for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.token.tokenAddress}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> has been initiated.</source>
+        <target state="new">您 <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.token.tokenAddress}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> 的提现申请已发起。</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
           <context context-type="linenumber">23</context>
         </context-group>
       </trans-unit><trans-unit id="3711de0d1b85dbf7be924502dbe63af0407940a2" datatype="html">
-        <source>Your lending offer for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.token.tokenAddress}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> has been initiated.</source><target state="new">Your lending offer for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.token.tokenAddress}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> has been initiated.</target>
+        <source>Your lending offer for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.token.tokenAddress}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> has been initiated.</source>
+        <target state="new">您的 <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.token.tokenAddress}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> 贷款合约创建已发起。</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
           <context context-type="linenumber">26</context>
         </context-group>
       </trans-unit><trans-unit id="706269984ad9ecbe89eb11dc39c85f9e2a3063d5" datatype="html">
-        <source>Your borrowing offer for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.token.tokenAddress}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> has been initiated.</source><target state="new">Your borrowing offer for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.token.tokenAddress}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> has been initiated.</target>
+        <source>Your borrowing offer for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.token.tokenAddress}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> has been initiated.</source>
+        <target state="new">您的 <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.token.tokenAddress}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> 借款合约创建已发起。</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
           <context context-type="linenumber">27</context>
         </context-group>
       </trans-unit><trans-unit id="012d7ed92eecfbe23194bd9688314f17400fbc99" datatype="html">
-        <source>Your swap offer for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.token.tokenAddress}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> has been initiated.</source><target state="new">Your swap offer for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.token.tokenAddress}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> has been initiated.</target>
+        <source>Your swap offer for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.token.tokenAddress}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> has been initiated.</source>
+        <target state="new">您的 <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.token.tokenAddress}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> 互换合约创建已发起。</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
           <context context-type="linenumber">28</context>
         </context-group>
       </trans-unit><trans-unit id="757f6a1499983e7f12c7b21099a25ea303a6c31b" datatype="html">
-        <source>Your loan request for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.token.tokenAddress}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> has been initiated.</source><target state="new">Your loan request for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.token.tokenAddress}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> has been initiated.</target>
+        <source>Your loan request for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.token.tokenAddress}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> has been initiated.</source>
+        <target state="new">您的 <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.token.tokenAddress}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> 借款申请已发起。</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
           <context context-type="linenumber">31</context>
         </context-group>
       </trans-unit><trans-unit id="7695ca2d1209821fbd53a9f0df31e6de5e4359c4" datatype="html">
-        <source>Your lending request for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.token.tokenAddress}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> has been initiated.</source><target state="new">Your lending request for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.token.tokenAddress}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> has been initiated.</target>
+        <source>Your lending request for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.token.tokenAddress}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> has been initiated.</source>
+        <target state="new">您的 <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.token.tokenAddress}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> 贷款申请已发起。</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
           <context context-type="linenumber">32</context>
         </context-group>
       </trans-unit><trans-unit id="92d6eebe5ed8c68f620c2474c8a5724a3d166e7c" datatype="html">
-        <source>Your swap request for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.token.tokenAddress}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> has been initiated.</source><target state="new">Your swap request for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.token.tokenAddress}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> has been initiated.</target>
+        <source>Your swap request for <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.token.tokenAddress}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> has been initiated.</source>
+        <target state="new">您的 <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.token.tokenAddress}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> 互换申请已发起。</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
           <context context-type="linenumber">33</context>
@@ -241,7 +250,8 @@
           <context context-type="linenumber">38</context>
         </context-group>
       </trans-unit><trans-unit id="42ef652343bdfc6f0c46aab93f39625548a455d2" datatype="html">
-        <source>Principal and interests repayment <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.token.tokenAddress}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> has been initiated.</source><target state="new">Principal and interests repayment <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.token.tokenAddress}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> has been initiated.</target>
+        <source>Principal and interests repayment <x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.token.tokenAddress}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> has been initiated.</source>
+        <target state="new"><x id="INTERPOLATION" equiv-text="{{data.tokenAmount | tokenValue:data.token.tokenAddress}}"/> <x id="INTERPOLATION_1" equiv-text="{{data.token.tokenSymbol}}"/> 的本金与利息还款已发起。</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/common/transaction-initiated-dialog/transaction-initiated-dialog.component.html</context>
           <context context-type="linenumber">41</context>
@@ -299,7 +309,7 @@
           <context context-type="linenumber">9</context>
         </context-group>
       </trans-unit><trans-unit id="383144c77765c19628049edf48889a7904519f6b" datatype="html">
-        <source>Wallet Balance: </source><target state="new">Wallet Balance: </target>
+        <source>Wallet Balance: </source><target state="new">钱包余额： </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/account/account-deposit/account-deposit.component.html</context>
           <context context-type="linenumber">22</context>
@@ -309,7 +319,7 @@
           <context context-type="linenumber">22</context>
         </context-group>
       </trans-unit><trans-unit id="6b9338e5b71a0f67eb139742bdbe043f760f3927" datatype="html">
-        <source>Account Balance: </source><target state="new">Account Balance: </target>
+        <source>Account Balance: </source><target state="new">账户余额： </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/account/account-deposit/account-deposit.component.html</context>
           <context context-type="linenumber">36</context>
@@ -348,7 +358,7 @@
         <source>
           Withdraw <x id="INTERPOLATION" equiv-text="{{selectedToken.tokenSymbol}}"/>
         </source><target state="new">
-          Withdraw <x id="INTERPOLATION" equiv-text="{{selectedToken.tokenSymbol}}"/>
+          提现 <x id="INTERPOLATION" equiv-text="{{selectedToken.tokenSymbol}}"/>
         </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/account/account-withdraw/account-withdraw.component.html</context>
@@ -458,7 +468,7 @@
         
         
       <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/lending/lending-create/lending-create.component.html</context><context context-type="linenumber">42</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/borrowing/borrowing-create/borrowing-create.component.html</context><context context-type="linenumber">38</context></context-group></trans-unit><trans-unit id="678f8c8a580bd74254688ba17b2d0ebb44431357" datatype="html">
-        <source>Lending A/C Balance: </source><target state="new">Lending A/C Balance: </target>
+        <source>Lending A/C Balance: </source><target state="new">贷款账户余额： </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/instrument/lending/lending-create/lending-create.component.html</context>
           <context context-type="linenumber">47</context>
@@ -560,7 +570,7 @@
         <source>
           Projected interest cost: <x id="INTERPOLATION" equiv-text="{{ interestValue | tokenValue:principalToken.tokenAddress | number: '1.0-4' }}"/> <x id="INTERPOLATION_1" equiv-text="{{principalToken.tokenSymbol}}"/>
         </source><target state="new">
-          Projected interest cost: <x id="INTERPOLATION" equiv-text="{{ interestValue | tokenValue:principalToken.tokenAddress | number: '1.0-4' }}"/> <x id="INTERPOLATION_1" equiv-text="{{principalToken.tokenSymbol}}"/>
+          预计利息成本： <x id="INTERPOLATION" equiv-text="{{ interestValue | tokenValue:principalToken.tokenAddress | number: '1.0-4' }}"/> <x id="INTERPOLATION_1" equiv-text="{{principalToken.tokenSymbol}}"/>
         </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/instrument/lending/lending-create/lending-create.component.html</context>
@@ -883,7 +893,7 @@
         
         
       <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap-create/swap-create.component.html</context><context context-type="linenumber">41</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap-create/swap-create.component.html</context><context context-type="linenumber">86</context></context-group></trans-unit><trans-unit id="917381dd50afa92dfd6580a1a4daf07c2cf5534d" datatype="html">
-        <source>Swap A/C Balance: </source><target state="new">Swap A/C Balance: </target>
+        <source>Swap A/C Balance: </source><target state="new">互换账户余额： </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/instrument/swap/swap-create/swap-create.component.html</context>
           <context context-type="linenumber">46</context>
@@ -947,7 +957,7 @@
         </target>
         
       </trans-unit><trans-unit id="5334c323443bd7aa32f7abcf3c7bb3d01e88ab6b" datatype="html">
-        <source>Borrowing A/C Balance: </source><target state="new">Borrowing A/C Balance: </target>
+        <source>Borrowing A/C Balance: </source><target state="new">借款账户余额： </target>
         
       </trans-unit>
       <trans-unit id="0be1de3f69293297c5f7e8c2630f73fb2e8c80b6" datatype="html">
@@ -1006,13 +1016,13 @@
         <target state="new">账户详情代表所有产品账户中的总存储资产。</target>
         
       <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/dashboard/dashboard-account-balance/dashboard-account-balance.component.html</context><context context-type="linenumber">9</context></context-group></trans-unit><trans-unit id="313d03a8f3b4589c894dc0417d225eff28153ad2" datatype="html">
-        <source>Instruments Balance</source><target state="new">Instruments Balance</target>
+        <source>Instruments Balance</source><target state="new">产品资产分布</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/instrument/dashboard/dashboard-account-balance/dashboard-account-balance.component.html</context>
           <context context-type="linenumber">17</context>
         </context-group>
       </trans-unit><trans-unit id="acbf700f1c778cbdccb86f4a748279d5f9d2583b" datatype="html">
-        <source>Assets Composition</source><target state="new">Assets Composition</target>
+        <source>Assets Composition</source><target state="new">代币资产分布</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/instrument/dashboard/dashboard-account-balance/dashboard-account-balance.component.html</context>
           <context context-type="linenumber">26</context>
@@ -1243,7 +1253,7 @@
           <context context-type="linenumber">44</context>
         </context-group>
       </trans-unit><trans-unit id="5ba0fb7965f82b266936c46f9e1a7ebcfcf7cd28" datatype="html">
-        <source>{VAR_SELECT, select, maker {maker} taker {taker} }</source><target state="new">{VAR_SELECT, select, maker {maker} taker {taker} }</target>
+        <source>{VAR_SELECT, select, maker {maker} taker {taker} }</source><target state="new">{VAR_SELECT, select, maker {卖方} taker {买方} }</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/instrument/lending/lending-detail/lending-detail.component.html</context>
           <context context-type="linenumber">94</context>
@@ -1310,7 +1320,7 @@
         
         
       <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/common/instrument-card-header/instrument-card-header.component.html</context><context context-type="linenumber">20</context></context-group></trans-unit><trans-unit id="ac60db775d7929e2076523b29f449dbff5623f6e" datatype="html">
-        <source>{VAR_SELECT, select, maker {maker} taker {taker} }</source><target state="new">{VAR_SELECT, select, maker {maker} taker {taker} }</target>
+        <source>{VAR_SELECT, select, maker {maker} taker {taker} }</source><target state="new">{VAR_SELECT, select, maker {卖方} taker {买方} }</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/instrument/common/instrument-card-header/instrument-card-header.component.html</context>
           <context context-type="linenumber">22</context>
@@ -1434,19 +1444,19 @@
         <source>You're up to date!</source><target state="new">没有最新消息了！</target>
         
       <context-group purpose="location"><context context-type="sourcefile">src/app/notification/notification.component.html</context><context context-type="linenumber">16</context></context-group></trans-unit><trans-unit id="05738562bcafdd131d91e8b376e1ed0f3ae99ab5" datatype="html">
-        <source>View More</source><target state="new">View More</target>
+        <source>View More</source><target state="new">查看更多</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/notification/notification-banner/notification-banner.component.html</context>
           <context context-type="linenumber">4</context>
         </context-group>
       </trans-unit><trans-unit id="ea4d9fe61420a3fce81cf54c4c615e3c19c646a6" datatype="html">
-        <source>Dismiss</source><target state="new">Dismiss</target>
+        <source>Dismiss</source><target state="new">关闭</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/notification/notification-banner/notification-banner.component.html</context>
           <context context-type="linenumber">5</context>
         </context-group>
       </trans-unit><trans-unit id="2b61dd024dbe52f7221f9603fe59a1ef388c2687" datatype="html">
-        <source>Account Balance:</source><target state="new">Account Balance:</target>
+        <source>Account Balance:</source><target state="new">账户余额：</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/account/account-total-balance/account-total-balance.component.html</context>
           <context context-type="linenumber">2</context>
@@ -1463,41 +1473,43 @@
         <target state="new">{VAR_SELECT, select, APPROVE {充值} other {查看} }</target>
         
       </trans-unit><trans-unit id="4b41f1b2bfea503ffb2220b623a70705bd7a20a0" datatype="html">
-        <source>Welcome to dApp.Finance.</source><target state="new">Welcome to dApp.Finance.</target>
+        <source>Welcome to dApp.Finance.</source><target state="new">欢迎来到 dApp.Finance。</target>
         
       </trans-unit><trans-unit id="80ed4e2afa0c853c90f9e9fc866be49800e6e8cb" datatype="html">
-        <source>Start creating and discovering offers by connnecting your wallet.</source><target state="new">Start creating and discovering offers by connnecting your wallet.</target>
+        <source>Start creating and discovering offers by connnecting your wallet.</source>
+        <target state="new">马上连接您的钱包来创建或寻找合约吧。</target>
         
       </trans-unit><trans-unit id="fceccb0465bb9f5db57b7e07df9ce1df8e54eb85" datatype="html">
-        <source>Connect Metamask Wallet</source><target state="new">Connect Metamask Wallet</target>
+        <source>Connect Metamask Wallet</source><target state="new">连接 Metamask 钱包</target>
         
       </trans-unit><trans-unit id="e2635449abbfe20485704f613582f592322b8dd4" datatype="html">
-        <source>By connecting your wallet, your wallet address becomes public to this dApp and you agree to NUTS Finance's </source><target state="new">By connecting your wallet, your wallet address becomes public to this dApp and you agree to NUTS Finance's </target>
+        <source>By connecting your wallet, your wallet address becomes public to this dApp and you agree to NUTS Finance's </source>
+        <target state="new">当连接您的钱包时，代表您同意钱包地址对此 dApp 公开，同时您同意 NUTS Finance的 </target>
         
       </trans-unit><trans-unit id="65263b35cacd829b1b95968ba56e00e0241d9757" datatype="html">
-        <source>Terms of Service Policy</source><target state="new">Terms of Service Policy</target>
+        <source>Terms of Service Policy</source><target state="new">服务条款</target>
         
       </trans-unit><trans-unit id="3c78b53bca33467190c0b7a01320bc093a2b1427" datatype="html">
-        <source>Privacy</source><target state="new">Privacy</target>
+        <source>Privacy</source><target state="new">隐私</target>
         
       </trans-unit><trans-unit id="dce4fb53bd401f2ded36a8c45cb471eff6b529d4" datatype="html">
-        <source>and</source><target state="new">and</target>
+        <source>and</source><target state="new">与</target>
         
       </trans-unit><trans-unit id="9b505f91967c67bc964a34abfcb31a85db3cb78f" datatype="html">
-        <source>Cookie Policy</source><target state="new">Cookie Policy</target>
+        <source>Cookie Policy</source><target state="new">Cookie 政策</target>
         
       </trans-unit><trans-unit id="fe93752dfc58fb6df78190f108da5be0b755b727" datatype="html">
         <source>
         Wrong Network
     </source><target state="new">
-        Wrong Network
+        网络错误
     </target>
         
       </trans-unit><trans-unit id="44335c4624b63a82f202d9a62829c14fb0f67c56" datatype="html">
         <source>
     You are connected to an unsupported network(<x id="INTERPOLATION" equiv-text="{{nutsPlatformService.currentNetwork}}"/>). Please change your network to Mainnet or Kovan Testnet.
 </source><target state="new">
-    You are connected to an unsupported network(<x id="INTERPOLATION" equiv-text="{{nutsPlatformService.currentNetwork}}"/>). Please change your network to Mainnet or Kovan Testnet.
+    我们目前不支持您连接的网络(<x id="INTERPOLATION" equiv-text="{{nutsPlatformService.currentNetwork}}"/>)。 请切换到主网或者Kovan测试网。
 </target>
         
       </trans-unit>
@@ -1512,7 +1524,7 @@
         
       <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context><context context-type="linenumber">10</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context><context context-type="linenumber">46</context></context-group></trans-unit>
       <trans-unit id="4e5537fd9f67fe253922e7c676653a340d0225d5" datatype="html">
-        <source><x id="INTERPOLATION" equiv-text="{{currencyService.currency}}"/> Value</source><target state="new"><x id="INTERPOLATION" equiv-text="{{currencyService.currency}}"/> Value</target>
+        <source><x id="INTERPOLATION" equiv-text="{{currencyService.currency}}"/> Value</source><target state="new"><x id="INTERPOLATION" equiv-text="{{currencyService.currency}}"/> 价值</target>
         
       <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/lending/lending-card/lending-card.component.html</context><context context-type="linenumber">44</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context><context context-type="linenumber">43</context></context-group></trans-unit>
       
@@ -1524,13 +1536,14 @@
         <source>Output</source><target state="new">换入</target>
         
       <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap-detail/swap-detail.component.html</context><context context-type="linenumber">26</context></context-group></trans-unit><trans-unit id="2f1fd62c29abb6f851a1e35f4ef9c5e961935405" datatype="html">
-        <source>Issuance ID: <x id="INTERPOLATION" equiv-text="{{issuanceId}}"/></source><target state="new">Issuance ID: <x id="INTERPOLATION" equiv-text="{{issuanceId}}"/></target>
+        <source>Issuance ID: <x id="INTERPOLATION" equiv-text="{{issuanceId}}"/></source>
+        <target state="new">合约 ID: <x id="INTERPOLATION" equiv-text="{{issuanceId}}"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/instrument/common/instrument-card-header/instrument-card-header.component.html</context>
           <context context-type="linenumber">3</context>
         </context-group>
       </trans-unit><trans-unit id="ab9d6dbcc34105e0de4def8ab6a53cb43771a559" datatype="html">
-        <source>Engageable</source><target state="new">Engageable</target>
+        <source>Engageable</source><target state="new">待参与</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/instrument/common/instrument-card-header/instrument-card-header.component.html</context>
           <context context-type="linenumber">7</context>
@@ -1540,7 +1553,7 @@
           <context context-type="linenumber">8</context>
         </context-group>
       </trans-unit><trans-unit id="4d589b093da58dfb8ac9299aa7a82b5b6ccb87f2" datatype="html">
-        <source>Cancelled</source><target state="new">Cancelled</target>
+        <source>Cancelled</source><target state="new">已取消</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/instrument/common/instrument-card-header/instrument-card-header.component.html</context>
           <context context-type="linenumber">9</context>
@@ -1550,7 +1563,7 @@
           <context context-type="linenumber">10</context>
         </context-group>
       </trans-unit><trans-unit id="ffde7468d7b5cad6990095ed68ddee3d67cd02f8" datatype="html">
-        <source>Expired</source><target state="new">Expired</target>
+        <source>Expired</source><target state="new">已过期</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/instrument/common/instrument-card-header/instrument-card-header.component.html</context>
           <context context-type="linenumber">10</context>
@@ -1560,7 +1573,7 @@
           <context context-type="linenumber">11</context>
         </context-group>
       </trans-unit><trans-unit id="bf612b44e3ba6c05c219aceac6a6ed6c37df1dc4" datatype="html">
-        <source>Complete</source><target state="new">Complete</target>
+        <source>Complete</source><target state="new">已完成</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/instrument/common/instrument-card-header/instrument-card-header.component.html</context>
           <context context-type="linenumber">11</context>
