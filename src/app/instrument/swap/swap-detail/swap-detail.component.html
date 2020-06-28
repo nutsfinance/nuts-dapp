@@ -88,7 +88,7 @@
                 <app-account-balance [instrument]="'swap'" [tokenAddress]="outputToken.tokenAddress"
                     (balanceUpdated)="onOutputTokenBalanceUpdated($event)">
                 </app-account-balance>
-                {{outputToken}}
+                {{outputToken.tokenSymbol}}
             </span> <span i18n>available</span>)
             <a class="deposit-button" routerLink="../../account" [queryParams]="{ tokenAddress: outputToken.tokenAddress }" i18n>Deposit</a>
         </div>
