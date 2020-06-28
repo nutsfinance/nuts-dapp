@@ -72,6 +72,27 @@
               "i18nFormat": "xlf",
               "i18nLocale": "zh"
             },
+            "production-zh-hk": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.zh-hk.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "outputPath": "dist/zh-hk",
+              "i18nFile": "src/i18n/messages.zh-hk.xlf",
+              "i18nFormat": "xlf",
+              "i18nLocale": "zh-hk"
+            },
             "zh": {
               "fileReplacements": [
                 {
@@ -85,6 +106,26 @@
               "i18nFormat": "xlf",
               "i18nLocale": "zh"
             }
+          },
+          "en": {
+            "aot": true,
+            "outputPath": "dist/en",
+            "i18nFile": "src/i18n/messages.en.xlf",
+            "i18nFormat": "xlf",
+            "i18nLocale": "en"
+          },
+          "zh-hk": {
+            "fileReplacements": [
+              {
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment.zh-hk.ts"
+              }
+            ],
+            "aot": true,
+            "outputPath": "dist/zh-hk",
+            "i18nFile": "src/i18n/messages.zh-hk.xlf",
+            "i18nFormat": "xlf",
+            "i18nLocale": "zh-hk"
           }
         },
         "serve": {
@@ -101,6 +142,12 @@
             },
             "zh": {
               "browserTarget": "nuts-dapp:build:zh"
+            },
+            "en": {
+              "browserTarget": "nuts-dapp:build:en"
+            },
+            "zh-hk": {
+              "browserTarget": "nuts-dapp:build:zh-hk"
             }
           }
         },

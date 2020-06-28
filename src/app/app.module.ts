@@ -57,6 +57,7 @@ import { IncorrectNetworkDialog } from './common/incorrect-network-dialog/incorr
 import { DisconnectedDialog } from './common/disconnected-dialog/disconnected-dialog.component';
 import { InstrumentCardHeaderComponent } from './instrument/common/instrument-card-header/instrument-card-header.component';
 import { InstrumentDetailHeaderComponent } from './instrument/common/instrument-detail-header/instrument-detail-header.component';
+import { NotificationBannerComponent } from './notification/notification-banner/notification-banner.component';
 
 
 @NgModule({
@@ -97,6 +98,7 @@ import { InstrumentDetailHeaderComponent } from './instrument/common/instrument-
     LendingCardComponent,
     NotificationComponent,
     NotificationRowComponent,
+    NotificationBannerComponent,
     InstrumentComponent,
     TimeAgoPipe,
     NotificationDialog,

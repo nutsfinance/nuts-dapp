@@ -93,7 +93,7 @@
             Repay
         </a>
         <a mat-stroked-button color="primary" class="issuance-action-button close-button" 
-            [routerLink]="['/', language, 'instrument', 'lending', 'positions', issuance.issuanceId]"
+            [routerLink]="['/', language, 'instrument', 'lending', 'positions', issuance.issuanceid]"
             *ngIf="offerState != 'Engageable' && !(offerState == 'Engaged' && role == 'taker')" i18n>
             View Position
         </a>

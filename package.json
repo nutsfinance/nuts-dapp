@@ -5,14 +5,18 @@
     "ng": "ng",
     "start": "ng serve",
     "start:zh": "ng serve --configuration=zh",
+    "start:zh-hk": "ng serve --configuration=zh-hk",
     "build": "ng build",
     "build:prod": "ng build --configuration=production",
     "build:prod:zh": "ng build --configuration=production-zh",
+    "build:prod:zh-hk": "ng build --configuration=production-zh-hk --deploy-url=/zh-hk/",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "extract-i18n": "ng xi18n nuts-dapp --i18n-format xlf --output-path src/i18n --i18n-locale en && ng run nuts-dapp:xliffmerge",
-    "start-zh": "ng serve --configuration=zh"
+    "start-zh": "ng serve --configuration=zh",
+    "start-en": "ng serve --configuration=en",
+    "start-zh-hk": "ng serve --configuration=zh-hk"
   },
   "private": true,
   "dependencies": {

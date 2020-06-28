@@ -73,7 +73,7 @@
                 <mat-form-field appearance="outline" class="amount-input">
                     <input matInput type="number" placeholder="Amount" formControlName="outputAmount">
                 </mat-form-field>
-                <app-token-select [selectedToken]="outputToken" [includedTokens]="collateralTokenList" (tokenSelected)="onOutputTokenSelected($event)"></app-token-select>
+                <app-token-select [selectedToken]="outputToken" [includedTokens]="outputTokenList" (tokenSelected)="onOutputTokenSelected($event)"></app-token-select>
             </div>
         </div>
 

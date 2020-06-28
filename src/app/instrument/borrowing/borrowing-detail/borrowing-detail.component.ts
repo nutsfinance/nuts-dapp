@@ -40,7 +40,7 @@ export class BorrowingDetailComponent implements OnInit, OnDestroy {
   private borrowingUpdatedSubscription: Subscription;
   private currencyUpdatedSubscription: Subscription;
 
-  constructor(public nutsPlatformService: NutsPlatformService, private borrowingService: BorrowingService,
+  constructor(public nutsPlatformService: NutsPlatformService, public borrowingService: BorrowingService,
     private priceOracleService: PriceOracleService, public currencyService: CurrencyService,
     private tokenService: TokenService, private route: ActivatedRoute, private zone: NgZone,
     private location: Location, private dialog: MatDialog) { }

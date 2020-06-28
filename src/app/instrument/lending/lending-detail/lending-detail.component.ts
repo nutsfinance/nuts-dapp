@@ -43,7 +43,7 @@ export class LendingDetailComponent implements OnInit, OnDestroy {
   private lendingUpdatedSubscription: Subscription;
   private currencyUpdatedSubscription: Subscription;
 
-  constructor(public nutsPlatformService: NutsPlatformService, private lendingService: LendingService,
+  constructor(public nutsPlatformService: NutsPlatformService, public lendingService: LendingService,
     private priceOracleService: PriceOracleService, public currencyService: CurrencyService, private accountService: AccountService,
     private tokenService: TokenService, private route: ActivatedRoute, private zone: NgZone,
     private location: Location, private dialog: MatDialog) { }

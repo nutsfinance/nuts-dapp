@@ -16,7 +16,7 @@ export class InstrumentCardHeaderComponent implements OnInit {
   public issuanceId;
   public role: UserRole;
 
-  constructor(private nutsPlatformService: NutsPlatformService, private instrumentService: InstrumentService) { }
+  constructor(private nutsPlatformService: NutsPlatformService, public instrumentService: InstrumentService) { }
 
   ngOnInit() {
     this.issuanceId = `${this.nutsPlatformService.getInstrumentId(this.instrumentName)}-${this.issuance.issuanceid}`;

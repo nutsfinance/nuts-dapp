@@ -35,7 +35,7 @@ export class BorrowingCardComponent implements OnInit, OnDestroy {
   private currencyUpdatedSubscription: Subscription;
 
   constructor(public nutsPlatformService: NutsPlatformService, private priceOracleService: PriceOracleService,
-    private borrowingService: BorrowingService, private tokenService: TokenService, public currencyService: CurrencyService, private zone: NgZone) { }
+    public borrowingService: BorrowingService, private tokenService: TokenService, public currencyService: CurrencyService, private zone: NgZone) { }
 
   ngOnInit() {
     this.borrowingIssuance = this.issuance.issuancecustomproperty as BorrowingIssuanceModel;

@@ -14,8 +14,8 @@ import { TokenService } from 'src/app/common/token/token.service';
 })
 export class SwapCreateComponent implements OnInit {
   @ViewChild('form', { static: true }) private form: NgForm;
-  private tokens: TokenModel[] = [];
 
+  public tokens: TokenModel[] = [];
   public createFormGroup: FormGroup;
   public inputToken: TokenModel;
   public outputTokenList: TokenModel[] = [];

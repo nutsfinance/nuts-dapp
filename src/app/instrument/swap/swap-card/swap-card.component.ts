@@ -34,7 +34,7 @@ export class SwapCardComponent implements OnInit, OnDestroy {
   private currencyUpdatedSubscription: Subscription;
 
   constructor(public nutsPlatformService: NutsPlatformService, private priceOracleService: PriceOracleService,
-    private swapService: SwapService, public tokenService: TokenService, private currencyService: CurrencyService, private zone: NgZone) { }
+    private swapService: SwapService, public tokenService: TokenService, public currencyService: CurrencyService, private zone: NgZone) { }
 
   ngOnInit() {
     this.swapIssuance = this.issuance.issuancecustomproperty as SwapIssuanceModel;
