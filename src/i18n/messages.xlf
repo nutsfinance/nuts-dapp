@@ -741,10 +741,6 @@
           <context context-type="sourcefile">src/app/instrument/lending/lending-create/lending-create.component.html</context>
           <context context-type="linenumber">64</context>
         </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-create/borrowing-create.component.html</context>
-          <context context-type="linenumber">53</context>
-        </context-group>
       </trans-unit>
       <trans-unit id="77841724c6561408a8b4a70034d052afc0373306" datatype="html">
         <source>
@@ -1190,6 +1186,13 @@
           <context context-type="linenumber">11</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="6228219ad88eba2880546ca6c18cff3f3939a303" datatype="html">
+        <source>The length of time until the lending is due.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-create/borrowing-create.component.html</context>
+          <context context-type="linenumber">53</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="44f7feaa6aebe8706b497a75e4b65db682f3b999" datatype="html">
         <source>15D</source>
         <context-group purpose="location">
@@ -1292,15 +1295,11 @@
           <context context-type="linenumber">7</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="97e4c0cb3809bc1e685f4ba7245df72b0413b7dc" datatype="html">
-        <source>Input Token</source>
+      <trans-unit id="0ebd4ab33145d8073cf77cc58673e36d27c68cfd" datatype="html">
+        <source>Input Token </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/instrument/swap/swap-create/swap-create.component.html</context>
           <context context-type="linenumber">6</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/instrument/swap/swap-card/swap-card.component.html</context>
-          <context context-type="linenumber">9</context>
         </context-group>
       </trans-unit>
       <trans-unit id="7ceb8da0c12ed0447a3259cedf7005a63176c7ce" datatype="html">
@@ -2201,6 +2200,13 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-card/borrowing-card.component.html</context>
           <context context-type="linenumber">46</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="97e4c0cb3809bc1e685f4ba7245df72b0413b7dc" datatype="html">
+        <source>Input Token</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/swap/swap-card/swap-card.component.html</context>
+          <context context-type="linenumber">9</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5049e204c14c648691ac775a64fb504467aeb549" datatype="html">

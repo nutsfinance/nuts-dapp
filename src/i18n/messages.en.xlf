@@ -481,7 +481,7 @@
         <source>The length of time until the loan is due.</source><target state="final">The length of time until the loan is due.</target>
         
         
-      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/lending/lending-create/lending-create.component.html</context><context context-type="linenumber">64</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/borrowing/borrowing-create/borrowing-create.component.html</context><context context-type="linenumber">53</context></context-group></trans-unit>
+      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/lending/lending-create/lending-create.component.html</context><context context-type="linenumber">64</context></context-group></trans-unit>
       <trans-unit id="77841724c6561408a8b4a70034d052afc0373306" datatype="html">
         <source>
           Enter a different amount.
@@ -797,6 +797,12 @@
           <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-create/borrowing-create.component.html</context>
           <context context-type="linenumber">11</context>
         </context-group>
+      </trans-unit><trans-unit id="6228219ad88eba2880546ca6c18cff3f3939a303" datatype="html">
+        <source>The length of time until the lending is due.</source><target state="final">The length of time until the lending is due.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-create/borrowing-create.component.html</context>
+          <context context-type="linenumber">53</context>
+        </context-group>
       </trans-unit>
       
       <trans-unit id="a58b994cbd255599fed5253f6ddb9328bc9483d3" datatype="html">
@@ -845,12 +851,18 @@
           <context context-type="sourcefile">src/app/instrument/borrowing/borrowing-positions/borrowing-positions.component.html</context>
           <context context-type="linenumber">7</context>
         </context-group>
+      </trans-unit><trans-unit id="0ebd4ab33145d8073cf77cc58673e36d27c68cfd" datatype="html">
+        <source>Input Token </source><target state="final">Input Token </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/instrument/swap/swap-create/swap-create.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="97e4c0cb3809bc1e685f4ba7245df72b0413b7dc" datatype="html">
         <source>Input Token</source><target state="final">Input Token</target>
         
         
-      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap-create/swap-create.component.html</context><context context-type="linenumber">6</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap-card/swap-card.component.html</context><context context-type="linenumber">9</context></context-group></trans-unit><trans-unit id="7ceb8da0c12ed0447a3259cedf7005a63176c7ce" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap-card/swap-card.component.html</context><context context-type="linenumber">9</context></context-group></trans-unit><trans-unit id="7ceb8da0c12ed0447a3259cedf7005a63176c7ce" datatype="html">
         <source>Assets you are using to exchange with.</source><target state="final">Assets you are using to exchange with.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/instrument/swap/swap-create/swap-create.component.html</context>

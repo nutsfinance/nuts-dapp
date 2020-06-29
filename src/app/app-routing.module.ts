@@ -30,7 +30,7 @@ import { SwapResolver } from './instrument/swap/swap.resolver';
 const language = environment.language;
 
 const routes: Routes = [
-  { path: `${language}`, redirectTo: ':lang/instrument', pathMatch: 'full' },
+  { path: `${language}`, redirectTo: `${language}/instrument`, pathMatch: 'full' },
   { path: `${language}/notification`, component: NotificationComponent },
   {
     path: `${language}/instrument`,
