@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   language: 'zh-hk',
-  languageCode: 'zh-TW'
+  languageCode: 'zh-TW',
+  instruments: ['貸款', '借款', '互换'],
 };
 
 /*

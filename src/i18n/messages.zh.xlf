@@ -362,7 +362,7 @@
         
       <context-group purpose="location"><context context-type="sourcefile">src/app/account/account-deposit/account-deposit.component.html</context><context context-type="linenumber">49</context></context-group></trans-unit><trans-unit id="e58d5aae96abca45d897c4a147e245d556440531" datatype="html">
         <source>Assets are secured in a non-custodial Instrument Account.</source>
-        <target state="new">把资产转进非托管产品账户。</target>
+        <target state="new">将资产转进非托管产品账户。</target>
         
       <context-group purpose="location"><context context-type="sourcefile">src/app/account/account-deposit/account-deposit.component.html</context><context context-type="linenumber">56</context></context-group></trans-unit><trans-unit id="548cbe230b824106744952c19f00fbf9415a2d18" datatype="html">
         <source>Approval must be granted in order to deposit ERC-20 tokens.</source>
@@ -887,7 +887,7 @@
           <context context-type="linenumber">7</context>
         </context-group>
       </trans-unit><trans-unit id="0ebd4ab33145d8073cf77cc58673e36d27c68cfd" datatype="html">
-        <source>Input Token </source><target state="new">换入代币 </target>
+        <source>Input Token </source><target state="new">换出代币 </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/instrument/swap/swap-create/swap-create.component.html</context>
           <context context-type="linenumber">6</context>
@@ -1034,7 +1034,7 @@
         
       </trans-unit><trans-unit id="b5dc6a080670afb28c046609f7cdd13b5e0bff40" datatype="html">
         <source>The overall Account Balance represents the total assets stored across all instrument markets.</source>
-        <target state="new">账户详情代表所有产品账户中的总存储资产。</target>
+        <target state="new">账户详情展示所有产品账户中的总存储资产。</target>
         
       </trans-unit><trans-unit id="313d03a8f3b4589c894dc0417d225eff28153ad2" datatype="html">
         <source>Instruments Balance</source><target state="new">产品资产分布</target>
@@ -1089,7 +1089,7 @@
         
       </trans-unit><trans-unit id="222b5c15fa854a3f79fd22e06d05f294c60f6229" datatype="html">
         <source>{VAR_SELECT, select, lending {Lending} borrowing {Borrowing} swap {Swap} }</source>
-        <target state="new">{VAR_SELECT, select, lending {借款} borrowing {贷款} swap {互换} }</target>
+        <target state="new">{VAR_SELECT, select, lending {贷款} borrowing {借款} swap {互换} }</target>
         
       </trans-unit>
       <trans-unit id="52c1447c1ec9570a2a3025c7e566557b8d19ed92" datatype="html">
@@ -1163,7 +1163,7 @@
         
       </trans-unit>
       <trans-unit id="f65253954b66e929a8b4d5ecaf61f9129f8cec64" datatype="html">
-        <source>Dashboard</source><target state="new">资产看板</target>
+        <source>Dashboard</source><target state="new">资产概览</target>
         
       </trans-unit>
       <trans-unit id="bd1d7c5f0559a64441ae19b21999d5d309ac62b8" datatype="html">
@@ -1332,7 +1332,7 @@
         
       <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/common/instrument-card-header/instrument-card-header.component.html</context><context context-type="linenumber">38</context></context-group></trans-unit>
       <trans-unit id="447a7f7fe432e4b5b32c4b724472349594318b57" datatype="html">
-        <source>lending</source><target state="new">借入</target>
+        <source>lending</source><target state="new">出借</target>
         
         
       </trans-unit>
@@ -1512,7 +1512,7 @@
         
       <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap-detail/swap-detail.component.html</context><context context-type="linenumber">11</context></context-group></trans-unit>
       <trans-unit id="7a080851e25a41e898776a9c90cf8dbe81027f9a" datatype="html">
-        <source>Output</source><target state="new">换入</target>
+        <source>Output</source><target state="new">换进</target>
         
       <context-group purpose="location"><context context-type="sourcefile">src/app/instrument/swap/swap-detail/swap-detail.component.html</context><context context-type="linenumber">26</context></context-group></trans-unit><trans-unit id="2f1fd62c29abb6f851a1e35f4ef9c5e961935405" datatype="html">
         <source>Issuance ID: <x id="INTERPOLATION" equiv-text="{{issuanceId}}"/></source>

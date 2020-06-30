@@ -16,8 +16,8 @@ import { AccountService, AccountsBalance } from 'src/app/account/account.service
   styleUrls: ['./dashboard-account-balance.component.scss']
 })
 export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
-  private instruments = ['Lending', 'Borrowing', 'Swap', 'Placeholder'];
-  private instrumentChineseLabels = ['借款', '贷款', '互换', 'Placeholder'];
+  private instruments = ['Lending', 'Borrowing', 'Swap'];
+  private instrumentLabels = environment.instruments;
   private tokens: TokenModel[] = [];
 
   public totalValue = 0;
@@ -27,7 +27,7 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
   public tokenPercentage = [0, 0, 0, 0, 0];
 
   // Instrument Chart
-  public instrumentChartLabels: Label[] = this.instruments;;
+  public instrumentChartLabels: Label[] = this.instrumentLabels;
   public instrumentChartColors = [{
     backgroundColor: [
       '#617835',
@@ -46,10 +46,6 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
       labels: {
         fontFamily: '"GillSans-light", Helvetica, Arial, serif',
         padding: 16,
-        filter: function(legend, data) {
-          // return true;
-          return legend.text.indexOf("Placeholder") < 0;  // Don't show placeholder legend!
-        }
       }
     },
     aspectRatio: 1.19,
@@ -82,10 +78,6 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
       padding: 16,
       labels: {
         fontFamily: '"GillSans-light", Helvetica, Arial, serif',
-        filter: function(legend, data) {
-          // return true;
-          return legend.text.indexOf("Placeholder") < 0;  // Don't show placeholder legend!
-        }
       }
     },
     aspectRatio: 1.18,
@@ -105,17 +97,13 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
     private nutsPlatformService: NutsPlatformService, public currencyService: CurrencyService,
     private tokenService: TokenService, private zone: NgZone) { }
 
-  ngOnInit() {
-    if (environment.language == 'zh') {
-      this.instrumentChartLabels = this.instrumentChineseLabels;
-    }
-    
+  ngOnInit() {    
     this.updateAccountBalances();
     this.tokenSubscription = this.tokenService.tokensUpdatedSubject
       .subscribe(_ => this.updateAccountBalances());
 
     this.accountBalancesSubscription = this.accountService.accountsBalanceSubject
-      .subscribe(_ => this.updateAccountBalances());
+      .subscribe(_ => this.zone.run(() => this.updateAccountBalances()));
     this.currencySubscription = this.currencyService.currencyUpdatedSubject
       .subscribe(_ => this.updateAccountBalances());
   }
@@ -131,13 +119,12 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
     this.tokenChartLabels = this.tokens.map(token => token.tokenSymbol);
 
     const accountsBalance = this.accountService.accountsBalance;
-    const instrumentLabels = environment.language === 'zh' ? this.instrumentChineseLabels : this.instruments;
     const instrumentsValue = [0, 0, 0, 0];
     const tokenValue = [0, 0, 0, 0, 0, 0];
     let totalValue = 0;
     // For each instrument
-    for (let i = 0; i < this.instruments.length - 1; i++) {
-      for (let j = 0; j < this.tokens.length - 1; j++) {
+    for (let i = 0; i < this.instruments.length; i++) {
+      for (let j = 0; j < this.tokens.length; j++) {
         const instrumentId = this.nutsPlatformService.getInstrumentId(this.instruments[i].toLowerCase());
         if (!accountsBalance[instrumentId] || !accountsBalance[instrumentId][this.tokens[j].tokenAddress]) continue;
         const tokenConvertedValue = await this.priceOracleService.getConvertedCurrencyValue(this.tokens[j],
@@ -160,7 +147,7 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
       }
 
       // Update labels
-      this.instrumentChartLabels = instrumentLabels.map((value, index) => {
+      this.instrumentChartLabels = this.instrumentLabels.map((value, index) => {
         return `${value}: ${this.instrumentPercentage[index]}%`;
       })
       this.tokenChartLabels = this.tokens.map((value, index) => {
@@ -172,7 +159,7 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
       this.tokenValue = tokenValue;
     } else {
       // Update labels
-      this.instrumentChartLabels = instrumentLabels.map((value, index) => {
+      this.instrumentChartLabels = this.instrumentLabels.map((value, index) => {
         return `${value}: _ _%`;
       })
       this.tokenChartLabels = this.tokens.map((value, index) => {
@@ -189,21 +176,17 @@ export class DashboardAccountBalanceComponent implements OnInit, OnDestroy {
   }
 
   private getInstrumentTooltip(tooltipItem, data) {
-    const instrument = environment.language == 'zh' ?
-      this.instrumentChineseLabels[tooltipItem.index] :
-      this.instruments[tooltipItem.index];
+    const instrument = this.instrumentLabels[tooltipItem.index];
     const currency = this.currencyService.getCurrencySymbol();
+    if (!instrument)  return `${currency} 0`;
 
-    if (instrument.indexOf("Placeholder") >= 0) {
-      return `${currency} 0`;
-    } else {
-      return `${instrument}: ${currency} ${this.instrumentValue[tooltipItem.index].toFixed(2)}`;
-    }
+    return `${instrument}: ${currency} ${this.instrumentValue[tooltipItem.index].toFixed(2)}`;
   }
 
   private getAssetTooltip(tooltipItem, data) {
     const token = this.tokens[tooltipItem.index];
     const currency = this.currencyService.getCurrencySymbol();
+    if (!token)  return `${currency} 0`;
 
     return `${token.tokenSymbol}: ${currency} ${this.tokenValue[tooltipItem.index].toFixed(2)}`;
   }

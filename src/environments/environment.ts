@@ -6,6 +6,7 @@ export const environment = {
   production: false,
   language: 'en',
   languageCode: 'en-US',
+  instruments: ['Lending', 'Borrowing', 'Swap'],
 };
 
 /*
